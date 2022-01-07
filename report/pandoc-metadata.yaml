@@ -1,0 +1,21 @@
+---
+title: People's preferences about their regional renewable electricity supply
+author:
+    - Tim Tröndle
+institute: ETH Zürich
+tags:
+    - reproducible-research
+abstract: |
+    Measuring and analysing people's preferences about fully-renewable, European energy supply.
+bibliography: literature.yaml
+csl: apa.csl
+link-citations: True
+css:
+    - reset.css
+    - report.css
+lang: en-GB
+xnos-cleveref: True
+fignos-plus-name: Figure
+tablenos-plus-name: Table
+date: 2022-01-07
+---
