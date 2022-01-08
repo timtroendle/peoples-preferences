@@ -1,7 +1,7 @@
 PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-tablenos --citeproc"
 
 configfile: "config/default.yaml"
-
+include: "rules/analyse.smk"
 
 
 onsuccess:
@@ -16,7 +16,8 @@ rule all:
     message: "Run entire analysis and compile report."
     input:
         "build/report.html",
-        "build/test-report.html"
+        "build/test-report.html",
+        "build/amce-plot.png"
 
 
 def pandoc_options(wildcards):

@@ -1,0 +1,18 @@
+name: cjoint
+channels:
+    - conda-forge
+    - r
+    - timtroendle # required for r-cjoint, which is not on conda-forge as of 2022-01-08
+dependencies:
+    - r=4.1
+    - r-ggplot2=3.3.5
+    - r-sandwich=3.0_1
+    - r-lmtest=0.9_39
+    - r-survey=4.1_1
+    - r-matrix=1.4_0
+    - r-yaml=2.2.1
+    - r-shiny=1.7.1
+    - r-shinyjs=2.1.0
+    - r-shinybs=0.61
+    - r-dt=0.20
+    - r-cjoint=2.1.0
