@@ -1,4 +1,5 @@
 PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-tablenos --citeproc"
+COUNTRIES = ["germany", "poland", "portugal", "denmark"]
 
 configfile: "config/default.yaml"
 include: "rules/analyse.smk"
@@ -17,7 +18,7 @@ rule all:
     input:
         "build/report.html",
         "build/test-report.html",
-        "build/amce-plot.png"
+        expand("build/{country}/amce-plot.png", country=COUNTRIES),
 
 
 def pandoc_options(wildcards):

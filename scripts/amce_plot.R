@@ -2,33 +2,33 @@ library("cjoint")
 
 amce_plot <- function(path.data, path.plot) {
     d.conjoint <- read.csv(path.data)
-    d.conjoint$TECHNOLOGIE <- factor(
-        d.conjoint$TECHNOLOGIE,
-        levels=c("Photovoltaikanlagen auf Dächern", "Photovoltaik-Freiflächenanlagen", "Windturbinen an Land")
+    d.conjoint$TECHNOLOGY <- factor(
+        d.conjoint$TECHNOLOGY,
+        levels=c("Rooftop PV", "Open-field PV", "Wind")
     )
-    d.conjoint$MENGE_DER_STROMIMPORTE <- factor(
-        d.conjoint$MENGE_DER_STROMIMPORTE,
-        levels=c("Keine - ihr Strom stammt aus regionalen Anlagen.", "Niedrig", "Mittel", "Hoch")
+    d.conjoint$SHARE_IMPORTS <- factor(
+        d.conjoint$SHARE_IMPORTS,
+        levels=c("0%", "10%", "50%", "90%")
     )
-    d.conjoint$FL_CHENBEDARF <- factor(
-        d.conjoint$FL_CHENBEDARF,
-        levels=c("Kein weiterer Flächenbedarf", "Sehr gering", "Geringe", "Mittel", "Hoch", "Sehr hoch")
+    d.conjoint$LAND <- factor(
+        d.conjoint$LAND,
+        levels=c("0.5%", "1%", "2%", "4%", "8%")
     )
-    d.conjoint$STROMPREISENTWICKLUNG_F_R_HAUSHALTE <- factor(
-        d.conjoint$STROMPREISENTWICKLUNG_F_R_HAUSHALTE,
-        levels=c("Heutiges Niveau", "Minimaler Anstieg", "Moderater Anstieg", "Starker Anstieg")
+    d.conjoint$PRICES <- factor(
+        d.conjoint$PRICES,
+        levels=c("+0%", "+15%", "+30%", "+45%", "+60%")
     )
-    d.conjoint$AUSBAU_DER_BERTRAGUNGSNETZ <- factor(
-        d.conjoint$AUSBAU_DER_BERTRAGUNGSNETZ,
-        levels=c("Heutiges Niveau", "Leichter Rückgang", "Leichter Anstieg", "Moderater Anstieg", "Starker Anstieg")
+    d.conjoint$TRANSMISSION <- factor(
+        d.conjoint$TRANSMISSION,
+        levels=c("+0%", "-25%", "+25%", "+50%", "+75%")
     )
-    d.conjoint$EIGENTUMSVERH_LTNISSE_DER_ERZEUGUNGSANLAGEN <- factor(
-        d.conjoint$EIGENTUMSVERH_LTNISSE_DER_ERZEUGUNGSANLAGEN,
-        levels=c("Private Versorgungsunternehmen", "Öffentliche Träger", "Lokale und regionale Gemeinschaften")
+    levels(d.conjoint$TRANSMISSION)[2] <- "-25.0%"
+    d.conjoint$OWNERSHIP <- factor(
+        d.conjoint$OWNERSHIP,
+        levels=c("Public", "Community", "Private")
     )
-    results <- amce(CHOICE_INDICATOR ~  TECHNOLOGIE + MENGE_DER_STROMIMPORTE + FL_CHENBEDARF
-        + STROMPREISENTWICKLUNG_F_R_HAUSHALTE + AUSBAU_DER_BERTRAGUNGSNETZ
-        + EIGENTUMSVERH_LTNISSE_DER_ERZEUGUNGSANLAGEN,
+    results <- amce(CHOICE_INDICATOR ~  TECHNOLOGY + SHARE_IMPORTS + LAND
+        + PRICES + TRANSMISSION + OWNERSHIP,
         data=d.conjoint,
         cluster=TRUE,
         respondent.id="RESPONDENT_ID")
