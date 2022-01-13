@@ -1,4 +1,4 @@
-PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-tablenos --citeproc"
+PANDOC = "pandoc --filter pantable --filter pandoc-fignos --citeproc"
 COUNTRIES = ["germany", "poland", "portugal", "denmark"]
 
 configfile: "config/default.yaml"
@@ -42,6 +42,7 @@ rule report:
         "report/apa.csl",
         "report/reset.css",
         "report/report.css",
+        expand("build/{country}/respondent-stats.csv", country=COUNTRIES),
     params: options = pandoc_options
     output: "build/report.{suffix}"
     wildcard_constraints:
