@@ -42,6 +42,10 @@ rule report:
         "report/apa.csl",
         "report/reset.css",
         "report/report.css",
+        "report/fonts/KlinicSlabBook.otf",
+        "report/fonts/KlinicSlabBookIt.otf",
+        "report/fonts/KlinicSlabMedium.otf",
+        "report/fonts/KlinicSlabMediumIt.otf",
         expand("build/{country}/respondent-stats.csv", country=COUNTRIES),
     params: options = pandoc_options
     output: "build/report.{suffix}"

@@ -47,4 +47,4 @@ To generate a PDF of the dependency graph of all steps, and if you have `dot` in
 
 ## License
 
-The code in this repo is MIT licensed, see `./LICENSE.md`.
+The code in this repo is MIT licensed, see `./LICENSE.md`. This excludes the KlinicSlab font family (all files in `./layout/fonts/`) which is copyright Lost Type.
