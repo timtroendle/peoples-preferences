@@ -18,6 +18,8 @@ width:
 ---
 ```
 
+<div class="pagebreak">
+
 ```table
 ---
 caption: 'Statistics of respondents in Poland'
@@ -31,6 +33,8 @@ width:
     - 0.2
 ---
 ```
+
+<div class="pagebreak">
 
 ```table
 ---
@@ -46,6 +50,8 @@ width:
 ---
 ```
 
+<div class="pagebreak">
+
 ```table
 ---
 caption: 'Statistics of respondents in Denmark'
@@ -60,6 +66,8 @@ width:
 ---
 ```
 
+<div class="pagebreak">
+
 # AMCE
 
 ![**AMCE values of all levels for Germany.**](build/germany/amce.png){#fig:amce-deu}
@@ -69,5 +77,3 @@ width:
 ![**AMCE values of all levels for Portugal.**](build/portugal/amce.png){#fig:amce-por}
 
 ![**AMCE values of all levels for Denmark.**](build/denmark/amce.png){#fig:amce-den}
-
-# References
