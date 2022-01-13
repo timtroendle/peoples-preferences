@@ -3,7 +3,7 @@ rule amce_plot:
     input:
         script = "scripts/amce_plot.R",
         data = "data/raw-data-{country}.csv"
-    output: "build/{country}/amce-plot.png"
+    output: "build/{country}/amce.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/amce_plot.R"
 

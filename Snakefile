@@ -17,8 +17,7 @@ rule all:
     message: "Run entire analysis and compile report."
     input:
         "build/report.html",
-        "build/test-report.html",
-        expand("build/{country}/amce-plot.png", country=COUNTRIES),
+        "build/test-report.html"
 
 
 def pandoc_options(wildcards):
@@ -47,6 +46,7 @@ rule report:
         "report/fonts/KlinicSlabMedium.otf",
         "report/fonts/KlinicSlabMediumIt.otf",
         expand("build/{country}/respondent-stats.csv", country=COUNTRIES),
+        expand("build/{country}/amce.png", country=COUNTRIES),
     params: options = pandoc_options
     output: "build/report.{suffix}"
     wildcard_constraints:
