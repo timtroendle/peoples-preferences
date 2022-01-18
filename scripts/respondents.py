@@ -47,6 +47,8 @@ def preprocess_respondents(df):
     respondents["Q9_EDUCATION_O7"] = replace_text_input_with_1(respondents["Q9_EDUCATION_O7"])
     respondents["Q9_EDUCATION_O8"] = replace_text_input_with_1(respondents["Q9_EDUCATION_O8"]) # FIXME this is not "other"
     respondents["Q12_PARTY_O7"] = replace_text_input_with_1(respondents["Q12_PARTY_O7"])
+    if "Q12_PARTY_O10" in respondents.columns:
+        respondents["Q12_PARTY_O10"] = replace_text_input_with_1(respondents["Q12_PARTY_O10"])
     respondents = pd.concat([respondents, undummify(respondents[filter(column_is_dummy, respondents.columns)])], axis=1)
     for question in CODES.keys():
         respondents[question] = (
