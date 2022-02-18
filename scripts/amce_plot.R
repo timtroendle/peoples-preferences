@@ -31,7 +31,8 @@ amce_plot <- function(path.data, path.plot) {
         + PRICES + TRANSMISSION + OWNERSHIP,
         data=d.conjoint,
         cluster=TRUE,
-        respondent.id="RESPONDENT_ID")
+        respondent.id="RESPONDENT_ID",
+        weight="WEIGHT") # TODO verify this is correct
     png(path.plot)
     plot(
         results,

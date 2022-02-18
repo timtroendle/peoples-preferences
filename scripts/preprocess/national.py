@@ -22,7 +22,8 @@ COLUMNS_TO_DROP = [
 ]
 
 
-def preprocess_conjoint(path_to_conjointly_data: str, path_to_respondi_data: str, country_id: str, path_to_output: str):
+def preprocess_conjoint(path_to_conjointly_data: str, path_to_respondi_data: str,
+                        country_id: str, population_count: int, path_to_output: str):
     respondi = pd.read_excel(path_to_respondi_data)
     (
         pd
@@ -38,6 +39,7 @@ def preprocess_conjoint(path_to_conjointly_data: str, path_to_respondi_data: str
         .fillna({"RESPONDENT_COUNTRY": country_id})
         .pipe(merge_respondi_data, respondi)
         .pipe(undummify_dataset)
+        .assign(WEIGHT=population_count / 1e6)
         .to_csv(path_to_output, index=True, header=True)
     )
 
@@ -148,5 +150,6 @@ if __name__ == "__main__":
         path_to_conjointly_data=snakemake.input.conjointly,
         path_to_respondi_data=snakemake.input.respondi,
         country_id=snakemake.wildcards.country_id,
+        population_count=int(snakemake.params.population),
         path_to_output=snakemake.output[0]
     )

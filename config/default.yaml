@@ -2,3 +2,9 @@
 data-sources:
     conjointly: data/raw-data-{country_id}.csv
     respondi: data/respondi/Masterdata_14979_{country_id}.xlsx
+parameters:
+    population-count: # 2020, Source: https://data.worldbank.org/indicator/SP.POP.TOTL
+        DEU: 83240525
+        DNK: 5831404
+        POL: 37950802
+        PRT: 10305564

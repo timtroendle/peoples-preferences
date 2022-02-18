@@ -1,15 +1,16 @@
-rule preprocess_national_conjoint:
+rule national_conjoint:
     message: "Preprocess conjoint data for country {wildcards.country_id}."
     input:
         script = "scripts/preprocess/national.py",
         conjointly = config["data-sources"]["conjointly"],
         respondi = config["data-sources"]["respondi"]
+    params: population = lambda wildcards: config["parameters"]["population-count"][wildcards.country_id]
     output: "build/{country_id}/conjoint.csv"
     conda: "../envs/preprocess.yaml"
     script: "../scripts/preprocess/national.py"
 
 
-rule merge_national_conjoints:
+rule global_conjoint:
     message: "Merge all national conjoint datasets."
     input:
         script = "scripts/preprocess/merge.py",

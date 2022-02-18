@@ -19,6 +19,7 @@ rule all:
     input:
         "build/report.html",
         "build/conjoint.csv",
+        "build/amce.png",
         "build/test-report.html"
 
 

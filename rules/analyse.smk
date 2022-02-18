@@ -2,8 +2,18 @@ rule amce_plot:
     message: "Create plot of AMCEs in {wildcards.country_id}."
     input:
         script = "scripts/amce_plot.R",
-        data = config["data-sources"]["conjointly"]
+        data = rules.national_conjoint.output[0]
     output: "build/{country_id}/amce.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/amce_plot.R"
+
+
+rule global_amce_plot:
+    message: "Create plot of AMCEs."
+    input:
+        script = "scripts/amce_plot.R",
+        data = rules.global_conjoint.output[0]
+    output: "build/amce.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/amce_plot.R"
 
