@@ -1,3 +1,4 @@
 # The right place for all your configuration values.
 data-sources:
-    jmp: data/raw-data-{country}.csv
+    conjointly: data/raw-data-{country_id}.csv
+    respondi: data/respondi/Masterdata_14979_{country_id}.xlsx

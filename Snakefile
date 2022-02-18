@@ -1,7 +1,8 @@
 PANDOC = "pandoc --filter pantable --filter pandoc-fignos --citeproc"
-COUNTRIES = ["DEU", "POL", "PRT", "DNK"]
+COUNTRY_IDS = ["DEU", "POL", "PRT", "DNK"]
 
 configfile: "config/default.yaml"
+include: "rules/preprocess.smk"
 include: "rules/analyse.smk"
 
 
@@ -17,6 +18,7 @@ rule all:
     message: "Run entire analysis and compile report."
     input:
         "build/report.html",
+        "build/conjoint.csv",
         "build/test-report.html"
 
 
@@ -45,8 +47,8 @@ rule report:
         "report/fonts/KlinicSlabBookIt.otf",
         "report/fonts/KlinicSlabMedium.otf",
         "report/fonts/KlinicSlabMediumIt.otf",
-        expand("build/{country}/respondent-stats.csv", country=COUNTRIES),
-        expand("build/{country}/amce.png", country=COUNTRIES),
+        expand("build/{country_id}/respondent-stats.csv", country_id=COUNTRY_IDS),
+        expand("build/{country_id}/amce.png", country_id=COUNTRY_IDS),
     params: options = pandoc_options
     output: "build/report.{suffix}"
     wildcard_constraints:
