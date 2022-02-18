@@ -18,8 +18,6 @@ rule all:
     message: "Run entire analysis and compile report."
     input:
         "build/report.html",
-        "build/conjoint.csv",
-        "build/amce.png",
         "build/test-report.html"
 
 
@@ -50,6 +48,7 @@ rule report:
         "report/fonts/KlinicSlabMediumIt.otf",
         expand("build/{country_id}/respondent-stats.csv", country_id=COUNTRY_IDS),
         expand("build/{country_id}/amce.png", country_id=COUNTRY_IDS),
+        "build/amce.png"
     params: options = pandoc_options
     output: "build/report.{suffix}"
     wildcard_constraints:

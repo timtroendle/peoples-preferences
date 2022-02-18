@@ -1,6 +1,6 @@
 # Introduction
 
-The following is a brief analysis of our pre-test results with 100 respondents from all four countries: Germany, Poland, Denmark, Portugal.
+The following is a brief analysis of our results with ~1000 respondents from each of the four countries: Germany, Poland, Denmark, Portugal.
 
 # Respondents
 
@@ -77,3 +77,5 @@ width:
 ![**AMCE values of all levels for Portugal.**](build/PRT/amce.png){#fig:amce-por}
 
 ![**AMCE values of all levels for Denmark.**](build/DNK/amce.png){#fig:amce-den}
+
+![**AMCE values of all levels for all four countries.**](build/amce.png){#fig:amce}
