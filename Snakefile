@@ -1,5 +1,5 @@
 PANDOC = "pandoc --filter pantable --filter pandoc-fignos --citeproc"
-COUNTRIES = ["germany", "poland", "portugal", "denmark"]
+COUNTRIES = ["DEU", "POL", "PRT", "DNK"]
 
 configfile: "config/default.yaml"
 include: "rules/analyse.smk"

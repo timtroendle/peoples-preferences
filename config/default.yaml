@@ -1,2 +1,3 @@
 # The right place for all your configuration values.
-dummy-param: 4
+data-sources:
+    jmp: data/raw-data-{country}.csv
