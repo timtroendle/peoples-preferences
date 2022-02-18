@@ -1,4 +1,4 @@
-import csv
+from datetime import date
 from itertools import filterfalse
 
 import pandas as pd
@@ -22,9 +22,9 @@ COLUMNS_TO_DROP = [
 ]
 
 
-def preprocess_conjoint(path_to_conjointly_data: str, path_to_respondi_data: str,
-                        country_id: str, population_count: int, path_to_output: str):
-    respondi = pd.read_excel(path_to_respondi_data)
+def preprocess_conjoint(path_to_conjointly_data: str, path_to_respondi_data: str, country_id: str,
+                        population_count: int, pre_test_threshold: date, path_to_output: str):
+    respondi = pd.read_excel(path_to_respondi_data, parse_dates=[2])
     (
         pd
         .read_csv(
@@ -39,7 +39,8 @@ def preprocess_conjoint(path_to_conjointly_data: str, path_to_respondi_data: str
         .fillna({"RESPONDENT_COUNTRY": country_id})
         .pipe(merge_respondi_data, respondi)
         .pipe(undummify_dataset)
-        .assign(WEIGHT=population_count / 1e6)
+        .pipe(filter_pre_test, pre_test_threshold)
+        .assign(WEIGHT=population_count / 1e6) # FIXME must handle the fact that numbers of responses per country vary.
         .to_csv(path_to_output, index=True, header=True)
     )
 
@@ -69,6 +70,10 @@ def undummify_dataset(df):
     sorted_question_columns = sorted(question_columns, key=lambda col: int(col.split("_")[0][1:]))
     all_columns_sorted = list(df.columns.drop(sorted_question_columns)) + sorted_question_columns
     return df.reindex(columns=all_columns_sorted)
+
+
+def filter_pre_test(df, pre_test_threshold):
+    return df.loc[df["RESPONDENT_TIME_OF_COMPLETING_SURVEY"] >= pre_test_threshold, :]
 
 
 def remove_free_text(df):
@@ -151,5 +156,6 @@ if __name__ == "__main__":
         path_to_respondi_data=snakemake.input.respondi,
         country_id=snakemake.wildcards.country_id,
         population_count=int(snakemake.params.population),
+        pre_test_threshold=snakemake.params.pre_test_threshold,
         path_to_output=snakemake.output[0]
     )

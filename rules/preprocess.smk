@@ -4,7 +4,9 @@ rule national_conjoint:
         script = "scripts/preprocess/national.py",
         conjointly = config["data-sources"]["conjointly"],
         respondi = config["data-sources"]["respondi"]
-    params: population = lambda wildcards: config["parameters"]["population-count"][wildcards.country_id]
+    params:
+        population = lambda wildcards: config["parameters"]["population-count"][wildcards.country_id],
+        pre_test_threshold = config["parameters"]["pre-test-threshold"]
     output: "build/{country_id}/conjoint.csv"
     conda: "../envs/preprocess.yaml"
     script: "../scripts/preprocess/national.py"

@@ -8,3 +8,4 @@ parameters:
         DNK: 5831404
         POL: 37950802
         PRT: 10305564
+    pre-test-threshold: 2022-01-24 00:00
