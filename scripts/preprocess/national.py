@@ -78,7 +78,6 @@ def filter_pre_test(df, pre_test_threshold):
 
 def remove_free_text(df):
     df["Q9_EDUCATION_O7"] = replace_text_input_with_1(df["Q9_EDUCATION_O7"])
-    df["Q9_EDUCATION_O8"] = replace_text_input_with_1(df["Q9_EDUCATION_O8"]) # FIXME this is not "other", bug in DEU from conjointly
     if "Q12_PARTY_O13" in df.columns:
         df["Q12_PARTY_O12"] = replace_text_input_with_1(df["Q12_PARTY_O12"])
     if "Q12_PARTY_O12" in df.columns:
