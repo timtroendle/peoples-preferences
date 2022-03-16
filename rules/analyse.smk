@@ -22,7 +22,9 @@ rule respondents:
     message: "Statistical overview over respondents in {wildcards.country_id}."
     input:
         script = "scripts/analyse/respondents.py",
-        data = config["data-sources"]["conjointly"]
+        data = rules.national_conjoint.output[0]
+    params:
+        codes = {k:v for k,v in config["codes"].items() if k in ["Q3_GENDER", "Q6_AREA", "Q10_INCOME"]}
     output: "build/{country_id}/respondent-stats.csv"
     conda: "../envs/default.yaml"
     script: "../scripts/analyse/respondents.py"
