@@ -2,7 +2,19 @@
 
 The following is a brief analysis of our results with ~1000 respondents from each of the four countries: Germany, Poland, Denmark, Portugal.
 
-# Respondents
+# Hypotheses
+
+## H6: People in urban areas show a higher preference for land requirements than people from rural areas
+
+The data do not support this hypothesis.
+
+I am using the method to measure subgroup preferences described by @Leeper:2020. I remove all respondents that gave no answer to the question about their area. I then calculate differences in marginal means between the urban and the rural population for all attribute levels. All differences including the one about land requirements are very small (@fig:H6) and only for two levels (unrelated to land requirements) can be reject the null hypothesis that there is an effect.
+
+![**Differences in marginal means between urban and rural population.**](build/H6.png){#fig:H6}
+
+# Appendix
+
+## Respondents
 
 ```table
 ---
@@ -68,7 +80,7 @@ width:
 
 <div class="pagebreak">
 
-# AMCE
+## AMCE
 
 ![**AMCE values of all levels for Germany.**](build/DEU/amce.png){#fig:amce-deu}
 
@@ -79,3 +91,5 @@ width:
 ![**AMCE values of all levels for Denmark.**](build/DNK/amce.png){#fig:amce-den}
 
 ![**AMCE values of all levels for all four countries.**](build/amce.png){#fig:amce}
+
+# References

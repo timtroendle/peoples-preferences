@@ -48,7 +48,8 @@ rule report:
         "report/fonts/KlinicSlabMediumIt.otf",
         expand("build/{country_id}/respondent-stats.csv", country_id=COUNTRY_IDS),
         expand("build/{country_id}/amce.png", country_id=COUNTRY_IDS),
-        "build/amce.png"
+        "build/amce.png",
+        "build/H6.png"
     params: options = pandoc_options
     output: "build/report.{suffix}"
     wildcard_constraints:

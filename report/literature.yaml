@@ -1,44 +1,1315 @@
 ---
 references:
-- id: 'Trondle:2019'
+- id: Amrhein:2019
+  accessed:
+    - year: 2019
+      month: 3
+      day: 27
   author:
-    - family: Tröndle
-      given: Tim
-    - family: Pfenninger
-      given: Stefan
-    - family: Lilliestam
-      given: Johan
-  container-title: Energy Strategy Reviews
-  DOI: 10.1016/j.esr.2019.100388
+    - family: Amrhein
+      given: Valentin
+    - family: Greenland
+      given: Sander
+    - family: McShane
+      given: Blake
+  citation-key: Amrhein:2019
+  container-title: Nature
+  DOI: 10.1038/d41586-019-00857-9
+  ISSN: 0028-0836, 1476-4687
+  issue: '7748'
   issued:
     - year: 2019
-      month: 8
-      day: 13
-  title: >-
-    Home-made or imported: on the possibility for renewable electricity autarky
-    on all scales in Europe
+      month: 3
+  language: en
+  page: 305-307
+  source: Crossref
+  title: Scientists rise up against statistical significance
   type: article-journal
-  volume: '26'
+  URL: http://www.nature.com/articles/d41586-019-00857-9
+  volume: '567'
 
-- id: 'Trondle:2020'
+- id: Baker:2016
+  accessed:
+    - year: 2021
+      month: 3
+      day: 13
+  author:
+    - family: Baker
+      given: Monya
+  citation-key: Baker:2016
+  container-title: Nature
+  container-title-short: Nature
+  DOI: 10.1038/533452a
+  ISSN: 0028-0836, 1476-4687
+  issue: '7604'
+  issued:
+    - year: 2016
+      month: 5
+  language: en
+  page: 452-454
+  source: DOI.org (Crossref)
+  title: 1,500 scientists lift the lid on reproducibility
+  type: article-journal
+  URL: http://www.nature.com/articles/533452a
+  volume: '533'
+
+- id: Bansak:2021
+  abstract: >-
+    Conjoint survey experiments have become a popular method for analyzing
+    multidimensional preferences in political science. If properly implemented,
+    conjoint experiments can obtain reliable measures of multidimensional
+    preferences and estimate causal effects of multiple attributes on
+    hypothetical choices or evaluations. This chapter provides an accessible
+    overview of the methodology for designing, implementing, and analyzing
+    conjoint survey experiments. Specifically, we begin by detailing a
+    substantive example: How do candidate attributes affect the support of
+    American respondents for candidates running against President Trump in 2020?
+    We then discuss the theoretical underpinnings and advantages of conjoint
+    designs. We next provide guidelines for practitioners in designing and
+    analyzing conjoint survey experiments. We conclude by discussing further
+    design considerations, common conjoint applications, common criticisms, and
+    possible future directions.
+  author:
+    - family: Bansak
+      given: Kirk
+    - family: Hainmueller
+      given: Jens
+    - family: Hopkins
+      given: Daniel J
+    - family: Yamamoto
+      given: Teppei
+  citation-key: Bansak:2021
+  container-title: Advances in Experimental Political Science
+  event-place: Cambridge
+  issued:
+    - year: 2021
+  language: en
+  page: '23'
+  publisher: Cambridge University Press
+  publisher-place: Cambridge
+  source: Zotero
+  title: Conjoint Survey Experiments
+  type: chapter
+
+- id: Bechtel:2013
+  accessed:
+    - year: 2022
+      month: 3
+      day: 18
+  author:
+    - family: Bechtel
+      given: Michael M.
+    - family: Scheve
+      given: Kenneth F.
+  citation-key: Bechtel:2013
+  container-title: Proceedings of the National Academy of Sciences
+  DOI: 10.1073/pnas.1306374110
+  issue: '34'
+  issued:
+    - year: 2013
+      month: 8
+      day: 20
+  page: 13763-13768
+  publisher: Proceedings of the National Academy of Sciences
+  source: pnas.org (Atypon)
+  title: Mass support for global climate agreements depends on institutional design
+  type: article-journal
+  URL: https://www.pnas.org/doi/10.1073/pnas.1306374110
+  volume: '110'
+
+- id: Boudet:2019
+  abstract: >-
+    Energy’s central place in economic, political and social systems—and the
+    broad impacts that energy choices have on the natural world and public
+    health—mean that new technologies often spur public reactions. Understanding
+    these public responses and their drivers is important, as public support can
+    influence new technology adoption and deployment. Here I review the
+    literature on public perceptions of and responses to a wide range of new
+    energy technologies. Unlike previous reviews that tend to focus on
+    particular technologies or types of technologies, this Review covers both
+    large-scale energy infrastructure projects, such as utility-scale wind and
+    solar, fossil fuel extraction and marine renewables, as well as small-scale,
+    ‘consumer-facing’ technologies such as electric vehicles, rooftop solar and
+    smart meters. This approach reveals broad trends that may facilitate
+    communication between policymakers, technologists and the public, and
+    support the transition to a more sustainable energy system.
+  accessed:
+    - year: 2022
+      month: 2
+      day: 25
+  author:
+    - family: Boudet
+      given: Hilary S.
+  citation-key: Boudet:2019
+  container-title: Nature Energy
+  container-title-short: Nat Energy
+  DOI: 10.1038/s41560-019-0399-x
+  ISSN: 2058-7546
+  issue: '6'
+  issued:
+    - year: 2019
+      month: 6
+  language: en
+  number: '6'
+  page: 446-455
+  publisher: Nature Publishing Group
+  source: www.nature.com
+  title: Public perceptions of and responses to new energy technologies
+  type: article-journal
+  URL: https://www.nature.com/articles/s41560-019-0399-x
+  volume: '4'
+
+- id: Brennan:2016
   accessed:
     - year: 2020
-      month: 2
-      day: 22
+      month: 12
+      day: 17
   author:
-    - family: Tröndle
-      given: Tim
-  DOI: 10.5281/zenodo.3949794
-  event-place: Potsdam
-  genre: Python
+    - family: Brennan
+      given: Noreen
+    - family: Van Rensburg
+      given: Thomas M
+  citation-key: Brennan:2016
+  container-title: Energy Policy
+  container-title-short: Energy Policy
+  DOI: 10.1016/j.enpol.2016.04.031
+  ISSN: '03014215'
+  issued:
+    - year: 2016
+      month: 7
+  language: en
+  page: 355-365
+  source: DOI.org (Crossref)
+  title: >-
+    Wind farm externalities and public preferences for community consultation in
+    Ireland: A discrete choice experiments approach
+  title-short: >-
+    Wind farm externalities and public preferences for community consultation in
+    Ireland
+  type: article-journal
+  URL: https://linkinghub.elsevier.com/retrieve/pii/S0301421516302002
+  volume: '94'
+
+- id: Carley:2020
+  abstract: >-
+    Public support is a key determinant of whether any energy project is
+    developed in democratic countries. In recent decades, scholars have
+    extensively examined levels of support and opposition to energy
+    infrastructure, often with a focus on so-called Not-in-My-Backyard (NIMBY)
+    sentiments. As the need for energy infrastructure grows, so does the need to
+    extract insights and lessons from this literature. In this systematic
+    literature review, we evaluate decades of research to identify important
+    trends in topical focus, research findings, and research design. We find a
+    disproportionate focus on wind energy, followed by solar, fossil fuels, and
+    transmission, with most studies conducted in the United States or United
+    Kingdom, and that individuals are more often supportive of energy projects
+    than they are opposed. Scholars have examined the role of many factors in
+    understanding attitudes toward energy infrastructure, and often find
+    knowledge, trust, and positive perceptions about the benefits of projects to
+    be positively correlated with support for projects, although with variation
+    across energy types. NIMBY attitudes differ widely in approach and are often
+    plagued by problematic research designs that limit inferences and the
+    generalizability of findings. We provide a detailed discussion of these
+    limitations and suggest areas in which the literature can expand.
+  accessed:
+    - year: 2021
+      month: 10
+      day: 8
+  author:
+    - family: Carley
+      given: Sanya
+    - family: Konisky
+      given: David M.
+    - family: Atiq
+      given: Zoya
+    - family: Land
+      given: Nick
+  citation-key: Carley:2020
+  container-title: Environmental Research Letters
+  container-title-short: Environ. Res. Lett.
+  DOI: 10.1088/1748-9326/ab875d
+  ISSN: 1748-9326
+  issue: '9'
   issued:
     - year: 2020
-      month: 7
-      day: 17
-  publisher: Institute for Advanced Sustainability Studies
-  publisher-place: Potsdam
-  title: euro-calliope
+      month: 9
+  language: en
+  page: '093007'
+  publisher: IOP Publishing
+  source: Institute of Physics
+  title: >-
+    Energy infrastructure, NIMBYism, and public opinion: a systematic literature
+    review of three decades of empirical survey literature
+  title-short: Energy infrastructure, NIMBYism, and public opinion
+  type: article-journal
+  URL: https://doi.org/10.1088/1748-9326/ab875d
+  volume: '15'
+
+- id: Chambers:2019
+  accessed:
+    - year: 2021
+      month: 3
+      day: 13
+  author:
+    - family: Chambers
+      given: Christopher D.
+    - family: Forstmann
+      given: Birte
+    - family: Pruszynski
+      given: J. Andrew
+  citation-key: Chambers:2019
+  container-title: European Journal of Neuroscience
+  container-title-short: Eur J Neurosci
+  DOI: 10.1111/ejn.14319
+  ISSN: 0953-816X, 1460-9568
+  issue: '1'
+  issued:
+    - year: 2019
+      month: 1
+  language: en
+  page: 4-5
+  source: DOI.org (Crossref)
+  title: >-
+    Science in flux: Registered reports and beyond at the *European Journal of
+    Neuroscience*
+  title-short: Science in flux
+  type: article-journal
+  URL: https://onlinelibrary.wiley.com/doi/abs/10.1111/ejn.14319
+  volume: '49'
+
+- id: Chiambaretto:2020
+  accessed:
+    - year: 2021
+      month: 4
+      day: 7
+  author:
+    - family: Chiambaretto
+      given: Paul
+    - family: Bengtsson
+      given: Maria
+    - family: Fernandez
+      given: Anne-Sophie
+    - family: Näsholm
+      given: Malin H.
+  citation-key: Chiambaretto:2020
+  container-title: Long Range Planning
+  container-title-short: Long Range Planning
+  DOI: 10.1016/j.lrp.2019.03.002
+  ISSN: '00246301'
+  issue: '1'
+  issued:
+    - year: 2020
+      month: 2
+  language: en
+  page: '101876'
+  source: DOI.org (Crossref)
+  title: >-
+    Small and large firms’ trade-off between benefits and risks when choosing a
+    coopetitor for innovation
+  type: article-journal
+  URL: https://linkinghub.elsevier.com/retrieve/pii/S0024630118301122
+  volume: '53'
+
+- id: Day:2010
+  accessed:
+    - year: 2021
+      month: 4
+      day: 16
+  author:
+    - family: Day
+      given: Brett
+    - family: Pinto Prades
+      given: Jose-Luis
+  citation-key: Day:2010
+  container-title: Journal of Environmental Economics and Management
+  container-title-short: Journal of Environmental Economics and Management
+  DOI: 10.1016/j.jeem.2010.03.001
+  ISSN: '00950696'
+  issue: '3'
+  issued:
+    - year: 2010
+      month: 5
+  language: en
+  page: 271-285
+  source: DOI.org (Crossref)
+  title: Ordering anomalies in choice experiments
+  type: article-journal
+  URL: https://linkinghub.elsevier.com/retrieve/pii/S0095069610000239
+  volume: '59'
+
+- id: Day:2012
+  accessed:
+    - year: 2021
+      month: 4
+      day: 16
+  author:
+    - family: Day
+      given: Brett
+    - family: Bateman
+      given: Ian J.
+    - family: Carson
+      given: Richard T.
+    - family: Dupont
+      given: Diane
+    - family: Louviere
+      given: Jordan J.
+    - family: Morimoto
+      given: Sanae
+    - family: Scarpa
+      given: Riccardo
+    - family: Wang
+      given: Paul
+  citation-key: Day:2012
+  container-title: Journal of Environmental Economics and Management
+  container-title-short: Journal of Environmental Economics and Management
+  DOI: 10.1016/j.jeem.2011.09.001
+  ISSN: '00950696'
+  issue: '1'
+  issued:
+    - year: 2012
+      month: 1
+  language: en
+  page: 73-91
+  source: DOI.org (Crossref)
+  title: >-
+    Ordering effects and choice set awareness in repeat-response stated
+    preference studies
+  type: article-journal
+  URL: https://linkinghub.elsevier.com/retrieve/pii/S0095069611001239
+  volume: '63'
+
+- id: Demski:2018
+  abstract: >-
+    Energy security is an important policy goal for most countries. Here, we
+    show that cross-country differences in concern about energy security across
+    Israel and 22 countries in Europe are explained by energy-specific and
+    general national contextual indicators, over-and-above individual-level
+    factors that reflect population demographics. Specifically, public concerns
+    about import dependency and affordability reflect the specific energy
+    context within countries, such as dependency on energy imports and
+    electricity costs, while higher concerns about the affordability,
+    vulnerability and reliability of energy are associated with higher fossil
+    fuel consumption. More general national context beyond energy also appears
+    to matter; energy security concerns are higher in countries that are doing
+    less well in terms of economic and human well-being. These findings indicate
+    that wider energy, social and economic context influence people’s feelings
+    of vulnerability and sense of security, which may inform the development of
+    effective energy security strategies that assuage public concerns.
+  accessed:
+    - year: 2021
+      month: 10
+      day: 11
+  author:
+    - family: Demski
+      given: Christina
+    - family: Poortinga
+      given: Wouter
+    - family: Whitmarsh
+      given: Lorraine
+    - family: Böhm
+      given: Gisela
+    - family: Fisher
+      given: Stephen
+    - family: Steg
+      given: Linda
+    - family: Umit
+      given: Resul
+    - family: Jokinen
+      given: Pekka
+    - family: Pohjolainen
+      given: Pasi
+  citation-key: Demski:2018
+  container-title: Nature Energy
+  container-title-short: Nat Energy
+  DOI: 10.1038/s41560-018-0235-8
+  ISSN: 2058-7546
+  issue: '10'
+  issued:
+    - year: 2018
+      month: 10
+  language: en
+  note: |-
+    Bandiera_abtest: a
+    Cg_type: Nature Research Journals
+    Primary_atype: Research
+    Subject_term: Energy and society;Energy security;Geography;Psychology
+    Subject_term_id: energy-and-society;energy-security;geography;psychology
+  number: '10'
+  page: 882-888
+  publisher: Nature Publishing Group
+  source: www.nature.com
+  title: >-
+    National context is a key determinant of energy security concerns across
+    Europe
+  type: article-journal
+  URL: https://www.nature.com/articles/s41560-018-0235-8
+  volume: '3'
+
+- id: EuropeanCommission:2016a
+  author:
+    - literal: European Commission
+  citation-key: EuropeanCommission:2016a
+  event-place: Luxembourg
+  ISBN: 978-92-79-52373-1
+  issued:
+    - year: 2016
+  language: English
+  note: 'OCLC: 960351415'
+  publisher: Office for official publications of the european communities
+  publisher-place: Luxembourg
+  source: Open WorldCat
+  title: >-
+    EU Reference Scenario 2016 -- Energy, transport and GHG emmissions: Trends
+    to 2050
+  title-short: EU energy, transport and GHG emmissions
   type: book
-  URL: 'https://github.com/calliope-project/euro-calliope/releases/tag/v1.0'
-  version: v1.0
+
+- id: Gelman:2014
+  accessed:
+    - year: 2021
+      month: 3
+      day: 13
+  author:
+    - family: Gelman
+      given: Andrew
+    - family: Loken
+      given: Eric
+  citation-key: Gelman:2014
+  container-title: American Scientist
+  container-title-short: Am. Sci.
+  DOI: 10.1511/2014.111.460
+  ISSN: 0003-0996, 1545-2786
+  issue: '6'
+  issued:
+    - year: 2014
+  page: '460'
+  source: DOI.org (Crossref)
+  title: The Statistical Crisis in Science
+  type: article-journal
+  URL: https://www.americanscientist.org/article/the-statistical-crisis-in-science
+  volume: '102'
+
+- id: Hainmueller:2014
+  abstract: >-
+    Survey experiments are a core tool for causal inference. Yet, the design of
+    classical survey experiments prevents them from identifying which components
+    of a multidimensional treatment are influential. Here, we show how
+                  conjoint analysis
+                  , an experimental design yet to be widely applied in political science, enables researchers to estimate the causal effects of multiple treatment components and assess several causal hypotheses simultaneously. In conjoint analysis, respondents score a set of alternatives, where each has randomly varied attributes. Here, we undertake a formal identification analysis to integrate conjoint analysis with the potential outcomes framework for causal inference. We propose a new causal estimand and show that it can be nonparametrically identified and easily estimated from conjoint data using a fully randomized design. The analysis enables us to propose diagnostic checks for the identification assumptions. We then demonstrate the value of these techniques through empirical applications to voter decision making and attitudes toward immigrants.
+  accessed:
+    - year: 2021
+      month: 2
+      day: 1
+  author:
+    - family: Hainmueller
+      given: Jens
+    - family: Hopkins
+      given: Daniel J.
+    - family: Yamamoto
+      given: Teppei
+  citation-key: Hainmueller:2014
+  container-title: Political Analysis
+  container-title-short: Polit. anal.
+  DOI: 10.1093/pan/mpt024
+  ISSN: 1047-1987, 1476-4989
+  issue: '1'
+  issued:
+    - year: 2014
+  language: en
+  page: 1-30
+  source: DOI.org (Crossref)
+  title: >-
+    Causal Inference in Conjoint Analysis: Understanding Multidimensional
+    Choices via Stated Preference Experiments
+  title-short: Causal Inference in Conjoint Analysis
+  type: article-journal
+  URL: >-
+    https://www.cambridge.org/core/product/identifier/S1047198700013589/type/journal_article
+  volume: '22'
+
+- id: Hauser:2004
+  accessed:
+    - year: 2022
+      month: 3
+      day: 17
+  author:
+    - family: Hauser
+      given: John R.
+    - family: Rao
+      given: Vithala R.
+  citation-key: Hauser:2004
+  collection-editor:
+    - family: Eliashberg
+      given: Jehoshua
+  container-title: 'Marketing Research and Modeling: Progress and Prospects'
+  DOI: 10.1007/978-0-387-28692-1_7
+  editor:
+    - family: Wind
+      given: Yoram
+    - family: Green
+      given: Paul E.
+  event-place: Boston, MA
+  ISBN: 978-0-387-24308-5 978-0-387-28692-1
+  issued:
+    - year: 2004
+  language: en
+  page: 141-168
+  publisher: Springer US
+  publisher-place: Boston, MA
+  source: DOI.org (Crossref)
+  title: Conjoint Analysis, Related Modeling, and Applications
+  type: chapter
+  URL: http://link.springer.com/10.1007/978-0-387-28692-1_7
+  volume: '14'
+
+- id: 'Hensher:'
+  author:
+    - family: Hensher
+      given: David A
+    - family: Rose
+      given: John M
+    - family: Greene
+      given: William H
+  citation-key: 'Hensher:'
+  language: en
+  page: '743'
+  source: Zotero
+  title: Applied Choice Analysis
+  type: article-journal
+
+- id: Ioannidis:2005
+  accessed:
+    - year: 2021
+      month: 3
+      day: 13
+  author:
+    - family: Ioannidis
+      given: John P. A.
+  citation-key: Ioannidis:2005
+  container-title: PLoS Medicine
+  container-title-short: PLoS Med
+  DOI: 10.1371/journal.pmed.0020124
+  ISSN: 1549-1676
+  issue: '8'
+  issued:
+    - year: 2005
+      month: 8
+      day: 30
+  language: en
+  page: e124
+  source: DOI.org (Crossref)
+  title: Why Most Published Research Findings Are False
+  type: article-journal
+  URL: https://dx.plos.org/10.1371/journal.pmed.0020124
+  volume: '2'
+
+- id: Jansen:2009
+  abstract: >-
+    In the Netherlands, a large ongoing study seeks to provide insight into the
+    process behind preferences and choices with regard to moving and housing. As
+    part of the development of the survey instrument that was used in this
+    study, we examined whether visual images (such as photographs) should be
+    included, since they may clarify particular attributes (e.g., architectural
+    style) and make the choice task more realistic for the respondents. However,
+    images may disturb the results as respondents may evaluate accidental
+    details on the photographs such as the color of the window frames. This
+    paper presents the results of two subsequent pilot studies on the impact of
+    including images in a web-based questionnaire. In the first study, eight
+    dwelling profiles were presented in three different ways ("text only", "text
+    and color photo" and "text and black-and-white impression") to 28
+    respondents. In the second study two different instruments were used: one
+    with written information and directly shown photo-collages; the other with
+    written information and photo-collages on request only. Both studies showed
+    that the inclusion of images led to a number of differences between the
+    results obtained with the various presentation methods. These differences
+    may be explained by accidental details on the images. Furthermore, dwelling
+    characteristics appear to be more important to the respondents' overall
+    evaluation of a dwelling when shown with photos than when presented in
+    written format. However, since including images also has a substantial
+    number of benefits, it may not be advisable to leave out images completely
+    from the measurement task. Should images be included in a survey instrument,
+    it is of utmost importance to make sure that all potentially disturbing
+    details are cleared away. Furthermore, it may be better to show a collage of
+    pictures than only one in order to decrease the specific impact of
+    accidental details.
+  author:
+    - family: Jansen
+      given: Sylvia
+    - family: Boumeester
+      given: Harry
+    - family: Coolen
+      given: Henny
+    - family: Goetgeluk
+      given: Roland
+    - family: Molin
+      given: Eric
+  citation-key: Jansen:2009
+  container-title: Journal of Housing and the Built Environment
+  issue: '3'
+  issued:
+    - year: 2009
+  language: en
+  page: 271-297
+  source: Zotero
+  title: >-
+    The impact of including images in a conjoint measurement task: evidence from
+    two small- scale studies
+  type: article-journal
+  URL: http://www.jstor.org/stable/41107468
+  volume: '24'
+
+- id: Kolcava:2021
+  abstract: >-
+    Existing research offers a nuanced understanding of the conditions under
+    which firms can gain a competitive advantage through environmental business
+    conduct. However, we know quite little about whether such action can also
+    generate benefits for firms induced by political action, such as benefits
+    associated with public procurement, (softer) regulatory enforcement and
+    corporate tax breaks. We argue that citizens are more likely to support such
+    rewards for firms that have a stronger record of environmental business
+    conduct, express stronger commitment to future environmental action and
+    submit such action to independent audits. The empirical analysis focuses on
+    vehicle emissions reduction by car producers and plastic waste reduction by
+    retailers. Choice experiments with 6726 respondents from Germany and the
+    United States support these arguments. Our findings are surprisingly
+    consistent across two different sociocultural and political contexts
+    (Germany, USA), two different environmental policy domains (vehicle
+    emissions, plastic waste) and three forms of political rewards. Whereas
+    studies focusing on narrowly defined economic benefits (competitiveness) of
+    environmental business conduct have become somewhat more sceptical about the
+    magnitude and scope of such benefits, our results provide more room for
+    optimism by pointing to other types of benefits of corporate environmental
+    action.
+  accessed:
+    - year: 2022
+      month: 1
+      day: 4
+  author:
+    - family: Kolcava
+      given: Dennis
+    - family: Scholderer
+      given: Joachim
+    - family: Bernauer
+      given: Thomas
+  citation-key: Kolcava:2021
+  container-title: Journal of Cleaner Production
+  container-title-short: Journal of Cleaner Production
+  DOI: 10.1016/j.jclepro.2020.123564
+  ISSN: 0959-6526
+  issued:
+    - year: 2021
+      month: 1
+      day: 10
+  language: en
+  page: '123564'
+  source: ScienceDirect
+  title: >-
+    Do citizens provide political rewards to firms engaging in voluntary
+    environmental action?
+  type: article-journal
+  URL: https://www.sciencedirect.com/science/article/pii/S095965262033609X
+  volume: '279'
+
+- id: Krekel:2017
+  accessed:
+    - year: 2021
+      month: 4
+      day: 16
+  author:
+    - family: Krekel
+      given: Christian
+    - family: Zerrahn
+      given: Alexander
+  citation-key: Krekel:2017
+  container-title: Journal of Environmental Economics and Management
+  container-title-short: Journal of Environmental Economics and Management
+  DOI: 10.1016/j.jeem.2016.11.009
+  ISSN: '00950696'
+  issued:
+    - year: 2017
+      month: 3
+  language: en
+  page: 221-238
+  source: DOI.org (Crossref)
+  title: >-
+    Does the presence of wind turbines have negative externalities for people in
+    their surroundings? Evidence from well-being data
+  title-short: >-
+    Does the presence of wind turbines have negative externalities for people in
+    their surroundings?
+  type: article-journal
+  URL: https://linkinghub.elsevier.com/retrieve/pii/S0095069616304624
+  volume: '82'
+
+- id: Leek:2017
+  abstract: >-
+    As debate rumbles on about how and how much poor statistics is to blame for
+    poor reproducibility, Nature asked influential statisticians to recommend
+    one change to improve science. The common theme? The problem is not our
+    maths, but ourselves.
+  accessed:
+    - year: 2017
+      month: 12
+      day: 5
+  author:
+    - family: Leek
+      given: Jeff
+    - family: McShane
+      given: Blakeley
+    - family: Gelman
+      given: Andrew
+    - family: Colquhoun
+      given: David
+    - family: Nuijten
+      given: Michèle
+    - family: Goodman
+      given: Steven
+  citation-key: Leek:2017
+  issued:
+    - year: 2017
+      month: 11
+      day: 28
+  language: en
+  title: Five ways to fix statistics
+  type: webpage
+  URL: http://www.nature.com/articles/d41586-017-07522-z
+
+- id: Leeper:2020
+  abstract: >-
+    Conjoint analysis is a common tool for studying political preferences. The
+    method disentangles patterns in respondents’ favorability toward complex,
+    multidimensional objects, such as candidates or policies. Most conjoints
+    rely upon a fully randomized design to generate average marginal component e
+    ects (AMCEs). They measure the degree to which a given value of a conjoint
+    profile feature increases, or decreases, respondents’ support for the
+    overall profile relative to a baseline, averaging across all respondents and
+    other features. While the AMCE has a clear causal interpretation (about the
+    e ect of features), most published conjoint analyses also use AMCEs to
+    describe levels of favorability. This o en means comparing AMCEs among
+    respondent subgroups. We show that using conditional AMCEs to describe the
+    degree of subgroup agreement can be misleading as regression interactions
+    are sensitive to the reference category used in the analysis. This leads to
+    inferences about subgroup di erences in preferences that have arbitrary
+    sign, size, and significance. We demonstrate the problem using examples
+    drawn from published articles and provide suggestions for improved reporting
+    and interpretation using marginal means and an omnibus F-test. Given the
+    accelerating use of these designs in political science, we o er advice for
+    best practice in analysis and presentation of results.
+  accessed:
+    - year: 2022
+      month: 2
+      day: 11
+  author:
+    - family: Leeper
+      given: Thomas J.
+    - family: Hobolt
+      given: Sara B.
+    - family: Tilley
+      given: James
+  citation-key: Leeper:2020
+  container-title: Political Analysis
+  container-title-short: Polit. Anal.
+  DOI: 10.1017/pan.2019.30
+  ISSN: 1047-1987, 1476-4989
+  issue: '2'
+  issued:
+    - year: 2020
+      month: 4
+  language: en
+  page: 207-221
+  source: DOI.org (Crossref)
+  title: Measuring Subgroup Preferences in Conjoint Experiments
+  type: article-journal
+  URL: >-
+    https://www.cambridge.org/core/product/identifier/S1047198719000305/type/journal_article
+  volume: '28'
+
+- id: Lehmann:2021
+  accessed:
+    - year: 2021
+      month: 4
+      day: 9
+  author:
+    - family: Lehmann
+      given: Paul
+    - family: Ammermann
+      given: Kathrin
+    - family: Gawel
+      given: Erik
+    - family: Geiger
+      given: Charlotte
+    - family: Hauck
+      given: Jennifer
+    - family: Heilmann
+      given: Jörg
+    - family: Meier
+      given: Jan-Niklas
+    - family: Ponitka
+      given: Jens
+    - family: Schicketanz
+      given: Sven
+    - family: Stemmer
+      given: Boris
+    - family: Tafarte
+      given: Philip
+    - family: Thrän
+      given: Daniela
+    - family: Wolfram
+      given: Elisabeth
+  citation-key: Lehmann:2021
+  container-title: Ecological Economics
+  container-title-short: Ecological Economics
+  DOI: 10.1016/j.ecolecon.2021.107029
+  ISSN: '09218009'
+  issued:
+    - year: 2021
+      month: 7
+  language: en
+  page: '107029'
+  source: DOI.org (Crossref)
+  title: 'Managing spatial sustainability trade-offs: The case of wind power'
+  title-short: Managing spatial sustainability trade-offs
+  type: article-journal
+  URL: https://linkinghub.elsevier.com/retrieve/pii/S0921800921000872
+  volume: '185'
+
+- id: 'Louviere:'
+  author:
+    - family: Louviere
+      given: Jordan J
+    - family: Hensher
+      given: David A
+    - family: Swait
+      given: Joffre D
+  citation-key: 'Louviere:'
+  language: en
+  page: '420'
+  source: Zotero
+  title: Stated Choice Methods
+  type: article-journal
+
+- id: Louviere:2010
+  abstract: >-
+    We briefly review and discuss traditional conjoint analysis (CA) and
+    discrete choice experiments (DCEs), widely used stated preference
+    elicitation methods in several disciplines. We pay particular attention to
+    the origins and basis of CA, and show that it is generally inconsistent with
+    economic demand theory, and is subject to several logical inconsistencies
+    that make it unsuitable for use in applied economics, particularly welfare
+    and policy assessment. We contrast this with DCEs that have a long-standing,
+    well-tested theoretical basis in random utility theory, and we show why and
+    how DCEs are more general and consistent with economic demand theory.
+    Perhaps the major message, though, is that many studies that claim to be
+    doing conjoint analysis are really doing DCE.
+  accessed:
+    - year: 2022
+      month: 3
+      day: 17
+  author:
+    - family: Louviere
+      given: Jordan J
+    - family: Flynn
+      given: Terry N
+    - family: Carson
+      given: Richard T
+  citation-key: Louviere:2010
+  container-title: Journal of Choice Modelling
+  container-title-short: Journal of Choice Modelling
+  DOI: 10.1016/S1755-5345(13)70014-9
+  ISSN: 1755-5345
+  issue: '3'
+  issued:
+    - year: 2010
+      month: 1
+      day: 1
+  language: en
+  page: 57-72
+  source: ScienceDirect
+  title: Discrete Choice Experiments Are Not Conjoint Analysis
+  type: article-journal
+  URL: https://www.sciencedirect.com/science/article/pii/S1755534513700149
+  volume: '3'
+
+- id: 'McCulloug:'
+  author:
+    - family: McCulloug
+      given: Dick
+  citation-key: 'McCulloug:'
+  language: en
+  page: '7'
+  source: Zotero
+  title: >-
+    A User's Guide to Conjoint Analysis -- Before starting out, you need to know
+    where the land mines are.
+  title-short: A User's Guide to Conjoint Analysis
+  type: article-magazine
+
+- id: Melliger:2021
+  accessed:
+    - year: 2020
+      month: 11
+      day: 16
+  author:
+    - family: Melliger
+      given: Marc
+    - family: Lilliestam
+      given: Johan
+  citation-key: Melliger:2021
+  container-title: Energy Policy
+  container-title-short: Energy Policy
+  DOI: 10.1016/j.enpol.2020.111993
+  ISSN: '03014215'
+  issued:
+    - year: 2021
+      month: 1
+  language: en
+  page: '111993'
+  source: DOI.org (Crossref)
+  title: >-
+    Effects of coordinating support policy changes on renewable power investor
+    choices in Europe
+  type: article-journal
+  URL: https://linkinghub.elsevier.com/retrieve/pii/S0301421520307047
+  volume: '148'
+
+- id: Nosek:2018
+  abstract: >-
+    Progress in science relies in part on generating hypotheses with existing
+    observations and testing hypotheses with new observations. This distinction
+    between postdiction and prediction is appreciated conceptually but is not
+    respected in practice. Mistaking generation of postdictions with testing of
+    predictions reduces the credibility of research findings. However, ordinary
+    biases in human reasoning, such as hindsight bias, make it hard to avoid
+    this mistake. An effective solution is to define the research questions and
+    analysis plan before observing the research outcomes—a process called
+    preregistration. Preregistration distinguishes analyses and outcomes that
+    result from predictions from those that result from postdictions. A variety
+    of practical strategies are available to make the best possible use of
+    preregistration in circumstances that fall short of the ideal application,
+    such as when the data are preexisting. Services are now available for
+    preregistration across all disciplines, facilitating a rapid increase in the
+    practice. Widespread adoption of preregistration will increase
+    distinctiveness between hypothesis generation and hypothesis testing and
+    will improve the credibility of research findings.
+  accessed:
+    - year: 2021
+      month: 3
+      day: 12
+  author:
+    - family: Nosek
+      given: Brian A.
+    - family: Ebersole
+      given: Charles R.
+    - family: DeHaven
+      given: Alexander C.
+    - family: Mellor
+      given: David T.
+  citation-key: Nosek:2018
+  container-title: Proceedings of the National Academy of Sciences
+  container-title-short: Proc Natl Acad Sci USA
+  DOI: 10.1073/pnas.1708274114
+  ISSN: 0027-8424, 1091-6490
+  issue: '11'
+  issued:
+    - year: 2018
+      month: 3
+      day: 13
+  language: en
+  page: 2600-2606
+  source: DOI.org (Crossref)
+  title: The preregistration revolution
+  type: article-journal
+  URL: http://www.pnas.org/lookup/doi/10.1073/pnas.1708274114
+  volume: '115'
+
+- id: OECD:2021
+  accessed:
+    - year: 2022
+      month: 1
+      day: 27
+  author:
+    - literal: OECD
+    - literal: The European Commission
+    - literal: Food and Agriculture Organization of the United Nations
+    - literal: United Nations Human Settlements Programme
+    - literal: International Labour Organization
+    - literal: The World Bank
+  citation-key: OECD:2021
+  collection-title: OECD Regional Development Studies
+  DOI: 10.1787/4bc1c502-en
+  ISBN: 978-92-76-20306-3
+  issued:
+    - year: 2021
+      month: 4
+      day: 28
+  language: en
+  publisher: OECD
+  source: DOI.org (Crossref)
+  title: >-
+    Applying the Degree of Urbanisation: A Methodological Manual to Define
+    Cities, Towns and Rural Areas for International Comparisons
+  title-short: Applying the Degree of Urbanisation
+  type: book
+  URL: >-
+    https://www.oecd-ilibrary.org/urban-rural-and-regional-development/applying-the-degree-of-urbanisation_4bc1c502-en
+
+- id: Peri:2020
+  accessed:
+    - year: 2020
+      month: 12
+      day: 17
+  author:
+    - family: Peri
+      given: Erez
+    - family: Becker
+      given: Nir
+    - family: Tal
+      given: Alon
+  citation-key: Peri:2020
+  container-title: Land Use Policy
+  container-title-short: Land Use Policy
+  DOI: 10.1016/j.landusepol.2020.105113
+  ISSN: '02648377'
+  issued:
+    - year: 2020
+      month: 12
+  language: en
+  page: '105113'
+  source: DOI.org (Crossref)
+  title: >-
+    What really undermines public acceptance of wind turbines? A choice
+    experiment analysis in Israel
+  title-short: What really undermines public acceptance of wind turbines?
+  type: article-journal
+  URL: https://linkinghub.elsevier.com/retrieve/pii/S0264837720309674
+  volume: '99'
+
+- id: Rinscheid:2019
+  abstract: >-
+    Coal-fired power generation is the single most important source of carbon
+    dioxide emissions in many countries, including Germany. A government
+    commission recently proposed to phase out coal by 2038, which implies that
+    the country will miss its 2020 climate target. On the basis of a choice
+    experiment that assessed 31,744 hypothetical policy scenarios in a
+    representative sample of German voters, we show that voters prefer a
+    phase-out by 2025. They would uphold their support for greater climate
+    ambition up to an additional cost to society of (sic)8.5 billion. Voters in
+    Rhineland and Lusatia, the country's main coal regions, also support an
+    earlier phase-out, but to a lesser extent than voters in other regions. By
+    demonstrating that political decision-makers are more reluctant than voters
+    in overcoming energy path dependence, our analysis calls for further
+    research to explain the influence of particular stakeholders in slowing
+    energy transitions.
+  accessed:
+    - year: 2021
+      month: 12
+      day: 16
+  author:
+    - family: Rinscheid
+      given: Adrian
+    - family: Wüstenhagen
+      given: Rolf
+  citation-key: Rinscheid:2019
+  container-title: Nature Energy
+  container-title-short: Nat. Energy
+  DOI: 10.1038/s41560-019-0460-9
+  event-place: London
+  ISSN: 2058-7546
+  issue: '10'
+  issued:
+    - year: 2019
+      month: 10
+  language: English
+  note: WOS:000489768100016
+  page: 856-863
+  publisher: Nature Publishing Group
+  publisher-place: London
+  source: Web of Science Nextgen
+  title: >-
+    Germany's decision to phase out coal by 2038 lags behind citizens' timing
+    preferences
+  type: article-journal
+  URL: >-
+    https://gateway.webofknowledge.com/gateway/Gateway.cgi?GWVersion=2&SrcAuth=DOISource&SrcApp=WOS&KeyAID=10.1038%2Fs41560-019-0460-9&DestApp=DOI&SrcAppSID=C3M7baQItVWqAmnlH2c&SrcJTitle=NATURE+ENERGY&DestDOIRegistrantName=Springer+Science+and+Business+Media+LLC
+  volume: '4'
+
+- id: Shmueli:2010
+  abstract: >-
+    Statistical modeling is a powerful tool for developing and testing theories
+    by way of causal explanation, prediction, and description. In many
+    disciplines there is near-exclusive use of statistical modeling for causal
+    explanation and the assumption that models with high explanatory power are
+    inherently of high predictive power. Conflation between explanation and
+    prediction is common, yet the distinction must be understood for progressing
+    scientific knowledge. While this distinction has been recognized in the
+    philosophy of science, the statistical literature lacks a thorough
+    discussion of the many differences that arise in the process of modeling for
+    an explanatory versus a predictive goal. The purpose of this article is to
+    clarify the distinction between explanatory and predictive modeling, to
+    discuss its sources, and to reveal the practical implications of the
+    distinction to each step in the modeling process.
+  accessed:
+    - year: 2022
+      month: 3
+      day: 18
+  author:
+    - family: Shmueli
+      given: Galit
+  citation-key: Shmueli:2010
+  container-title: Statistical Science
+  DOI: 10.1214/10-STS330
+  ISSN: 0883-4237, 2168-8745
+  issue: '3'
+  issued:
+    - year: 2010
+      month: 8
+  page: 289-310
+  source: Project Euclid
+  title: To Explain or to Predict?
+  type: article-journal
+  URL: >-
+    https://projecteuclid.org/journals/statistical-science/volume-25/issue-3/To-Explain-or-to-Predict/10.1214/10-STS330.full
+  volume: '25'
+
+- id: Simmons:2011
+  abstract: >-
+    In this article, we accomplish two things. First, we show that despite
+    empirical psychologists’ nominal endorsement of a low rate of false-positive
+    findings (≤ .05), flexibility in data collection, analysis, and reporting
+    dramatically increases actual false-positive rates. In many cases, a
+    researcher is more likely to falsely find evidence that an effect exists
+    than to correctly find evidence that it does not. We present computer
+    simulations and a pair of actual experiments that demonstrate how
+    unacceptably easy it is to accumulate (and report) statistically significant
+    evidence for a false hypothesis. Second, we suggest a simple, low-cost, and
+    straightforwardly effective disclosure-based solution to this problem. The
+    solution involves six concrete requirements for authors and four guidelines
+    for reviewers, all of which impose a minimal burden on the publication
+    process.
+  accessed:
+    - year: 2021
+      month: 3
+      day: 15
+  author:
+    - family: Simmons
+      given: Joseph P.
+    - family: Nelson
+      given: Leif D.
+    - family: Simonsohn
+      given: Uri
+  citation-key: Simmons:2011
+  container-title: Psychological Science
+  container-title-short: Psychol Sci
+  DOI: 10.1177/0956797611417632
+  ISSN: 0956-7976, 1467-9280
+  issue: '11'
+  issued:
+    - year: 2011
+      month: 11
+  language: en
+  page: 1359-1366
+  source: DOI.org (Crossref)
+  title: >-
+    False-Positive Psychology: Undisclosed Flexibility in Data Collection and
+    Analysis Allows Presenting Anything as Significant
+  title-short: False-Positive Psychology
+  type: article-journal
+  URL: http://journals.sagepub.com/doi/10.1177/0956797611417632
+  volume: '22'
+
+- id: Stadelmann-Steffen:2021
+  accessed:
+    - year: 2020
+      month: 12
+      day: 7
+  author:
+    - family: Stadelmann-Steffen
+      given: Isabelle
+    - family: Dermont
+      given: Clau
+  citation-key: Stadelmann-Steffen:2021
+  container-title: Energy Research & Social Science
+  container-title-short: Energy Research & Social Science
+  DOI: 10.1016/j.erss.2020.101818
+  ISSN: '22146296'
+  issued:
+    - year: 2021
+      month: 1
+  language: en
+  page: '101818'
+  source: DOI.org (Crossref)
+  title: >-
+    Acceptance through inclusion? Political and economic participation and the
+    acceptance of local renewable energy projects in Switzerland
+  title-short: Acceptance through inclusion?
+  type: article-journal
+  URL: https://linkinghub.elsevier.com/retrieve/pii/S2214629620303935
+  volume: '71'
+
+- id: TheRoyalSwedishAcademyofSciences:2000
+  author:
+    - literal: The Royal Swedish Academy of Sciences
+  citation-key: TheRoyalSwedishAcademyofSciences:2000
+  issued:
+    - year: 2000
+  language: en
+  page: '17'
+  source: Zotero
+  title: >-
+    Advanced information on the Bank of Sweden Prize in Economic Sciences in
+    Memory of Alfred Nobel, 2000
+  type: article-journal
+
+- id: 'Train:'
+  author:
+    - family: Train
+      given: Kenneth
+  citation-key: 'Train:'
+  language: en
+  page: '388'
+  source: Zotero
+  title: Discrete Choice Methods with Simulation
+  type: article-journal
+
+- id: Wicki:2019
+  abstract: >-
+    Public support is usually a precondition for the adoption and successful
+    implementation of costly policies. We argue that such support is easier to
+    achieve with policy-packages that incorporate primary and ancillary
+    measures. We specifically distinguish command-andcontrol and market-based
+    measures as primary measures and argue that the former will usually garner
+    more public support than the latter given the low-visibility tendency of
+    costs associated with command-and-control measures. Nevertheless, if
+    included in a policypackage, ancillary measures are likely to increase
+    public support by reducing negative effects of primary measures. Based on a
+    choice experiment with a representative sample of 2,034 Swiss citizens, we
+    assessed these arguments with respect to political efforts to reduce vehicle
+    emissions. The empirical analysis supported the argument that
+    policypackaging affects public support positively, particularly generating
+    more support when ancillary measures are added. Lastly, we ultimately
+    observe that command-and-control measures obtain more public support than
+    market-based instruments.
+  author:
+    - family: Wicki
+      given: Michael
+    - family: Huber
+      given: Robert Alexander
+    - family: Bernauer
+      given: Thomas
+  citation-key: Wicki:2019
+  container-title: Journal of Public Policy
+  DOI: 10.1017/S0143814X19000205
+  issue: '4'
+  issued:
+    - year: 2019
+      month: 7
+      day: 24
+  language: en
+  page: 599-625
+  source: Zotero
+  title: >-
+    Can policy-packaging increase public support for costly policies? Insights
+    from a choice experiment on policies against vehicle emissions
+  type: article-journal
+  volume: '40'
 ...

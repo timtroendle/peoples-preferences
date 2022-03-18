@@ -28,3 +28,13 @@ rule respondents:
     output: "build/{country_id}/respondent-stats.csv"
     conda: "../envs/default.yaml"
     script: "../scripts/analyse/respondents.py"
+
+
+rule H6:
+    message: "Create plot for H6."
+    input:
+        script = "scripts/analyse/H6.R",
+        data = rules.global_conjoint.output[0]
+    output: "build/H6.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/H6.R"
