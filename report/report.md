@@ -92,4 +92,16 @@ width:
 
 ![**AMCE values of all levels for all four countries.**](build/amce.png){#fig:amce}
 
+## Marginal Means
+
+![**Marginal Mean values of all levels for Germany.**](build/DEU/mm.png){#fig:mm-deu}
+
+![**Marginal Mean values of all levels for Poland.**](build/POL/mm.png){#fig:mm-pol}
+
+![**Marginal Mean values of all levels for Portugal.**](build/PRT/mm.png){#fig:mm-por}
+
+![**Marginal Mean values of all levels for Denmark.**](build/DNK/mm.png){#fig:mm-den}
+
+![**Marginal Mean values of all levels for all four countries.**](build/mm.png){#fig:mm}
+
 # References

@@ -18,6 +18,26 @@ rule global_amce_plot:
     script: "../scripts/analyse/amce_plot.R"
 
 
+rule mm_plot:
+    message: "Create plot of MMs in {wildcards.country_id}."
+    input:
+        script = "scripts/analyse/mm_plot.R",
+        data = rules.national_conjoint.output[0]
+    output: "build/{country_id}/mm.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/mm_plot.R"
+
+
+rule global_mm_plot:
+    message: "Create plot of MMs."
+    input:
+        script = "scripts/analyse/mm_plot.R",
+        data = rules.global_conjoint.output[0]
+    output: "build/mm.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/mm_plot.R"
+
+
 rule respondents:
     message: "Statistical overview over respondents in {wildcards.country_id}."
     input:
