@@ -1,7 +1,7 @@
 library("cregg")
 library("ggplot2")
 
-mm_plot <- function(path.data, path.plot) {
+cregg_plot <- function(path.data, path.plot, estimate) {
     d.conjoint <- read.csv(path.data)
     d.conjoint$TECHNOLOGY <- factor(
         d.conjoint$TECHNOLOGY,
@@ -26,15 +26,24 @@ mm_plot <- function(path.data, path.plot) {
 
     f1 <- CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND + PRICES + TRANSMISSION + OWNERSHIP
 
-    mm.conjoint <- cj(
+    cj.conjoint <- cj(
         data=d.conjoint,
         formula=f1,
         id = ~RESPONDENT_ID,
-        estimate = "mm",
+        estimate = estimate,
         weights = ~WEIGHT,
     )
-    p <- plot(mm.conjoint, vline=0.5, xlim=c(0.2,.8))
+    if (estimate == "mm") {
+        p <- plot(cj.conjoint, vline = 0.5, xlim=c(0.2,.8))
+    }
+    else {
+        p <- plot(cj.conjoint)
+    }
     ggsave(path.plot, p)
 }
 
-mm_plot(snakemake@input[["data"]], snakemake@output[[1]])
+cregg_plot(
+    snakemake@input[["data"]],
+    snakemake@output[[1]],
+    snakemake@params[["estimate"]]
+)

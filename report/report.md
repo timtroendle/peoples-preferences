@@ -5,8 +5,8 @@ The following is a brief analysis of our results with ~1000 respondents from eac
 # Hypotheses
 
 * H1: @sec:H1
-* H2: @sec:H2
-* H3: @sec:H3
+* H2: People value ownership higher than prices. @sec:H2 🚫
+* H3: People value land requirements higher than prices. @sec:H3 🚫
 * H4: @sec:H4
 * H5: @sec:H5
 * H6: People in urban areas show a higher preference for land requirements than people from rural areas. @sec:H6 🚫
@@ -22,9 +22,19 @@ The following is a brief analysis of our results with ~1000 respondents from eac
 
 ## H1 {#sec:H1}
 
-## H2 {#sec:H2}
+## H2: People value ownership higher than prices. {#sec:H2}
 
-## H3 {#sec:H3}
+There is no formal way to test this hypothesis. Likely, it does not hold.
+
+We could test this hypothesis by comparing the magnitude of the effect sizes of the attributes. Doing so, ownership's largest effect size is <5% (from public to private), and prices' largest effect size is ~30% (from +0% to +60%) (@fig:H2). We must not forget that these effect sizes are somewhat arbitrary, as they are based on our arbitrary choice of levels. Still, as the effecct sizes differ quite a lot, we can likely reject this hypothesis.
+
+![**AMCEs for all levels.**](build/H2.png){#fig:H2}
+
+## H3: People value land requirements higher than prices. {#sec:H3}
+
+There is no formal way to test this hypothesis. Likely, it does not hold.
+
+We could test this hypothesis by comparing the magnitude of the effect sizes of the attributes. Doing so, land requirements's largest effect size is <5%, and prices' largest effect size is ~30% (from +0% to +60%) (@fig:H2). We must not forget that these effect sizes are somewhat arbitrary, as they are based on our arbitrary choice of levels. Still, as the effecct sizes differ quite a lot, we can likely reject this hypothesis.
 
 ## H4 {#sec:H4}
 

@@ -31,11 +31,13 @@ rule mm_plot:
 rule global_mm_plot:
     message: "Create plot of MMs."
     input:
-        script = "scripts/analyse/mm_plot.R",
+        script = "scripts/analyse/cregg_plot.R",
         data = rules.global_conjoint.output[0]
+    params:
+        estimate = "mm"
     output: "build/mm.png"
     conda: "../envs/cjoint.yaml"
-    script: "../scripts/analyse/mm_plot.R"
+    script: "../scripts/analyse/cregg_plot.R"
 
 
 rule respondents:
@@ -48,6 +50,18 @@ rule respondents:
     output: "build/{country_id}/respondent-stats.csv"
     conda: "../envs/default.yaml"
     script: "../scripts/analyse/respondents.py"
+
+
+rule H2:
+    message: "Create plot for H2."
+    input:
+        script = "scripts/analyse/cregg_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        estimate = "amce"
+    output: "build/H2.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/cregg_plot.R"
 
 
 rule H6:
