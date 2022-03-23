@@ -51,8 +51,12 @@ rule report:
         expand("build/{country_id}/mm.png", country_id=COUNTRY_IDS),
         "build/amce.png",
         "build/mm.png",
+        "build/H1.png",
         "build/H2.png",
+        "build/H4.png",
+        "build/H5.png",
         "build/H6.png",
+        "build/H7.png",
         "build/H8.png",
         "build/H9.png",
         "build/H11.png"

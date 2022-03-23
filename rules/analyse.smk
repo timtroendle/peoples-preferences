@@ -52,6 +52,18 @@ rule respondents:
     script: "../scripts/analyse/respondents.py"
 
 
+rule H1:
+    message: "Create plot for H1."
+    input:
+        script = "scripts/analyse/interaction_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS * PRICES + LAND + TRANSMISSION + OWNERSHIP"
+    output: "build/H1.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/interaction_plot.R"
+
+
 rule H2:
     message: "Create plot for H2."
     input:
@@ -62,6 +74,30 @@ rule H2:
     output: "build/H2.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/cregg_plot.R"
+
+
+rule H4:
+    message: "Create plot for H4."
+    input:
+        script = "scripts/analyse/interaction_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND * PRICES + TRANSMISSION + OWNERSHIP"
+    output: "build/H4.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/interaction_plot.R"
+
+
+rule H5:
+    message: "Create plot for H5."
+    input:
+        script = "scripts/analyse/interaction_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND + PRICES * OWNERSHIP + TRANSMISSION"
+    output: "build/H5.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/interaction_plot.R"
 
 
 rule H6:
@@ -75,6 +111,18 @@ rule H6:
     output: "build/H6.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/conditional_mm_plot.R"
+
+
+rule H7:
+    message: "Create plot for H7."
+    input:
+        script = "scripts/analyse/interaction_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS * LAND + PRICES + TRANSMISSION + OWNERSHIP"
+    output: "build/H7.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/interaction_plot.R"
 
 
 rule H8:
