@@ -1271,6 +1271,66 @@ references:
   title: Discrete Choice Methods with Simulation
   type: article-journal
 
+- id: Trondle:2019
+  author:
+    - family: Tröndle
+      given: Tim
+    - family: Pfenninger
+      given: Stefan
+    - family: Lilliestam
+      given: Johan
+  citation-key: Trondle:2019
+  container-title: Energy Strategy Reviews
+  DOI: 10.1016/j.esr.2019.100388
+  issued:
+    - year: 2019
+      month: 8
+      day: 13
+  title: >-
+    Home-made or imported: on the possibility for renewable electricity autarky
+    on all scales in Europe
+  type: article-journal
+  volume: '26'
+
+- id: Trondle:2020a
+  author:
+    - family: Tröndle
+      given: Tim
+    - family: Lilliestam
+      given: Johan
+    - family: Marelli
+      given: Stefano
+    - family: Pfenninger
+      given: Stefan
+  citation-key: Trondle:2020a
+  container-title: Joule
+  DOI: 10.1016/j.joule.2020.07.018
+  issue: '9'
+  issued:
+    - year: 2020
+      month: 9
+      day: 16
+  page: 1929-1948
+  title: >-
+    Trade-offs between geographic scale, cost, and infrastructure requirements
+    for fully renewable electricity in Europe
+  type: article-journal
+  volume: '4'
+
+- id: Trondle:2020b
+  author:
+    - family: Tröndle
+      given: Tim
+  citation-key: Trondle:2020b
+  container-title: PLOS ONE
+  DOI: 10.1371/journal.pone.0236958
+  issued:
+    - year: 2020
+  title: >-
+    Supply-side options to reduce land requirements of fully renewable
+    electricity in Europe
+  type: article-journal
+
 - id: Wicki:2019
   abstract: >-
     Public support is usually a precondition for the adoption and successful

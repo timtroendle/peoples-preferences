@@ -13,4 +13,5 @@ dependencies:
         - pandoc-xnos==2.5.0
         - pandoc-tablenos==2.3.0
         - pandoc-fignos==2.4.0
+        - pandoc-secnos==2.2.2
         - pantable==0.13.1

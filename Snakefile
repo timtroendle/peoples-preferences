@@ -1,4 +1,4 @@
-PANDOC = "pandoc --filter pantable --filter pandoc-fignos --citeproc"
+PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-secnos --citeproc"
 COUNTRY_IDS = ["DEU", "POL", "PRT", "DNK"]
 
 configfile: "config/default.yaml"
@@ -24,9 +24,9 @@ rule all:
 def pandoc_options(wildcards):
     suffix = wildcards["suffix"]
     if suffix == "html":
-        return "--self-contained --to html5"
+        return "--number-sections --self-contained --to html5"
     elif suffix == "pdf":
-        return "--pdf-engine weasyprint"
+        return "--number-sections --pdf-engine weasyprint"
     elif suffix == "docx":
         return []
     else:

@@ -17,5 +17,6 @@ lang: en-GB
 xnos-cleveref: True
 fignos-plus-name: Figure
 tablenos-plus-name: Table
+secnos-plus-name: Section
 date: 2022-02-18
 ---
