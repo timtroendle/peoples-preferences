@@ -53,6 +53,7 @@ rule report:
         "build/mm.png",
         "build/H2.png",
         "build/H6.png",
+        "build/H8.png",
         "build/H9.png",
         "build/H11.png"
     params: options = pandoc_options

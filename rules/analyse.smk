@@ -77,11 +77,25 @@ rule H6:
     script: "../scripts/analyse/conditional_mm_plot.R"
 
 
+rule H8:
+    message: "Create plot for H8."
+    input:
+        script = "scripts/analyse/interaction_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND*TECHNOLOGY + PRICES + TRANSMISSION + OWNERSHIP"
+    output: "build/H8.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/interaction_plot.R"
+
+
 rule H9:
     message: "Create plot for H9."
     input:
         script = "scripts/analyse/interaction_plot.R",
         data = rules.global_conjoint.output[0]
+    params:
+        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS*TECHNOLOGY + LAND + PRICES + TRANSMISSION + OWNERSHIP"
     output: "build/H9.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/interaction_plot.R"

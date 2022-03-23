@@ -1,6 +1,6 @@
 library("cjoint")
 
-amce_plot <- function(path.data, path.plot) {
+acie_plot <- function(path.data, path.plot, formula) {
     d.conjoint <- read.csv(path.data)
     d.conjoint$TECHNOLOGY <- factor(
         d.conjoint$TECHNOLOGY,
@@ -27,8 +27,8 @@ amce_plot <- function(path.data, path.plot) {
         d.conjoint$OWNERSHIP,
         levels=c("Public", "Community", "Private")
     )
-    results <- amce(CHOICE_INDICATOR ~  TECHNOLOGY + SHARE_IMPORTS * TECHNOLOGY + LAND
-        + PRICES + TRANSMISSION + OWNERSHIP,
+    results <- amce(
+        as.formula(formula),
         data=d.conjoint,
         cluster=TRUE,
         respondent.id="RESPONDENT_ID",
@@ -46,4 +46,8 @@ amce_plot <- function(path.data, path.plot) {
 
 }
 
-amce_plot(snakemake@input[["data"]], snakemake@output[[1]])
+acie_plot(
+    snakemake@input[["data"]],
+    snakemake@output[[1]],
+    snakemake@params[["formula"]]
+)

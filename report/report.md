@@ -5,19 +5,19 @@ The following is a brief analysis of our results with ~1000 respondents from eac
 # Hypotheses
 
 * H1: @sec:H1
-* H2: People value ownership higher than prices. @sec:H2 🚫
-* H3: People value land requirements higher than prices. @sec:H3 🚫
+* 🚫 H2: People value ownership higher than prices. @sec:H2
+* 🚫 H3: People value land requirements higher than prices. @sec:H3
 * H4: @sec:H4
 * H5: @sec:H5
-* H6: People in urban areas show a higher preference for land requirements than people from rural areas. @sec:H6 🚫
+* 🚫 H6: People in urban areas show a higher preference for land requirements than people from rural areas. @sec:H6
 * H7: @sec:H7
-* H8: @sec:H8
-* H9: People prefer imports more if dominant technology is wind. ✅ @sec:H9
+* 🚫 H8: People prefer land requirements more if dominant technology is solar. @sec:H8
+* ✅ H9: People prefer imports more if dominant technology is wind. @sec:H9
 * H10: @sec:H10
-* H11: People in wealthy countries show a stronger preference for local generation infrastructure. @sec:H11 ✅
-* H12: People in countries with high deployment levels of renewables show a stronger preference for local generation infrastructure. @sec:H12 ✅
-* H13: People in countries with low population density show a stronger preference for local generation infrastructure. @sec:H13 🚫
-* H14: People in resource-rich countries show a stronger preference for local generation infrastructure. @sec:H14 🚫
+* ✅ H11: People in wealthy countries show a stronger preference for local generation infrastructure. @sec:H11
+* ✅ H12: People in countries with high deployment levels of renewables show a stronger preference for local generation infrastructure. @sec:H12
+* 🚫 H13: People in countries with low population density show a stronger preference for local generation infrastructure. @sec:H13
+* 🚫 H14: People in resource-rich countries show a stronger preference for local generation infrastructure. @sec:H14
 * H15: @sec:H15
 
 ## H1 {#sec:H1}
@@ -50,7 +50,15 @@ I am using the method to measure subgroup preferences described by @Leeper:2020.
 
 ## H7 {#sec:H7}
 
-## H8 {#sec:H8}
+## H8: People prefer land requirements more if dominant technology is solar. {#sec:H8}
+
+No. The opposite, if at all.
+
+I create a statistical model that contains an interaction between LAND and TECHNOLOGY. The Average Component Interaction Effect (ACIE) of all interactions containing open-field PV are the lowest (lines 5--8 from the bottom of @fig:H8) suggesting that people disfavor land requirements even more when open-field PV is dominant. Wind has a similar interaction with land requirements, albeit generally weaker. The interaction effect is generally strong, with up to 10% lower probability of people choosing higher land requirements because of the dominant technnology.
+
+This result is confusing. It may be an artefact: AMCE's of land requirements are generally very small, so it may as well be that this can be ignored. However, we need to find an explanation.
+
+![**AMCEs and ACIE for an interaction between LAND and TECHNOLOGY.**](build/H8.png){#fig:H8}
 
 ## H9: People prefer imports more if dominant technology is wind. {#sec:H9}
 
