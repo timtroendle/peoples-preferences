@@ -53,8 +53,24 @@ rule respondents:
 rule H6:
     message: "Create plot for H6."
     input:
-        script = "scripts/analyse/H6.R",
+        script = "scripts/analyse/conditional_mm_plot.R",
         data = rules.global_conjoint.output[0]
+    params:
+        estimate = "mm_diff",
+        by = "Q6_AREA"
     output: "build/H6.png"
     conda: "../envs/cjoint.yaml"
-    script: "../scripts/analyse/H6.R"
+    script: "../scripts/analyse/conditional_mm_plot.R"
+
+
+rule H11:
+    message: "Create plot for H11."
+    input:
+        script = "scripts/analyse/conditional_mm_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        estimate = "mm",
+        by = "RESPONDENT_COUNTRY"
+    output: "build/H11.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/conditional_mm_plot.R"

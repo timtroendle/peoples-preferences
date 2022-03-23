@@ -51,7 +51,8 @@ rule report:
         expand("build/{country_id}/mm.png", country_id=COUNTRY_IDS),
         "build/amce.png",
         "build/mm.png",
-        "build/H6.png"
+        "build/H6.png",
+        "build/H11.png"
     params: options = pandoc_options
     output: "build/report.{suffix}"
     wildcard_constraints:

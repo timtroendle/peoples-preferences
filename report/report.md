@@ -12,6 +12,25 @@ I am using the method to measure subgroup preferences described by @Leeper:2020.
 
 ![**Differences in marginal means between urban and rural population.**](build/H6.png){#fig:H6}
 
+## H11: People in wealthy countries show a stronger preference for local generation infrastructure.
+
+The data may support this hypothesis.
+
+I am using the method to measure subgroup preferences described by @Leeper:2020. I then calculate conditional marginal means for all attribute levels.
+
+Country GDP per capita leads to the following order of countries (Worldbank data):
+
+1. Denmark ($56000)
+2. Germany ($41000)
+3. Portugal ($20000)
+4. Poland ($15000)
+
+Germany has the highest preference for no imports, followed by Denmark, Portugal, and Poland (@fig:H11). Some of these differences are statisticall significant.
+
+Germany has the lowest preference for 90% imports, followed by Denmark, Portugal, and Poland (@fig:H11). Some of these differences are statistically significant.
+
+![**Conditional marginal means for all countries.**](build/H11.png){#fig:H11}
+
 # Appendix
 
 ## Respondents
