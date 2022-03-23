@@ -12,7 +12,7 @@ The following is a brief analysis of our results with ~1000 respondents from eac
 * H6: People in urban areas show a higher preference for land requirements than people from rural areas. @sec:H6 🚫
 * H7: @sec:H7
 * H8: @sec:H8
-* H9: @sec:H9
+* H9: People prefer imports more if dominant technology is wind. ✅ @sec:H9
 * H10: @sec:H10
 * H11: People in wealthy countries show a stronger preference for local generation infrastructure. @sec:H11 ✅
 * H12: People in countries with high deployment levels of renewables show a stronger preference for local generation infrastructure. @sec:H12 ✅
@@ -52,7 +52,13 @@ I am using the method to measure subgroup preferences described by @Leeper:2020.
 
 ## H8 {#sec:H8}
 
-## H9 {#sec:H9}
+## H9: People prefer imports more if dominant technology is wind. {#sec:H9}
+
+Yes.
+
+I create a statistical model that contains an interaction between SHARE_IMPORTS and TECHNOLOGY. The Average Component Interaction Effect (ACIE) of all interactions containing wind are positive (bottom three lines in @fig:H9) suggesting that people choose higher import shares when wind is in the profile. Wind increases the probability of higher import shares being chosen by ~5--10%, and this effect is statistically significant on the 5% level.
+
+![**AMCEs and ACIE for an interaction between SHARE_IMPORTS and TECHNOLOGY.**](build/H9.png){#fig:H9}
 
 ## H10 {#sec:H10}
 

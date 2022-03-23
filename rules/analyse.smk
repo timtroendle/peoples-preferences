@@ -77,6 +77,16 @@ rule H6:
     script: "../scripts/analyse/conditional_mm_plot.R"
 
 
+rule H9:
+    message: "Create plot for H9."
+    input:
+        script = "scripts/analyse/interaction_plot.R",
+        data = rules.global_conjoint.output[0]
+    output: "build/H9.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/interaction_plot.R"
+
+
 rule H11:
     message: "Create plot for H11."
     input:
