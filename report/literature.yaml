@@ -603,6 +603,25 @@ references:
   URL: https://dx.plos.org/10.1371/journal.pmed.0020124
   volume: '2'
 
+- id: IRENA:2020a
+  abstract: >-
+    This statistical publication presents renewable power generation capacity
+    statistics for the for the last decade (2010-2019).
+  accessed:
+    - year: 2021
+      month: 12
+      day: 9
+  author:
+    - literal: IRENA
+  citation-key: IRENA:2020a
+  issued:
+    - year: 2020
+      month: 7
+  language: en
+  title: Renewable Energy Statistics 2020
+  type: report
+  URL: https://www.irena.org/publications/2020/Jul/Renewable-energy-statistics-2020
+
 - id: Jansen:2009
   abstract: >-
     In the Netherlands, a large ongoing study seeks to provide insight into the

@@ -1,6 +1,6 @@
 # Introduction
 
-The following is a brief analysis of our results with ~1000 respondents from each of the four countries: Germany, Poland, Denmark, Portugal.
+The following is a brief analysis of our choice experiment results with ~1000 respondents from each of the four countries: Germany, Poland, Denmark, Portugal.
 
 # Hypotheses
 
@@ -24,7 +24,7 @@ The following is a brief analysis of our results with ~1000 respondents from eac
 
 No.
 
-I create a statistical model that contains an interaction between PRICES and SHARE_IMPORTS. If this hypothese was correct, the Average Component Interaction Effect (ACIE) of high prices would need to increase with higher self-sufficiency rates. This is not the case (bottom twelve lines in @fig:H1).
+I create a statistical model that contains an interaction between PRICES and SHARE_IMPORTS [@Hainmueller:2014]. If this hypothesis was correct, the Average Component Interaction Effect (ACIE) of high prices would need to increase with higher self-sufficiency rates. This is not the case (bottom twelve lines in @fig:H1).
 
 ![**AMCEs and ACIE for an interaction between PRICES and SHARE_IMPORTS.**](build/H1.png){#fig:H1}
 
@@ -32,7 +32,7 @@ I create a statistical model that contains an interaction between PRICES and SHA
 
 There is no formal way to test this hypothesis. Likely, it does not hold.
 
-We could test this hypothesis by comparing the magnitude of the effect sizes of the attributes. Doing so, ownership's largest effect size is <5% (from public to private), and prices' largest effect size is ~30% (from +0% to +60%) (@fig:H2). We must not forget that these effect sizes are somewhat arbitrary, as they are based on our arbitrary choice of levels. Still, as the effecct sizes differ quite a lot, we can likely reject this hypothesis.
+We could test this hypothesis by comparing the magnitude of the effect sizes of the attributes. Doing so, ownership's largest effect size is ~5 percentage points (from public to private), and prices' largest effect size is ~3 percentage points (from +0% to +60%) (@fig:H2). We must not forget that these effect sizes are somewhat arbitrary, as they are based on our arbitrary choice of levels. Still, as the effecct sizes differ quite a lot, we can likely reject this hypothesis.
 
 ![**AMCEs for all levels.**](build/H2.png){#fig:H2}
 
@@ -40,15 +40,15 @@ We could test this hypothesis by comparing the magnitude of the effect sizes of 
 
 There is no formal way to test this hypothesis. Likely, it does not hold.
 
-We could test this hypothesis by comparing the magnitude of the effect sizes of the attributes. Doing so, land requirements's largest effect size is <5%, and prices' largest effect size is ~30% (from +0% to +60%) (@fig:H2). We must not forget that these effect sizes are somewhat arbitrary, as they are based on our arbitrary choice of levels. Still, as the effecct sizes differ quite a lot, we can likely reject this hypothesis.
+We could test this hypothesis by comparing the magnitude of the effect sizes of the attributes. Doing so, land requirements's largest effect size is <5 percentage points, and prices' largest effect size is ~30 percentage points (from +0% to +60%) (@fig:H2). We must not forget that these effect sizes are somewhat arbitrary, as they are based on our arbitrary choice of levels. Still, as the effecct sizes differ quite a lot, we can likely reject this hypothesis.
 
 ## H4: People prefer low levels of land requirements even if they must pay a premium. {#sec:H4}
 
 Difficult case. The effect likely exists, but is difficult to prove.
 
-I create a statistical model that contains an interaction between PRICES and LAND. The Average Component Interaction Effect (ACIE) of all interactions involving high prices (+30%, +45%, +60%) reduces with higher land requirements (bottom 12 lines in @fig:H4) suggesting that people are willing to accept higher prices if land requirements are low. The effect is borderline statistically significant.
+I create a statistical model that contains an interaction between PRICES and LAND [@Hainmueller:2014]. The Average Component Interaction Effect (ACIE) of all interactions involving high prices (+30%, +45%, +60%) reduces with higher land requirements (bottom 12 lines in @fig:H4) suggesting that people are willing to accept higher prices if land requirements are low. The effect is borderline statistically significant.
 
-The interaction effect between PRICES and LAND are generally extremely high -- up to 30%. I do not understand at this point why. We need to find out.
+The interaction effect between PRICES and LAND are generally extremely high -- up to 30 percentage points. I do not understand at this point why. We need to find out.
 
 ![**AMCEs and ACIE for an interaction between PRICES and LAND.**](build/H4.png){#fig:H4}
 
@@ -56,7 +56,7 @@ The interaction effect between PRICES and LAND are generally extremely high -- u
 
 Yes. People are willing to pay a premium for public and community compared to private ownership. This effect is strong and statistically significant.
 
-I create a statistical model that contains an interaction between PRICES and OWNERSHIP. The Average Component Interaction Effect (ACIE) of all interactions involving private ownership are negative (four of the eight bottom lines in @fig:H5 -- sorry I cannot improve the confusing visualisation at this point). This suggests that people are willing to pay a cost premium for shared (public / community) ownership. With ~10% higher probability for shared ownership, this effect is strong and statistically significant.
+I create a statistical model that contains an interaction between PRICES and OWNERSHIP [@Hainmueller:2014]. The Average Component Interaction Effect (ACIE) of all interactions involving private ownership are negative (four of the eight bottom lines in @fig:H5 -- sorry I cannot improve the confusing visualisation at this point). This suggests that people are willing to pay a cost premium for shared (public / community) ownership. With ~10 percentage points higher probability for shared ownership, this effect is strong and statistically significant.
 
 ![**AMCEs and ACIE for an interaction between PRICES and OWNERSHIP.**](build/H5.png){#fig:H5}
 
@@ -64,7 +64,7 @@ I create a statistical model that contains an interaction between PRICES and OWN
 
 The data do not support this hypothesis.
 
-I am using the method to measure subgroup preferences described by @Leeper:2020. I remove all respondents that gave no answer to the question about their area. I then calculate differences in marginal means between the urban and the rural population for all attribute levels. All differences including the one about land requirements are very small (@fig:H6) and only for two levels (unrelated to land requirements) can we reject the null hypothesis that there is an effect.
+I am using the method to measure subgroup preferences described by @Leeper:2020. I remove all respondents that gave no answer to the question about their area. I then calculate differences in marginal means between the urban and the rural population for all attribute levels. All differences including the one about land requirements are very small (green lines in @fig:H6) and only for two levels (unrelated to land requirements) can we reject the null hypothesis that there is an effect.
 
 ![**Differences in marginal means between urban and rural population.**](build/H6.png){#fig:H6}
 
@@ -72,7 +72,7 @@ I am using the method to measure subgroup preferences described by @Leeper:2020.
 
 Borderline.
 
-I create a statistical model that contains an interaction between SHARE_IMPORTS and LAND. The Average Component Interaction Effect (ACIE) of high self sufficiency (import share 10%) are generally high (line 9--12 from the bottom of @fig:H7), suggesting that people favor self-sufficiency. The ACIE of very high land requirements is about 5% less probable than of all other land requirements suffesting that people disfavor very high land requirements even for high self-sufficiency. The effect is not strong though and not statistically significant.
+I create a statistical model that contains an interaction between SHARE_IMPORTS and LAND [@Hainmueller:2014]. The Average Component Interaction Effect (ACIE) of high self sufficiency (import share 10%) are generally high (line 9--12 from the bottom of @fig:H7), suggesting that people favor self-sufficiency. The ACIE of very high land requirements is about 5% less probable than of all other land requirements suffesting that people disfavor very high land requirements even for high self-sufficiency. The effect is not strong though and not statistically significant.
 
 ![**AMCEs and ACIE for an interaction between SHARE_IMPORTS and LAND.**](build/H7.png){#fig:H7}
 
@@ -80,9 +80,11 @@ I create a statistical model that contains an interaction between SHARE_IMPORTS 
 
 No. The opposite, if at all.
 
-I create a statistical model that contains an interaction between LAND and TECHNOLOGY. The Average Component Interaction Effect (ACIE) of all interactions containing open-field PV are the lowest (lines 5--8 from the bottom of @fig:H8) suggesting that people disfavor land requirements even more when open-field PV is dominant. Wind has a similar interaction with land requirements, albeit generally weaker. The interaction effect is generally strong, with up to 10% lower probability of people choosing higher land requirements because of the dominant technnology.
+I create a statistical model that contains an interaction between LAND and TECHNOLOGY [@Hainmueller:2014]. The Average Component Interaction Effect (ACIE) of all interactions containing open-field PV are the lowest (lines 5--8 from the bottom of @fig:H8) suggesting that people disfavor land requirements even more when open-field PV is dominant. Wind has a similar interaction with land requirements, albeit generally weaker. The interaction effect is generally strong, with up to 10% lower probability of people choosing higher land requirements because of the dominant technnology.
 
 This result is confusing. It may be an artefact: AMCE's of land requirements are generally very small, so it may as well be that this can be ignored. However, we need to find an explanation (similar phenomena as in @sec:H4).
+
+It is possible that respondents associated land competition with agriculture with open-field PV, leading to the surprisingly poor results of open-field PV. We did not exclude land competition.
 
 ![**AMCEs and ACIE for an interaction between LAND and TECHNOLOGY.**](build/H8.png){#fig:H8}
 
@@ -90,7 +92,7 @@ This result is confusing. It may be an artefact: AMCE's of land requirements are
 
 Yes.
 
-I create a statistical model that contains an interaction between SHARE_IMPORTS and TECHNOLOGY. The Average Component Interaction Effect (ACIE) of all interactions containing wind are positive (bottom three lines in @fig:H9) suggesting that people choose higher import shares when wind is in the profile. Wind increases the probability of higher import shares being chosen by ~5--10%, and this effect is statistically significant on the 5% level.
+I create a statistical model that contains an interaction between SHARE_IMPORTS and TECHNOLOGY [@Hainmueller:2014]. The Average Component Interaction Effect (ACIE) of all interactions containing wind are positive (bottom three lines in @fig:H9) suggesting that people choose higher import shares when wind is in the profile. Wind increases the probability of higher import shares being chosen by ~5--10 percentage points, and this effect is statistically significant on the 5% level.
 
 ![**AMCEs and ACIE for an interaction between SHARE_IMPORTS and TECHNOLOGY.**](build/H9.png){#fig:H9}
 
@@ -119,14 +121,14 @@ Germany has the lowest preference for 90% imports, followed by Denmark, Portugal
 
 The data support this hypothesis.
 
-We define deployment levels as the ratio of deployment of solar and wind renewables (IRENA, 2019) to electricity demand taken from @Trondle:2019.
+We define deployment levels as the ratio of 2019 deployment of solar and wind renewables [@IRENA:2020a] to electricity demand [@Trondle:2019].
 
 Deployment:
 
-Denmark  6117 +    1079 =   7196 MW
-Germany  60840 +  49018 = 109858 MW
-Poland   5917 +    1300 =   7217 MW
-Portugal 5233 +     842 =   6075 MW
+* Denmark  6117 +    1079 =   7196 MW
+* Germany  60840 +  49018 = 109858 MW
+* Poland   5917 +    1300 =   7217 MW
+* Portugal 5233 +     842 =   6075 MW
 
 Demand:
 
@@ -143,6 +145,7 @@ Leads to the following country ranking:
 4. Poland    43 MW TWh^-1^ yr^1^
 
 Germany has highest deployment and highest preferences, followed by Denmark, Portugal, and Poland.
+This ranking is almos the same as in H11, and therefore the data support the hypothesis.
 
 ## H13: People in countries with low population density show a stronger preference for local generation infrastructure. {#sec:H13}
 
@@ -155,7 +158,7 @@ Population density of the four countries (Wikipedia):
 3. Denmark (138 km^-2^)
 4. Germany (232 km^-2^)
 
-This is in analogy to H11, however the country ranking is almost completely inverted. The conditional marginal means indicate the exact opposite (fig:H11).
+This is in analogy to H11, however the country ranking is almost completely inverted. The conditional marginal means indicate the exact opposite (@fig:H11).
 
 ## H14: People in resource-rich countries show a stronger preference for local generation infrastructure. {#sec:H14}
 
@@ -180,6 +183,8 @@ Germany shows higher preference for local generation infrastructure than Portuga
 ## H15 {#sec:H15}
 
 # Appendix
+
+Additional tables and figures in arbitrary order.
 
 ## Respondents
 
