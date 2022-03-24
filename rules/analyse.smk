@@ -21,11 +21,13 @@ rule global_amce_plot:
 rule mm_plot:
     message: "Create plot of MMs in {wildcards.country_id}."
     input:
-        script = "scripts/analyse/mm_plot.R",
+        script = "scripts/analyse/cregg_plot.R",
         data = rules.national_conjoint.output[0]
+    params:
+        estimate = "mm"
     output: "build/{country_id}/mm.png"
     conda: "../envs/cjoint.yaml"
-    script: "../scripts/analyse/mm_plot.R"
+    script: "../scripts/analyse/cregg_plot.R"
 
 
 rule global_mm_plot:
