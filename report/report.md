@@ -4,6 +4,8 @@ The following is a brief analysis of our choice experiment results with ~1000 re
 
 # Hypotheses
 
+The data support some hypothesis (✅) and do not support others (🚫). We cannot (right now) test some hypothesis (❓).
+
 * 🚫 H1: People prefer high levels of local self-sufficiency even if they must pay a premium. @sec:H1
 * 🚫 H2: People value ownership higher than prices. @sec:H2
 * 🚫 H3: People value land requirements higher than prices. @sec:H3
@@ -13,12 +15,12 @@ The following is a brief analysis of our choice experiment results with ~1000 re
 * ✅/🚫 H7: People prefer high levels of self-sufficiency even if they must pay a land premium. @sec:H7
 * 🚫 H8: People prefer land requirements more if dominant technology is solar. @sec:H8
 * ✅ H9: People prefer imports more if dominant technology is wind. @sec:H9
-* H10: @sec:H10
+* ❓ H10: There are no differences between countries but differences in regards to demographic and regional conditions. @sec:H10
 * ✅ H11: People in wealthy countries show a stronger preference for local generation infrastructure. @sec:H11
 * ✅ H12: People in countries with high deployment levels of renewables show a stronger preference for local generation infrastructure. @sec:H12
 * 🚫 H13: People in countries with low population density show a stronger preference for local generation infrastructure. @sec:H13
 * 🚫 H14: People in resource-rich countries show a stronger preference for local generation infrastructure. @sec:H14
-* H15: @sec:H15
+* ✅/❓H15: Preference for self-sufficiency varies between countries (this effect is not explained by demographics and regional differences). @sec:H15
 
 ## H1: People prefer high levels of local self-sufficiency even if they must pay a premium. {#sec:H1}
 
@@ -26,7 +28,7 @@ No.
 
 I create a statistical model that contains an interaction between PRICES and SHARE_IMPORTS [@Hainmueller:2014]. If this hypothesis was correct, the Average Component Interaction Effect (ACIE) of high prices would need to increase with higher self-sufficiency rates. This is not the case (bottom twelve lines in @fig:H1).
 
-![**AMCEs and ACIE for an interaction between PRICES and SHARE_IMPORTS.**](build/H1.png){#fig:H1}
+![**AMCEs and ACIEs for an interaction between PRICES and SHARE_IMPORTS.**](build/H1.png){#fig:H1}
 
 ## H2: People value ownership higher than prices. {#sec:H2}
 
@@ -44,13 +46,13 @@ We could test this hypothesis by comparing the magnitude of the effect sizes of 
 
 ## H4: People prefer low levels of land requirements even if they must pay a premium. {#sec:H4}
 
-Difficult case. The effect likely exists, but is difficult to prove.
+The effect likely exists, but is too small to prove.
 
 I create a statistical model that contains an interaction between PRICES and LAND [@Hainmueller:2014]. The Average Component Interaction Effect (ACIE) of all interactions involving high prices (+30%, +45%, +60%) reduces with higher land requirements (bottom 12 lines in @fig:H4) suggesting that people are willing to accept higher prices if land requirements are low. The effect is borderline statistically significant.
 
 The interaction effect between PRICES and LAND are generally extremely high -- up to 30 percentage points. I do not understand at this point why. We need to find out.
 
-![**AMCEs and ACIE for an interaction between PRICES and LAND.**](build/H4.png){#fig:H4}
+![**AMCEs and ACIEs for an interaction between PRICES and LAND.**](build/H4.png){#fig:H4}
 
 ## H5: People are willing to pay a premium for shared ownership. {#sec:H5}
 
@@ -58,7 +60,7 @@ Yes. People are willing to pay a premium for public and community compared to pr
 
 I create a statistical model that contains an interaction between PRICES and OWNERSHIP [@Hainmueller:2014]. The Average Component Interaction Effect (ACIE) of all interactions involving private ownership are negative (four of the eight bottom lines in @fig:H5 -- sorry I cannot improve the confusing visualisation at this point). This suggests that people are willing to pay a cost premium for shared (public / community) ownership. With ~10 percentage points higher probability for shared ownership, this effect is strong and statistically significant.
 
-![**AMCEs and ACIE for an interaction between PRICES and OWNERSHIP.**](build/H5.png){#fig:H5}
+![**AMCEs and ACIEs for an interaction between PRICES and OWNERSHIP.**](build/H5.png){#fig:H5}
 
 ## H6: People in urban areas show a higher preference for land requirements than people from rural areas. {#sec:H6}
 
@@ -74,7 +76,7 @@ Borderline.
 
 I create a statistical model that contains an interaction between SHARE_IMPORTS and LAND [@Hainmueller:2014]. The Average Component Interaction Effect (ACIE) of high self sufficiency (import share 10%) are generally high (line 9--12 from the bottom of @fig:H7), suggesting that people favor self-sufficiency. The ACIE of very high land requirements is about 5% less probable than of all other land requirements suffesting that people disfavor very high land requirements even for high self-sufficiency. The effect is not strong though and not statistically significant.
 
-![**AMCEs and ACIE for an interaction between SHARE_IMPORTS and LAND.**](build/H7.png){#fig:H7}
+![**AMCEs and ACIEs for an interaction between SHARE_IMPORTS and LAND.**](build/H7.png){#fig:H7}
 
 ## H8: People prefer land requirements more if dominant technology is solar. {#sec:H8}
 
@@ -84,9 +86,9 @@ I create a statistical model that contains an interaction between LAND and TECHN
 
 This result is confusing. It may be an artefact: AMCE's of land requirements are generally very small, so it may as well be that this can be ignored. However, we need to find an explanation (similar phenomena as in @sec:H4).
 
-It is possible that respondents associated land competition with agriculture with open-field PV, leading to the surprisingly poor results of open-field PV. We did not exclude land competition.
+It is possible that respondents associated land competition with agriculture to open-field PV, leading to the surprisingly poor results of open-field PV. We did not exclude land competition.
 
-![**AMCEs and ACIE for an interaction between LAND and TECHNOLOGY.**](build/H8.png){#fig:H8}
+![**AMCEs and ACIEs for an interaction between LAND and TECHNOLOGY.**](build/H8.png){#fig:H8}
 
 ## H9: People prefer imports more if dominant technology is wind. {#sec:H9}
 
@@ -94,9 +96,15 @@ Yes.
 
 I create a statistical model that contains an interaction between SHARE_IMPORTS and TECHNOLOGY [@Hainmueller:2014]. The Average Component Interaction Effect (ACIE) of all interactions containing wind are positive (bottom three lines in @fig:H9) suggesting that people choose higher import shares when wind is in the profile. Wind increases the probability of higher import shares being chosen by ~5--10 percentage points, and this effect is statistically significant on the 5% level.
 
-![**AMCEs and ACIE for an interaction between SHARE_IMPORTS and TECHNOLOGY.**](build/H9.png){#fig:H9}
+![**AMCEs and ACIEs for an interaction between SHARE_IMPORTS and TECHNOLOGY.**](build/H9.png){#fig:H9}
 
-## H10 {#sec:H10}
+## H10: There are no differences between countries but differences in regards to demographic and regional conditions. {#sec:H10}
+
+We will not be able to test this. We cannot show causality for non-treatment data like demographics.
+
+However, by using other models than described in [@Hainmueller:2014; @Leeper:2020], we can can get some evidence whether this may be true. For that, we need to build two models; both including demographics but only one including the country as explaining variable. We can then test whether the model including country performs better than the one without. If it does, we have evidence that this hypothesis can be rejected.
+
+Less formally, I find it striking how similar the preferences in the four countries are in all attributes but PRICES and SHARE_IMPORTS. Even odd effects in LAND and TRANSMISSION that we see in the pooled data exist in all countries (@fig:H9). We should understand this better.
 
 ## H11: People in wealthy countries show a stronger preference for local generation infrastructure. {#sec:H11}
 
@@ -180,7 +188,11 @@ Leads to the following ranking of resource-richness:
 
 Germany shows higher preference for local generation infrastructure than Portugal and Poland, but has fewer resources (@fig:H11). Denmark has by far the best resources and generally rather high preferences, but the two are not in proportion.
 
-## H15 {#sec:H15}
+## H15: Preference for self-sufficiency varies between countries (this effect is not explained by demographics and regional differences). {#sec:H15}
+
+Yes, preferences for self-sufficiency vary between countries. The effect is strongest for the extreme levels of self-sufficienncy and the difference is largest for Germany and Poland (@fig:H2). While German respondents favor high self-sufficiency most (marginal mean of no imports > 60%) and favor low self-sufficiency least (marginal mean of 90% imports < 40%), Polish respondents are more indifferent towards self-sufficiency (marginal means of 55% and 45%, respectively).
+
+Right now, and with the tools we have [@Hainmueller:2014; @Leeper:2020], we cannot show that this effect is not explained best by demographics and regional differences. We need a logit model for that (as typically used in market research) (see also @sec:H10).
 
 # Appendix
 
