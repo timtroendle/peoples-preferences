@@ -1,4 +1,5 @@
 CODES = {k:v for k,v in config["codes"].items()}
+AGGREGATED_CODES = CODES | {k:v for k,v in config["aggregated-codes"].items()}
 
 
 rule amce_plot:
@@ -176,8 +177,64 @@ rule H16:
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm_diff",
-        codes = CODES,
+        codes = AGGREGATED_CODES,
         by = "Q3_GENDER",
     output: "build/H16.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/conditional_mm_plot.R"
+
+
+rule H19:
+    message: "Create plot for H19."
+    input:
+        script = "scripts/analyse/conditional_mm_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        estimate = "mm",
+        codes = AGGREGATED_CODES,
+        by = "Q10_INCOME",
+    output: "build/H19.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/conditional_mm_plot.R"
+
+
+rule H20:
+    message: "Create plot for H20."
+    input:
+        script = "scripts/analyse/conditional_mm_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        estimate = "mm",
+        codes = AGGREGATED_CODES,
+        by = "Q9_EDUCATION",
+    output: "build/H20.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/conditional_mm_plot.R"
+
+
+rule H21:
+    message: "Create plot for H21."
+    input:
+        script = "scripts/analyse/conditional_mm_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        estimate = "mm",
+        codes = AGGREGATED_CODES,
+        by = "Q11_CLIMATE_CONCERN",
+    output: "build/H21.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/conditional_mm_plot.R"
+
+
+rule H23:
+    message: "Create plot for H23."
+    input:
+        script = "scripts/analyse/conditional_mm_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        estimate = "mm",
+        codes = AGGREGATED_CODES,
+        by = "Q7_RENEWABLES",
+    output: "build/H23.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/conditional_mm_plot.R"

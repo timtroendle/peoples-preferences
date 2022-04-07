@@ -11,6 +11,21 @@ codes:
         1: rural
         2: urban
         3: no answer
+    Q7_RENEWABLES:
+        1: open-field PV
+        2: wind
+        3: both
+        4: neither
+        5: do not know
+    Q9_EDUCATION:
+        1: none
+        2: but, in eduction
+        3: vocational
+        4: master craftsman
+        5: bachelor or master
+        6: doctor
+        7: other # TODO analyse
+        8: do not know
     Q10_INCOME:
         1: below 600 EUR
         2: 600--900 EUR
@@ -24,6 +39,45 @@ codes:
         10: 6000--10000 EUR
         11: above 10000 EUR
         12: no answer
+    Q11_CLIMATE_CONCERN:
+        1: not at all
+        2: not much
+        3: somewhat
+        4: very
+        5: extremely
+        6: no answer
+        7: do not know
+aggregated-codes:
+    Q9_EDUCATION:
+        1: lower
+        2: lower
+        3: lower
+        4: higher
+        5: higher
+        6: higher
+        7: other
+        8: do not know
+    Q10_INCOME:
+        1: low (<1500 EUR)
+        2: low (<1500 EUR)
+        3: low (<1500 EUR)
+        4: low (<1500 EUR)
+        5: middle (1500--4500 EUR)
+        6: middle (1500--4500 EUR)
+        7: middle (1500--4500 EUR)
+        8: middle (1500--4500 EUR)
+        9: high (>4500 EUR)
+        10: high (>4500 EUR)
+        11: high (>4500 EUR)
+        12: no answer
+    Q11_CLIMATE_CONCERN:
+        1: low
+        2: low
+        3: low
+        4: high
+        5: high
+        6: no answer
+        7: do not know
 parameters:
     population-count: # 2020, Source: https://data.worldbank.org/indicator/SP.POP.TOTL
         DEU: 83240525

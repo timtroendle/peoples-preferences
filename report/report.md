@@ -38,19 +38,24 @@ The data support some hypothesis (✅) and do not support others (🚫). We cann
     * H18a: People prefer lower land requirements/ transmission infrastructure the longer they live in the region. = People with strong place attachment (+15 years in the region) prefer lower land requirements and lower transmission infrastructure than people with “weaker” place attachment (1-5 years in the region).
     * H18b: People with strong place attachment prefer higher imports.
     * H18c: People living more than 15 years in the region prefer solar technologies.
-* H19: Income interacts with preferences. @sec:H19
-    * H19a: People with high income prefer community ownership.
-    * H19b: People with low income prefer lower land requirements than people with higher income.
-    * H19c: People with low income prefer/ accept lower prices than with higher income.
-* H20: Education interacts with preferences. @sec:H20
-    * H20a: People with lower education prefer lower imports, than people with higher education.
-    * H20b: People with higher education prefer higher land use requirements (understand the necessity to act)
-* H21: Climate concern interacts with preferences. @sec:H21
-    * People with high climate concerns prefer higher land requirements and transmission infrastructure.
+* ✅ H19: Income interacts with preferences. @sec:H19
+    * 🚫 H19a: People with high income prefer community ownership more than people with lower income.
+    * 🚫 H19b: People with low income prefer lower land requirements than people with higher income.
+    * 🚫 H19c: People with low income prefer lower prices than people with higher income.
+* 🚫 H20: Education interacts with preferences. @sec:H20
+    * 🚫 H20a: People with lower education prefer lower imports, than people with higher education.
+    * 🚫 H20b: People with higher education prefer higher land use requirements (understand the necessity to act)
+* ✅ H21: Climate concern interacts with preferences. @sec:H21
+    * 🚫 People with high climate concerns prefer higher land requirements and transmission infrastructure.
 * H22: Partisanship interacts with preferences. @sec:H22
     * H22a: People supporting right wing parties prefer lower land requirements. (don’t support the energy transition). But, prefer lower imports.
     * H22b: People supporting green parties prefer higher land requirements.
-* H23: Current deployment interacts with preferences. @sec:H23
+* ✅ H23: Current deployment interacts with preferences. @sec:H23
+    * 🚫 H23a: People prefer (higher) land requirements more if they have renewables in their region (wind, solar or both)/ People prefer lower land requirements if they have no renewables in their region.
+    * ✅ H23b: People prefer technology wind, if they have wind in their region.
+    * ✅ H23c: People prefer technology open space solar (Freiflächenanlagen), if they have open space solar in their region.
+    * 🚫 H23d: People prefer (expansion) transmission infrastructure more if they have no renewables in their region.
+
 
 ## H1: People prefer high levels of local self-sufficiency even if they must pay a premium. {#sec:H1}
 
@@ -238,13 +243,49 @@ I am using the method to measure subgroup preferences described by @Leeper:2020.
 
 ## H19: Income interacts with preferences. {#sec:H19}
 
+Yes.
+
+I am using the method to measure subgroup preferences described by @Leeper:2020. I then calculate conditional marginal means for all attribute levels.
+
+People with higher income do actually prefer community ownership less, but they do prefer public ownership more then people with lower income (@fig:H19). This effect is statistically not significant.
+
+There is no clear and certainly no statistically significant interaction with land requirements (@fig:H19).
+
+People with low income do _not_ prefer lower prices more than people with high income. BUT: People with low income prefer higher prices more than people with high income. That means that medium and high income respondents are more price-sensitive.
+
+The _high_ income group is very small leading to very large confidence intervals.
+
+![**Marginal means conditional to income of respondents.**](build/H19.png){#fig:H19}
+
 ## H20: Education interacts with preferences. {#sec:H20}
 
+No.
+
+I am using the method to measure subgroup preferences described by @Leeper:2020. I then calculate conditional marginal means for all attribute levels.
+
+![**Marginal means conditional to education of respondents.**](build/H20.png){#fig:H20}
+
 ## H21: Climate concern interacts with preferences. {#sec:H21}
+
+Yes.
+
+I am using the method to measure subgroup preferences described by @Leeper:2020. I then calculate conditional marginal means for all attribute levels.
+
+Respondents with high climate concern do _not_ prefer land requirements of transmission more than respondents with low climate concern, but they _do_ prefer self sufficiency more (@fig:H21).
+
+![**Marginal means conditional to climate concern of respondents.**](build/H21.png){#fig:H21}
 
 ## H22: Partisanship interacts with preferences. {#sec:H22}
 
 ## H23: Current deployment interacts with preferences. {#sec:H23}
+
+Yes.
+
+I am using the method to measure subgroup preferences described by @Leeper:2020. I then calculate conditional marginal means for all attribute levels.
+
+Current deployment does not interact with land requirements or transmission infrastructure (@fig:H23). But people with wind turbines in their region prefer wind turbines more. People with open-field PV prefer open-field PV more. The effect is stronger for wind than for PV.
+
+![**Marginal means conditional to current renewable deployment in the region of respondents.**](build/H23.png){#fig:H23}
 
 # Appendix
 
