@@ -1,3 +1,4 @@
+FACTORS = config["factors"]
 CODES = config["codes"]
 AGGREGATED_CODES = CODES | config["aggregated-codes"]
 CUTS = config["cuts"]
@@ -8,6 +9,7 @@ rule amce_plot:
     input:
         script = "scripts/analyse/amce_plot.R",
         data = rules.national_conjoint.output[0]
+    params: factors = FACTORS
     output: "build/{country_id}/amce.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/amce_plot.R"
@@ -18,6 +20,7 @@ rule global_amce_plot:
     input:
         script = "scripts/analyse/amce_plot.R",
         data = rules.global_conjoint.output[0]
+    params: factors = FACTORS
     output: "build/amce.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/amce_plot.R"
@@ -29,7 +32,8 @@ rule mm_plot:
         script = "scripts/analyse/cregg_plot.R",
         data = rules.national_conjoint.output[0]
     params:
-        estimate = "mm"
+        estimate = "mm",
+        factors = FACTORS,
     output: "build/{country_id}/mm.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/cregg_plot.R"
@@ -41,7 +45,8 @@ rule global_mm_plot:
         script = "scripts/analyse/cregg_plot.R",
         data = rules.global_conjoint.output[0]
     params:
-        estimate = "mm"
+        estimate = "mm",
+        factors = FACTORS,
     output: "build/mm.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/cregg_plot.R"
@@ -65,7 +70,8 @@ rule H1:
         script = "scripts/analyse/interaction_plot.R",
         data = rules.global_conjoint.output[0]
     params:
-        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS * PRICES + LAND + TRANSMISSION + OWNERSHIP"
+        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS * PRICES + LAND + TRANSMISSION + OWNERSHIP",
+        factors = FACTORS,
     output: "build/H1.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/interaction_plot.R"
@@ -77,7 +83,8 @@ rule H2:
         script = "scripts/analyse/cregg_plot.R",
         data = rules.global_conjoint.output[0]
     params:
-        estimate = "amce"
+        estimate = "amce",
+        factors = FACTORS,
     output: "build/H2.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/cregg_plot.R"
@@ -89,7 +96,8 @@ rule H4:
         script = "scripts/analyse/interaction_plot.R",
         data = rules.global_conjoint.output[0]
     params:
-        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND * PRICES + TRANSMISSION + OWNERSHIP"
+        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND * PRICES + TRANSMISSION + OWNERSHIP",
+        factors = FACTORS,
     output: "build/H4.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/interaction_plot.R"
@@ -101,7 +109,8 @@ rule H5:
         script = "scripts/analyse/interaction_plot.R",
         data = rules.global_conjoint.output[0]
     params:
-        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND + PRICES * OWNERSHIP + TRANSMISSION"
+        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND + PRICES * OWNERSHIP + TRANSMISSION",
+        factors = FACTORS,
     output: "build/H5.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/interaction_plot.R"
@@ -115,6 +124,7 @@ rule H6:
     params:
         estimate = "mm_diff",
         codes = CODES,
+        factors = FACTORS,
         cuts = CUTS,
         by = "Q6_AREA"
     output: "build/H6.png"
@@ -128,7 +138,8 @@ rule H7:
         script = "scripts/analyse/interaction_plot.R",
         data = rules.global_conjoint.output[0]
     params:
-        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS * LAND + PRICES + TRANSMISSION + OWNERSHIP"
+        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS * LAND + PRICES + TRANSMISSION + OWNERSHIP",
+        factors = FACTORS,
     output: "build/H7.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/interaction_plot.R"
@@ -140,7 +151,8 @@ rule H8:
         script = "scripts/analyse/interaction_plot.R",
         data = rules.global_conjoint.output[0]
     params:
-        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND*TECHNOLOGY + PRICES + TRANSMISSION + OWNERSHIP"
+        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND*TECHNOLOGY + PRICES + TRANSMISSION + OWNERSHIP",
+        factors = FACTORS,
     output: "build/H8.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/interaction_plot.R"
@@ -152,7 +164,8 @@ rule H9:
         script = "scripts/analyse/interaction_plot.R",
         data = rules.global_conjoint.output[0]
     params:
-        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS*TECHNOLOGY + LAND + PRICES + TRANSMISSION + OWNERSHIP"
+        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS*TECHNOLOGY + LAND + PRICES + TRANSMISSION + OWNERSHIP",
+        factors = FACTORS,
     output: "build/H9.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/interaction_plot.R"
@@ -166,6 +179,7 @@ rule H11:
     params:
         estimate = "mm",
         codes = CODES,
+        factors = FACTORS,
         cuts = CUTS,
         by = "RESPONDENT_COUNTRY",
     output: "build/H11.png"
@@ -181,6 +195,7 @@ rule H16:
     params:
         estimate = "mm_diff",
         codes = AGGREGATED_CODES,
+        factors = FACTORS,
         cuts = CUTS,
         by = "Q3_GENDER",
     output: "build/H16.png"
@@ -196,6 +211,7 @@ rule H17:
     params:
         estimate = "mm",
         codes = AGGREGATED_CODES,
+        factors = FACTORS,
         cuts = CUTS,
         by = "Q4_BIRTH_YEAR",
     output: "build/H17.png"
@@ -211,6 +227,7 @@ rule H18:
     params:
         estimate = "mm",
         codes = AGGREGATED_CODES,
+        factors = FACTORS,
         cuts = CUTS,
         by = "Q8_YEARS_REGION",
     output: "build/H18.png"
@@ -226,6 +243,7 @@ rule H19:
     params:
         estimate = "mm",
         codes = AGGREGATED_CODES,
+        factors = FACTORS,
         cuts = CUTS,
         by = "Q10_INCOME",
     output: "build/H19.png"
@@ -241,6 +259,7 @@ rule H20:
     params:
         estimate = "mm",
         codes = AGGREGATED_CODES,
+        factors = FACTORS,
         cuts = CUTS,
         by = "Q9_EDUCATION",
     output: "build/H20.png"
@@ -256,6 +275,7 @@ rule H21:
     params:
         estimate = "mm",
         codes = AGGREGATED_CODES,
+        factors = FACTORS,
         cuts = CUTS,
         by = "Q11_CLIMATE_CONCERN",
     output: "build/H21.png"
@@ -271,6 +291,7 @@ rule H23:
     params:
         estimate = "mm",
         codes = AGGREGATED_CODES,
+        factors = FACTORS,
         cuts = CUTS,
         by = "Q7_RENEWABLES",
     output: "build/H23.png"

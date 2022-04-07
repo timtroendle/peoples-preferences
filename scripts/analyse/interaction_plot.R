@@ -1,32 +1,17 @@
 library("cjoint")
 
-acie_plot <- function(path.data, path.plot, formula) {
+acie_plot <- function(path.data, path.plot, formula, factors) {
     d.conjoint <- read.csv(path.data)
-    d.conjoint$TECHNOLOGY <- factor(
-        d.conjoint$TECHNOLOGY,
-        levels=c("Rooftop PV", "Open-field PV", "Wind")
-    )
-    d.conjoint$SHARE_IMPORTS <- factor(
-        d.conjoint$SHARE_IMPORTS,
-        levels=c("0%", "10%", "50%", "90%")
-    )
-    d.conjoint$LAND <- factor(
-        d.conjoint$LAND,
-        levels=c("0.5%", "1%", "2%", "4%", "8%")
-    )
-    d.conjoint$PRICES <- factor(
-        d.conjoint$PRICES,
-        levels=c("+0%", "+15%", "+30%", "+45%", "+60%")
-    )
-    d.conjoint$TRANSMISSION <- factor(
-        d.conjoint$TRANSMISSION,
-        levels=c("+0%", "-25%", "+25%", "+50%", "+75%")
-    )
-    levels(d.conjoint$TRANSMISSION)[2] <- "-25.0%"
-    d.conjoint$OWNERSHIP <- factor(
-        d.conjoint$OWNERSHIP,
-        levels=c("Public", "Community", "Private")
-    )
+
+    for (factor_name in factors) {
+        d.conjoint[[factor_name]] <- factor(d.conjoint[[factor_name]])
+    }
+    levels(d.conjoint$TRANSMISSION) <- paste(levels(d.conjoint$TRANSMISSION), ".")
+    levels(d.conjoint$TRANSMISSION)[1] <- "-25.0% ."
+    d.conjoint$TECHNOLOGY <- relevel(d.conjoint$TECHNOLOGY, "Rooftop PV")
+    d.conjoint$TRANSMISSION <- relevel(d.conjoint$TRANSMISSION, "+0% .")
+    d.conjoint$OWNERSHIP <- relevel(d.conjoint$OWNERSHIP, "Public")
+
     results <- amce(
         as.formula(formula),
         data=d.conjoint,
@@ -49,5 +34,6 @@ acie_plot <- function(path.data, path.plot, formula) {
 acie_plot(
     snakemake@input[["data"]],
     snakemake@output[[1]],
-    snakemake@params[["formula"]]
+    snakemake@params[["formula"]],
+    snakemake@params[["factors"]]
 )
