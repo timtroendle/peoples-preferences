@@ -55,6 +55,12 @@ The data support some hypothesis (✅) and do not support others (🚫). We cann
     * ✅ H23b: People prefer technology wind, if they have wind in their region.
     * ✅ H23c: People prefer technology open space solar (Freiflächenanlagen), if they have open space solar in their region.
     * 🚫 H23d: People prefer (expansion) transmission infrastructure more if they have no renewables in their region.
+* ✅ H24: People prefer higher land requirements more if ownership is public. @sec:H24
+* ✅ H25: People prefer higher imports more if transmission is high. @sec:H25
+* 🚫 H26: People prefer higher land requirements more if transmission infrastructure is low. @sec:26
+* 🚫/✅ H27: People prefer higher transmission infrastructure more when prices are low. @sec:27
+* 🚫/✅ H28: People prefer higher transmission infrastructure more when the dominant technology is wind. @sec:28
+* 🚫 H29: Technology preferences are independent of ownership. @sec:29
 
 
 ## H1: People prefer high levels of local self-sufficiency even if they must pay a premium. {#sec:H1}
@@ -300,6 +306,54 @@ I am using the method to measure subgroup preferences described by @Leeper:2020.
 Current deployment does not interact with land requirements or transmission infrastructure (@fig:H23). But people with wind turbines in their region prefer wind turbines more. People with open-field PV prefer open-field PV more. The effect is stronger for wind than for PV.
 
 ![**Marginal means conditional to current renewable deployment in the region of respondents.**](build/H23.png){#fig:H23}
+
+## H24: People prefer higher land requirements more if ownership is public. {#sec:H24}
+
+Yes, but the effect is small.
+
+I create a statistical model that contains an interaction between LAND and OWNERSHIP [@Hainmueller:2014]. The Average Component Interaction Effect (ACIE) of all interactions containing private ownership and high land requirements are negative (bottom three lines in @fig:H9) suggesting that people choose higher land requirements when ownership is public. The effect is small. Community ownership is worse than private which is worse than public.
+
+![**AMCEs and ACIEs for an interaction between LAND and OWNERSHIP.**](build/H24.png){#fig:H24}
+
+## H25: People prefer higher imports more if transmission is high. {#sec:H25}
+
+Yes.
+
+I create a statistical model that contains an interaction between SHARE_IMPORTS and TRANSMISSION [@Hainmueller:2014]. The Average Component Interaction Effect (ACIE) of interactions containing high import shares (50%, 90%) are higher for large transmission expansion (75%) (@fig:H9) suggesting that people choose higher import shares when transmission is high (and vice versa).
+
+![**AMCEs and ACIEs for an interaction between SHARE_IMPORTS and TRANSMISSION.**](build/H25.png){#fig:H25}
+
+## H26: People prefer higher land requirements more if transmission infrastructure is low. {#sec:26}
+
+No clear effect.
+
+I create a statistical model that contains an interaction between LAND and TRANSMISSION [@Hainmueller:2014].
+
+![**AMCEs and ACIEs for an interaction between LAND and TRANSMISSION.**](build/H26.png){#fig:H26}
+
+## H27: People prefer higher transmission infrastructure more when prices are low. {#sec:27}
+
+Yes, but the effect is not very clear.
+
+I create a statistical model that contains an interaction between TRANSMISSION and PRICE [@Hainmueller:2014].
+
+![**AMCEs and ACIEs for an interaction between TRANSMISSION and PRICE.**](build/H27.png){#fig:H27}
+
+## H28: People prefer higher transmission infrastructure more when the dominant technology is wind. {#sec:28}
+
+Maybe a small effect.
+
+I create a statistical model that contains an interaction between TRANSMISSION and TECHNOLOGY [@Hainmueller:2014].
+
+![**AMCEs and ACIEs for an interaction between TRANSMISSION and TECHNOLOGY.**](build/H28.png){#fig:H28}
+
+## H29: Technology preferences are independent of ownership. {#sec:29}
+
+No, there is an effect.
+
+I create a statistical model that contains an interaction between TRANSMISSION and TECHNOLOGY [@Hainmueller:2014]. Open-field PV is preferred less when ownerhsip is community or private.
+
+![**AMCEs and ACIEs for an interaction between TECHNOLOGY and OWNERSHIP.**](build/H29.png){#fig:H29}
 
 # Appendix
 

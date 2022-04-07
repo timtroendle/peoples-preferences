@@ -297,3 +297,82 @@ rule H23:
     output: "build/H23.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/conditional_mm_plot.R"
+
+
+rule H24:
+    message: "Create plot for H24."
+    input:
+        script = "scripts/analyse/interaction_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND * OWNERSHIP + PRICES + TRANSMISSION",
+        factors = FACTORS,
+    output: "build/H24.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/interaction_plot.R"
+
+
+rule H25:
+    message: "Create plot for H25."
+    input:
+        script = "scripts/analyse/interaction_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS * TRANSMISSION + LAND + PRICES + OWNERSHIP",
+        factors = FACTORS,
+    output: "build/H25.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/interaction_plot.R"
+
+
+rule H26:
+    message: "Create plot for H26."
+    input:
+        script = "scripts/analyse/interaction_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND * TRANSMISSION + PRICES + OWNERSHIP",
+        factors = FACTORS,
+    output: "build/H26.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/interaction_plot.R"
+
+
+
+rule H27:
+    message: "Create plot for H27."
+    input:
+        script = "scripts/analyse/interaction_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND + OWNERSHIP + PRICES * TRANSMISSION",
+        factors = FACTORS,
+    output: "build/H27.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/interaction_plot.R"
+
+
+rule H28:
+    message: "Create plot for H28."
+    input:
+        script = "scripts/analyse/interaction_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        formula = "CHOICE_INDICATOR ~ TECHNOLOGY * TRANSMISSION + SHARE_IMPORTS + LAND + OWNERSHIP + PRICES",
+        factors = FACTORS,
+    output: "build/H28.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/interaction_plot.R"
+
+
+rule H29:
+    message: "Create plot for H29."
+    input:
+        script = "scripts/analyse/interaction_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        formula = "CHOICE_INDICATOR ~ TECHNOLOGY * OWNERSHIP + SHARE_IMPORTS + LAND + PRICES + TRANSMISSION",
+        factors = FACTORS,
+    output: "build/H29.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/interaction_plot.R"

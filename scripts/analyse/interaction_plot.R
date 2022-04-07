@@ -22,9 +22,9 @@ acie_plot <- function(path.data, path.plot, formula, factors) {
     plot(
         results,
         xlab="Change in Pr(Design preferred)",
-        xlim=c(-.5,.5),
-        breaks=c(-.4, 0, .4),
-        labels=c("-.4","0",".4"),
+        xlim=c(-.35,.35),
+        breaks=c(-.2, 0, .2),
+        labels=c("-.2","0",".2"),
         text.size=13
     )
     dev.off()

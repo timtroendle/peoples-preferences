@@ -67,6 +67,12 @@ rule report:
         "build/H20.png",
         "build/H21.png",
         "build/H23.png",
+        "build/H24.png",
+        "build/H25.png",
+        "build/H26.png",
+        "build/H27.png",
+        "build/H28.png",
+        "build/H29.png",
     params: options = pandoc_options
     output: "build/report.{suffix}"
     wildcard_constraints:
