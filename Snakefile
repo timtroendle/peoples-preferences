@@ -61,6 +61,8 @@ rule report:
         "build/H9.png",
         "build/H11.png",
         "build/H16.png",
+        "build/H17.png",
+        "build/H18.png",
         "build/H19.png",
         "build/H20.png",
         "build/H21.png",

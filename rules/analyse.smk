@@ -1,5 +1,6 @@
-CODES = {k:v for k,v in config["codes"].items()}
-AGGREGATED_CODES = CODES | {k:v for k,v in config["aggregated-codes"].items()}
+CODES = config["codes"]
+AGGREGATED_CODES = CODES | config["aggregated-codes"]
+CUTS = config["cuts"]
 
 
 rule amce_plot:
@@ -114,6 +115,7 @@ rule H6:
     params:
         estimate = "mm_diff",
         codes = CODES,
+        cuts = CUTS,
         by = "Q6_AREA"
     output: "build/H6.png"
     conda: "../envs/cjoint.yaml"
@@ -164,6 +166,7 @@ rule H11:
     params:
         estimate = "mm",
         codes = CODES,
+        cuts = CUTS,
         by = "RESPONDENT_COUNTRY",
     output: "build/H11.png"
     conda: "../envs/cjoint.yaml"
@@ -178,8 +181,39 @@ rule H16:
     params:
         estimate = "mm_diff",
         codes = AGGREGATED_CODES,
+        cuts = CUTS,
         by = "Q3_GENDER",
     output: "build/H16.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/conditional_mm_plot.R"
+
+
+rule H17:
+    message: "Create plot for H17."
+    input:
+        script = "scripts/analyse/conditional_mm_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        estimate = "mm",
+        codes = AGGREGATED_CODES,
+        cuts = CUTS,
+        by = "Q4_BIRTH_YEAR",
+    output: "build/H17.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/conditional_mm_plot.R"
+
+
+rule H18:
+    message: "Create plot for H18."
+    input:
+        script = "scripts/analyse/conditional_mm_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        estimate = "mm",
+        codes = AGGREGATED_CODES,
+        cuts = CUTS,
+        by = "Q8_YEARS_REGION",
+    output: "build/H18.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/conditional_mm_plot.R"
 
@@ -192,6 +226,7 @@ rule H19:
     params:
         estimate = "mm",
         codes = AGGREGATED_CODES,
+        cuts = CUTS,
         by = "Q10_INCOME",
     output: "build/H19.png"
     conda: "../envs/cjoint.yaml"
@@ -206,6 +241,7 @@ rule H20:
     params:
         estimate = "mm",
         codes = AGGREGATED_CODES,
+        cuts = CUTS,
         by = "Q9_EDUCATION",
     output: "build/H20.png"
     conda: "../envs/cjoint.yaml"
@@ -220,6 +256,7 @@ rule H21:
     params:
         estimate = "mm",
         codes = AGGREGATED_CODES,
+        cuts = CUTS,
         by = "Q11_CLIMATE_CONCERN",
     output: "build/H21.png"
     conda: "../envs/cjoint.yaml"
@@ -234,6 +271,7 @@ rule H23:
     params:
         estimate = "mm",
         codes = AGGREGATED_CODES,
+        cuts = CUTS,
         by = "Q7_RENEWABLES",
     output: "build/H23.png"
     conda: "../envs/cjoint.yaml"

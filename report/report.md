@@ -27,17 +27,17 @@ The data support some hypothesis (✅) and do not support others (🚫). We cann
     * ❓/🚫 H16c: Men have no technology preference, whereas women prefer solar.
     * 🚫 H16d: Women prefer lower imports than men.
     * 🚫 H16e: Women prefer, more clearly than men, public over private ownership.
-* H17: Age interacts with preferences. @sec:H17
-    * H17a: People over 55 (old people) prefer lower land requirements than people below 30 (young people).
-    * H17b: People over 55 prefer lower transmission infrastructure than people below 30.
-    * H17c: People below 30 prefer high imports.
-    * H17d: People over 55 prefer low imports.
-    * H17e: There is no difference in technology preferences across ages.
-    * H17f: People over 55 prefer higher transmission than younger people.
-* H18: Place attachment interacts with preferences. @sec:H18
-    * H18a: People prefer lower land requirements/ transmission infrastructure the longer they live in the region. = People with strong place attachment (+15 years in the region) prefer lower land requirements and lower transmission infrastructure than people with “weaker” place attachment (1-5 years in the region).
-    * H18b: People with strong place attachment prefer higher imports.
-    * H18c: People living more than 15 years in the region prefer solar technologies.
+* ✅ H17: Age interacts with preferences. @sec:H17
+    * 🚫 H17a: People over 55 (old people) prefer lower land requirements than people below 30 (young people).
+    * 🚫 H17b: People over 55 prefer lower transmission infrastructure than people below 30.
+    * ✅ H17c: People below 30 prefer high imports.
+    * ✅ H17d: People over 55 prefer low imports.
+    * ✅ H17e: There is no difference in technology preferences across ages.
+    * 🚫 H17f: People over 55 prefer higher transmission than younger people.
+* 🚫 H18: Place attachment interacts with preferences. @sec:H18
+    * 🚫 H18a: People prefer lower land requirements/ transmission infrastructure the longer they live in the region. = People with strong place attachment (+15 years in the region) prefer lower land requirements and lower transmission infrastructure than people with “weaker” place attachment (1-5 years in the region).
+    * 🚫 H18b: People with strong place attachment prefer higher imports.
+    * 🚫 H18c: People living more than 15 years in the region prefer solar technologies.
 * ✅ H19: Income interacts with preferences. @sec:H19
     * 🚫 H19a: People with high income prefer community ownership more than people with lower income.
     * 🚫 H19b: People with low income prefer lower land requirements than people with higher income.
@@ -239,7 +239,21 @@ I am using the method to measure subgroup preferences described by @Leeper:2020.
 
 ## H17: Age interacts with preferences. {#sec:H17}
 
+Yes.
+
+I am using the method to measure subgroup preferences described by @Leeper:2020. I then calculate conditional marginal means for all attribute levels.
+
+Old people prefer lower imports and lower prices more than younger people. They also like public ownership and PV more then younger, but these are not statistically significant.
+
+![**Marginal means conditional to age of respondents.**](build/H17.png){#fig:H17}
+
 ## H18: Place attachment interacts with preferences. {#sec:H18}
+
+No.
+
+I am using the method to measure subgroup preferences described by @Leeper:2020. I then calculate conditional marginal means for all attribute levels.
+
+![**Marginal means conditional to place attachment of respondents.**](build/H18.png){#fig:H18}
 
 ## H19: Income interacts with preferences. {#sec:H19}
 

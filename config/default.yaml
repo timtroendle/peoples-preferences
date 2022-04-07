@@ -78,6 +78,29 @@ aggregated-codes:
         5: high
         6: no answer
         7: do not know
+cuts:
+    Q4_BIRTH_YEAR:
+        breaks:
+            - 1922
+            - 1967
+            - 1992
+            - 2004
+        labels:
+            - old
+            - middle
+            - young
+    Q8_YEARS_REGION:
+        breaks:
+            - 0
+            - 5
+            - 10
+            - 15
+            - 100
+        labels:
+            - low
+            - medium
+            - strong
+            - very strong
 parameters:
     population-count: # 2020, Source: https://data.worldbank.org/indicator/SP.POP.TOTL
         DEU: 83240525

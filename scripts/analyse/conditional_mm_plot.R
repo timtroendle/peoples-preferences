@@ -1,7 +1,7 @@
 library("cregg")
 library("ggplot2")
 
-conditional_mm_plot <- function(path.data, path.plot, estimate, by, codes) {
+conditional_mm_plot <- function(path.data, path.plot, estimate, by, codes, cuts) {
     d.conjoint <- read.csv(path.data)
     d.conjoint$TECHNOLOGY <- factor(
         d.conjoint$TECHNOLOGY,
@@ -28,6 +28,13 @@ conditional_mm_plot <- function(path.data, path.plot, estimate, by, codes) {
         d.conjoint[[attribute]] <- factor(
             d.conjoint[[attribute]],
             labels=codes[[attribute]]
+        )
+    }
+    for (attribute in names(cuts)) {
+        d.conjoint[[attribute]] <- cut(
+            d.conjoint[[attribute]],
+            breaks = cuts[[attribute]]$breaks,
+            labels = cuts[[attribute]]$labels
         )
     }
     d.conjoint <- preprocess_conditional_attribut(d.conjoint, by)
@@ -65,5 +72,6 @@ conditional_mm_plot(
     snakemake@output[[1]],
     snakemake@params[["estimate"]],
     snakemake@params[["by"]],
-    snakemake@params[["codes"]]
+    snakemake@params[["codes"]],
+    snakemake@params[["cuts"]]
 )
