@@ -1,7 +1,7 @@
 library("cregg")
 library("ggplot2")
 
-conditional_mm_plot <- function(path.data, path.plot, estimate, by) {
+conditional_mm_plot <- function(path.data, path.plot, estimate, by, codes) {
     d.conjoint <- read.csv(path.data)
     d.conjoint$TECHNOLOGY <- factor(
         d.conjoint$TECHNOLOGY,
@@ -24,11 +24,16 @@ conditional_mm_plot <- function(path.data, path.plot, estimate, by) {
         d.conjoint$OWNERSHIP,
     )
     d.conjoint$RESPONDENT_COUNTRY <- factor(d.conjoint$RESPONDENT_COUNTRY)
-    d.conjoint$Q6_AREA <- factor(
-        d.conjoint$Q6_AREA,
-        labels=c("urban", "rural", "no_answer")
-    )
-    if (by == "Q6_AREA") {
+    for (attribute in names(codes)) {
+        d.conjoint[[attribute]] <- factor(
+            d.conjoint[[attribute]],
+            labels=codes[[attribute]]
+        )
+    }
+    if (by == "Q3_GENDER") {
+        d.conjoint <- preprocess_Q3_GENDER(d.conjoint)
+    }
+    else if (by == "Q6_AREA") {
         d.conjoint <- preprocess_Q6_AREA(d.conjoint)
     }
 
@@ -47,9 +52,14 @@ conditional_mm_plot <- function(path.data, path.plot, estimate, by) {
         p <- plot(mm_diff.conjoint, group = by, vline = 0.5)
     }
     else {
-        p <- plot(mm_diff.conjoint)
+        p <- plot(mm_diff.conjoint) +  xlab(paste(c("Estimated Difference of ", mm_diff.conjoint$BY[1]), collapse=" "))
     }
     ggsave(path.plot, p)
+}
+
+
+preprocess_Q3_GENDER <- function(data) {
+    droplevels(data[data$Q3_GENDER != "other", ])
 }
 
 
@@ -62,5 +72,6 @@ conditional_mm_plot(
     snakemake@input[["data"]],
     snakemake@output[[1]],
     snakemake@params[["estimate"]],
-    snakemake@params[["by"]]
+    snakemake@params[["by"]],
+    snakemake@params[["codes"]]
 )

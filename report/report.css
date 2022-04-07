@@ -195,13 +195,16 @@ dd {
 ul, ol, dl, dialog {
     line-height: 20px;
     margin-top: 18px;
-    margin-bottom: 18px
+    margin-bottom: 18px;
+    list-style-type: disc;
+    list-style-position: outside;
 }
 
 li ul, li ol, ul ul, ol ol {
     top: 0;
     margin-top: 0;
-    margin-bottom: 0
+    margin-bottom: 0;
+    padding-left: 18px;
 }
 
 li h1, li h2, li h3, li h4, li h5, li h6, li p {

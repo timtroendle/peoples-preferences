@@ -489,6 +489,43 @@ references:
   URL: https://www.americanscientist.org/article/the-statistical-crisis-in-science
   volume: '102'
 
+- id: Haac:2022
+  abstract: "The moving shadows caused by wind turbines, referred to as “shadow flicker” (“SF”), are known to generate annoyance in a subset of the exposed population. However, the relationship between the level of modeled SF exposure and the population's perceived SF and SF annoyance is poorly understood. Improved understanding of SF exposure impacts could provide a basis for exposure thresholds and, in turn, potentially improve community acceptance of and experience with wind power projects. This study modeled SF exposure at nearly 35,000 residences across 61 wind projects in the United States, 747 of which were also survey respondents. Using these results, we analyzed the factors that led to perceived SF and self-reported SF annoyance. We found that perceived SF is primarily an objective response to SF exposure, distance to the closest turbine, and whether the respondent moved in after the wind project was built. Conversely, SF annoyance was not significantly correlated with SF exposure. Rather, SF annoyance is primarily a subjective response to wind turbine aesthetics, annoyance to other anthropogenic sounds, level of education, and age of the respondent. We also examined regulations governing SF in the sample project areas and compared them to SF exposure in the surrounding population. Additionally, we found that noise limits could serve as a proxy for SF exposure, as 90% of those exposed to wind turbine sound of no more than 45 dBA L1h had SF exposure of less than 8\_h per year (a prototypical EU regulatory threshold)."
+  accessed:
+    - year: 2022
+      month: 4
+      day: 4
+  author:
+    - family: Haac
+      given: Ryan
+    - family: Darlow
+      given: Ryan
+    - family: Kaliski
+      given: Ken
+    - family: Rand
+      given: Joseph
+    - family: Hoen
+      given: Ben
+  citation-key: Haac:2022
+  container-title: Energy Research & Social Science
+  container-title-short: Energy Research & Social Science
+  DOI: 10.1016/j.erss.2021.102471
+  ISSN: 2214-6296
+  issued:
+    - year: 2022
+      month: 5
+      day: 1
+  language: en
+  page: '102471'
+  source: ScienceDirect
+  title: >-
+    In the shadow of wind energy: Predicting community exposure and annoyance to
+    wind turbine shadow flicker in the United States
+  title-short: In the shadow of wind energy
+  type: article-journal
+  URL: https://www.sciencedirect.com/science/article/pii/S2214629621005582
+  volume: '87'
+
 - id: Hainmueller:2014
   abstract: >-
     Survey experiments are a core tool for causal inference. Yet, the design of
@@ -576,6 +613,45 @@ references:
   source: Zotero
   title: Applied Choice Analysis
   type: article-journal
+
+- id: Hubner:2019
+  accessed:
+    - year: 2020
+      month: 1
+      day: 22
+  author:
+    - family: Hübner
+      given: Gundula
+    - family: Pohl
+      given: Johannes
+    - family: Hoen
+      given: Ben
+    - family: Firestone
+      given: Jeremy
+    - family: Rand
+      given: Joseph
+    - family: Elliott
+      given: Debi
+    - family: Haac
+      given: Ryan
+  citation-key: Hubner:2019
+  container-title: Environment International
+  container-title-short: Environment International
+  DOI: 10.1016/j.envint.2019.105090
+  ISSN: '01604120'
+  issued:
+    - year: 2019
+      month: 11
+  language: en
+  page: '105090'
+  source: DOI.org (Crossref)
+  title: >-
+    Monitoring annoyance and stress effects of wind turbines on nearby
+    residents: A comparison of U.S. and European samples
+  title-short: Monitoring annoyance and stress effects of wind turbines on nearby residents
+  type: article-journal
+  URL: https://linkinghub.elsevier.com/retrieve/pii/S0160412018323353
+  volume: '132'
 
 - id: Ioannidis:2005
   accessed:
@@ -1349,6 +1425,58 @@ references:
     Supply-side options to reduce land requirements of fully renewable
     electricity in Europe
   type: article-journal
+
+- id: Weinand:2021
+  abstract: >-
+    <h2>Summary</h2><p>Local resistance often hinders renewable energy
+    technology developments, especially for onshore wind. In decentralized
+    energy systems, the landscape impact of wind turbines or transmission lines
+    is a key barrier to public acceptance. By using landscape scenicness as a
+    proxy for public acceptance, we quantify its impact on the optimal energy
+    systems of 11,131 German municipalities. In municipalities with high
+    scenicness, it is likely that onshore wind will be rejected, leading to
+    higher levelized costs of energy by up to about 7 €-cent/kWh. Onshore wind
+    would be replaced mainly by solar photovoltaics and imports, and the
+    cost-optimal energy systems would be associated with higher CO~2~ emissions
+    of up to about 200 gCO~2~/kWh compared with an average of around 50
+    gCO~2~/kWh. The findings help to identify municipalities where public
+    resistance to onshore wind could be particularly high and support the
+    scientific and policy debate about the location of onshore wind farms.</p>
+  accessed:
+    - year: 2022
+      month: 3
+      day: 25
+  author:
+    - family: Weinand
+      given: Jann M.
+    - family: McKenna
+      given: Russell
+    - family: Kleinebrahm
+      given: Max
+    - family: Scheller
+      given: Fabian
+    - family: Fichtner
+      given: Wolf
+  citation-key: Weinand:2021
+  container-title: Patterns
+  container-title-short: PATTER
+  DOI: 10.1016/j.patter.2021.100301
+  ISSN: 2666-3899
+  issue: '7'
+  issued:
+    - year: 2021
+      month: 7
+      day: 9
+  language: English
+  PMID: '34286307'
+  publisher: Elsevier
+  source: www.cell.com
+  title: >-
+    The impact of public acceptance on cost efficiency and environmental
+    sustainability in decentralized energy systems
+  type: article-journal
+  URL: https://www.cell.com/patterns/abstract/S2666-3899(21)00144-6
+  volume: '2'
 
 - id: Wicki:2019
   abstract: >-

@@ -21,6 +21,36 @@ The data support some hypothesis (✅) and do not support others (🚫). We cann
 * 🚫 H13: People in countries with low population density show a stronger preference for local generation infrastructure. @sec:H13
 * 🚫 H14: People in resource-rich countries show a stronger preference for local generation infrastructure. @sec:H14
 * ✅/❓H15: Preference for self-sufficiency varies between countries (this effect is not explained by demographics and regional differences). @sec:H15
+* 🚫 H16: Gender interacts with preferences. @sec:H16
+    * 🚫 H16a: Men prefer lower land requirements than women.
+    * 🚫 H16b: Men prefer lower prices than women.
+    * ❓/🚫 H16c: Men have no technology preference, whereas women prefer solar.
+    * 🚫 H16d: Women prefer lower imports than men.
+    * 🚫 H16e: Women prefer, more clearly than men, public over private ownership.
+* H17: Age interacts with preferences. @sec:H17
+    * H17a: People over 55 (old people) prefer lower land requirements than people below 30 (young people).
+    * H17b: People over 55 prefer lower transmission infrastructure than people below 30.
+    * H17c: People below 30 prefer high imports.
+    * H17d: People over 55 prefer low imports.
+    * H17e: There is no difference in technology preferences across ages.
+    * H17f: People over 55 prefer higher transmission than younger people.
+* H18: Place attachment interacts with preferences. @sec:H18
+    * H18a: People prefer lower land requirements/ transmission infrastructure the longer they live in the region. = People with strong place attachment (+15 years in the region) prefer lower land requirements and lower transmission infrastructure than people with “weaker” place attachment (1-5 years in the region).
+    * H18b: People with strong place attachment prefer higher imports.
+    * H18c: People living more than 15 years in the region prefer solar technologies.
+* H19: Income interacts with preferences. @sec:H19
+    * H19a: People with high income prefer community ownership.
+    * H19b: People with low income prefer lower land requirements than people with higher income.
+    * H19c: People with low income prefer/ accept lower prices than with higher income.
+* H20: Education interacts with preferences. @sec:H20
+    * H20a: People with lower education prefer lower imports, than people with higher education.
+    * H20b: People with higher education prefer higher land use requirements (understand the necessity to act)
+* H21: Climate concern interacts with preferences. @sec:H21
+    * People with high climate concerns prefer higher land requirements and transmission infrastructure.
+* H22: Partisanship interacts with preferences. @sec:H22
+    * H22a: People supporting right wing parties prefer lower land requirements. (don’t support the energy transition). But, prefer lower imports.
+    * H22b: People supporting green parties prefer higher land requirements.
+* H23: Current deployment interacts with preferences. @sec:H23
 
 ## H1: People prefer high levels of local self-sufficiency even if they must pay a premium. {#sec:H1}
 
@@ -68,7 +98,7 @@ The data do not support this hypothesis.
 
 I am using the method to measure subgroup preferences described by @Leeper:2020. I remove all respondents that gave no answer to the question about their area. I then calculate differences in marginal means between the urban and the rural population for all attribute levels. All differences including the one about land requirements are very small (green lines in @fig:H6) and only for two levels (unrelated to land requirements) can we reject the null hypothesis that there is an effect.
 
-![**Differences in marginal means between urban and rural population.**](build/H6.png){#fig:H6}
+![**Differences in marginal means between rural and urban population.**](build/H6.png){#fig:H6}
 
 ## H7: People prefer high levels of self-sufficiency even if they must pay a land premium. {#sec:H7}
 
@@ -193,6 +223,28 @@ Germany shows higher preference for local generation infrastructure than Portuga
 Yes, preferences for self-sufficiency vary between countries. The effect is strongest for the extreme levels of self-sufficienncy and the difference is largest for Germany and Poland (@fig:H2). While German respondents favor high self-sufficiency most (marginal mean of no imports > 60%) and favor low self-sufficiency least (marginal mean of 90% imports < 40%), Polish respondents are more indifferent towards self-sufficiency (marginal means of 55% and 45%, respectively).
 
 Right now, and with the tools we have [@Hainmueller:2014; @Leeper:2020], we cannot show that this effect is not explained best by demographics and regional differences. We need a logit model for that (as typically used in market research) (see also @sec:H10).
+
+## H16: Gender interacts with preferences. {#sec:H16}
+
+No.
+
+I am using the method to measure subgroup preferences described by @Leeper:2020. I remove all respondents that answered "other". I then calculate differences in marginal means between the male and the female respondents for all attribute levels. All differences are very small (@fig:H16) and almost all are not statisticall significant.
+
+![**Differences in marginal means between male and female respondents.**](build/H16.png){#fig:H16}
+
+## H17: Age interacts with preferences. {#sec:H17}
+
+## H18: Place attachment interacts with preferences. {#sec:H18}
+
+## H19: Income interacts with preferences. {#sec:H19}
+
+## H20: Education interacts with preferences. {#sec:H20}
+
+## H21: Climate concern interacts with preferences. {#sec:H21}
+
+## H22: Partisanship interacts with preferences. {#sec:H22}
+
+## H23: Current deployment interacts with preferences. {#sec:H23}
 
 # Appendix
 

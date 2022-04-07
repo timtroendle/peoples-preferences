@@ -1,3 +1,6 @@
+CODES = {k:v for k,v in config["codes"].items()}
+
+
 rule amce_plot:
     message: "Create plot of AMCEs in {wildcards.country_id}."
     input:
@@ -48,7 +51,7 @@ rule respondents:
         script = "scripts/analyse/respondents.py",
         data = rules.national_conjoint.output[0]
     params:
-        codes = {k:v for k,v in config["codes"].items() if k in ["Q3_GENDER", "Q6_AREA", "Q10_INCOME"]}
+        codes = CODES
     output: "build/{country_id}/respondent-stats.csv"
     conda: "../envs/default.yaml"
     script: "../scripts/analyse/respondents.py"
@@ -109,6 +112,7 @@ rule H6:
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm_diff",
+        codes = CODES,
         by = "Q6_AREA"
     output: "build/H6.png"
     conda: "../envs/cjoint.yaml"
@@ -158,7 +162,22 @@ rule H11:
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm",
-        by = "RESPONDENT_COUNTRY"
+        codes = CODES,
+        by = "RESPONDENT_COUNTRY",
     output: "build/H11.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/conditional_mm_plot.R"
+
+
+rule H16:
+    message: "Create plot for H16."
+    input:
+        script = "scripts/analyse/conditional_mm_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        estimate = "mm_diff",
+        codes = CODES,
+        by = "Q3_GENDER",
+    output: "build/H16.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/conditional_mm_plot.R"
