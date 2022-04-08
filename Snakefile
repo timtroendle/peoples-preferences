@@ -66,6 +66,7 @@ rule report:
         "build/H19.png",
         "build/H20.png",
         "build/H21.png",
+        "build/H22.png",
         "build/H23.png",
         "build/H24.png",
         "build/H25.png",
@@ -97,7 +98,13 @@ rule clean: # removes all generated results
 
 
 rule test:
-    conda: "envs/test.yaml"
+    message: "Run tests"
+    input:
+        test_dir = "tests",
+        tests = map(str, Path("tests").glob("**/test_*.py")),
+        national_conjoints = expand("build/{country_id}/conjoint.csv", country_id=COUNTRY_IDS)
+    params:
+        config = config
     output: "build/test-report.html"
-    shell:
-        "py.test --html={output} --self-contained-html"
+    conda: "envs/test.yaml"
+    script: "tests/test_runner.py"

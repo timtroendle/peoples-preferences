@@ -23,7 +23,8 @@ COLUMNS_TO_DROP = [
 
 
 def preprocess_conjoint(path_to_conjointly_data: str, path_to_respondi_data: str, country_id: str,
-                        population_count: int, pre_test_threshold: date, path_to_output: str):
+                        population_count: int, pre_test_threshold: date, q12_party_base: int,
+                        path_to_output: str):
     respondi = pd.read_excel(path_to_respondi_data, parse_dates=[2])
     (
         pd
@@ -40,6 +41,7 @@ def preprocess_conjoint(path_to_conjointly_data: str, path_to_respondi_data: str
         .pipe(merge_respondi_data, respondi)
         .pipe(undummify_dataset)
         .pipe(filter_pre_test, pre_test_threshold)
+        .pipe(shift_q12_party, q12_party_base)
         .assign(WEIGHT=population_count / 1e6) # FIXME must handle the fact that numbers of responses per country vary.
         .to_csv(path_to_output, index=True, header=True)
     )
@@ -76,15 +78,21 @@ def filter_pre_test(df, pre_test_threshold):
     return df.loc[df["RESPONDENT_TIME_OF_COMPLETING_SURVEY"] >= pre_test_threshold, :]
 
 
+def shift_q12_party(df: pd.DataFrame, base: int):
+    # Shift values in Q12 column. This is because the meaning of the values in the column is country-specific.
+    df["Q12_PARTY"] = pd.to_numeric(df["Q12_PARTY"]) + (base - 1)
+    return df
+
+
 def remove_free_text(df):
     df["Q9_EDUCATION_O7"] = replace_text_input_with_1(df["Q9_EDUCATION_O7"])
     if "Q12_PARTY_O13" in df.columns:
         df["Q12_PARTY_O12"] = replace_text_input_with_1(df["Q12_PARTY_O12"])
-    if "Q12_PARTY_O12" in df.columns:
+    elif "Q12_PARTY_O12" in df.columns:
         df["Q12_PARTY_O11"] = replace_text_input_with_1(df["Q12_PARTY_O11"])
-    if "Q12_PARTY_O11" in df.columns:
+    elif "Q12_PARTY_O11" in df.columns:
         df["Q12_PARTY_O10"] = replace_text_input_with_1(df["Q12_PARTY_O10"])
-    if "Q12_PARTY_O10" in df.columns:
+    elif "Q12_PARTY_O10" in df.columns:
         df["Q12_PARTY_O9"] = replace_text_input_with_1(df["Q12_PARTY_O9"])
     elif "Q12_PARTY_O9" in df.columns:
         df["Q12_PARTY_O8"] = replace_text_input_with_1(df["Q12_PARTY_O8"])
@@ -156,5 +164,6 @@ if __name__ == "__main__":
         country_id=snakemake.wildcards.country_id,
         population_count=int(snakemake.params.population),
         pre_test_threshold=snakemake.params.pre_test_threshold,
+        q12_party_base=snakemake.params.q12_party_base[snakemake.wildcards.country_id],
         path_to_output=snakemake.output[0]
     )

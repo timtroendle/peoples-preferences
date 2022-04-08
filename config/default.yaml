@@ -55,6 +55,53 @@ codes:
         5: extremely
         6: no answer
         7: do not know
+    Q12_PARTY:
+        1: CDU / CSU
+        2: SPD
+        3: Bündnis 90 / Die Grünen
+        4: Die Linke
+        5: AfD
+        6: FDP
+        7: other
+        8: no answer
+        9: Det Konservative Folkeparti (KF)
+        10: Socialdemokratiet i Danmark (S)
+        11: Alternativet (A)
+        12: Venstre, Danmarks Liberale Parti (V)
+        13: Dansk Folkeparti (DF)
+        14: Socialistisk Folkeparti (SF)
+        15: Enhedslisten - De Rød-Grønne (EL)
+        16: Det Radikale Venstre (RV)
+        17: Nye Borgerlige (NB)
+        18: Liberal Alliance (LA)
+        19: Kristendemokraterne (KD)
+        20: other
+        21: no answer
+        22: Platforma Obywatelska (PO)
+        23: Polskie Stronnictwo Ludowe (PSL)
+        24: Prawo i Sprawiedliwość (PiS)
+        25: Nowoczesna (N)
+        26: Sojusz Lewicy Demokratycznej (SLD)
+        27: Konfederacja Wolność i Niepodległość (KONFEDERACJA)
+        28: Mniejszość Niemiecka (MN)
+        29: Kukiz'15 (K)
+        30: Razem, Nowa Lewica
+        31: Partia Zieloni
+        32: other
+        33: no answer
+        34: Partido Socialista (PS)
+        35: Partido Social Democrata (PSD)
+        36: Bloco de Esquerda (BE)
+        37: Coligação Democrática Unitária (CDU)
+        38: Partido Comunista Português (PCP)
+        39: Partido Ecologista "Os Verdes" (PEV)
+        40: Partido Popular (CDS-PP)
+        41: Pessoas-Animais-Natureza (PAN)
+        42: Chega (CH)
+        43: Iniciativa Liberal (IL)
+        44: Livre (L)
+        45: other
+        46: no answer
 aggregated-codes:
     Q9_EDUCATION:
         1: lower
@@ -86,6 +133,53 @@ aggregated-codes:
         5: high
         6: no answer
         7: do not know
+    Q12_PARTY:
+        1: others
+        2: others
+        3: green
+        4: others
+        5: right
+        6: others
+        7: other
+        8: no answer
+        9: others
+        10: others
+        11: green
+        12: others
+        13: right
+        14: green
+        15: green
+        16: others
+        17: right
+        18: others
+        19: others
+        20: other
+        21: no answer
+        22: others
+        23: others
+        24: right
+        25: others
+        26: others
+        27: right
+        28: others
+        29: right
+        30: others
+        31: green
+        32: other
+        33: no answer
+        34: others
+        35: others
+        36: others
+        37: others
+        38: others
+        39: green
+        40: right
+        41: green
+        42: right
+        43: others
+        44: green
+        45: other
+        46: no answer
 cuts:
     Q4_BIRTH_YEAR:
         breaks:
@@ -116,3 +210,8 @@ parameters:
         POL: 37950802
         PRT: 10305564
     pre-test-threshold: 2022-01-24 00:00
+    Q12-party-base: # the smallest code used in the Q12-Party attribute (see `codes/Q12-Party` above)
+        DEU: 1
+        DNK: 9
+        POL: 22
+        PRT: 34

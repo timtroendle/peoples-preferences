@@ -1,10 +1,10 @@
 # Introduction
 
-The following is a brief analysis of our choice experiment results with ~1000 respondents from each of the four countries: Germany, Poland, Denmark, Portugal.
+The following is an in-depth analysis of our choice experiment results with ~1000 respondents from each of the four countries: Germany, Poland, Denmark, Portugal.
 
 # Hypotheses
 
-The data support some hypothesis (✅) and do not support others (🚫). We cannot (right now) test some hypothesis (❓).
+The data support some hypotheses (✅) and do not support others (🚫). We cannot (right now) test some hypotheses (❓).
 
 * 🚫 H1: People prefer high levels of local self-sufficiency even if they must pay a premium. @sec:H1
 * 🚫 H2: People value ownership higher than prices. @sec:H2
@@ -47,9 +47,12 @@ The data support some hypothesis (✅) and do not support others (🚫). We cann
     * 🚫 H20b: People with higher education prefer higher land use requirements (understand the necessity to act)
 * ✅ H21: Climate concern interacts with preferences. @sec:H21
     * 🚫 People with high climate concerns prefer higher land requirements and transmission infrastructure.
-* H22: Partisanship interacts with preferences. @sec:H22
-    * H22a: People supporting right wing parties prefer lower land requirements. (don’t support the energy transition). But, prefer lower imports.
-    * H22b: People supporting green parties prefer higher land requirements.
+* ✅ H22: Partisanship interacts with preferences. @sec:H22
+    * 🚫 H22a: People supporting right wing parties prefer land requirements less.
+    * 🚫 H22b: People supporting right wing parties prefer imports less.
+    * 🚫 H22c: People supporting green parties prefer land requirements more.
+    * 🚫 H22d: People supporting green parties are indifferent to technology.
+    * 🚫 H22e: People supporting green parties are indifferent to transmission infrastructure.
 * ✅ H23: Current deployment interacts with preferences. @sec:H23
     * 🚫 H23a: People prefer (higher) land requirements more if they have renewables in their region (wind, solar or both)/ People prefer lower land requirements if they have no renewables in their region.
     * ✅ H23b: People prefer technology wind, if they have wind in their region.
@@ -296,6 +299,14 @@ Respondents with high climate concern do _not_ prefer land requirements of trans
 ![**Marginal means conditional to climate concern of respondents.**](build/H21.png){#fig:H21}
 
 ## H22: Partisanship interacts with preferences. {#sec:H22}
+
+Yes.
+
+I am using the method to measure subgroup preferences described by @Leeper:2020. I then calculate conditional marginal means for all attribute levels.
+
+There is no difference when it comes to land requirements or technology (@fig:H22). Respondents supporting right-wind parties are more indifferent towards imports and prices compared with respondents supporting green parties.
+
+![**Marginal means conditional to partisanship of respondents.**](build/H22.png){#fig:H22}
 
 ## H23: Current deployment interacts with preferences. {#sec:H23}
 

@@ -283,6 +283,22 @@ rule H21:
     script: "../scripts/analyse/conditional_mm_plot.R"
 
 
+rule H22:
+    message: "Create plot for H22."
+    input:
+        script = "scripts/analyse/conditional_mm_plot.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        estimate = "mm",
+        codes = AGGREGATED_CODES,
+        factors = FACTORS,
+        cuts = CUTS,
+        by = "Q12_PARTY",
+    output: "build/H22.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/conditional_mm_plot.R"
+
+
 rule H23:
     message: "Create plot for H23."
     input:
