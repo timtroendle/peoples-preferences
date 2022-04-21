@@ -75,8 +75,8 @@ data-types:
             4: neither
     Q9_EDUCATION:
         type: factor
-        ordered: False # TODO could be ordered without "other"
-        missing-values: [8]
+        ordered: True
+        missing-values: [7, 8] # ASSUME "other" irrelevant (~2.66% of respondents)
         rename:
             1: none
             2: but, in eduction
@@ -84,7 +84,6 @@ data-types:
             4: master craftsman
             5: bachelor or master
             6: doctor
-            7: other # TODO analyse, and possibly remove
     Q10_INCOME:
         type: factor
         ordered: True
@@ -114,7 +113,7 @@ data-types:
     Q12_PARTY:
         type: factor
         ordered: False
-        missing-values: [8, 21, 33, 46] # TODO remove "other" if not many
+        missing-values: [8, 21, 33, 46]
         rename:
             1: CDU / CSU
             2: SPD
@@ -161,7 +160,10 @@ data-types:
 # TODO add remaining attributes
 new-features:
     aggregated-levels:
-        Q9_EDUCATION: # TODO mark ordered once "other" removed
+        Q9_EDUCATION:
+            ordered:
+                - lower
+                - higher
             mapping:
                 "none":                 lower
                 "but, in eduction":     lower
@@ -169,7 +171,6 @@ new-features:
                 "master craftsman":     higher
                 "bachelor or master":   higher
                 "doctor":               higher
-                "other":                other
         Q10_INCOME:
             ordered:
                 - low (<1500 EUR)
