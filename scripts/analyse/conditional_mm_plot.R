@@ -2,18 +2,8 @@ library(arrow)
 library(cregg)
 library(ggplot2)
 
-conditional_mm_plot <- function(path.data, path.plot, estimate, by, cuts) {
+conditional_mm_plot <- function(path.data, path.plot, estimate, by) {
     d.conjoint <- read_feather(path.data)
-
-    for (attribute in names(cuts)) {
-        d.conjoint[[attribute]] <- cut(
-            d.conjoint[[attribute]],
-            breaks = cuts[[attribute]]$breaks,
-            labels = cuts[[attribute]]$labels
-        )
-    }
-
-    d.conjoint <- preprocess_conditional_attribut(d.conjoint, by)
 
     f1 <- CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND + PRICES + TRANSMISSION + OWNERSHIP
 
@@ -35,18 +25,9 @@ conditional_mm_plot <- function(path.data, path.plot, estimate, by, cuts) {
     ggsave(path.plot, p)
 }
 
-
-preprocess_conditional_attribut <- function(data, by) {
-    data <- droplevels(data[data[[by]] != "other", ])
-    data <- droplevels(data[data[[by]] != "do not know", ])
-    data <- droplevels(data[data[[by]] != "no answer", ])
-}
-
-
 conditional_mm_plot(
     snakemake@input[["data"]],
     snakemake@output[[1]],
     snakemake@params[["estimate"]],
-    snakemake@params[["by"]],
-    snakemake@params[["cuts"]]
+    snakemake@params[["by"]]
 )

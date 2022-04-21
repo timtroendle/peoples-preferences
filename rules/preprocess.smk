@@ -30,7 +30,8 @@ rule global_conjoint:
         data = rules.global_conjoint_raw.output[0]
     params:
         types = config["data-types"],
-        aggregated_levels = config["aggregated-levels"]
+        aggregated_levels = config["new-features"]["aggregated-levels"],
+        categorised_levels = config["new-features"]["categorised-levels"]
     output: "build/conjoint.feather"
     conda: "../envs/preprocess.yaml"
     script: "../scripts/preprocess/types.py"

@@ -1,6 +1,3 @@
-CUTS = config["cuts"]
-
-
 rule amce_plot:
     message: "Create plot of AMCEs."
     input:
@@ -88,7 +85,6 @@ rule H6:
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm_diff",
-        cuts = CUTS,
         by = "Q6_AREA"
     output: "build/H6.png"
     conda: "../envs/cjoint.yaml"
@@ -138,7 +134,6 @@ rule H11:
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm",
-        cuts = CUTS,
         by = "RESPONDENT_COUNTRY",
     output: "build/H11.png"
     conda: "../envs/cjoint.yaml"
@@ -151,8 +146,7 @@ rule H16:
         script = "scripts/analyse/conditional_mm_plot.R",
         data = rules.global_conjoint.output[0]
     params:
-        estimate = "mm_diff",
-        cuts = CUTS,
+        estimate = "mm",
         by = "Q3_GENDER",
     output: "build/H16.png"
     conda: "../envs/cjoint.yaml"
@@ -166,8 +160,7 @@ rule H17:
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm",
-        cuts = CUTS,
-        by = "Q4_BIRTH_YEAR",
+        by = "Q4_BIRTH_YEAR_aggregated",
     output: "build/H17.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/conditional_mm_plot.R"
@@ -180,8 +173,7 @@ rule H18:
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm",
-        cuts = CUTS,
-        by = "Q8_YEARS_REGION",
+        by = "Q8_YEARS_REGION_aggregated",
     output: "build/H18.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/conditional_mm_plot.R"
@@ -194,7 +186,6 @@ rule H19:
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm",
-        cuts = CUTS,
         by = "Q10_INCOME_aggregated",
     output: "build/H19.png"
     conda: "../envs/cjoint.yaml"
@@ -208,7 +199,6 @@ rule H20:
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm",
-        cuts = CUTS,
         by = "Q9_EDUCATION_aggregated",
     output: "build/H20.png"
     conda: "../envs/cjoint.yaml"
@@ -222,7 +212,6 @@ rule H21:
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm",
-        cuts = CUTS,
         by = "Q11_CLIMATE_CONCERN_aggregated",
     output: "build/H21.png"
     conda: "../envs/cjoint.yaml"
@@ -236,7 +225,6 @@ rule H22:
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm",
-        cuts = CUTS,
         by = "Q12_PARTY_aggregated",
     output: "build/H22.png"
     conda: "../envs/cjoint.yaml"
@@ -250,7 +238,6 @@ rule H23:
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm",
-        cuts = CUTS,
         by = "Q7_RENEWABLES",
     output: "build/H23.png"
     conda: "../envs/cjoint.yaml"

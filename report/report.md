@@ -242,9 +242,9 @@ Right now, and with the tools we have [@Hainmueller:2014; @Leeper:2020], we cann
 
 No.
 
-I am using the method to measure subgroup preferences described by @Leeper:2020. I remove all respondents that answered "other". I then calculate differences in marginal means between the male and the female respondents for all attribute levels. All differences are very small (@fig:H16) and almost all are not statisticall significant.
+I am using the method to measure subgroup preferences described by @Leeper:2020. I calculate  marginal means conditional to gender. All differences between male and female respondents are very small (@fig:H16) and almost all are not statisticall significant.
 
-![**Differences in marginal means between male and female respondents.**](build/H16.png){#fig:H16}
+![**Marginal means conditional to gender of respondents.**](build/H16.png){#fig:H16}
 
 ## H17: Age interacts with preferences. {#sec:H17}
 
