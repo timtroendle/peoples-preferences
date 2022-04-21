@@ -1,19 +1,10 @@
-library("cregg")
-library("ggplot2")
+library(arrow)
+library(cregg)
+library(ggplot2)
 
-conditional_mm_plot <- function(path.data, path.plot, estimate, by, factors, codes, cuts) {
-    d.conjoint <- read.csv(path.data)
+conditional_mm_plot <- function(path.data, path.plot, estimate, by, cuts) {
+    d.conjoint <- read_feather(path.data)
 
-    for (factor_name in factors) {
-        d.conjoint[[factor_name]] <- factor(d.conjoint[[factor_name]])
-    }
-    levels(d.conjoint$TRANSMISSION) <- paste(levels(d.conjoint$TRANSMISSION), ".")
-    for (attribute in names(codes)) {
-        d.conjoint[[attribute]] <- factor(
-            d.conjoint[[attribute]],
-            labels=codes[[attribute]]
-        )
-    }
     for (attribute in names(cuts)) {
         d.conjoint[[attribute]] <- cut(
             d.conjoint[[attribute]],
@@ -57,7 +48,5 @@ conditional_mm_plot(
     snakemake@output[[1]],
     snakemake@params[["estimate"]],
     snakemake@params[["by"]],
-    snakemake@params[["factors"]],
-    snakemake@params[["codes"]],
     snakemake@params[["cuts"]]
 )

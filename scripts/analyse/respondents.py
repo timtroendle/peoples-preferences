@@ -2,7 +2,7 @@ import pandas as pd
 
 
 def stats(path_to_data: str, codes: dict[str, dict[int: str]], path_to_output: str):
-    df = pd.read_csv(path_to_data)
+    df = pd.read_feather(path_to_data)
     respondents = preprocess_respondents(df, codes)
     gender = respondents["Q3_GENDER"].value_counts(sort=False) / respondents["Q3_GENDER"].size * 100
     area = respondents["Q6_AREA"].value_counts(sort=False) / respondents["Q6_AREA"].size * 100

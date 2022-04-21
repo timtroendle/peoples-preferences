@@ -1,13 +1,9 @@
-library("cregg")
-library("ggplot2")
+library(arrow)
+library(cregg)
+library(ggplot2)
 
-cregg_plot <- function(path.data, path.plot, estimate, factors) {
-    d.conjoint <- read.csv(path.data)
-
-    for (factor_name in factors) {
-        d.conjoint[[factor_name]] <- factor(d.conjoint[[factor_name]])
-    }
-    levels(d.conjoint$TRANSMISSION) <- paste(levels(d.conjoint$TRANSMISSION), ".")
+cregg_plot <- function(path.data, path.plot, estimate) {
+    d.conjoint <- read_feather(path.data)
 
     f1 <- CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND + PRICES + TRANSMISSION + OWNERSHIP
 
@@ -30,6 +26,5 @@ cregg_plot <- function(path.data, path.plot, estimate, factors) {
 cregg_plot(
     snakemake@input[["data"]],
     snakemake@output[[1]],
-    snakemake@params[["estimate"]],
-    snakemake@params[["factors"]]
+    snakemake@params[["estimate"]]
 )

@@ -2,184 +2,244 @@
 data-sources:
     conjointly: data/raw-data-{country_id}.csv
     respondi: data/respondi/Masterdata_14979_{country_id}.xlsx
-factors:
-    - TECHNOLOGY
-    - SHARE_IMPORTS
-    - LAND
-    - PRICES
-    - TRANSMISSION
-    - OWNERSHIP
-    - RESPONDENT_COUNTRY
-codes:
+data-types:
+    TECHNOLOGY:
+        type: factor
+        ordered: False
+        relevel:
+            - Rooftop PV
+            - Open-field PV
+            - Wind
+    SHARE_IMPORTS:
+        type: factor
+        ordered: False
+    LAND:
+        type: factor
+        ordered: False
+    PRICES:
+        type: factor
+        ordered: False
+    TRANSMISSION:
+        type: factor
+        ordered: False
+        relevel:
+            - +0%
+            - -25%
+            - +25%
+            - +50%
+            - +75%
+        rename:
+            "+0%": "+0% ."
+            "-25%": "-25.0% ."
+            "+25%": "+25% ."
+            "+50%": "+50% ."
+            "+75%": "+75% ."
+    OWNERSHIP:
+        type: factor
+        ordered: False
+        relevel:
+            - Public
+            - Community
+            - Private
+    RESPONDENT_COUNTRY:
+        type: factor
+        ordered: False
+    Q2_AGE_TRESHOLD:
+        type: factor
+        ordered: False
+        rename:
+            0: below
+            1: above
     Q3_GENDER:
-        1: female
-        2: male
-        3: other
+        type: factor
+        ordered: False
+        rename:
+            1: female
+            2: male
+            3: other
     Q6_AREA:
-        1: rural
-        2: urban
-        3: no answer
+        type: factor
+        ordered: False
+        missing-values: [3]
+        rename:
+            1: rural
+            2: urban
     Q7_RENEWABLES:
-        1: open-field PV
-        2: wind
-        3: both
-        4: neither
-        5: do not know
+        type: factor
+        ordered: False
+        missing-values: [5]
+        rename:
+            1: open-field PV
+            2: wind
+            3: both
+            4: neither
     Q9_EDUCATION:
-        1: none
-        2: but, in eduction
-        3: vocational
-        4: master craftsman
-        5: bachelor or master
-        6: doctor
-        7: other # TODO analyse
-        8: do not know
+        type: factor
+        ordered: False # TODO could be ordered without "other"
+        missing-values: [8]
+        rename:
+            1: none
+            2: but, in eduction
+            3: vocational
+            4: master craftsman
+            5: bachelor or master
+            6: doctor
+            7: other # TODO analyse, and possibly remove
     Q10_INCOME:
-        1: below 600 EUR
-        2: 600--900 EUR
-        3: 900--1300 EU
-        4: 1300--1500 EU
-        5: 1500--2000 EUR
-        6: 2000--2600 EUR
-        7: 2600--3200 EUR
-        8: 3200--4500 EUR
-        9: 4500--6000 EUR
-        10: 6000--10000 EUR
-        11: above 10000 EUR
-        12: no answer
+        type: factor
+        ordered: True
+        missing-values: [12]
+        rename:
+            1: below 600 EUR
+            2: 600--900 EUR
+            3: 900--1300 EU
+            4: 1300--1500 EU
+            5: 1500--2000 EUR
+            6: 2000--2600 EUR
+            7: 2600--3200 EUR
+            8: 3200--4500 EUR
+            9: 4500--6000 EUR
+            10: 6000--10000 EUR
+            11: above 10000 EUR
     Q11_CLIMATE_CONCERN:
-        1: not at all
-        2: not much
-        3: somewhat
-        4: very
-        5: extremely
-        6: no answer
-        7: do not know
+        type: factor
+        ordered: True
+        missing-values: [6, 7]
+        rename:
+            1: not at all
+            2: not much
+            3: somewhat
+            4: very
+            5: extremely
     Q12_PARTY:
-        1: CDU / CSU
-        2: SPD
-        3: Bündnis 90 / Die Grünen
-        4: Die Linke
-        5: AfD
-        6: FDP
-        7: other
-        8: no answer
-        9: Det Konservative Folkeparti (KF)
-        10: Socialdemokratiet i Danmark (S)
-        11: Alternativet (A)
-        12: Venstre, Danmarks Liberale Parti (V)
-        13: Dansk Folkeparti (DF)
-        14: Socialistisk Folkeparti (SF)
-        15: Enhedslisten - De Rød-Grønne (EL)
-        16: Det Radikale Venstre (RV)
-        17: Nye Borgerlige (NB)
-        18: Liberal Alliance (LA)
-        19: Kristendemokraterne (KD)
-        20: other
-        21: no answer
-        22: Platforma Obywatelska (PO)
-        23: Polskie Stronnictwo Ludowe (PSL)
-        24: Prawo i Sprawiedliwość (PiS)
-        25: Nowoczesna (N)
-        26: Sojusz Lewicy Demokratycznej (SLD)
-        27: Konfederacja Wolność i Niepodległość (KONFEDERACJA)
-        28: Mniejszość Niemiecka (MN)
-        29: Kukiz'15 (K)
-        30: Razem, Nowa Lewica
-        31: Partia Zieloni
-        32: other
-        33: no answer
-        34: Partido Socialista (PS)
-        35: Partido Social Democrata (PSD)
-        36: Bloco de Esquerda (BE)
-        37: Coligação Democrática Unitária (CDU)
-        38: Partido Comunista Português (PCP)
-        39: Partido Ecologista "Os Verdes" (PEV)
-        40: Partido Popular (CDS-PP)
-        41: Pessoas-Animais-Natureza (PAN)
-        42: Chega (CH)
-        43: Iniciativa Liberal (IL)
-        44: Livre (L)
-        45: other
-        46: no answer
-aggregated-codes:
-    Q9_EDUCATION:
-        1: lower
-        2: lower
-        3: lower
-        4: higher
-        5: higher
-        6: higher
-        7: other
-        8: do not know
+        type: factor
+        ordered: False
+        missing-values: [8, 21, 33, 46] # TODO remove "other" if not many
+        rename:
+            1: CDU / CSU
+            2: SPD
+            3: Bündnis 90 / Die Grünen
+            4: Die Linke
+            5: AfD
+            6: FDP
+            7: other (DEU)
+            9: Det Konservative Folkeparti (KF)
+            10: Socialdemokratiet i Danmark (S)
+            11: Alternativet (A)
+            12: Venstre, Danmarks Liberale Parti (V)
+            13: Dansk Folkeparti (DF)
+            14: Socialistisk Folkeparti (SF)
+            15: Enhedslisten - De Rød-Grønne (EL)
+            16: Det Radikale Venstre (RV)
+            17: Nye Borgerlige (NB)
+            18: Liberal Alliance (LA)
+            19: Kristendemokraterne (KD)
+            20: other (DNK)
+            22: Platforma Obywatelska (PO)
+            23: Polskie Stronnictwo Ludowe (PSL)
+            24: Prawo i Sprawiedliwość (PiS)
+            25: Nowoczesna (N)
+            26: Sojusz Lewicy Demokratycznej (SLD)
+            27: Konfederacja Wolność i Niepodległość (KONFEDERACJA)
+            28: Mniejszość Niemiecka (MN)
+            29: Kukiz'15 (K)
+            30: Razem, Nowa Lewica
+            31: Partia Zieloni
+            32: other (POL)
+            34: Partido Socialista (PS)
+            35: Partido Social Democrata (PSD)
+            36: Bloco de Esquerda (BE)
+            37: Coligação Democrática Unitária (CDU)
+            38: Partido Comunista Português (PCP)
+            39: Partido Ecologista 'Os Verdes' (PEV)
+            40: Partido Popular (CDS-PP)
+            41: Pessoas-Animais-Natureza (PAN)
+            42: Chega (CH)
+            43: Iniciativa Liberal (IL)
+            44: Livre (L)
+            45: other (PRT)
+# TODO add remaining attributes
+aggregated-levels:
+    Q9_EDUCATION: # TODO mark ordered once "other" removed
+        mapping:
+            "none":                 lower
+            "but, in eduction":     lower
+            "vocational":           lower
+            "master craftsman":     higher
+            "bachelor or master":   higher
+            "doctor":               higher
+            "other":                other
     Q10_INCOME:
-        1: low (<1500 EUR)
-        2: low (<1500 EUR)
-        3: low (<1500 EUR)
-        4: low (<1500 EUR)
-        5: middle (1500--4500 EUR)
-        6: middle (1500--4500 EUR)
-        7: middle (1500--4500 EUR)
-        8: middle (1500--4500 EUR)
-        9: high (>4500 EUR)
-        10: high (>4500 EUR)
-        11: high (>4500 EUR)
-        12: no answer
+        ordered:
+            - low (<1500 EUR)
+            - middle (1500--4500 EUR)
+            - high (>4500 EUR)
+        mapping:
+            "below 600 EUR":    low (<1500 EUR)
+            "600--900 EUR":     low (<1500 EUR)
+            "900--1300 EU":     low (<1500 EUR)
+            "1300--1500 EU":    low (<1500 EUR)
+            "1500--2000 EUR":   middle (1500--4500 EUR)
+            "2000--2600 EUR":   middle (1500--4500 EUR)
+            "2600--3200 EUR":   middle (1500--4500 EUR)
+            "3200--4500 EUR":   middle (1500--4500 EUR)
+            "4500--6000 EUR":   high (>4500 EUR)
+            "6000--10000 EUR":  high (>4500 EUR)
+            "above 10000 EUR":  high (>4500 EUR)
     Q11_CLIMATE_CONCERN:
-        1: low
-        2: low
-        3: low
-        4: high
-        5: high
-        6: no answer
-        7: do not know
+        ordered:
+            - low
+            - high
+        mapping:
+            "not at all":   low
+            "not much":     low
+            "somewhat":     low
+            "very":         high
+            "extremely":    high
     Q12_PARTY:
-        1: others
-        2: others
-        3: green
-        4: others
-        5: right
-        6: others
-        7: other
-        8: no answer
-        9: others
-        10: others
-        11: green
-        12: others
-        13: right
-        14: green
-        15: green
-        16: others
-        17: right
-        18: others
-        19: others
-        20: other
-        21: no answer
-        22: others
-        23: others
-        24: right
-        25: others
-        26: others
-        27: right
-        28: others
-        29: right
-        30: others
-        31: green
-        32: other
-        33: no answer
-        34: others
-        35: others
-        36: others
-        37: others
-        38: others
-        39: green
-        40: right
-        41: green
-        42: right
-        43: others
-        44: green
-        45: other
-        46: no answer
+        mapping:
+            "CDU / CSU":                                            other
+            "SPD":                                                  other
+            "Bündnis 90 / Die Grünen":                              green
+            "Die Linke":                                            other
+            "AfD":                                                  right
+            "FDP":                                                  other
+            "other (DEU)":                                          other
+            "Det Konservative Folkeparti (KF)":                     other
+            "Socialdemokratiet i Danmark (S)":                      other
+            "Alternativet (A)":                                     green
+            "Venstre, Danmarks Liberale Parti (V)":                 other
+            "Dansk Folkeparti (DF)":                                right
+            "Socialistisk Folkeparti (SF)":                         green
+            "Enhedslisten - De Rød-Grønne (EL)":                    green
+            "Det Radikale Venstre (RV)":                            other
+            "Nye Borgerlige (NB)":                                  right
+            "Liberal Alliance (LA)":                                other
+            "Kristendemokraterne (KD)":                             other
+            "other (DNK)":                                          other
+            "Platforma Obywatelska (PO)":                           other
+            "Polskie Stronnictwo Ludowe (PSL)":                     other
+            "Prawo i Sprawiedliwość (PiS)":                         right
+            "Nowoczesna (N)":                                       other
+            "Sojusz Lewicy Demokratycznej (SLD)":                   other
+            "Konfederacja Wolność i Niepodległość (KONFEDERACJA)":  right
+            "Mniejszość Niemiecka (MN)":                            other
+            "Kukiz'15 (K)":                                         right
+            "Razem, Nowa Lewica":                                   other
+            "Partia Zieloni":                                       green
+            "other (POL)":                                          other
+            "Partido Socialista (PS)":                              other
+            "Partido Social Democrata (PSD)":                       other
+            "Bloco de Esquerda (BE)":                               other
+            "Coligação Democrática Unitária (CDU)":                 other
+            "Partido Comunista Português (PCP)":                    other
+            "Partido Ecologista 'Os Verdes' (PEV)":                 green
+            "Partido Popular (CDS-PP)":                             right
+            "Pessoas-Animais-Natureza (PAN)":                       green
+            "Chega (CH)":                                           right
+            "Iniciativa Liberal (IL)":                              other
+            "Livre (L)":                                            green
+            "other (PRT)":                                          other
 cuts:
     Q4_BIRTH_YEAR:
         breaks:

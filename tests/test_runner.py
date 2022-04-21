@@ -33,7 +33,7 @@ def _create_config_plugin(config: dict, paths_to_national_conjoints: list[str]):
 
         @pytest.fixture(params=paths_to_national_conjoints)
         def national_conjoint(self, request):
-            return pd.read_csv(request.param)
+            return pd.read_feather(request.param)
 
         @pytest.fixture
         def country_id(self, national_conjoint):

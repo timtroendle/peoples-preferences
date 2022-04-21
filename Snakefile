@@ -4,7 +4,8 @@ COUNTRY_IDS = ["DEU", "POL", "PRT", "DNK"]
 configfile: "config/default.yaml"
 include: "rules/preprocess.smk"
 include: "rules/analyse.smk"
-
+wildcard_constraints:
+    country_id = "|".join(COUNTRY_IDS)
 
 onsuccess:
     if "email" in config.keys():
@@ -46,9 +47,7 @@ rule report:
         "report/fonts/KlinicSlabBookIt.otf",
         "report/fonts/KlinicSlabMedium.otf",
         "report/fonts/KlinicSlabMediumIt.otf",
-        expand("build/{country_id}/respondent-stats.csv", country_id=COUNTRY_IDS),
-        expand("build/{country_id}/amce.png", country_id=COUNTRY_IDS),
-        expand("build/{country_id}/mm.png", country_id=COUNTRY_IDS),
+        # expand("build/{country_id}/respondent-stats.csv", country_id=COUNTRY_IDS), # FIXME
         "build/amce.png",
         "build/mm.png",
         "build/H1.png",
@@ -102,7 +101,7 @@ rule test:
     input:
         test_dir = "tests",
         tests = map(str, Path("tests").glob("**/test_*.py")),
-        national_conjoints = expand("build/{country_id}/conjoint.csv", country_id=COUNTRY_IDS)
+        national_conjoints = expand("build/{country_id}/raw.feather", country_id=COUNTRY_IDS)
     params:
         config = config
     output: "build/test-report.html"

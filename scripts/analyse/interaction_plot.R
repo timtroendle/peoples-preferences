@@ -1,16 +1,8 @@
-library("cjoint")
+library(arrow)
+library(cjoint)
 
-acie_plot <- function(path.data, path.plot, formula, factors) {
-    d.conjoint <- read.csv(path.data)
-
-    for (factor_name in factors) {
-        d.conjoint[[factor_name]] <- factor(d.conjoint[[factor_name]])
-    }
-    levels(d.conjoint$TRANSMISSION) <- paste(levels(d.conjoint$TRANSMISSION), ".")
-    levels(d.conjoint$TRANSMISSION)[1] <- "-25.0% ."
-    d.conjoint$TECHNOLOGY <- relevel(d.conjoint$TECHNOLOGY, "Rooftop PV")
-    d.conjoint$TRANSMISSION <- relevel(d.conjoint$TRANSMISSION, "+0% .")
-    d.conjoint$OWNERSHIP <- relevel(d.conjoint$OWNERSHIP, "Public")
+acie_plot <- function(path.data, path.plot, formula) {
+    d.conjoint <- read_feather(path.data)
 
     results <- amce(
         as.formula(formula),
@@ -34,6 +26,5 @@ acie_plot <- function(path.data, path.plot, formula, factors) {
 acie_plot(
     snakemake@input[["data"]],
     snakemake@output[[1]],
-    snakemake@params[["formula"]],
-    snakemake@params[["factors"]]
+    snakemake@params[["formula"]]
 )

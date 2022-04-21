@@ -43,7 +43,8 @@ def preprocess_conjoint(path_to_conjointly_data: str, path_to_respondi_data: str
         .pipe(filter_pre_test, pre_test_threshold)
         .pipe(shift_q12_party, q12_party_base)
         .assign(WEIGHT=population_count / 1e6) # FIXME must handle the fact that numbers of responses per country vary.
-        .to_csv(path_to_output, index=True, header=True)
+        .reset_index()
+        .to_feather(path_to_output)
     )
 
 

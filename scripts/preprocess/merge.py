@@ -1,11 +1,12 @@
 import pandas as pd
 
 
-def merge(paths_to_datasets, path_to_output):
+def merge(paths_to_datasets: str, path_to_output: str):
     (
         pd
-        .concat([pd.read_csv(path_to_dataset, index_col=[0, 1, 2]) for path_to_dataset in paths_to_datasets], axis=0)
-        .to_csv(path_to_output, index=True, header=True)
+        .concat([pd.read_feather(path_to_dataset) for path_to_dataset in paths_to_datasets], axis=0)
+        .reset_index(drop=True)
+        .to_feather(path_to_output)
     )
 
 
