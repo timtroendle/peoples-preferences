@@ -47,7 +47,7 @@ rule report:
         "report/fonts/KlinicSlabBookIt.otf",
         "report/fonts/KlinicSlabMedium.otf",
         "report/fonts/KlinicSlabMediumIt.otf",
-        # expand("build/{country_id}/respondent-stats.csv", country_id=COUNTRY_IDS), # FIXME
+        expand("build/{country_id}/respondent-stats.csv", country_id=COUNTRY_IDS),
         "build/amce.png",
         "build/mm.png",
         "build/H1.png",

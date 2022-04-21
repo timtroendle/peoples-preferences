@@ -372,8 +372,6 @@ Additional tables and figures in arbitrary order.
 
 ## Respondents
 
-<!--> # FIXME broken right now
-
 ```table
 ---
 caption: 'Statistics of respondents in Germany'
@@ -435,8 +433,6 @@ width:
     - 0.2
 ---
 ```
-
-<-->
 
 <div class="pagebreak">
 

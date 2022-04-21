@@ -20,11 +20,11 @@ rule mm_plot:
     script: "../scripts/analyse/cregg_plot.R"
 
 
-rule national_respondents: # FIXME
+rule national_respondents:
     message: "Statistical overview over respondents in {wildcards.country_id}."
     input:
         script = "scripts/analyse/respondents.py",
-        data = rules.national_conjoint_raw.output[0]
+        data = rules.global_conjoint.output[0]
     output: "build/{country_id}/respondent-stats.csv"
     conda: "../envs/default.yaml"
     script: "../scripts/analyse/respondents.py"
