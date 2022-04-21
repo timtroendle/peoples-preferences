@@ -335,6 +335,58 @@ new-features:
                 - Medium
                 - Strong
                 - Very strong
+cluster:
+    default:
+        features:
+            - Q3_GENDER
+            - Q4_BIRTH_YEAR
+            - Q6_AREA
+            - Q7_RENEWABLES
+            - Q8_YEARS_REGION
+            - Q9_EDUCATION
+            - Q10_INCOME
+            - Q11_CLIMATE_CONCERN
+            - Q12_PARTY_aggregated
+            - RESPONDENT_COUNTRY
+        n-cluster: 5
+    countries:
+        features:
+            - Q3_GENDER
+            - Q4_BIRTH_YEAR
+            - Q6_AREA
+            - Q7_RENEWABLES
+            - Q8_YEARS_REGION
+            - Q9_EDUCATION
+            - Q10_INCOME
+            - Q11_CLIMATE_CONCERN
+            - Q12_PARTY_aggregated
+            - RESPONDENT_COUNTRY
+        n-cluster: 4
+    no-countries:
+        features:
+            - Q3_GENDER
+            - Q4_BIRTH_YEAR
+            - Q6_AREA
+            - Q7_RENEWABLES
+            - Q8_YEARS_REGION
+            - Q9_EDUCATION
+            - Q10_INCOME
+            - Q11_CLIMATE_CONCERN
+            - Q12_PARTY_aggregated
+        n-cluster: 4
+    countries-gender-area:
+        features:
+            - Q3_GENDER
+            - Q4_BIRTH_YEAR
+            - Q6_AREA
+            - Q7_RENEWABLES
+            - Q8_YEARS_REGION
+            - Q9_EDUCATION
+            - Q10_INCOME
+            - Q11_CLIMATE_CONCERN
+            - Q12_PARTY_aggregated
+            - RESPONDENT_COUNTRY
+        n-cluster: 16
 parameters:
     population-count: # 2020, Source: https://data.worldbank.org/indicator/SP.POP.TOTL
         DEU: 83240525

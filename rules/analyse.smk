@@ -315,3 +315,33 @@ rule H29:
     output: "build/H29.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/interaction_plot.R"
+
+
+rule cluster:
+    message: "Cluster respondents by '{wildcards.cluster}' using hierarchical clustering."
+    input:
+        script = "scripts/analyse/cluster.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        features = lambda wildcards: config["cluster"][wildcards.cluster]["features"],
+        n_cluster = lambda wildcards: config["cluster"][wildcards.cluster]["n-cluster"]
+    output:
+        data = "build/cluster/{cluster}/clustered.feather",
+        tree = "build/cluster/{cluster}/tree.png",
+        umap = "build/cluster/{cluster}/umap.png",
+        silh = "build/cluster/{cluster}/silhouette.png"
+    conda: "../envs/cluster.yaml"
+    script: "../scripts/analyse/cluster.R"
+
+
+rule conditional_mm_of_cluster:
+    message: "Create conditional MM plot for cluster '{wildcards.cluster}'."
+    input:
+        script = "scripts/analyse/conditional_mm_plot.R",
+        data = rules.cluster.output.data
+    params:
+        estimate = "mm",
+        by = "cluster"
+    output: "build/cluster/{cluster}/conditional-mm.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/conditional_mm_plot.R"
