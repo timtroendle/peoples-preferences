@@ -24,7 +24,7 @@ rule global_conjoint_raw:
 
 
 rule global_conjoint:
-    message: "Adjust data types."
+    message: "Adjust data types and derive new features."
     input:
         script = "scripts/preprocess/types.py",
         data = rules.global_conjoint_raw.output[0]

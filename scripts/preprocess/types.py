@@ -2,6 +2,19 @@ import numpy as np
 import pandas as pd
 
 
+LIKERT_TYPE_DEF = {
+    "type": "likert",
+    "ordered": True,
+    "rename": {
+        1: "Strongly disagree",
+        2: "Disagree",
+        3: "Neither agree nor disagree",
+        4: "Agree",
+        5: "Strongly agree",
+    }
+}
+
+
 def data_types(path_to_data: str, types: dict, aggregated_levels: dict, categorised_levels: dict, path_to_output: str):
     (
         pd
@@ -16,20 +29,37 @@ def data_types(path_to_data: str, types: dict, aggregated_levels: dict, categori
 def adjust_types(df: pd.DataFrame, types: dict):
     for col, type_def in types.items():
         if type_def["type"] == "factor":
-            try:
-                df[col] = pd.to_numeric(df[col], errors="raise")
-            except ValueError:
-                pass # all good, column is not numeric
-            if "missing-values" in type_def:
-                df[col].replace(type_def["missing-values"], np.nan, inplace=True)
-            df[col] = df[col].astype("category")
-            if "relevel" in type_def:
-                df[col] = df[col].cat.reorder_categories(type_def["relevel"], ordered=type_def["ordered"])
-            else:
-                df[col] = df[col].cat.reorder_categories(df[col].cat.categories, ordered=type_def["ordered"])
-            if "rename" in type_def:
-                df[col] = df[col].cat.rename_categories(type_def["rename"])
+            df[col] = adjust_factor(df[col], type_def)
+        elif type_def["type"] == "likert":
+            df[col] = adjust_factor(df[col], LIKERT_TYPE_DEF)
+        elif type_def["type"] == "numeric":
+            df[col] = adjust_numeric(df[col].copy(), min=type_def["min"], max=type_def["max"])
+        else:
+            raise TypeError(f"Unknown data type: {type_def['type']}")
     return df
+
+
+def adjust_factor(col: pd.Series, type_def: dict):
+    try:
+        col = pd.to_numeric(col, errors="raise")
+    except ValueError:
+        pass # all good, column is not numeric
+    if "missing-values" in type_def:
+        col.replace(type_def["missing-values"], np.nan, inplace=True)
+    col = col.astype("category")
+    if "relevel" in type_def:
+        col = col.cat.reorder_categories(type_def["relevel"], ordered=type_def["ordered"])
+    else:
+        col = col.cat.reorder_categories(col.cat.categories, ordered=type_def["ordered"])
+    if "rename" in type_def:
+        col = col.cat.rename_categories(type_def["rename"])
+    return col
+
+
+def adjust_numeric(col: pd.Series, min: int, max: int):
+    invalid_mask = (col < min) | (col > max)
+    col.loc[invalid_mask] = None
+    return pd.to_numeric(col)
 
 
 def aggregate_levels(df: pd.DataFrame, aggregated_levels: dict):

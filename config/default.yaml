@@ -44,6 +44,9 @@ data-types:
     RESPONDENT_COUNTRY:
         type: factor
         ordered: False
+    RESPONDENT_DEVICE_USED_IN_SURVEY:
+        type: factor
+        ordered: False
     Q2_AGE_TRESHOLD:
         type: factor
         ordered: False
@@ -57,6 +60,10 @@ data-types:
             1: female
             2: male
             3: other
+    Q4_BIRTH_YEAR:
+        type: numeric
+        min: 1922 # max 100 years old
+        max: 2004 # min 18 years old
     Q6_AREA:
         type: factor
         ordered: False
@@ -73,6 +80,10 @@ data-types:
             2: wind
             3: both
             4: neither
+    Q8_YEARS_REGION:
+        type: numeric
+        min: 0
+        max: 100
     Q9_EDUCATION:
         type: factor
         ordered: True
@@ -157,7 +168,58 @@ data-types:
             43: Iniciativa Liberal (IL)
             44: Livre (L)
             45: other (PRT)
-# TODO add remaining attributes
+    Q15_ATTRIBUTE_IMPORTANCE_O1:
+        type: factor
+        ordered: True
+        rename:
+            1: no agreement
+            2: low agreement
+            3: moderate agreement
+            4: high agreement
+            5: very high agreement
+    Q15_ATTRIBUTE_IMPORTANCE_O2:
+        type: factor
+        ordered: True
+        rename:
+            1: no agreement
+            2: low agreement
+            3: moderate agreement
+            4: high agreement
+            5: very high agreement
+    Q15_ATTRIBUTE_IMPORTANCE_O3:
+        type: factor
+        ordered: True
+        rename:
+            1: no agreement
+            2: low agreement
+            3: moderate agreement
+            4: high agreement
+            5: very high agreement
+    Q15_ATTRIBUTE_IMPORTANCE_O4:
+        type: factor
+        ordered: True
+        rename:
+            1: no agreement
+            2: low agreement
+            3: moderate agreement
+            4: high agreement
+            5: very high agreement
+    Q17_ORIGIN_COUNTRY:
+        type: likert
+    Q18_ORIGIN_EU:
+        type: likert
+    Q20_TRANSITION:
+        type: likert
+    Q21_ENVIRONMENTAL:
+        type: likert
+    Q22_CLIMATE_PROTECTION:
+        type: likert
+    Q23_DEMOCRATISATION:
+        type: likert
+    Q24_RESOURCES:
+        type: likert
+    Q25_DEPLOYMENT:
+        type: likert
 new-features:
     aggregated-levels:
         Q9_EDUCATION:
