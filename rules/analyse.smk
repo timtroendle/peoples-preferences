@@ -357,3 +357,39 @@ rule conditional_mm_of_cluster:
     output: "build/cluster/{cluster}/conditional-mm.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/conditional_mm_plot.R"
+
+
+rule robustness_check_choice_set_number:
+    message: "Create conditional MM plot for CHOICE_SET."
+    input:
+        script = "scripts/analyse/conditional_mm_plot.R",
+        data = rules.global_conjoint.output
+    params:
+        estimate = "mm",
+        by = "CHOICE_SET"
+    output: "build/robustness/conditional-mm-choice-set.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/conditional_mm_plot.R"
+
+
+rule robustness_check_label_number:
+    message: "Create conditional MM plot for LABEL."
+    input:
+        script = "scripts/analyse/conditional_mm_plot.R",
+        data = rules.global_conjoint.output
+    params:
+        estimate = "mm",
+        by = "LABEL"
+    output: "build/robustness/conditional-mm-label.png"
+    conda: "../envs/cjoint.yaml"
+    script: "../scripts/analyse/conditional_mm_plot.R"
+
+
+rule design_validation_plot:
+    message: "Plot conditional probabilities of all levels."
+    input:
+        script = "scripts/analyse/design_validation.py",
+        data = rules.global_conjoint.output[0]
+    output: "build/robustness/design-validation.png"
+    conda: "../envs/default.yaml"
+    script: "../scripts/analyse/design_validation.py"

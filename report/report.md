@@ -401,6 +401,14 @@ We have done similar clustering manually, so we cannot expect surprising prefere
 
 We can also form more and smaller clusters. For example, I tried to form 16 clusters (4 countries, 2 gender, 2 areas; not shown here). This will literally allow us to compare German urban males to Polish rural females. The differences in preferences aren't huge though, and the biggest effect stemming again from Poland.
 
+# Robustness checks
+
+![**Marginal means conditional to the order of the eight choice sets that respondents saw.**](build/robustness/conditional-mm-choice-set.png){#fig:mm-choice-set}
+
+![**Marginal means conditional to the order of the profiles that respondents saw.**](build/robustness/conditional-mm-label.png){#fig:mm-label}
+
+![**Conditional probabilites of all levels given the left or right profile.**](build/robustness/design-validation.png){#fig:design-validation}
+
 # Appendix
 
 Additional tables and figures in arbitrary order.

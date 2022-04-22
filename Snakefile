@@ -77,6 +77,9 @@ rule report:
         "build/H27.png",
         "build/H28.png",
         "build/H29.png",
+        "build/robustness/conditional-mm-choice-set.png",
+        "build/robustness/conditional-mm-label.png",
+        "build/robustness/design-validation.png",
     params: options = pandoc_options
     output: "build/report.{suffix}"
     wildcard_constraints:

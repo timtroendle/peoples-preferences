@@ -1,0 +1,29 @@
+font.sans-serif: Lato
+font.weight: normal
+axes.titleweight: bold
+figure.dpi: 300
+
+## The following are adaptations from seaborn's paper context settings
+font.size: 9
+axes.labelsize: 9
+axes.titlesize: 9
+xtick.labelsize: 8
+ytick.labelsize: 8
+legend.fontsize: 8
+legend.title_fontsize: 9
+
+axes.linewidth: 1
+grid.linewidth: 0.8
+lines.linewidth: 1.2
+lines.markersize: 4.8
+patch.linewidth: 0.8
+
+xtick.major.width: 1
+ytick.major.width: 1
+xtick.minor.width: 0.8
+ytick.minor.width: 0.8
+
+xtick.major.size: 4.8
+ytick.major.size: 4.8
+xtick.minor.size: 3.2
+ytick.minor.size: 3.2

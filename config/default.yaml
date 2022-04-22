@@ -2,6 +2,15 @@ data-sources:
     conjointly: data/raw-data-{country_id}.csv
     respondi: data/respondi/Masterdata_14979_{country_id}.xlsx
 data-types:
+    CHOICE_SET:
+        type: factor
+        ordered: True
+    LABEL:
+        type: factor
+        ordered: True
+        rename:
+            1: Left
+            2: Right
     TECHNOLOGY:
         type: factor
         ordered: False
