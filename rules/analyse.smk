@@ -334,6 +334,18 @@ rule cluster:
     script: "../scripts/analyse/cluster.R"
 
 
+rule cluster_analysis:
+    message: "Understand importance of '{wildcards.feature}' for cluster '{wildcards.cluster}'."
+    input:
+        script = "scripts/analyse/umap.R",
+        data = rules.cluster.output.data
+    params:
+        features = lambda wildcards: config["cluster"][wildcards.cluster]["features"]
+    output: "build/cluster/{cluster}/umap-{feature}.png"
+    conda: "../envs/cluster.yaml"
+    script: "../scripts/analyse/umap.R"
+
+
 rule conditional_mm_of_cluster:
     message: "Create conditional MM plot for cluster '{wildcards.cluster}'."
     input:

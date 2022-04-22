@@ -336,20 +336,7 @@ new-features:
                 - Strong
                 - Very strong
 cluster:
-    default:
-        features:
-            - Q3_GENDER
-            - Q4_BIRTH_YEAR
-            - Q6_AREA
-            - Q7_RENEWABLES
-            - Q8_YEARS_REGION
-            - Q9_EDUCATION
-            - Q10_INCOME
-            - Q11_CLIMATE_CONCERN
-            - Q12_PARTY_aggregated
-            - RESPONDENT_COUNTRY
-        n-cluster: 5
-    countries:
+    4-with-country:
         features:
             - Q3_GENDER
             - Q4_BIRTH_YEAR
@@ -362,7 +349,7 @@ cluster:
             - Q12_PARTY_aggregated
             - RESPONDENT_COUNTRY
         n-cluster: 4
-    no-countries:
+    4-without-countries:
         features:
             - Q3_GENDER
             - Q4_BIRTH_YEAR
@@ -374,7 +361,7 @@ cluster:
             - Q11_CLIMATE_CONCERN
             - Q12_PARTY_aggregated
         n-cluster: 4
-    countries-gender-area:
+    16-with-country:
         features:
             - Q3_GENDER
             - Q4_BIRTH_YEAR

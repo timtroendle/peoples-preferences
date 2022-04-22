@@ -366,6 +366,41 @@ I create a statistical model that contains an interaction between TRANSMISSION a
 
 ![**AMCEs and ACIEs for an interaction between TECHNOLOGY and OWNERSHIP.**](build/H29.png){#fig:H29}
 
+# Cluster analysis of respondents
+
+I performed a cluster analysis in the hope to find groups of respondents that reveal different preferences. The hope was that these groups could be formed based on demographic data. In short: this is not the case.
+
+I found that the most important demographic attributes are country, gender, and area (urban/rural). Apparently, German males living in cities are very similar; as are Polish females living in the countryside, and all other possible combinations of the three attributes (@fig:umap_gender, @fig:umap_area, @fig:umap_country).
+
+I used the following ten attributes:
+
+* gender,
+* birth year,
+* area
+* renewables in region,
+* years living in region,
+* education,
+* income,
+* climate concern,
+* party (aggregated to green/right-wing/others),
+* country.
+
+![**Two-dimensional projection of the ten-dimensional demographic attribute space of all respondents with gender color-coded.**](build/cluster/4-with-country/umap-Q3_GENDER.png){#fig:umap_gender}
+
+![**Two-dimensional projection of the ten-dimensional demographic attribute space of all respondents with area color-coded.**](build/cluster/4-with-country/umap-Q6_AREA.png){#fig:umap_area}
+
+![**Two-dimensional projection of the ten-dimensional demographic attribute space of all respondents with country color-coded.**](build/cluster/4-with-country/umap-RESPONDENT_COUNTRY.png){#fig:umap_country}
+
+When I group the respondents into four cluster, the clusters will be formed along country/gender/area lines (@fig:umap). Cluster one contains the rural population in Germany, Denmark, and Portugal; cluster two contains the urban population in Germany and Portugal; cluster three contains the urban population in Denmark, and cluster four contains the Polish population.
+
+![**Two-dimensional projection of the ten-dimensional demographic attribute space of all respondents with clusters color-coded.**](build/cluster/4-with-country/umap.png){#fig:umap}
+
+We have done similar clustering manually, so we cannot expect surprising preference differences. @fig:mm_clustered confirms that. The largest effect we can see stems from the Polish cluster.
+
+![**Marginal means conditional to clustered respondents.**](build/cluster/4-with-country/conditional-mm.png){#fig:mm_clustered}
+
+We can also form more and smaller clusters. For example, I tried to form 16 clusters (4 countries, 2 gender, 2 areas; not shown here). This will literally allow us to compare German urban males to Polish rural females. The differences in preferences aren't huge though, and the biggest effect stemming again from Poland.
+
 # Appendix
 
 Additional tables and figures in arbitrary order.

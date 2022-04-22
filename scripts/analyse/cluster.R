@@ -10,7 +10,7 @@ cluster <- function(path_data, features, n_cluster, path_cluster, path_plot_tree
     respondents <- conjoint  %>%
         group_by(RESPONDENT_ID) %>%
         summarise_all(first)
-    dist <- daisy(respondents[, features], metric = "gower") # TODO handle missing values?
+    dist <- daisy(respondents[, features], metric = "gower")
 
     tree <- calc_and_plot_tree(dist, path_plot_tree)
     cluster_tree <- calc_and_plot_cluster(tree, n_cluster, dist, path_plot_silh)
