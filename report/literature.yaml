@@ -1,5 +1,112 @@
 ---
 references:
+- id: Aizaki:2008
+  abstract: >-
+    This paper briefly introduces choice experiments using R, which is a
+    language and environment for statistical computing. Choice experiments
+    belong to the family of stated preference methods and are applied to
+    numerous issues in research fields such as marketing science, transportation
+    economics, environmental economics, agricultural economics, or health
+    economics. We explain the process of creating choice sets using the
+    AlgDesign package and the process of statistically analyzing responses using
+    the survival package. Since R is free software, readers of this document may
+    find it easy to apply choice experiments to their research projects.
+  author:
+    - family: Aizaki
+      given: Hideo
+    - family: Nishimura
+      given: Kazushi
+  citation-key: Aizaki:2008
+  container-title: Agricultural Information Research
+  issued:
+    - year: 2008
+  language: en
+  page: '9'
+  source: Zotero
+  title: 'Design and Analysis of Choice Experiments Using R: A Brief Introduction'
+  type: article-journal
+
+- id: Allenby:1995
+  abstract: >-
+    The authors use conjoint analysis to provide interval-level estimates of
+    part-worths allowing tradeoffs among attribute levels to be examined.
+    Researchers often possess prior information about the part-worths, such as
+    the order and range restrictions of product attribute levels. It is known,
+    for example, that consumers would rather pay less for a specific product
+    given that all other product attribute levels are unchanged. The authors
+    present a Bayesian approach to incorporate prior ordinal information about
+    these part-worths into the analysis of conjoint studies. Their method
+    results in parameter estimates with greater face validity and predictive
+    performance than estimates that do not utilize prior information or those
+    that use traditional methods such as LINMAP. Unlike existing methods, the
+    authors' methods apply to both rating and choice-based conjoint studies.
+  accessed:
+    - year: 2022
+      month: 5
+      day: 17
+  author:
+    - family: Allenby
+      given: Greg M.
+    - family: Arora
+      given: Neeraj
+    - family: Ginter
+      given: James L.
+  citation-key: Allenby:1995
+  container-title: Journal of Marketing Research
+  DOI: 10.2307/3152044
+  ISSN: 0022-2437
+  issue: '2'
+  issued:
+    - year: 1995
+  page: 152-162
+  publisher: American Marketing Association
+  source: JSTOR
+  title: Incorporating Prior Knowledge into the Analysis of Conjoint Studies
+  type: article-journal
+  URL: https://www.jstor.org/stable/3152044
+  volume: '32'
+
+- id: Allenby:2005
+  abstract: >-
+    Hierarchical Bayes models free researchers from computational constraints
+    and allow for the development of more realistic models of buyer behavior and
+    decision making. Moreover, this freedom enables exploration of marketing
+    problems that have proven elusive over the years, such as models for
+    advertising ROI, sales force effectiveness, and similarly complex problems
+    that often involve simultaneity.  The promise of Bayesian statistical
+    methods lies in the ability to deal with these complex problems, but the
+    very complexity of the problems creates a significant challenge to both
+    researchers and practitioners.   We illustrate the promise of HB models and
+    provide an introduction to their computation.
+  accessed:
+    - year: 2022
+      month: 4
+      day: 27
+  author:
+    - family: Allenby
+      given: Greg M.
+    - family: Rossi
+      given: Peter E.
+    - family: McCulloch
+      given: Robert E.
+  citation-key: Allenby:2005
+  DOI: 10.2139/ssrn.655541
+  event-place: Rochester, NY
+  genre: SSRN Scholarly Paper
+  issued:
+    - year: 2005
+      month: 1
+      day: 1
+  language: en
+  number: '655541'
+  publisher: Social Science Research Network
+  publisher-place: Rochester, NY
+  source: papers.ssrn.com
+  title: 'Hierarchical Bayes Models: A Practitioners Guide'
+  title-short: Hierarchical Bayes Models
+  type: report
+  URL: https://papers.ssrn.com/abstract=655541
+
 - id: Amrhein:2019
   accessed:
     - year: 2019
@@ -489,6 +596,68 @@ references:
   URL: https://www.americanscientist.org/article/the-statistical-crisis-in-science
   volume: '102'
 
+- id: Graham:2020
+  author:
+    - family: Graham
+      given: Matthew H
+  citation-key: Graham:2020
+  issued:
+    - year: 2020
+      month: 11
+      day: 22
+  language: en
+  page: '22'
+  source: Zotero
+  title: Programming Choice Experiments in Qualtrics
+  type: article-journal
+
+- id: Green:2004
+  abstract: >-
+    Conjoint analysis is marketers’ favorite methodology for finding out how
+    buyers make tradeoffs among competing products and suppliers. Conjoint
+    analysts develop and present descriptions of alternative products or
+    services that are prepared from fractional factorial, experimental designs.
+    They use various models to infer buyers’ partworths for attribute levels,
+    and enter the partworths into buyer choice simulators to predict how buyers
+    will choose among products and services. Easy-to-use software has been
+    important for applying these models. Thousands of applications of conjoint
+    analysis have been carried out over the past three decades.
+  accessed:
+    - year: 2022
+      month: 4
+      day: 27
+  author:
+    - family: Green
+      given: Paul E.
+    - family: Krieger
+      given: Abba M.
+    - family: Wind
+      given: Yoram
+  citation-key: Green:2004
+  collection-title: International Series in Quantitative Marketing
+  container-title: >-
+    Marketing Research and Modeling: Progress and Prospects: A Tribute to Paul
+    E. Green
+  DOI: 10.1007/978-0-387-28692-1_6
+  editor:
+    - family: Wind
+      given: Yoram
+    - family: Green
+      given: Paul E.
+  event-place: Boston, MA
+  ISBN: 978-0-387-28692-1
+  issued:
+    - year: 2004
+  language: en
+  page: 117-139
+  publisher: Springer US
+  publisher-place: Boston, MA
+  source: Springer Link
+  title: 'Thirty Years of Conjoint Analysis: Reflections and Prospects'
+  title-short: Thirty Years of Conjoint Analysis
+  type: chapter
+  URL: https://doi.org/10.1007/978-0-387-28692-1_6
+
 - id: Haac:2022
   abstract: "The moving shadows caused by wind turbines, referred to as “shadow flicker” (“SF”), are known to generate annoyance in a subset of the exposed population. However, the relationship between the level of modeled SF exposure and the population's perceived SF and SF annoyance is poorly understood. Improved understanding of SF exposure impacts could provide a basis for exposure thresholds and, in turn, potentially improve community acceptance of and experience with wind power projects. This study modeled SF exposure at nearly 35,000 residences across 61 wind projects in the United States, 747 of which were also survey respondents. Using these results, we analyzed the factors that led to perceived SF and self-reported SF annoyance. We found that perceived SF is primarily an objective response to SF exposure, distance to the closest turbine, and whether the respondent moved in after the wind project was built. Conversely, SF annoyance was not significantly correlated with SF exposure. Rather, SF annoyance is primarily a subjective response to wind turbine aesthetics, annoyance to other anthropogenic sounds, level of education, and age of the respondent. We also examined regulations governing SF in the sample project areas and compared them to SF exposure in the surrounding population. Additionally, we found that noise limits could serve as a proxy for SF exposure, as 90% of those exposed to wind turbine sound of no more than 45 dBA L1h had SF exposure of less than 8\_h per year (a prototypical EU regulatory threshold)."
   accessed:
@@ -968,6 +1137,40 @@ references:
   URL: https://linkinghub.elsevier.com/retrieve/pii/S0921800921000872
   volume: '185'
 
+- id: Lenk:1996
+  accessed:
+    - year: 2022
+      month: 4
+      day: 29
+  author:
+    - family: Lenk
+      given: Peter J.
+    - family: DeSarbo
+      given: Wayne S.
+    - family: Green
+      given: Paul E.
+    - family: Young
+      given: Martin R.
+  citation-key: Lenk:1996
+  container-title: Marketing Science
+  container-title-short: Marketing Science
+  DOI: 10.1287/mksc.15.2.173
+  ISSN: 0732-2399, 1526-548X
+  issue: '2'
+  issued:
+    - year: 1996
+      month: 5
+  language: en
+  page: 173-191
+  source: DOI.org (Crossref)
+  title: >-
+    Hierarchical Bayes Conjoint Analysis: Recovery of Partworth Heterogeneity
+    from Reduced Experimental Designs
+  title-short: Hierarchical Bayes Conjoint Analysis
+  type: article-journal
+  URL: http://pubsonline.informs.org/doi/abs/10.1287/mksc.15.2.173
+  volume: '15'
+
 - id: 'Louviere:'
   author:
     - family: Louviere
@@ -1227,6 +1430,103 @@ references:
   URL: >-
     https://gateway.webofknowledge.com/gateway/Gateway.cgi?GWVersion=2&SrcAuth=DOISource&SrcApp=WOS&KeyAID=10.1038%2Fs41560-019-0460-9&DestApp=DOI&SrcAppSID=C3M7baQItVWqAmnlH2c&SrcJTitle=NATURE+ENERGY&DestDOIRegistrantName=Springer+Science+and+Business+Media+LLC
   volume: '4'
+
+- id: Rossi:2003
+  abstract: >-
+    Bayesian methods have become widespread in marketing literature. We review
+    the essence of the Bayesian approach and explain why it is particularly
+    useful for marketing problems. While the appeal of the Bayesian approach has
+    long been noted by researchers, recent developments in computational methods
+    and expanded availability of detailed marketplace data has fueled the growth
+    in application of Bayesian methods in marketing. We emphasize the modularity
+    and flexibility of modern Bayesian approaches. The usefulness of Bayesian
+    methods in situations in which there is limited information about a large
+    number of units or where the information comes from different sources is
+    noted. We include an extensive discussion of open issues and directions for
+    future research.
+  accessed:
+    - year: 2022
+      month: 4
+      day: 27
+  author:
+    - family: Rossi
+      given: Peter E.
+    - family: Allenby
+      given: Greg M.
+  citation-key: Rossi:2003
+  container-title: Marketing Science
+  DOI: 10.1287/mksc.22.3.304.17739
+  ISSN: 0732-2399
+  issue: '3'
+  issued:
+    - year: 2003
+      month: 8
+  page: 304-328
+  publisher: INFORMS
+  source: pubsonline.informs.org (Atypon)
+  title: Bayesian Statistics and Marketing
+  type: article-journal
+  URL: https://pubsonline.informs.org/doi/10.1287/mksc.22.3.304.17739
+  volume: '22'
+
+- id: Salak:2022
+  abstract: >-
+    This paper examines how mixes (wind, PV, power lines) of different renewable
+    energy infrastructure (REI) impact people's preferences for various
+    landscape types. This does not only involve the visual character but also
+    meanings that are assigned to these landscapes, which together influence the
+    perceived landscape quality. The research is based on a representative
+    online panel survey of Swiss residents (n = 1062). A discrete choice model
+    (15 choice tasks) was implemented to estimate people's preferences for
+    different REI scenarios across several landscape types. Hierarchical Bayes
+    analysis allowed us to analyze preferences of the different respondents,
+    while choice simulation allowed us to estimate preferences for every
+    potential scenario (n = 224) of the discrete choice experiment. While the
+    results show a heterogeneous picture of people's preferences, they also
+    reveal common general patterns. Near-natural mid/high-elevation landscapes
+    in the Alps are clearly rejected for REI implementation. Landscapes
+    dominated by settlements or intensive agricultural use and landscapes in
+    mountain tourist areas are preferably selected for REI developments. REI
+    scenarios including overhead power lines perform consistently lower than
+    scenarios without power lines. Overall, high preferences for scenarios with
+    low REI indicate that society still lacks awareness of the need for massive
+    REI implementation to achieve a sustainable energy transition.
+  accessed:
+    - year: 2022
+      month: 5
+      day: 13
+  author:
+    - family: Salak
+      given: B.
+    - family: Kienast
+      given: F.
+    - family: Olschewski
+      given: R.
+    - family: Spielhofer
+      given: R.
+    - family: Wissen Hayek
+      given: U.
+    - family: Grêt-Regamey
+      given: A.
+    - family: Hunziker
+      given: M.
+  citation-key: Salak:2022
+  container-title: Renewable Energy
+  container-title-short: Renewable Energy
+  DOI: 10.1016/j.renene.2022.04.154
+  ISSN: 0960-1481
+  issued:
+    - year: 2022
+      month: 5
+      day: 5
+  language: en
+  source: ScienceDirect
+  title: >-
+    Impact on the perceived landscape quality through renewable energy
+    infrastructure. A discrete choice experiment in the context of the swiss
+    energy transition
+  type: article-journal
+  URL: https://www.sciencedirect.com/science/article/pii/S096014812200622X
 
 - id: Shmueli:2010
   abstract: >-

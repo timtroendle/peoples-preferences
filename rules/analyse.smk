@@ -393,3 +393,17 @@ rule design_validation_plot:
     output: "build/robustness/design-validation.png"
     conda: "../envs/default.yaml"
     script: "../scripts/analyse/design_validation.py"
+
+
+rule bayesm_model:
+    message: "Fit hierarchical Bayes model {wildcards.model}."
+    input:
+        script = "scripts/analyse/bayesm.R",
+        data = rules.global_conjoint.output[0]
+    params:
+        formula = lambda wildcards: config["models"][f"{wildcards.model}"]["formula"],
+        n_iterations = lambda wildcards: config["models"][f"{wildcards.model}"]["formula"]
+    log: "build/logs/{model}/bayesm.log"
+    output: "build/{model}/betas.feather"
+    conda: "../envs/bayesm.yaml"
+    script: "../scripts/analyse/bayesm.R"
