@@ -1,7 +1,6 @@
 rule amce_plot:
     message: "Create plot of AMCEs."
     input:
-        script = "scripts/analyse/amce_plot.R",
         data = rules.global_conjoint.output[0]
     output: "build/amce.png"
     conda: "../envs/cjoint.yaml"
@@ -11,7 +10,6 @@ rule amce_plot:
 rule mm_plot:
     message: "Create plot of MMs."
     input:
-        script = "scripts/analyse/cregg_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm",
@@ -23,7 +21,6 @@ rule mm_plot:
 rule national_respondents:
     message: "Statistical overview over respondents in {wildcards.country_id}."
     input:
-        script = "scripts/analyse/respondents.py",
         data = rules.global_conjoint.output[0]
     output: "build/{country_id}/respondent-stats.csv"
     conda: "../envs/default.yaml"
@@ -33,7 +30,6 @@ rule national_respondents:
 rule H1:
     message: "Create plot for H1."
     input:
-        script = "scripts/analyse/interaction_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS * PRICES + LAND + TRANSMISSION + OWNERSHIP",
@@ -45,7 +41,6 @@ rule H1:
 rule H2:
     message: "Create plot for H2."
     input:
-        script = "scripts/analyse/cregg_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         estimate = "amce",
@@ -57,7 +52,6 @@ rule H2:
 rule H4:
     message: "Create plot for H4."
     input:
-        script = "scripts/analyse/interaction_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND * PRICES + TRANSMISSION + OWNERSHIP",
@@ -69,7 +63,6 @@ rule H4:
 rule H5:
     message: "Create plot for H5."
     input:
-        script = "scripts/analyse/interaction_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND + PRICES * OWNERSHIP + TRANSMISSION",
@@ -81,7 +74,6 @@ rule H5:
 rule H6:
     message: "Create plot for H6."
     input:
-        script = "scripts/analyse/conditional_mm_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm_diff",
@@ -94,7 +86,6 @@ rule H6:
 rule H7:
     message: "Create plot for H7."
     input:
-        script = "scripts/analyse/interaction_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS * LAND + PRICES + TRANSMISSION + OWNERSHIP",
@@ -106,7 +97,6 @@ rule H7:
 rule H8:
     message: "Create plot for H8."
     input:
-        script = "scripts/analyse/interaction_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND*TECHNOLOGY + PRICES + TRANSMISSION + OWNERSHIP",
@@ -118,7 +108,6 @@ rule H8:
 rule H9:
     message: "Create plot for H9."
     input:
-        script = "scripts/analyse/interaction_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS*TECHNOLOGY + LAND + PRICES + TRANSMISSION + OWNERSHIP",
@@ -130,7 +119,6 @@ rule H9:
 rule H11:
     message: "Create plot for H11."
     input:
-        script = "scripts/analyse/conditional_mm_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm",
@@ -143,7 +131,6 @@ rule H11:
 rule H16:
     message: "Create plot for H16."
     input:
-        script = "scripts/analyse/conditional_mm_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm",
@@ -156,7 +143,6 @@ rule H16:
 rule H17:
     message: "Create plot for H17."
     input:
-        script = "scripts/analyse/conditional_mm_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm",
@@ -169,7 +155,6 @@ rule H17:
 rule H18:
     message: "Create plot for H18."
     input:
-        script = "scripts/analyse/conditional_mm_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm",
@@ -182,7 +167,6 @@ rule H18:
 rule H19:
     message: "Create plot for H19."
     input:
-        script = "scripts/analyse/conditional_mm_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm",
@@ -195,7 +179,6 @@ rule H19:
 rule H20:
     message: "Create plot for H20."
     input:
-        script = "scripts/analyse/conditional_mm_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm",
@@ -208,7 +191,6 @@ rule H20:
 rule H21:
     message: "Create plot for H21."
     input:
-        script = "scripts/analyse/conditional_mm_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm",
@@ -221,7 +203,6 @@ rule H21:
 rule H22:
     message: "Create plot for H22."
     input:
-        script = "scripts/analyse/conditional_mm_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm",
@@ -234,7 +215,6 @@ rule H22:
 rule H23:
     message: "Create plot for H23."
     input:
-        script = "scripts/analyse/conditional_mm_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         estimate = "mm",
@@ -247,7 +227,6 @@ rule H23:
 rule H24:
     message: "Create plot for H24."
     input:
-        script = "scripts/analyse/interaction_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND * OWNERSHIP + PRICES + TRANSMISSION",
@@ -259,7 +238,6 @@ rule H24:
 rule H25:
     message: "Create plot for H25."
     input:
-        script = "scripts/analyse/interaction_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS * TRANSMISSION + LAND + PRICES + OWNERSHIP",
@@ -271,7 +249,6 @@ rule H25:
 rule H26:
     message: "Create plot for H26."
     input:
-        script = "scripts/analyse/interaction_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND * TRANSMISSION + PRICES + OWNERSHIP",
@@ -284,7 +261,6 @@ rule H26:
 rule H27:
     message: "Create plot for H27."
     input:
-        script = "scripts/analyse/interaction_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         formula = "CHOICE_INDICATOR ~ TECHNOLOGY + SHARE_IMPORTS + LAND + OWNERSHIP + PRICES * TRANSMISSION",
@@ -296,7 +272,6 @@ rule H27:
 rule H28:
     message: "Create plot for H28."
     input:
-        script = "scripts/analyse/interaction_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         formula = "CHOICE_INDICATOR ~ TECHNOLOGY * TRANSMISSION + SHARE_IMPORTS + LAND + OWNERSHIP + PRICES",
@@ -308,7 +283,6 @@ rule H28:
 rule H29:
     message: "Create plot for H29."
     input:
-        script = "scripts/analyse/interaction_plot.R",
         data = rules.global_conjoint.output[0]
     params:
         formula = "CHOICE_INDICATOR ~ TECHNOLOGY * OWNERSHIP + SHARE_IMPORTS + LAND + PRICES + TRANSMISSION",
@@ -320,7 +294,6 @@ rule H29:
 rule cluster:
     message: "Cluster respondents by '{wildcards.cluster}' using hierarchical clustering."
     input:
-        script = "scripts/analyse/cluster.R",
         data = rules.global_conjoint.output[0]
     params:
         features = lambda wildcards: config["cluster"][wildcards.cluster]["features"],
@@ -337,7 +310,6 @@ rule cluster:
 rule cluster_analysis:
     message: "Understand importance of '{wildcards.feature}' for cluster '{wildcards.cluster}'."
     input:
-        script = "scripts/analyse/umap.R",
         data = rules.cluster.output.data
     params:
         features = lambda wildcards: config["cluster"][wildcards.cluster]["features"]
@@ -349,7 +321,6 @@ rule cluster_analysis:
 rule conditional_mm_of_cluster:
     message: "Create conditional MM plot for cluster '{wildcards.cluster}'."
     input:
-        script = "scripts/analyse/conditional_mm_plot.R",
         data = rules.cluster.output.data
     params:
         estimate = "mm",
@@ -362,7 +333,6 @@ rule conditional_mm_of_cluster:
 rule robustness_check_choice_set_number:
     message: "Create conditional MM plot for CHOICE_SET."
     input:
-        script = "scripts/analyse/conditional_mm_plot.R",
         data = rules.global_conjoint.output
     params:
         estimate = "mm",
@@ -375,7 +345,6 @@ rule robustness_check_choice_set_number:
 rule robustness_check_label_number:
     message: "Create conditional MM plot for LABEL."
     input:
-        script = "scripts/analyse/conditional_mm_plot.R",
         data = rules.global_conjoint.output
     params:
         estimate = "mm",
@@ -388,7 +357,6 @@ rule robustness_check_label_number:
 rule design_validation_plot:
     message: "Plot conditional probabilities of all levels."
     input:
-        script = "scripts/analyse/design_validation.py",
         data = rules.global_conjoint.output[0]
     output: "build/robustness/design-validation.png"
     conda: "../envs/default.yaml"

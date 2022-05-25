@@ -1,7 +1,6 @@
 rule national_conjoint_raw:
     message: "Preprocess conjoint data for country {wildcards.country_id}."
     input:
-        script = "scripts/preprocess/national.py",
         conjointly = config["data-sources"]["conjointly"],
         respondi = config["data-sources"]["respondi"]
     params:
@@ -16,7 +15,6 @@ rule national_conjoint_raw:
 rule global_conjoint_raw:
     message: "Merge all national conjoint datasets."
     input:
-        script = "scripts/preprocess/merge.py",
         datasets = expand("build/{country_id}/raw.feather", country_id=COUNTRY_IDS)
     output: "build/raw.feather"
     conda: "../envs/preprocess.yaml"
@@ -26,7 +24,6 @@ rule global_conjoint_raw:
 rule global_conjoint:
     message: "Adjust data types and derive new features."
     input:
-        script = "scripts/preprocess/types.py",
         data = rules.global_conjoint_raw.output[0]
     params:
         types = config["data-types"],

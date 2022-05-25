@@ -1,7 +1,6 @@
 rule bayesm_model:
     message: "Fit hierarchical Bayes model {wildcards.model}."
     input:
-        script = "scripts/analyse/bayes/bayesm.R",
         data = rules.global_conjoint.output[0]
     params:
         formula = lambda wildcards: config["models"][f"{wildcards.model}"]["formula"],
@@ -15,7 +14,6 @@ rule bayesm_model:
 rule convergence_plot:
     message: "Plot convergence of {wildcards.model} parameters."
     input:
-        script = "scripts/analyse/bayes/convergence.py",
         betas = rules.bayesm_model.output[0]
     params: burn_in = lambda wildcards: config["models"][f"{wildcards.model}"]["burn-in-length"],
     output: "build/{model}/convergence.png"
@@ -26,7 +24,6 @@ rule convergence_plot:
 rule level_part_worth_utility:
     message: "Plot part-worth utility of all {wildcards.model} levels."
     input:
-        script = "scripts/analyse/bayes/levels.py",
         betas = rules.bayesm_model.output[0]
     params: burn_in = lambda wildcards: config["models"][f"{wildcards.model}"]["burn-in-length"],
     output: "build/{model}/level-part-worths.png"

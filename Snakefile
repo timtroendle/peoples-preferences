@@ -1,3 +1,5 @@
+from snakemake.utils import min_version
+
 PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-secnos --citeproc"
 COUNTRY_IDS = ["DEU", "POL", "PRT", "DNK"]
 
@@ -5,6 +7,7 @@ configfile: "config/default.yaml"
 include: "rules/preprocess.smk"
 include: "rules/analyse.smk"
 include: "rules/bayes.smk"
+min_version("7.8")
 wildcard_constraints:
     country_id = "|".join(COUNTRY_IDS)
 
