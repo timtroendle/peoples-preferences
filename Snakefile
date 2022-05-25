@@ -4,6 +4,7 @@ COUNTRY_IDS = ["DEU", "POL", "PRT", "DNK"]
 configfile: "config/default.yaml"
 include: "rules/preprocess.smk"
 include: "rules/analyse.smk"
+include: "rules/bayes.smk"
 wildcard_constraints:
     country_id = "|".join(COUNTRY_IDS)
 
@@ -19,7 +20,9 @@ rule all:
     message: "Run entire analysis and compile report."
     input:
         "build/report.html",
-        "build/test-report.html"
+        "build/test-report.html",
+        expand("build/{model}/convergence.png", model=config["models"]),
+        expand("build/{model}/level-part-worths.png", model=config["models"]),
 
 
 def pandoc_options(wildcards):

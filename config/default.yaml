@@ -398,6 +398,7 @@ parameters:
 models:
     modelA:
         formula: ~ TECHNOLOGY + LAND + SHARE_IMPORTS + PRICES + OWNERSHIP # FIXME add transmission
-        n_iterations: 5000
+        n-iterations: 5000
+        burn-in-length: 2500
     # TODO add respondent covariates
     # TODO add interaction effects
