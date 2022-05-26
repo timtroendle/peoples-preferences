@@ -31,6 +31,7 @@ bayesm <- function(path_to_data, path_to_betas, formula, n_iterations) {
 
 preprocess_data <- function(conjoint, formula) {
     dummy <- model.matrix(as.formula(formula), data = conjoint)
+    dummy <- dummy[, colnames(dummy)[2:length(colnames(dummy))]] # remove intercept
 
     N <- nlevels(conjoint$RESPONDENT_ID)
     # N <- 100 # FIXME remove
