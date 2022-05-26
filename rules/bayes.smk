@@ -7,6 +7,9 @@ rule bayesm_model:
         n_iterations = lambda wildcards: config["models"][f"{wildcards.model}"]["n-iterations"]
     log: "build/logs/{model}/bayesm.log"
     output: "build/{model}/betas.feather"
+    resources:
+        runtime = 240,
+        memory = 24000
     conda: "../envs/bayesm.yaml"
     script: "../scripts/analyse/bayes/bayesm.R"
 

@@ -7,10 +7,14 @@ configfile: "config/default.yaml"
 include: "rules/preprocess.smk"
 include: "rules/analyse.smk"
 include: "rules/bayes.smk"
-min_version("7.8")
+include: "./rules/sync.smk"
+localrules: all, report, clean
 wildcard_constraints:
     country_id = "|".join(COUNTRY_IDS)
+min_version("7.8")
 
+onstart:
+    shell("mkdir -p build/logs")
 onsuccess:
     if "email" in config.keys():
         shell("echo "" | mail -s 'peoples-preferences succeeded' {config[email]}")

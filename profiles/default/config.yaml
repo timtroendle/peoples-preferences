@@ -1,0 +1,3 @@
+use-conda: True
+cores: 3
+rerun-triggers: [params,mtime,input,code]

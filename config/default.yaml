@@ -1,6 +1,12 @@
 data-sources:
     conjointly: data/raw-data-{country_id}.csv
     respondi: data/respondi/Masterdata_14979_{country_id}.xlsx
+cluster-sync:
+    url: euler.ethz.ch
+    send-ignore: .syncignore-send
+    receive-ignore: .syncignore-receive
+    cluster-base-dir: ~/Develop/peoples-preferences/
+    local-results-dir: build/cluster
 data-types:
     CHOICE_SET:
         type: factor
