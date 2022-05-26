@@ -6,7 +6,7 @@ library(tidyr)
 sink(snakemake@log[[1]], type = c("output", "message"))
 
 
-bayesm <- function(path_to_data, path_to_betas, formula, n_iterations) {
+bayesm <- function(path_to_data, path_to_betas, formula, n_iterations, keep) {
     conjoint <- read_feather(path_to_data)
     conjoint$RESPONDENT_ID <- factor(conjoint$RESPONDENT_ID)
 
@@ -14,7 +14,7 @@ bayesm <- function(path_to_data, path_to_betas, formula, n_iterations) {
 
     data  <- list(lgtdata = dat, p = 2)
     prior <- list(ncomp = 1)
-    mcmc  <- list(R = n_iterations, nprint = 0)
+    mcmc  <- list(R = n_iterations, nprint = 0, keep = keep)
 
     out <- rhierMnlRwMixture(Data = data, Prior = prior, Mcmc = mcmc)
 
@@ -78,5 +78,6 @@ bayesm(
     snakemake@input[["data"]],
     snakemake@output[[1]],
     snakemake@params[["formula"]],
-    snakemake@params[["n_iterations"]]
+    snakemake@params[["n_iterations"]],
+    snakemake@params[["keep"]]
 )

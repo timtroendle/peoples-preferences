@@ -1,0 +1,6 @@
+models:
+    modelA:
+        formula: ~ TECHNOLOGY + LAND + SHARE_IMPORTS + PRICES + OWNERSHIP # FIXME add transmission
+        n-iterations: 50000
+        burn-in-length: 25000
+        keep: 10

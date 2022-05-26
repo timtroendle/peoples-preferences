@@ -5,7 +5,7 @@ cluster-sync:
     url: euler.ethz.ch
     send-ignore: .syncignore-send
     receive-ignore: .syncignore-receive
-    cluster-base-dir: ~/Develop/peoples-preferences/
+    cluster-base-dir: ~/Develop/peoples-preferences
     local-results-dir: build/cluster
 data-types:
     CHOICE_SET:
@@ -406,5 +406,6 @@ models:
         formula: ~ TECHNOLOGY + LAND + SHARE_IMPORTS + PRICES + OWNERSHIP # FIXME add transmission
         n-iterations: 5000
         burn-in-length: 2500
+        keep: 1
     # TODO add respondent covariates
     # TODO add interaction effects
