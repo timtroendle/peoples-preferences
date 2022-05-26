@@ -5,12 +5,12 @@ import seaborn as sns
 
 def level_part_worths(path_to_betas: str, burn_in_length: int, path_to_plot: str):
     betas = pd.read_feather(path_to_betas)
-    avg_parameter = betas.set_index("iteration").iloc[burn_in_length:].groupby("parameter").mean()
+    avg_parameter = betas.where(betas.iteration > burn_in_length).dropna().groupby("parameter").mean()
 
     fig = plt.figure(figsize=(8, 6))
     ax = fig.add_subplot(111)
 
-    sns.barplot(
+    sns.barplot( # TODO add confidence intervals
         data=avg_parameter.reset_index(),
         y="parameter",
         x="value",

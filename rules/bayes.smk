@@ -4,7 +4,7 @@ rule bayesm_model:
         data = rules.global_conjoint.output[0]
     params:
         formula = lambda wildcards: config["models"][f"{wildcards.model}"]["formula"],
-        n_iterations = lambda wildcards: config["models"][f"{wildcards.model}"]["formula"]
+        n_iterations = lambda wildcards: config["models"][f"{wildcards.model}"]["n-iterations"]
     log: "build/logs/{model}/bayesm.log"
     output: "build/{model}/betas.feather"
     conda: "../envs/bayesm.yaml"

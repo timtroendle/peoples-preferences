@@ -14,9 +14,9 @@ bayesm <- function(path_to_data, path_to_betas, formula, n_iterations) {
 
     data  <- list(lgtdata = dat, p = 2)
     prior <- list(ncomp = 1)
-    mcmc  <- list(R = 0.5e4, nprint = 0)
+    mcmc  <- list(R = n_iterations, nprint = 0)
 
-    out <- rhierMnlRwMixture(Data = data, Prior = prior, Mcmc = mcmc) # TODO check right model function?
+    out <- rhierMnlRwMixture(Data = data, Prior = prior, Mcmc = mcmc)
 
     betas <- excavate_betas(
         out = out,
@@ -30,10 +30,10 @@ bayesm <- function(path_to_data, path_to_betas, formula, n_iterations) {
 
 
 preprocess_data <- function(conjoint, formula) {
-    dummy <- model.matrix(as.formula(formula), data = conjoint) # TODO switch to sum contrast
+    dummy <- model.matrix(as.formula(formula), data = conjoint)
 
     N <- nlevels(conjoint$RESPONDENT_ID)
-    N <- 100 # FIXME remove
+    # N <- 100 # FIXME remove
     dat <- vector(mode = "list", length = N)
     for (i in 1:N) {
         respondent_mask <- conjoint$RESPONDENT_ID == levels(conjoint$RESPONDENT_ID)[i]
