@@ -21,7 +21,8 @@ bayesm <- function(path_to_data, path_to_betas, formula, n_iterations, keep) {
     betas <- excavate_betas(
         out = out,
         respondents = levels(factor(conjoint$RESPONDENT_ID)),
-        parameter_names = colnames(dat[[1]]$X)
+        parameter_names = colnames(dat[[1]]$X),
+        keep = keep
     )
 
     write_feather(betas, path_to_betas)
@@ -34,7 +35,7 @@ preprocess_data <- function(conjoint, formula) {
     dummy <- dummy[, colnames(dummy)[2:length(colnames(dummy))]] # remove intercept
 
     N <- nlevels(conjoint$RESPONDENT_ID)
-    # N <- 100 # FIXME remove
+    N <- 1000 # FIXME remove
     dat <- vector(mode = "list", length = N)
     for (i in 1:N) {
         respondent_mask <- conjoint$RESPONDENT_ID == levels(conjoint$RESPONDENT_ID)[i]
@@ -47,14 +48,14 @@ preprocess_data <- function(conjoint, formula) {
 }
 
 
-excavate_betas <- function(out, respondents, parameter_names) {
+excavate_betas <- function(out, respondents, parameter_names, keep) {
     betas <- NULL
     for (i in 1:dim(out$betadraw)[2]) {
         beta <- data.frame(out$betadraw[1:dim(out$betadraw)[1], i, 1:dim(out$betadraw)[3]])
         colnames(beta) <- lapply(colnames(beta), integer_iteration)
         beta$respondent <- respondents[1:dim(out$betadraw)[1]]
         beta <- beta %>% pivot_longer(!respondent, names_to = "iteration", values_to = "value")
-        beta$iteration <- as.integer(beta$iteration)
+        beta$iteration <- as.integer(beta$iteration) * keep
         beta$parameter <- parameter_names[i]
         if (is.null(betas)) {
             betas <- beta
