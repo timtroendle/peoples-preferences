@@ -4,7 +4,6 @@ local-cores: 1
 latency-wait: 60
 use-envmodules: True
 use-conda: True
-rerun-triggers: [params,mtime,input,code]
 default-resources: [
     "runtime=10",
     "cores=1",
