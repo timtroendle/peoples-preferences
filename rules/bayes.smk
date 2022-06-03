@@ -53,3 +53,16 @@ rule level_part_worth_utility:
         memory = memory_requirements_plots
     conda: "../envs/default.yaml"
     script: "../scripts/analyse/bayes/levels.py"
+
+
+rule logistic_regression:
+    message: "Fit a simplistic logistic regression model."
+    input:
+        data = rules.global_conjoint.output[0]
+    params:
+        n_tune = 2000,
+        n_draws = 2000
+    threads: 4
+    output: "build/models/logistic-regression.nc"
+    conda: "../envs/pymc.yaml"
+    script: "../scripts/analyse/bayes/logistic.py"
