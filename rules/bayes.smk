@@ -23,7 +23,7 @@ rule bayesm_model:
         n_iterations = lambda wildcards: config["models"][f"{wildcards.model}"]["n-iterations"],
         keep = lambda wildcards: config["models"][f"{wildcards.model}"]["keep"],
     log: "build/logs/{model}/bayesm.log"
-    output: "build/{model}/betas.feather"
+    output: "build/models/{model}/betas.feather"
     resources:
         runtime = 240,
         memory = memory_requirements_bayes
@@ -36,7 +36,7 @@ rule convergence_plot:
     input:
         betas = rules.bayesm_model.output[0]
     params: burn_in = lambda wildcards: config["models"][f"{wildcards.model}"]["burn-in-length"],
-    output: "build/{model}/convergence.png"
+    output: "build/models/{model}/convergence.png"
     resources:
         memory = memory_requirements_plots
     conda: "../envs/default.yaml"
@@ -48,7 +48,7 @@ rule level_part_worth_utility:
     input:
         betas = rules.bayesm_model.output[0]
     params: burn_in = lambda wildcards: config["models"][f"{wildcards.model}"]["burn-in-length"],
-    output: "build/{model}/level-part-worths.png"
+    output: "build/models/{model}/level-part-worths.png"
     resources:
         memory = memory_requirements_plots
     conda: "../envs/default.yaml"
@@ -61,8 +61,24 @@ rule logistic_regression:
         data = rules.global_conjoint.output[0]
     params:
         n_tune = 2000,
-        n_draws = 2000
+        n_draws = 2000,
+    resources:
+        runtime = 60
     threads: 4
     output: "build/models/logistic-regression.nc"
     conda: "../envs/pymc.yaml"
     script: "../scripts/analyse/bayes/logistic.py"
+
+
+rule multinomial_logit:
+    message: "Fit a multinomial logit model."
+    input: data = rules.global_conjoint.output[0]
+    params:
+        n_tune = 2000,
+        n_draws = 2000,
+    resources:
+        runtime = 60
+    threads: 4
+    output: "build/models/multinomial-logit.nc"
+    conda: "../envs/pymc.yaml"
+    script: "../scripts/analyse/bayes/multinomial.py"

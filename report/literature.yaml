@@ -1469,6 +1469,75 @@ references:
   URL: https://pubsonline.informs.org/doi/10.1287/mksc.22.3.304.17739
   volume: '22'
 
+- id: Salak:2021
+  abstract: "In response to the effects of climate change, many countries are realigning their energy systems to the principle of sustainability. An energy system change will lead to the development of substantial renewable energy infrastructure (mostly wind and photovoltaic) in landscapes with effects on perceived landscape quality and socio-political acceptance. Both direct perceptive effects of physical landscape structures and latent meanings associated with those structures potentially affect their acceptance. This work evaluates the role of landscape-technology fit (derived from place-technology fit) representing the extent to which alternatives within each of these two components “fit” together (e.g., does a given type of renewable energy infrastructure fit well within some landscapes but not others?). It also evaluates the role of latent meanings ascribed to landscapes and renewable energy infrastructure within that mentioned “fit” decision as well as the role of prior experience (exposure) to both. The study is based on a survey of Swiss citizens in a representative online panel (n\_=\_1062). To estimate preferences for diverse renewable energy infrastructure scenarios across landscape types, a discrete choice model was implemented. Meanings ascribed to landscapes and renewable energy infrastructure were included in a second component of the survey. An innovative hybrid choice model approach facilitated integration of latent and observed variables in a hierarchy of predictors. Results show that most effects were statistically significant. Landscape-technology fit functioned as a moderator between choice attributes and preferences; in turn, it is predicted by landscape and renewable energy meanings, which are predicted by relevant prior experience (exposure)."
+  accessed:
+    - year: 2022
+      month: 5
+      day: 26
+  author:
+    - family: Salak
+      given: B.
+    - family: Lindberg
+      given: K.
+    - family: Kienast
+      given: F.
+    - family: Hunziker
+      given: M.
+  citation-key: Salak:2021
+  container-title: Renewable and Sustainable Energy Reviews
+  container-title-short: Renewable and Sustainable Energy Reviews
+  DOI: 10.1016/j.rser.2021.110896
+  ISSN: 1364-0321
+  issued:
+    - year: 2021
+      month: 6
+      day: 1
+  language: en
+  page: '110896'
+  source: ScienceDirect
+  title: >-
+    How landscape-technology fit affects public evaluations of renewable energy
+    infrastructure scenarios. A hybrid choice model
+  type: article-journal
+  URL: https://www.sciencedirect.com/science/article/pii/S1364032121001908
+  volume: '143'
+
+- id: Salak:2021a
+  abstract: "We present stated preference data based on a national representative Swiss online panel survey related to preference of mixed renewable energy infrastructure in landscapes. Data were collected between November 2018 and March 2019 via an online questionnaire and yielded 1026 responses. The online questionnaire consisted of two main parts – (1) questions covering meanings related to landscapes, nature and renewable energy infrastructure and questions regarding the “fit” of landscape/renewable energy infrastructure (REI) combinations and (2) a stated choice experiment. While in the first part of the questionnaire we asked respondents about their personal connection to certain landscapes, to nature and to specific REI, we also asked them to evaluate the fitting of seven different Swiss landscapes (near natural alpine areas, northern alps, touristic alpine areas, agricultural plateau, urban plateau, Jura ridges, urban alpine valley) with five different REI (wind, PV ground/agricultural, PV ground/other, PV roof, power lines) combinations. In the second part of the questionnaire, the stated choice experiment confronted respondents with 15 consecutive choice tasks, with each task involving a choice between two “energy system transformation” options and an opt-out option (none). Each choice option (beside the opt-out option) included four unlabeled attributes (landscape, wind energy infrastructure, photovoltaic energy infrastructure, high voltage overhead power line infrastructure) with varying levels. Due to data cleaning procedures (item nonresponse) the number of responses used within hybrid choice modeling and analysis was n\_=\_844 (12,660 choice observations). An analysis of the hybrid choice model and further insights are presented in the article “How landscape-technology fit affects public evaluations of renewable energy infrastructure scenarios. A hybrid choice model.”"
+  accessed:
+    - year: 2022
+      month: 5
+      day: 26
+  author:
+    - family: Salak
+      given: B.
+    - family: Lindberg
+      given: K.
+    - family: Kienast
+      given: F.
+    - family: Hunziker
+      given: M.
+  citation-key: Salak:2021a
+  container-title: Data in Brief
+  container-title-short: Data in Brief
+  DOI: 10.1016/j.dib.2021.107025
+  ISSN: 2352-3409
+  issued:
+    - year: 2021
+      month: 6
+      day: 1
+  language: en
+  page: '107025'
+  source: ScienceDirect
+  title: >-
+    Hybrid choice model dataset of a representative Swiss online panel survey on
+    peoples’ preferences related to mixed renewable energy scenarios in
+    landscapes and the effect of landscape-technology fit
+  type: article-journal
+  URL: https://www.sciencedirect.com/science/article/pii/S2352340921003097
+  volume: '36'
+
 - id: Salak:2022
   abstract: >-
     This paper examines how mixes (wind, PV, power lines) of different renewable
