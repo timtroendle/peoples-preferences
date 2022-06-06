@@ -5,6 +5,7 @@ cores: 10
 latency-wait: 60
 use-envmodules: True
 use-conda: True
+conda-frontend: mamba
 default-resources: [
     "runtime=10",
     "memory=16000"

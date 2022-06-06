@@ -62,6 +62,7 @@ rule logistic_regression:
     params:
         n_tune = 2000,
         n_draws = 2000,
+        random_seed = 4000,
     resources:
         runtime = 60
     threads: 4
@@ -76,6 +77,7 @@ rule multinomial_logit:
     params:
         n_tune = 2000,
         n_draws = 2000,
+        random_seed = 4000,
     resources:
         runtime = 60
     threads: 4

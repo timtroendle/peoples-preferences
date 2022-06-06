@@ -3,7 +3,8 @@ import pymc3 as pm
 import arviz as az
 
 
-def logistic_regression_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: int, path_to_output: str):
+def logistic_regression_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: int,
+                              random_seed: int, path_to_output: str):
     data = pd.read_feather(path_to_data)
     pure_conjoint = data.iloc[:, :10]
     dummies = pd.get_dummies(pure_conjoint.iloc[:, 4:], drop_first=True)
@@ -24,6 +25,7 @@ def logistic_regression_model(path_to_data: str, n_tune: int, n_draws: int, n_co
             draws=n_draws,
             tune=n_tune,
             cores=n_cores,
+            random_seed=random_seed,
             return_inferencedata=True
         )
 
@@ -36,5 +38,6 @@ if __name__ == "__main__":
         n_tune=snakemake.params.n_tune,
         n_draws=snakemake.params.n_draws,
         n_cores=snakemake.threads,
+        random_seed=snakemake.params.random_seed,
         path_to_output=snakemake.output[0]
     )
