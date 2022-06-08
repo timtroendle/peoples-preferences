@@ -30,7 +30,7 @@ def multinomial_logit_model(path_to_data: str, n_tune: int, n_draws: int, n_core
 
         p_left = pm.math.exp(u_left) / (pm.math.exp(u_left) + pm.math.exp(u_right))
 
-        choices = pm.Bernoulli("choice", p=p_left, observed=choice_left.values)
+        choices = pm.Bernoulli("choice", p=p_left, observed=choice_left.values) # TODO binomial?
 
         inference_data = pm.sample(
             draws=n_draws,

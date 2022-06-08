@@ -4,3 +4,5 @@ models:
         n-iterations: 150000
         burn-in-length: 100000
         keep: 10
+    hierarchical:
+        n-respondents: 1000

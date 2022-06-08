@@ -84,3 +84,19 @@ rule multinomial_logit:
     output: "build/models/multinomial-logit.nc"
     conda: "../envs/pymc.yaml"
     script: "../scripts/analyse/bayes/multinomial.py"
+
+
+rule hierarchical:
+    message: "Fit a hierarchical Bayes model using PyMC."
+    input: data = rules.global_conjoint.output[0]
+    params:
+        n_tune = 2000,
+        n_draws = 2000,
+        n_respondents = config["models"]["hierarchical"]["n-respondents"],
+        random_seed = 4000
+    resources:
+        runtime = 1440
+    threads: 4
+    output: "build/models/hierarchical.nc"
+    conda: "../envs/pymc.yaml"
+    script: "../scripts/analyse/bayes/hierarchical.py"

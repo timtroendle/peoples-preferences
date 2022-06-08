@@ -407,5 +407,7 @@ models:
         n-iterations: 5000
         burn-in-length: 2500
         keep: 1
+    hierarchical:
+        n-respondents: 20
     # TODO add respondent covariates
     # TODO add interaction effects

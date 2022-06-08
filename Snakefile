@@ -28,8 +28,6 @@ rule all:
     input:
         "build/report.html",
         "build/test-report.html",
-        expand("build/{model}/convergence.png", model=config["models"]),
-        expand("build/{model}/level-part-worths.png", model=config["models"]),
 
 
 def pandoc_options(wildcards):
