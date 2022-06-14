@@ -1,36 +1,59 @@
 import pandas as pd
-import pymc3 as pm
+import pymc as pm
 import arviz as az
 
+ATTRIBUTES = [
+    "CHOICE_INDICATOR",
+    "TECHNOLOGY",
+    "LAND",
+    "PRICES",
+    "TRANSMISSION",
+    "OWNERSHIP",
+    "SHARE_IMPORTS"
+]
 
-def multinomial_logit_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: int,
+OPTIONS_PER_RESPONDENT = 16
+
+
+def multinomial_logit_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: int, n_respondents: int,
                             random_seed: int, path_to_output: str):
-    data = pd.read_feather(path_to_data)
-    pure_conjoint = data.iloc[:, :10]
-    dummies = pd.get_dummies(pure_conjoint.iloc[:, 4:], drop_first=True)
-    left_dummies = dummies[pure_conjoint["LABEL"] == "Left"]
-    right_dummies = dummies[pure_conjoint["LABEL"] == "Right"]
-    choice_left = (
-        pure_conjoint
+    conjoint = (
+        pd
+        .read_feather(path_to_data)
         .set_index(["RESPONDENT_ID", "CHOICE_SET", "LABEL"])
-        .to_xarray()
-        .sel(LABEL="Left")
-        .CHOICE_INDICATOR
-        .to_series()
+        .iloc[:OPTIONS_PER_RESPONDENT * n_respondents, :]
     )
+    pure_conjoint = pd.get_dummies(conjoint.loc[:, ATTRIBUTES], drop_first=True, prefix_sep=":")
+    left_dummies = pure_conjoint.xs("Left", level="LABEL").drop(columns="CHOICE_INDICATOR")
+    right_dummies = pure_conjoint.xs("Right", level="LABEL").drop(columns="CHOICE_INDICATOR")
+    choice_left = pure_conjoint.xs("Left", level="LABEL").CHOICE_INDICATOR
+
+    def indices_of_country(country, label):
+        return conjoint.RESPONDENT_COUNTRY.xs(label, level="LABEL") == country
 
     model = pm.Model(coords={
-        "level": dummies.columns.values
+        "level": pure_conjoint.drop(columns="CHOICE_INDICATOR").columns.values,
+        "country": conjoint.RESPONDENT_COUNTRY.unique()
     })
 
     with model:
-        partworths = pm.Normal("partworths", 0, 10, dims="level") # TODO N or MVN?
-        u_left = pm.math.dot(left_dummies.values, partworths)
-        u_right = pm.math.dot(right_dummies.values, partworths)
+        partworths = pm.Normal("partworths", 0, 4, dims=["level", "country"]) # TODO N or MVN?
+        intercept_left = pm.Normal("intercept", 0, 4, dims=["country"])
 
-        p_left = pm.math.exp(u_left) / (pm.math.exp(u_left) + pm.math.exp(u_right))
+        for country_id, country in enumerate(model.coords["country"]):
+            u_left = intercept_left[country_id] + pm.math.sum(
+                left_dummies[indices_of_country(country, "Left")].values * partworths[:, country_id], axis=1
+            )
+            u_right = pm.math.sum(
+                right_dummies[indices_of_country(country, "Right")].values * partworths[:, country_id], axis=1
+            )
+            p_left = pm.math.exp(u_left) / (pm.math.exp(u_left) + pm.math.exp(u_right))
 
-        choices = pm.Bernoulli("choice", p=p_left, observed=choice_left.values) # TODO binomial?
+            choices = pm.Bernoulli(
+                f"choice_{country}",
+                p=p_left,
+                observed=choice_left[indices_of_country(country, "Left")]
+            )
 
         inference_data = pm.sample(
             draws=n_draws,
@@ -49,6 +72,7 @@ if __name__ == "__main__":
         n_tune=snakemake.params.n_tune,
         n_draws=snakemake.params.n_draws,
         n_cores=snakemake.threads,
+        n_respondents=snakemake.params.n_respondents,
         random_seed=snakemake.params.random_seed,
         path_to_output=snakemake.output[0]
     )

@@ -6,3 +6,5 @@ models:
         keep: 10
     hierarchical:
         n-respondents: 1000
+    multinomial:
+        n-respondents: 4103

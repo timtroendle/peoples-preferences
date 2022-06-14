@@ -77,6 +77,7 @@ rule multinomial_logit:
     params:
         n_tune = 2000,
         n_draws = 2000,
+        n_respondents = config["models"]["multinomial"]["n-respondents"],
         random_seed = 4000,
     resources:
         runtime = 60
