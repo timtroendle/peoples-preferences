@@ -350,7 +350,7 @@ new-features:
                 - Medium
                 - Strong
                 - Very strong
-cluster:
+clustering:
     4-with-country:
         features:
             - Q3_GENDER

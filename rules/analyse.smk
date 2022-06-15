@@ -291,41 +291,41 @@ rule H29:
     script: "../scripts/analyse/interaction_plot.R"
 
 
-rule cluster:
+rule clustering:
     message: "Cluster respondents by '{wildcards.cluster}' using hierarchical clustering."
     input:
         data = rules.global_conjoint.output[0]
     params:
-        features = lambda wildcards: config["cluster"][wildcards.cluster]["features"],
-        n_cluster = lambda wildcards: config["cluster"][wildcards.cluster]["n-cluster"]
+        features = lambda wildcards: config["clustering"][wildcards.cluster]["features"],
+        n_cluster = lambda wildcards: config["clustering"][wildcards.cluster]["n-cluster"]
     output:
-        data = "build/cluster/{cluster}/clustered.feather",
-        tree = "build/cluster/{cluster}/tree.png",
-        umap = "build/cluster/{cluster}/umap.png",
-        silh = "build/cluster/{cluster}/silhouette.png"
-    conda: "../envs/cluster.yaml"
-    script: "../scripts/analyse/cluster.R"
+        data = "build/clustering/{cluster}/clustered.feather",
+        tree = "build/clustering/{cluster}/tree.png",
+        umap = "build/clustering/{cluster}/umap.png",
+        silh = "build/clustering/{cluster}/silhouette.png"
+    conda: "../envs/clustering.yaml"
+    script: "../scripts/analyse/clustering.R"
 
 
 rule cluster_analysis:
     message: "Understand importance of '{wildcards.feature}' for cluster '{wildcards.cluster}'."
     input:
-        data = rules.cluster.output.data
+        data = rules.clustering.output.data
     params:
-        features = lambda wildcards: config["cluster"][wildcards.cluster]["features"]
-    output: "build/cluster/{cluster}/umap-{feature}.png"
-    conda: "../envs/cluster.yaml"
+        features = lambda wildcards: config["clustering"][wildcards.cluster]["features"]
+    output: "build/clustering/{cluster}/umap-{feature}.png"
+    conda: "../envs/clustering.yaml"
     script: "../scripts/analyse/umap.R"
 
 
 rule conditional_mm_of_cluster:
     message: "Create conditional MM plot for cluster '{wildcards.cluster}'."
     input:
-        data = rules.cluster.output.data
+        data = rules.clustering.output.data
     params:
         estimate = "mm",
         by = "cluster"
-    output: "build/cluster/{cluster}/conditional-mm.png"
+    output: "build/clustering/{cluster}/conditional-mm.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/conditional_mm_plot.R"
 
