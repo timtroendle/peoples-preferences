@@ -24,8 +24,8 @@ LEVEL_ORDER = [
     "2%",
     "4%",
     "8%",
+    '-25% .',
     "+0% .",
-    '-25.0% .',
     '+25% .',
     '+50% .',
     '+75% .',
@@ -47,7 +47,7 @@ BASELINE_LEVELS = [ # TODO ADD FROM CONFIG
     "TECHNOLOGY:Rooftop PV",
     "LAND:0.5%",
     "PRICES:+0%",
-    "TRANSMISSION:+0% .",
+    "TRANSMISSION:-25% .",
     "OWNERSHIP:Public",
     "SHARE_IMPORTS:0%"
 ]

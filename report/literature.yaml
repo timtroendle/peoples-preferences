@@ -922,6 +922,51 @@ references:
   URL: http://www.jstor.org/stable/41107468
   volume: '24'
 
+- id: Knauf:2022
+  abstract: >-
+    Local opposition to wind energy projects in Europe and North America is
+    growing. This often causes project delays or even failure. Financial
+    benefits may be one way to counteract a lack of community support. This
+    analysis seeks to explain how discounted electricity, payments to the
+    municipality, and payments for social purposes shift the acceptance of
+    communities about a local wind energy project. A choice-based conjoint
+    analysis among 811 German citizens showed that financial benefits increase
+    citizens’ acceptance of a hypothetical wind energy project in the close
+    vicinity of their homes. Proponents and the large group of citizens with
+    rather weak preferences for local wind energy projects appreciate all tested
+    benefits. In contrast, benefits cannot win over the small group of
+    opponents. The study provides evidence that benefits do not ensure the
+    perception of fair distributive justice, even for citizens with weak
+    preferences. The findings inform current policies that introduce benefit
+    schemes for wind energy projects to foster community acceptance and win over
+    majority support for projects.
+  accessed:
+    - year: 2022
+      month: 6
+      day: 15
+  author:
+    - family: Knauf
+      given: Jakob
+  citation-key: Knauf:2022
+  container-title: Energy Policy
+  container-title-short: Energy Policy
+  DOI: 10.1016/j.enpol.2022.112924
+  ISSN: 0301-4215
+  issued:
+    - year: 2022
+      month: 6
+      day: 1
+  language: en
+  page: '112924'
+  source: ScienceDirect
+  title: >-
+    Can't buy me acceptance? Financial benefits for wind energy projects in
+    Germany
+  title-short: Can't buy me acceptance?
+  type: article-journal
+  URL: https://www.sciencedirect.com/science/article/pii/S0301421522001495
+  volume: '165'
+
 - id: Kolcava:2021
   abstract: >-
     Existing research offers a nuanced understanding of the conditions under
