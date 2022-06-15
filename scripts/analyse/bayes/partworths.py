@@ -6,42 +6,33 @@ import altair as alt
 
 DARK_GREY = "#424242"
 
-ATTRIBUTE_ORDER = [
-    "Technology",
-    "Land",
-    "Transmission",
-    "Share of imports",
-    "Prices",
-    "Ownership"
-]
-
-LEVEL_ORDER = [
-    "Rooftop PV",
-    "Open-field PV",
-    "Wind",
-    "0.5%",
-    "1%",
-    "2%",
-    "4%",
-    "8%",
-    '-25% .',
-    "+0% .",
-    '+25% .',
-    '+50% .',
-    '+75% .',
-    "0%",
-    '10%',
-    '50%',
-    '90%',
-    "+0%",
-    "+15%",
-    "+30%",
-    "+45%",
-    "+60%",
-    "Public",
-    "Community",
-    "Private"
-]
+NICE_NAME_LEVELS = {
+    "Rooftop PV": "Rooftop PV",
+    "Open-field PV": "Open-field PV",
+    "Wind": "Wind turbines",
+    "0.5%": "Very low (0.5%)",
+    "1%": "Low (1%)",
+    "2%": "Medium (2%)",
+    "4%": "High (4%)",
+    "8%": "Very high (8%)",
+    '-25% .': "Slight decrease (-25%)",
+    "+0% .": "Today's level (0%)",
+    '+25% .': "Slight increase (+25%)",
+    '+50% .': "Moderate increase (+50%)",
+    '+75% .': "Strong increase (+75%)",
+    "0%": "None",
+    '10%': "Low (10%)",
+    '50%': "Medium (50%)",
+    '90%': "High (90%)",
+    "+0%": "Today's level",
+    "+15%": "Slight increase (+15%)",
+    "+30%": "Moderate increase (+30%)",
+    "+45%": "Strong increase (+45%)",
+    "+60%": "Very strong increase (+60%)",
+    "Public": "Public",
+    "Community": "Community",
+    "Private": "Private"
+}
 
 BASELINE_LEVELS = [ # TODO ADD FROM CONFIG
     "TECHNOLOGY:Rooftop PV",
@@ -55,10 +46,10 @@ BASELINE_LEVELS = [ # TODO ADD FROM CONFIG
 NICE_NAME_ATTRIBUTES = {
     "TECHNOLOGY": "Technology",
     "LAND": "Land",
-    "PRICES": "Prices",
     "TRANSMISSION": "Transmission",
+    "SHARE_IMPORTS": "Share of imports",
+    "PRICES": "Prices",
     "OWNERSHIP": "Ownership",
-    "SHARE_IMPORTS": "Share of imports"
 }
 
 NICE_NAME_COUNTRIES = {
@@ -73,9 +64,9 @@ def visualise_partworths(path_to_posterior: str, path_to_plot: str):
     data = read_data(path_to_posterior)
 
     base = alt.Chart(data).encode(
-        y=alt.Y("level", sort=LEVEL_ORDER, title="Level"),
+        y=alt.Y("level", sort=list(NICE_NAME_LEVELS.values()), title="Level"),
         x=alt.X("partworths", title="Partworth utility"),
-        color=alt.Color("attribute", sort=ATTRIBUTE_ORDER, legend=alt.Legend(title="Attribute")),
+        color=alt.Color("attribute", sort=list(NICE_NAME_ATTRIBUTES.values()), legend=alt.Legend(title="Attribute")),
     ).properties(
         width=300,
         height=300
@@ -112,7 +103,6 @@ def read_data(path_to_posterior: str):
     full = az.from_netcdf(path_to_posterior)
     attr_levels = full.posterior.level.to_series().to_list()
     all_attr_levels = attr_levels + BASELINE_LEVELS
-    all_attr_levels
 
     hdi = (
         az
@@ -124,7 +114,7 @@ def read_data(path_to_posterior: str):
         .fillna(0)
     )
     hdi["attribute"] = hdi.level.str.split(":").str[0].map(NICE_NAME_ATTRIBUTES)
-    hdi["level"] = hdi.level.str.split(":").str[1]
+    hdi["level"] = hdi.level.str.split(":").str[1].map(NICE_NAME_LEVELS)
 
     mean = (
         full
@@ -137,7 +127,7 @@ def read_data(path_to_posterior: str):
         .reset_index()
     )
     mean["attribute"] = mean.level.str.split(":").str[0].map(NICE_NAME_ATTRIBUTES)
-    mean["level"] = mean.level.str.split(":").str[1]
+    mean["level"] = mean.level.str.split(":").str[1].map(NICE_NAME_LEVELS)
 
     data = (
         pd
