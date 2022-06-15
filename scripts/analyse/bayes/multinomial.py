@@ -15,14 +15,15 @@ ATTRIBUTES = [
 OPTIONS_PER_RESPONDENT = 16
 
 
-def multinomial_logit_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: int, n_respondents: int,
-                            random_seed: int, path_to_output: str):
+def multinomial_logit_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: int, limit_respondents: bool,
+                            n_respondents_per_country: int, random_seed: int, path_to_output: str):
     conjoint = (
         pd
         .read_feather(path_to_data)
         .set_index(["RESPONDENT_ID", "CHOICE_SET", "LABEL"])
-        .iloc[:OPTIONS_PER_RESPONDENT * n_respondents, :]
     )
+    if limit_respondents:
+        conjoint = conjoint.groupby("RESPONDENT_COUNTRY").head(n_respondents_per_country)
     pure_conjoint = pd.get_dummies(conjoint.loc[:, ATTRIBUTES], drop_first=True, prefix_sep=":")
     left_dummies = pure_conjoint.xs("Left", level="LABEL").drop(columns="CHOICE_INDICATOR")
     right_dummies = pure_conjoint.xs("Right", level="LABEL").drop(columns="CHOICE_INDICATOR")
@@ -72,7 +73,8 @@ if __name__ == "__main__":
         n_tune=snakemake.params.n_tune,
         n_draws=snakemake.params.n_draws,
         n_cores=snakemake.threads,
-        n_respondents=snakemake.params.n_respondents,
+        limit_respondents=bool(snakemake.params.limit_respondents),
+        n_respondents_per_country=int(snakemake.params.limit_respondents),
         random_seed=snakemake.params.random_seed,
         path_to_output=snakemake.output[0]
     )

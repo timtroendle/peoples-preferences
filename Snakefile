@@ -10,7 +10,8 @@ include: "rules/bayes.smk"
 include: "./rules/sync.smk"
 localrules: all, report, clean
 wildcard_constraints:
-    country_id = "|".join(COUNTRY_IDS)
+    country_id = "|".join(COUNTRY_IDS),
+    figure_format = "png|pdf"
 min_version("7.8")
 
 onstart:
@@ -28,6 +29,7 @@ rule all:
     input:
         "build/report.html",
         "build/test-report.html",
+        "build/models/multinomial-logit.pdf"
 
 
 def pandoc_options(wildcards):

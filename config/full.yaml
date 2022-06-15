@@ -7,4 +7,4 @@ models:
     hierarchical:
         n-respondents: 1000
     multinomial:
-        n-respondents: 4103
+        limit-respondents: False

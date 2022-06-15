@@ -75,12 +75,13 @@ rule multinomial_logit:
     message: "Fit a multinomial logit model."
     input: data = rules.global_conjoint.output[0]
     params:
-        n_tune = 2000,
-        n_draws = 2000,
-        n_respondents = config["models"]["multinomial"]["n-respondents"],
+        n_tune = 1000,
+        n_draws = 1000,
+        limit_respondents = config["models"]["multinomial"]["limit-respondents"],
         random_seed = 4000,
     resources:
-        runtime = 60
+        runtime = 30,
+        memory = 4000
     threads: 4
     output: "build/models/multinomial-logit.nc"
     conda: "../envs/pymc.yaml"
@@ -101,3 +102,11 @@ rule hierarchical:
     output: "build/models/hierarchical.nc"
     conda: "../envs/pymc.yaml"
     script: "../scripts/analyse/bayes/hierarchical.py"
+
+
+rule visualise_partworths:
+    message: "Visualise partworths."
+    input: posterior = rules.multinomial_logit.output[0]
+    output: "build/models/multinomial-logit.{figure_format}"
+    conda: "../envs/analyse.yaml"
+    script: "../scripts/analyse/bayes/partworths.py"

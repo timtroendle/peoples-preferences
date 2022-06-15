@@ -410,6 +410,6 @@ models:
     hierarchical:
         n-respondents: 20
     multinomial:
-        n-respondents: 1300
+        limit-respondents: 50
     # TODO add respondent covariates
     # TODO add interaction effects
