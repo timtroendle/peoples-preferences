@@ -8,6 +8,9 @@ cluster-sync:
     cluster-base-dir: ~/Develop/peoples-preferences
     local-results-dir: build/cluster
 data-types:
+    RESPONDENT_ID:
+        type: factor
+        ordered: False
     CHOICE_SET:
         type: factor
         ordered: True
@@ -407,9 +410,15 @@ models:
         n-iterations: 5000
         burn-in-length: 2500
         keep: 1
-    hierarchical:
-        n-respondents: 20
     multinomial:
-        limit-respondents: 50
+        n-tune: 1000
+        n-draws: 1000
+        limit-respondents: 200
+        random-seed: 4000
+    hierarchical:
+        n-tune: 1000
+        n-draws: 1000
+        limit-respondents: 80
+        random-seed: 4000
     # TODO add respondent covariates
     # TODO add interaction effects

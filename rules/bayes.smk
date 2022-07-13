@@ -75,10 +75,10 @@ rule multinomial_logit:
     message: "Fit a multinomial logit model."
     input: data = rules.global_conjoint.output[0]
     params:
-        n_tune = 1000,
-        n_draws = 1000,
+        n_tune = config["models"]["multinomial"]["n-tune"],
+        n_draws = config["models"]["multinomial"]["n-draws"],
         limit_respondents = config["models"]["multinomial"]["limit-respondents"],
-        random_seed = 4000,
+        random_seed = config["models"]["multinomial"]["random-seed"],
     resources:
         runtime = 30,
         memory = 4000
@@ -92,10 +92,10 @@ rule hierarchical:
     message: "Fit a hierarchical Bayes model using PyMC."
     input: data = rules.global_conjoint.output[0]
     params:
-        n_tune = 2000,
-        n_draws = 2000,
-        n_respondents = config["models"]["hierarchical"]["n-respondents"],
-        random_seed = 4000
+        n_tune = config["models"]["hierarchical"]["n-tune"],
+        n_draws = config["models"]["hierarchical"]["n-draws"],
+        limit_respondents = config["models"]["hierarchical"]["limit-respondents"],
+        random_seed = config["models"]["hierarchical"]["random-seed"]
     resources:
         runtime = 1440
     threads: 4

@@ -83,7 +83,7 @@ if __name__ == "__main__":
         n_draws=snakemake.params.n_draws,
         n_cores=snakemake.threads,
         limit_respondents=bool(snakemake.params.limit_respondents),
-        n_respondents_per_country=int(snakemake.params.limit_respondents),
+        n_respondents_per_country=int(snakemake.params.limit_respondents) // 4,
         random_seed=snakemake.params.random_seed,
         path_to_output=snakemake.output[0]
     )

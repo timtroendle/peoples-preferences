@@ -3,56 +3,82 @@ import pandas as pd
 import pymc as pm
 import aesara.tensor as at
 
+ATTRIBUTES = [
+    "TECHNOLOGY",
+    "LAND",
+    "PRICES",
+    "TRANSMISSION",
+    "OWNERSHIP",
+    "SHARE_IMPORTS"
+]
+OPTIONS_PER_RESPONDENT = 16
 
-def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: int, n_respondents: int,
-                       random_seed: int, path_to_output: str):
-    data = pd.read_feather(path_to_data)
-    pure_conjoint = (
-        data
-        .iloc[:16 * n_respondents, :10]
+
+def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: int, limit_respondents: bool,
+                       n_respondents_per_country: int, random_seed: int, path_to_output: str):
+    conjoint = (
+        pd
+        .read_feather(path_to_data)
         .set_index(["RESPONDENT_ID", "CHOICE_SET", "LABEL"])
     )
-    pure_conjoint = pd.get_dummies(pure_conjoint, drop_first=True)
-
-    left_dummies = pure_conjoint.xs("Left", level="LABEL").drop(columns="CHOICE_INDICATOR")
-    right_dummies = pure_conjoint.xs("Right", level="LABEL").drop(columns="CHOICE_INDICATOR")
-    choice_left = pure_conjoint.xs("Left", level="LABEL").CHOICE_INDICATOR
+    if limit_respondents:
+        conjoint = conjoint.groupby("RESPONDENT_COUNTRY").head(n_respondents_per_country * OPTIONS_PER_RESPONDENT)
+    dummies = pd.get_dummies(conjoint.loc[:, ATTRIBUTES], drop_first=True, prefix_sep=":")
 
     model = pm.Model(coords={
-        "level": left_dummies.columns.values,
-        "respondent": left_dummies.index.get_level_values("RESPONDENT_ID").unique()
+        "level": dummies.columns.values,
+        "respondent": conjoint.index.get_level_values("RESPONDENT_ID").remove_unused_categories().categories
     })
 
     with model:
-        alpha = pm.Normal('alpha', 0, sigma=10, dims="level")
-        partworths = pm.MvNormal( # TODO N or MVN?
-            "partworths",
-            alpha,
-            tau=np.eye(len(model.coords["level"])),
-            dims=["respondent", "level"]
+        alpha = pm.Normal('alpha', 0, sigma=1, dims="level")
+        sigma = pm.Exponential.dist(1.0)
+        chol_partworths, _, _ = pm.LKJCholeskyCov(
+            "chol_partworths", n=len(model.coords["level"]), eta=4, sd_dist=sigma, compute_corr=True
         )
 
-        u_left = at.concatenate([
-            pm.math.dot(
-                left_dummies.xs(respondent, level="RESPONDENT_ID").values,
-                partworths[i, :]
-            )
-            for i, respondent in enumerate(model.coords["respondent"])
-        ], axis=0)
-        u_right = at.concatenate([
-            pm.math.dot(
-                right_dummies.xs(respondent, level="RESPONDENT_ID").values,
-                partworths[i, :]
-            )
-            for i, respondent in enumerate(model.coords["respondent"])
-        ], axis=0)
+        z_partworths = pm.Normal("z_partworths", 0.0, 1.0, dims=["respondent", "level"])
+        partworths = pm.Deterministic("partworths", alpha + pm.math.dot(z_partworths, chol_partworths), dims=["respondent", "level"])
 
-        p_left = pm.math.exp(u_left) / (pm.math.exp(u_left) + pm.math.exp(u_right))
+        mu_left_intercept = pm.Normal('mu_left_intercept', 0, sigma=1)
+        sigma_left_intercept = pm.Exponential('sigma_left_intercept', 1)
+        z_left_intercept = pm.Normal("z_left_intercept", 0, sigma=1, dims="respondent")
+        left_intercept = pm.Deterministic( # TODO let covar with partsworths
+            'left_intercept',
+            mu_left_intercept + z_left_intercept * sigma_left_intercept,
+            dims=["respondent"]
+        )
 
-        choices = pm.Bernoulli(
-            "choice",
+        r = pm.ConstantData(
+            "r",
+            conjoint.xs("Left", level="LABEL").index.get_level_values("RESPONDENT_ID").remove_unused_categories().codes,
+            dims="choice_situations"
+        )
+        dummies_left = pm.ConstantData(
+            "dummies_left",
+            dummies.xs("Left", level="LABEL").values,
+            dims=["choice_situations", "level"]
+        )
+        dummies_right = pm.ConstantData(
+            "dummies_right",
+            dummies.xs("Right", level="LABEL").values,
+            dims=["choice_situations", "level"]
+        )
+        choice_left = pm.ConstantData(
+            "choice_left",
+            conjoint.xs("Left", level="LABEL").CHOICE_INDICATOR.values,
+            dims="choice_situations"
+        )
+
+        u_left = left_intercept[r] + pm.math.sum(partworths[r] * dummies_left, axis=1)
+        u_right = pm.math.sum(partworths[r] * dummies_right, axis=1)
+        p_left = pm.math.exp(u_left) / (pm.math.exp(u_left) + pm.math.exp(u_right)) # TODO maybe requires log
+
+        pm.Bernoulli(
+            f"choice",
             p=p_left,
-            observed=choice_left.values
+            observed=choice_left,
+            dims="choice_situations"
         )
 
         inference_data = pm.sample(
@@ -62,7 +88,12 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
             random_seed=random_seed,
             return_inferencedata=True
         )
-
+    inference_data.posterior = inference_data.posterior.rename_vars(
+        {
+            "chol_partworths_corr": "Rho_partworths",
+            "chol_partworths_stds": "sigma_partworths",
+        }
+    )
     inference_data.to_netcdf(path_to_output)
 
 
@@ -71,7 +102,8 @@ if __name__ == "__main__":
         path_to_data=snakemake.input.data,
         n_tune=snakemake.params.n_tune,
         n_draws=snakemake.params.n_draws,
-        n_respondents=snakemake.params.n_respondents,
+        limit_respondents=bool(snakemake.params.limit_respondents),
+        n_respondents_per_country=int(snakemake.params.limit_respondents) // 4,
         n_cores=snakemake.threads,
         random_seed=snakemake.params.random_seed,
         path_to_output=snakemake.output[0]

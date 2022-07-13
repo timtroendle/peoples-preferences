@@ -4,7 +4,13 @@ models:
         n-iterations: 150000
         burn-in-length: 100000
         keep: 10
-    hierarchical:
-        n-respondents: 1000
     multinomial:
+        n-tune: 2000
+        n-draws: 2000
         limit-respondents: False
+        random-seed: 4000
+    hierarchical:
+        n-tune: 2000
+        n-draws: 2000
+        limit-respondents: False
+        random-seed: 4000
