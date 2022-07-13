@@ -1,9 +1,7 @@
 import pandas as pd
 import pymc as pm
-import arviz as az
 
 ATTRIBUTES = [
-    "CHOICE_INDICATOR",
     "TECHNOLOGY",
     "LAND",
     "PRICES",
@@ -23,38 +21,49 @@ def multinomial_logit_model(path_to_data: str, n_tune: int, n_draws: int, n_core
         .set_index(["RESPONDENT_ID", "CHOICE_SET", "LABEL"])
     )
     if limit_respondents:
-        conjoint = conjoint.groupby("RESPONDENT_COUNTRY").head(n_respondents_per_country)
-    pure_conjoint = pd.get_dummies(conjoint.loc[:, ATTRIBUTES], drop_first=True, prefix_sep=":")
-    left_dummies = pure_conjoint.xs("Left", level="LABEL").drop(columns="CHOICE_INDICATOR")
-    right_dummies = pure_conjoint.xs("Right", level="LABEL").drop(columns="CHOICE_INDICATOR")
-    choice_left = pure_conjoint.xs("Left", level="LABEL").CHOICE_INDICATOR
-
-    def indices_of_country(country, label):
-        return conjoint.RESPONDENT_COUNTRY.xs(label, level="LABEL") == country
+        conjoint = conjoint.groupby("RESPONDENT_COUNTRY").head(n_respondents_per_country * OPTIONS_PER_RESPONDENT)
+    dummies = pd.get_dummies(conjoint.loc[:, ATTRIBUTES], drop_first=True, prefix_sep=":")
 
     model = pm.Model(coords={
-        "level": pure_conjoint.drop(columns="CHOICE_INDICATOR").columns.values,
-        "country": conjoint.RESPONDENT_COUNTRY.unique()
+        "level": dummies.columns.values,
+        "country": conjoint.RESPONDENT_COUNTRY.cat.categories
     })
 
     with model:
-        partworths = pm.Normal("partworths", 0, 4, dims=["level", "country"]) # TODO N or MVN?
+        partworths = pm.Normal("partworths", 0, 4, dims=["country", "level"]) # TODO N or MVN?
         intercept_left = pm.Normal("intercept", 0, 4, dims=["country"])
 
-        for country_id, country in enumerate(model.coords["country"]):
-            u_left = intercept_left[country_id] + pm.math.sum(
-                left_dummies[indices_of_country(country, "Left")].values * partworths[:, country_id], axis=1
-            )
-            u_right = pm.math.sum(
-                right_dummies[indices_of_country(country, "Right")].values * partworths[:, country_id], axis=1
-            )
-            p_left = pm.math.exp(u_left) / (pm.math.exp(u_left) + pm.math.exp(u_right))
+        c = pm.ConstantData(
+            "c",
+            conjoint.xs("Left", level="LABEL").RESPONDENT_COUNTRY.cat.codes,
+            dims="choice_situations"
+        )
+        dummies_left = pm.ConstantData(
+            "dummies_left",
+            dummies.xs("Left", level="LABEL").values,
+            dims=["choice_situations", "levels"]
+        )
+        dummies_right = pm.ConstantData(
+            "dummies_right",
+            dummies.xs("Right", level="LABEL").values,
+            dims=["choice_situations", "levels"]
+        )
+        choice_left = pm.ConstantData(
+            "choice_left",
+            conjoint.xs("Left", level="LABEL").CHOICE_INDICATOR.values,
+            dims="choice_situations"
+        )
 
-            choices = pm.Bernoulli(
-                f"choice_{country}",
-                p=p_left,
-                observed=choice_left[indices_of_country(country, "Left")]
-            )
+        u_left = intercept_left[c] + pm.math.sum(partworths[c] * dummies_left, axis=1)
+        u_right = pm.math.sum(partworths[c] * dummies_right, axis=1)
+        p_left = pm.math.exp(u_left) / (pm.math.exp(u_left) + pm.math.exp(u_right))
+
+        pm.Bernoulli(
+            f"choice",
+            p=p_left,
+            observed=choice_left,
+            dims="choice_situations"
+        )
 
         inference_data = pm.sample(
             draws=n_draws,

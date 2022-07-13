@@ -417,6 +417,90 @@ references:
   URL: https://linkinghub.elsevier.com/retrieve/pii/S0024630118301122
   volume: '53'
 
+- id: Cinelli:2020
+  abstract: >-
+    Many students, especially in econometrics, express frustration with the way
+    a problem known as “bad control” is evaded, if not mishandled, in the
+    traditional literature. The problem arises when the addition of a variable
+    to a regression equation produces an unintended discrepancy between the
+    regression coefficient and the effect that the coefficient is expected to
+    represent. Avoiding such discrepancies presents a challenge not only to
+    practitioners of econometrics, but to all analysts in the data intensive
+    sciences. This note describes graphical tools for understanding,
+    visualizing, and resolving the problem through a series of illustrative
+    examples. We have found that the examples presented here can serve as a
+    powerful instructional device to supplement formal discussions of the
+    problem. By making this “crash course” accessible to instructors and
+    practitioners, we hope to avail these tools to a broader community of
+    scientists concerned with the causal interpretation of regression models.
+  accessed:
+    - year: 2022
+      month: 6
+      day: 15
+  author:
+    - family: Cinelli
+      given: Carlos
+    - family: Forney
+      given: Andrew
+    - family: Pearl
+      given: Judea
+  citation-key: Cinelli:2020
+  DOI: 10.2139/ssrn.3689437
+  event-place: Rochester, NY
+  genre: SSRN Scholarly Paper
+  issued:
+    - year: 2020
+      month: 9
+      day: 9
+  language: en
+  number: '3689437'
+  publisher: Social Science Research Network
+  publisher-place: Rochester, NY
+  source: papers.ssrn.com
+  title: A Crash Course in Good and Bad Controls
+  type: report
+  URL: https://papers.ssrn.com/abstract=3689437
+
+- id: Claessens:2022
+  abstract: >-
+    Cross-national analyses test hypotheses about the drivers of global
+    variation in national outcomes. However, since nations are connected in
+    various ways, such as via spatial proximity and shared cultural ancestry,
+    cross-national analyses often violate assumptions of non-independence,
+    inflating false positive rates. Here, we show that, despite being recognised
+    as an important statistical pitfall for over 200 years, cross-national
+    research in economics and psychology still does not sufficiently account for
+    non-independence. In a review of the 100 highest-cited cross-national
+    studies of economic development and values, we find that controls for
+    non-independence are rare. When studies do include controls for
+    non-independence, our simulations suggest that commonly used methods
+    continue to produce false positives. In reanalyses of twelve cross-national
+    relationships, we show that half are no longer significant after controlling
+    for non-independence using global proximity matrices. We urge social
+    scientists to sufficiently control for non-independence in cross-national
+    research.
+  accessed:
+    - year: 2022
+      month: 6
+      day: 16
+  author:
+    - family: Claessens
+      given: Scott
+    - family: Atkinson
+      given: Quentin
+  citation-key: Claessens:2022
+  DOI: 10.31234/osf.io/m6bsn
+  issued:
+    - year: 2022
+      month: 4
+      day: 21
+  language: en-us
+  publisher: PsyArXiv
+  source: OSF Preprints
+  title: The non-independence of nations and why it matters
+  type: article
+  URL: https://psyarxiv.com/m6bsn/
+
 - id: Day:2010
   accessed:
     - year: 2021
@@ -1315,6 +1399,107 @@ references:
   URL: https://linkinghub.elsevier.com/retrieve/pii/S0301421520307047
   volume: '148'
 
+- id: Montgomery:2018
+  abstract: >-
+    In principle, experiments offer a straightforward method for social
+    scientists to accurately estimate causal effects. However, scholars often
+    unwittingly distort treatment effect estimates by conditioning on variables
+    that could be affected by their experimental manipulation. Typical examples
+    include controlling for posttreatment variables in statistical models,
+    eliminating observations based on posttreatment criteria, or subsetting the
+    data based on posttreatment variables. Though these modeling choices are
+    intended to address common problems encountered when conducting experiments,
+    they can bias estimates of causal effects. Moreover, problems associated
+    with conditioning on posttreatment variables remain largely unrecognized in
+    the field, which we show frequently publishes experimental studies using
+    these practices in our discipline's most prestigious journals. We
+    demonstrate the severity of experimental posttreatment bias analytically and
+    document the magnitude of the potential distortions it induces using
+    visualizations and reanalyses of real-world data. We conclude by providing
+    applied researchers with recommendations for best practice.
+  accessed:
+    - year: 2022
+      month: 6
+      day: 15
+  author:
+    - family: Montgomery
+      given: Jacob M.
+    - family: Nyhan
+      given: Brendan
+    - family: Torres
+      given: Michelle
+  citation-key: Montgomery:2018
+  container-title: American Journal of Political Science
+  DOI: 10.1111/ajps.12357
+  ISSN: 1540-5907
+  issue: '3'
+  issued:
+    - year: 2018
+  language: en
+  note: '_eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1111/ajps.12357'
+  page: 760-775
+  source: Wiley Online Library
+  title: >-
+    How Conditioning on Posttreatment Variables Can Ruin Your Experiment and
+    What to Do about It
+  type: article-journal
+  URL: https://onlinelibrary.wiley.com/doi/abs/10.1111/ajps.12357
+  volume: '62'
+
+- id: Nicholson:2017
+  abstract: >-
+    Inherent in applied developmental sciences is the threat to validity and
+    generalizability due to missing data as a result of participant drop-out.
+    The current paper provides an overview of how attrition should be reported,
+    which tests can examine the potential of bias due to attrition (e.g.,
+    t-tests, logistic regression, Little's MCAR test, sensitivity analysis), and
+    how it is best corrected through modern missing data analyses. To amend this
+    discussion of best practices in managing and reporting attrition, an
+    assessment of how developmental sciences currently handle attrition was
+    conducted. Longitudinal studies (n = 541) published from 2009–2012 in major
+    developmental journals were reviewed for attrition reporting practices and
+    how authors handled missing data based on recommendations in the Publication
+    Manual of the American Psychological Association (APA, 2010). Results
+    suggest attrition reporting is not following APA recommendations, quality of
+    reporting did not improve since the APA publication, and a low proportion of
+    authors provided sufficient information to convey that data properly met the
+    MAR assumption. An example based on simulated data demonstrates bias that
+    may result from various missing data mechanisms in longitudinal data, the
+    utility of auxiliary variables for the MAR assumption, and the need for
+    viewing missingness along a continuum from MAR to MNAR.
+  accessed:
+    - year: 2022
+      month: 6
+      day: 16
+  author:
+    - family: Nicholson
+      given: Jody S.
+    - family: Deboeck
+      given: Pascal R.
+    - family: Howard
+      given: Waylon
+  citation-key: Nicholson:2017
+  container-title: International Journal of Behavioral Development
+  container-title-short: International Journal of Behavioral Development
+  DOI: 10.1177/0165025415618275
+  ISSN: 0165-0254
+  issue: '1'
+  issued:
+    - year: 2017
+      month: 1
+      day: 1
+  language: en
+  page: 143-153
+  publisher: SAGE Publications Ltd
+  source: SAGE Journals
+  title: >-
+    Attrition in developmental psychology: A review of modern missing data
+    reporting and practices
+  title-short: Attrition in developmental psychology
+  type: article-journal
+  URL: https://doi.org/10.1177/0165025415618275
+  volume: '41'
+
 - id: Nosek:2018
   abstract: >-
     Progress in science relies in part on generating hypotheses with existing
@@ -1426,6 +1611,107 @@ references:
   type: article-journal
   URL: https://linkinghub.elsevier.com/retrieve/pii/S0264837720309674
   volume: '99'
+
+- id: Pickering:2022
+  abstract: >-
+    <h2>Summary</h2><p>Disagreements persist on how to design a self-sufficient,
+    carbon-neutral European energy system. To explore the diversity of design
+    options, we develop a high-resolution model of the entire European energy
+    system and produce 441 technically feasible system designs that are within
+    10% of the optimal economic cost. We show that a wide range of systems based
+    on renewable energy are feasible, with no need to import energy from outside
+    Europe. Model solutions reveal considerable flexibility in the choice and
+    geographical distribution of new infrastructure across the continent.
+    Balanced renewable energy supply can be achieved either with or without
+    mechanisms such as biofuel use, curtailment, and expansion of the
+    electricity network. Trade-offs emerge once specific preferences are
+    imposed. Low biofuel use, for example, requires heat electrification and
+    controlled vehicle charging. This exploration of the impact of preferences
+    on system design options is vital to inform urgent, politically difficult
+    decisions for eliminating fossil fuel imports and achieving European carbon
+    neutrality.</p>
+  accessed:
+    - year: 2022
+      month: 6
+      day: 16
+  author:
+    - family: Pickering
+      given: Bryn
+    - family: Lombardi
+      given: Francesco
+    - family: Pfenninger
+      given: Stefan
+  citation-key: Pickering:2022
+  container-title: Joule
+  container-title-short: Joule
+  DOI: 10.1016/j.joule.2022.05.009
+  ISSN: 2542-4785, 2542-4351
+  issue: '6'
+  issued:
+    - year: 2022
+      month: 6
+      day: 15
+  language: English
+  page: 1253-1276
+  publisher: Elsevier
+  source: www.cell.com
+  title: >-
+    Diversity of options to eliminate fossil fuels and reach carbon neutrality
+    across the entire European energy system
+  type: article-journal
+  URL: https://www.cell.com/joule/abstract/S2542-4351(22)00236-7
+  volume: '6'
+
+- id: Rand:2017
+  abstract: >-
+    Thirty years of North American research on public acceptance of wind energy
+    has produced important insights, yet knowledge gaps remain. This review
+    synthesizes the literature, revealing the following lessons learned. (1)
+    North American support for wind has been consistently high. (2) The NIMBY
+    explanation for resistance to wind development is invalid. (3) Socioeconomic
+    impacts of wind development are strongly tied to acceptance. (4) Sound and
+    visual impacts of wind facilities are strongly tied to annoyance and
+    opposition, and ignoring these concerns can exacerbate conflict. (5)
+    Environmental concerns matter, though less than other factors, and these
+    concerns can both help and hinder wind development. (6) Issues of fairness,
+    participation, and trust during the development process influence
+    acceptance. (7) Distance from turbines affects other explanatory variables,
+    but alone its influence is unclear. (8) Viewing opposition as something to
+    be overcome prevents meaningful understandings and implementation of best
+    practices. (9) Implementation of research findings into practice has been
+    limited. The paper also identifies areas for future research on wind
+    acceptance. With continued research efforts and a commitment toward
+    implementing research findings into developer and policymaker practice,
+    conflict and perceived injustices around proposed and existing wind energy
+    facilities might be significantly lessened.
+  accessed:
+    - year: 2022
+      month: 6
+      day: 19
+  author:
+    - family: Rand
+      given: Joseph
+    - family: Hoen
+      given: Ben
+  citation-key: Rand:2017
+  container-title: Energy Research & Social Science
+  container-title-short: Energy Research & Social Science
+  DOI: 10.1016/j.erss.2017.05.019
+  ISSN: 2214-6296
+  issued:
+    - year: 2017
+      month: 7
+      day: 1
+  language: en
+  page: 135-148
+  source: ScienceDirect
+  title: >-
+    Thirty years of North American wind energy acceptance research: What have we
+    learned?
+  title-short: Thirty years of North American wind energy acceptance research
+  type: article-journal
+  URL: https://www.sciencedirect.com/science/article/pii/S2214629617301275
+  volume: '29'
 
 - id: Rinscheid:2019
   abstract: >-
@@ -1891,6 +2177,51 @@ references:
   type: article-journal
   URL: https://www.cell.com/patterns/abstract/S2666-3899(21)00144-6
   volume: '2'
+
+- id: Westreich:2013
+  abstract: >-
+    It is common to present multiple adjusted effect estimates from a single
+    model in a single table. For example, a table might show odds ratios for one
+    or more exposures and also for several confounders from a single logistic
+    regression. This can lead to mistaken interpretations of these estimates. We
+    use causal diagrams to display the sources of the problems. Presentation of
+    exposure and confounder effect estimates from a single model may lead to
+    several interpretative difficulties, inviting confusion of direct-effect
+    estimates with total-effect estimates for covariates in the model. These
+    effect estimates may also be confounded even though the effect estimate for
+    the main exposure is not confounded. Interpretation of these effect
+    estimates is further complicated by heterogeneity (variation, modification)
+    of the exposure effect measure across covariate levels. We offer suggestions
+    to limit potential misunderstandings when multiple effect estimates are
+    presented, including precise distinction between total and direct effect
+    measures from a single model, and use of multiple models tailored to yield
+    total-effect estimates for covariates.
+  accessed:
+    - year: 2022
+      month: 7
+      day: 12
+  author:
+    - family: Westreich
+      given: Daniel
+    - family: Greenland
+      given: Sander
+  citation-key: Westreich:2013
+  container-title: American Journal of Epidemiology
+  container-title-short: American Journal of Epidemiology
+  DOI: 10.1093/aje/kws412
+  ISSN: 0002-9262
+  issue: '4'
+  issued:
+    - year: 2013
+      month: 2
+      day: 15
+  page: 292-298
+  source: Silverchair
+  title: "The Table\_2 Fallacy: Presenting and Interpreting Confounder and Modifier Coefficients"
+  title-short: "The Table\_2 Fallacy"
+  type: article-journal
+  URL: https://doi.org/10.1093/aje/kws412
+  volume: '177'
 
 - id: Wicki:2019
   abstract: >-
