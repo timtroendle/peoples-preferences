@@ -37,8 +37,8 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
             "chol_partworths", n=len(model.coords["level"]), eta=4, sd_dist=sigma, compute_corr=True
         )
 
-        z_partworths = pm.Normal("z_partworths", 0.0, 1.0, dims=["respondent", "level"])
-        partworths = pm.Deterministic("partworths", alpha + pm.math.dot(z_partworths, chol_partworths), dims=["respondent", "level"])
+        z_partworths = pm.Normal("z_partworths", 0.0, 1.0, dims=["level", "respondent"])
+        partworths = pm.Deterministic("partworths", pm.math.dot(chol_partworths, z_partworths), dims=["level", "respondent"])
 
         mu_left_intercept = pm.Normal('mu_left_intercept', 0, sigma=4)
         sigma_left_intercept = pm.Exponential('sigma_left_intercept', 1)
@@ -70,8 +70,8 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
             dims="choice_situations"
         )
 
-        u_left = left_intercept[r] + pm.math.sum(partworths[r] * dummies_left, axis=1)
-        u_right = pm.math.sum(partworths[r] * dummies_right, axis=1)
+        u_left = left_intercept[r] + pm.math.sum((alpha + partworths[:, r].T) * dummies_left, axis=1)
+        u_right = pm.math.sum((alpha + partworths[:, r].T) * dummies_right, axis=1)
         logit_p_left = 1 / pm.math.exp(u_right - u_left)
 
         pm.Bernoulli(
@@ -86,7 +86,8 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
             tune=n_tune,
             cores=n_cores,
             random_seed=random_seed,
-            return_inferencedata=True
+            return_inferencedata=True,
+            target_accept=0.9
         )
     inference_data.posterior = inference_data.posterior.rename_vars(
         {

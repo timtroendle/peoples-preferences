@@ -1,5 +1,15 @@
 ---
 references:
+- id: ':w'
+  accessed:
+    - year: 2022
+      month: 7
+      day: 18
+  citation-key: ':w'
+  title: RPubs - hierarchical MNL model
+  type: webpage
+  URL: https://rpubs.com/TCEagle/672172
+
 - id: Aizaki:2008
   abstract: >-
     This paper briefly introduces choice experiments using R, which is a
@@ -223,6 +233,43 @@ references:
   type: article-journal
   URL: https://www.pnas.org/doi/10.1073/pnas.1306374110
   volume: '110'
+
+- id: Ben-Akiva:2019
+  abstract: >-
+    Foundations of Stated Preference Elicitation: Consumer Behavior and
+    Choice-based Conjoint Analysis
+  accessed:
+    - year: 2022
+      month: 7
+      day: 18
+  author:
+    - family: Ben-Akiva
+      given: Moshe
+    - family: McFadden
+      given: Daniel
+    - family: Train
+      given: Kenneth
+  citation-key: Ben-Akiva:2019
+  container-title: Foundations and Trends® in Econometrics
+  container-title-short: ECO
+  DOI: 10.1561/0800000036
+  ISSN: 1551-3076, 1551-3084
+  issue: 1-2
+  issued:
+    - year: 2019
+      month: 1
+      day: 27
+  language: English
+  page: 1-144
+  publisher: Now Publishers, Inc.
+  source: www.nowpublishers.com
+  title: >-
+    Foundations of Stated Preference Elicitation: Consumer Behavior and
+    Choice-based Conjoint Analysis
+  title-short: Foundations of Stated Preference Elicitation
+  type: article-journal
+  URL: https://www.nowpublishers.com/article/Details/ECO-036
+  volume: '10'
 
 - id: Boudet:2019
   abstract: >-
