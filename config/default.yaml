@@ -416,7 +416,7 @@ models:
         limit-respondents: 200
         random-seed: 4000
     hierarchical:
-        n-tune: 1000
+        n-tune: 2000
         n-draws: 1000
         limit-respondents: 80
         random-seed: 4000

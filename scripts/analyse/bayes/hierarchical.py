@@ -6,10 +6,10 @@ import aesara.tensor as at
 ATTRIBUTES = [
     "TECHNOLOGY",
     "LAND",
-    "PRICES",
     "TRANSMISSION",
-    "OWNERSHIP",
-    "SHARE_IMPORTS"
+    "SHARE_IMPORTS",
+    "PRICES",
+    "OWNERSHIP"
 ]
 OPTIONS_PER_RESPONDENT = 16
 
@@ -31,7 +31,7 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
     })
 
     with model:
-        alpha = pm.Normal('alpha', 0, sigma=1, dims="level")
+        alpha = pm.Normal('alpha', 0, sigma=4, dims="level")
         sigma = pm.Exponential.dist(1.0)
         chol_partworths, _, _ = pm.LKJCholeskyCov(
             "chol_partworths", n=len(model.coords["level"]), eta=4, sd_dist=sigma, compute_corr=True
@@ -40,13 +40,13 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
         z_partworths = pm.Normal("z_partworths", 0.0, 1.0, dims=["respondent", "level"])
         partworths = pm.Deterministic("partworths", alpha + pm.math.dot(z_partworths, chol_partworths), dims=["respondent", "level"])
 
-        mu_left_intercept = pm.Normal('mu_left_intercept', 0, sigma=1)
+        mu_left_intercept = pm.Normal('mu_left_intercept', 0, sigma=4)
         sigma_left_intercept = pm.Exponential('sigma_left_intercept', 1)
         z_left_intercept = pm.Normal("z_left_intercept", 0, sigma=1, dims="respondent")
         left_intercept = pm.Deterministic( # TODO let covar with partsworths
             'left_intercept',
             mu_left_intercept + z_left_intercept * sigma_left_intercept,
-            dims=["respondent"]
+            dims="respondent"
         )
 
         r = pm.ConstantData(
@@ -72,11 +72,11 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
 
         u_left = left_intercept[r] + pm.math.sum(partworths[r] * dummies_left, axis=1)
         u_right = pm.math.sum(partworths[r] * dummies_right, axis=1)
-        p_left = pm.math.exp(u_left) / (pm.math.exp(u_left) + pm.math.exp(u_right)) # TODO maybe requires log
+        logit_p_left = 1 / pm.math.exp(u_right - u_left)
 
         pm.Bernoulli(
             f"choice",
-            p=p_left,
+            logit_p=logit_p_left,
             observed=choice_left,
             dims="choice_situations"
         )
