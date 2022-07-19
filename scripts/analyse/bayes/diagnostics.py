@@ -32,7 +32,7 @@ def pop_means_plot(inference_data, path_to_plot):
 def forest_plot(inference_data, path_to_plot):
     axes = az.plot_forest(
         inference_data,
-        var_names=["alpha", "sigma_partworths", "mu_left_intercept", "sigma_left_intercept", "Rho_partworths"],
+        var_names=["alpha", "sigma_partworths", "mu_left_intercept", "sigma_left_intercept", "rho_partworths"],
         combined=False,
         hdi_prob=0.9
     )
@@ -45,17 +45,16 @@ def rhos_plot(inference_data, path_to_plot):
     rhos = (
         inference_data
         .posterior
-        .Rho_partworths
+        .rho_partworths
         .mean(["draw"])
-        .to_dataframe()["Rho_partworths"]
+        .to_dataframe()["rho_partworths"]
         .reset_index()
-        .rename(columns={"chol_partworths_corr_dim_0": "dim0", "chol_partworths_corr_dim_1": "dim1"})
     )
     level_mapper = inference_data.constant_data.level.to_series().reset_index(drop=True).to_dict()
     def heatmap(df):
         return (
             df
-            .pivot(index="dim0", columns="dim1", values="Rho_partworths")
+            .pivot(index="level", columns="level_repeat", values="rho_partworths")
             .rename(index=level_mapper, columns=level_mapper)
         )
 
@@ -69,7 +68,7 @@ def summary(inference_data, path_to_summary):
         az
         .summary(
             inference_data,
-            var_names=["alpha", "sigma_partworths", "mu_left_intercept", "sigma_left_intercept", "Rho_partworths"],
+            var_names=["alpha", "sigma_partworths", "mu_left_intercept", "sigma_left_intercept", "rho_partworths"],
             hdi_prob=0.9,
             round_to=2
         )

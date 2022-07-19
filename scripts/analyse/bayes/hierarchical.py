@@ -25,15 +25,22 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
 
     model = pm.Model(coords={
         "level": dummies.columns.values,
+        "level_repeat": dummies.columns.values,
         "respondent": conjoint.index.get_level_values("RESPONDENT_ID").remove_unused_categories().categories
     })
 
     with model:
         alpha = pm.Normal('alpha', 0, sigma=4, dims="level")
-        sigma = pm.Exponential.dist(1.0)
-        chol_partworths, _, _ = pm.LKJCholeskyCov(
-            "chol_partworths", n=len(model.coords["level"]), eta=4, sd_dist=sigma, compute_corr=True
+        chol_partworths, rho_partworths, sigma_partworths = pm.LKJCholeskyCov(
+            "chol_partworths",
+            n=len(model.coords["level"]),
+            eta=4,
+            sd_dist=pm.Exponential.dist(1.0),
+            compute_corr=True,
+            store_in_trace=False
         )
+        pm.Deterministic("sigma_partworths", sigma_partworths, dims="level")
+        pm.Deterministic("rho_partworths", rho_partworths, dims=["level", "level_repeat"])
 
         z_partworths = pm.Normal("z_partworths", 0.0, 1.0, dims=["level", "respondent"])
         partworths = pm.Deterministic("partworths", pm.math.dot(chol_partworths, z_partworths), dims=["level", "respondent"])
@@ -87,12 +94,6 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
             return_inferencedata=True,
             target_accept=0.9
         )
-    inference_data.posterior = inference_data.posterior.rename_vars(
-        {
-            "chol_partworths_corr": "Rho_partworths",
-            "chol_partworths_stds": "sigma_partworths",
-        }
-    )
     inference_data.to_netcdf(path_to_output)
 
 
