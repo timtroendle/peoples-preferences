@@ -104,6 +104,20 @@ rule hierarchical:
     script: "../scripts/analyse/bayes/hierarchical.py"
 
 
+rule diagnostics:
+    message: "Run diagnostics for hierarchical model."
+    input:
+        inference_data = rules.hierarchical.output[0]
+    output:
+        trace = "build/models/hierarchical/trace.png",
+        pop_means = "build/models/hierarchical/pop-means.png",
+        forest = "build/models/hierarchical/forest.png",
+        summary = "build/models/hierarchical/summary.csv",
+        rhos = "build/models/hierarchical/rhos.png"
+    conda: "../envs/analyse.yaml"
+    script: "../scripts/analyse/bayes/diagnostics.py"
+
+
 rule visualise_partworths:
     message: "Visualise partworths."
     input: posterior = rules.multinomial_logit.output[0]
