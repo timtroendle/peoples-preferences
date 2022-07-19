@@ -8,6 +8,7 @@ dependencies:
     - pyarrow=8.0.0
     - mkl=2022.1.0
     - mkl-service=2.4.0
-    - aesara=2.6.6
+    - aesara=2.7.7
     - arviz=0.12.1
-    - pymc=4.0.0
+    - blas=2.115
+    - pymc=4.1.3
