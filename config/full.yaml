@@ -10,7 +10,7 @@ models:
         limit-respondents: False
         random-seed: 4000
     hierarchical:
-        n-tune: 2000
+        n-tune: 4000
         n-draws: 2000
-        limit-respondents: 1000 # FIXME do not limit
+        limit-respondents: 2000 # FIXME do not limit
         random-seed: 4000
