@@ -1,7 +1,5 @@
-import numpy as np
 import pandas as pd
 import pymc as pm
-import aesara.tensor as at
 
 ATTRIBUTES = [
     "TECHNOLOGY",
@@ -72,11 +70,11 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
 
         u_left = left_intercept[r] + pm.math.sum((alpha + partworths[:, r].T) * dummies_left, axis=1)
         u_right = pm.math.sum((alpha + partworths[:, r].T) * dummies_right, axis=1)
-        logit_p_left = 1 / pm.math.exp(u_right - u_left)
+        p_left = pm.math.exp(u_left) / (pm.math.exp(u_left) + pm.math.exp(u_right))
 
         pm.Bernoulli(
             f"choice",
-            logit_p=logit_p_left,
+            p=p_left,
             observed=choice_left,
             dims="choice_situations"
         )
