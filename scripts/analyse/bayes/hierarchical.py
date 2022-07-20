@@ -31,19 +31,20 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
 
     with model:
         alpha = pm.Normal('alpha', 0, sigma=4, dims="level")
-        chol_partworths, rho_partworths, sigma_partworths = pm.LKJCholeskyCov(
-            "chol_partworths",
+        chol_individuals, rho_individuals, sigma_individuals = pm.LKJCholeskyCov(
+            "chol_individuals",
             n=len(model.coords["level"]),
             eta=4,
             sd_dist=pm.Exponential.dist(1.0),
             compute_corr=True,
             store_in_trace=False
         )
-        pm.Deterministic("sigma_partworths", sigma_partworths, dims="level")
-        pm.Deterministic("rho_partworths", rho_partworths, dims=["level", "level_repeat"])
+        pm.Deterministic("sigma_individuals", sigma_individuals, dims="level")
+        pm.Deterministic("rho_individuals", rho_individuals, dims=["level", "level_repeat"])
 
-        z_partworths = pm.Normal("z_partworths", 0.0, 1.0, dims=["level", "respondent"])
-        partworths = pm.Deterministic("partworths", pm.math.dot(chol_partworths, z_partworths), dims=["level", "respondent"])
+        z_individuals = pm.Normal("z_individuals", 0.0, 1.0, dims=["level", "respondent"])
+        individuals = pm.Deterministic("individuals", pm.math.dot(chol_individuals, z_individuals), dims=["level", "respondent"])
+        partworths = pm.Deterministic("partworths", (alpha + individuals.T).T, dims=["level", "respondent"])
 
         mu_left_intercept = pm.Normal('mu_left_intercept', 0, sigma=4)
         sigma_left_intercept = pm.Exponential('sigma_left_intercept', 1)
@@ -75,8 +76,8 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
             dims="choice_situations"
         )
 
-        u_left = left_intercept[r] + pm.math.sum((alpha + partworths[:, r].T) * dummies_left, axis=1)
-        u_right = pm.math.sum((alpha + partworths[:, r].T) * dummies_right, axis=1)
+        u_left = left_intercept[r] + pm.math.sum(partworths[:, r] * dummies_left.T, axis=0)
+        u_right = pm.math.sum(partworths[:, r] * dummies_right.T, axis=0)
         p_left = pm.math.exp(u_left) / (pm.math.exp(u_left) + pm.math.exp(u_right))
 
         pm.Bernoulli(

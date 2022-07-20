@@ -113,7 +113,8 @@ rule diagnostics:
         pop_means = "build/models/hierarchical/pop-means.png",
         forest = "build/models/hierarchical/forest.png",
         summary = "build/models/hierarchical/summary.csv",
-        rhos = "build/models/hierarchical/rhos.png"
+        rhos = "build/models/hierarchical/rhos.png",
+        individuals = "build/models/hierarchical/individuals.png"
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/bayes/diagnostics.py"
 

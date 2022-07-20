@@ -12,5 +12,5 @@ models:
     hierarchical:
         n-tune: 4000
         n-draws: 2000
-        limit-respondents: 2000 # FIXME do not limit
+        limit-respondents: 1000 # TODO do not limit
         random-seed: 4000
