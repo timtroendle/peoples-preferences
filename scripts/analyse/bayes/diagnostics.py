@@ -8,7 +8,6 @@ def diagnostics(path_to_inference_data: str, path_to_trace_plot: str, path_to_po
     inference_data = az.from_netcdf(path_to_inference_data)
     inference_data = retransform_normalised(inference_data)
 
-
     trace_plot(inference_data, path_to_trace_plot)
     pop_means_plot(inference_data, hdi_prob, path_to_pop_means_plot)
     forest_plot(inference_data, hdi_prob, path_to_forest_plot)
@@ -25,9 +24,10 @@ def retransform_normalised(inference_data: az.InferenceData):
 
 
 def trace_plot(inference_data: az.InferenceData, path_to_plot: str):
+    var_names = ["alpha", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept", "beta_age", "beta_edu"]
     axes = az.plot_trace(
         inference_data,
-        var_names= ["alpha", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept", "beta_age"],
+        var_names=var_names,
         filter_vars="like"
     )
     fig = axes[0, 0].get_figure()
@@ -43,10 +43,11 @@ def pop_means_plot(inference_data: az.InferenceData, hdi_prob: float, path_to_pl
 
 
 def forest_plot(inference_data: az.InferenceData, hdi_prob: float, path_to_plot: str):
+    var_names = ["alpha", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept",
+                 "beta_age", "beta_edu", "d_edu", "rho_individuals"]
     axes = az.plot_forest(
         inference_data,
-        var_names=["alpha", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept",
-                   "beta_age", "rho_individuals"],
+        var_names=var_names,
         filter_vars="like",
         combined=False,
         hdi_prob=hdi_prob
@@ -98,7 +99,7 @@ def summary(inference_data: az.InferenceData, hdi_prob: float, path_to_summary: 
         .summary(
             inference_data,
             var_names=["alpha", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept",
-                       "beta_age", "rho_individuals"],
+                       "beta_age", "beta_edu", "d_edu", "rho_individuals"],
             filter_vars="like",
             hdi_prob=hdi_prob,
             round_to=2

@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import pymc as pm
 
@@ -28,11 +29,13 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
     model = pm.Model(coords={
         "level": dummies.columns.values,
         "level_repeat": dummies.columns.values,
-        "respondent": conjoint.index.get_level_values("RESPONDENT_ID").remove_unused_categories().categories
+        "respondent": conjoint.index.get_level_values("RESPONDENT_ID").remove_unused_categories().categories,
+        "education": conjoint.Q9_EDUCATION.cat.remove_unused_categories().cat.categories
     })
 
     n_levels = len(model.coords["level"])
     n_respondents = len(model.coords["respondent"])
+    n_educations = len(model.coords["education"])
 
 
     with model:
@@ -40,22 +43,22 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
         r = pm.ConstantData(
             "r",
             conjoint.xs("Left", level="LABEL").index.get_level_values("RESPONDENT_ID").remove_unused_categories().codes,
-            dims="choice_situations"
+            dims="choice_situation"
         )
         dummies_left = pm.ConstantData(
             "dummies_left",
             dummies.xs("Left", level="LABEL").values,
-            dims=["choice_situations", "level"]
+            dims=["choice_situation", "level"]
         )
         dummies_right = pm.ConstantData(
             "dummies_right",
             dummies.xs("Right", level="LABEL").values,
-            dims=["choice_situations", "level"]
+            dims=["choice_situation", "level"]
         )
         choice_left = pm.ConstantData(
             "choice_left",
             conjoint.xs("Left", level="LABEL").CHOICE_INDICATOR.values,
-            dims="choice_situations"
+            dims="choice_situation"
         )
         age = pm.ConstantData(
             "age",
@@ -66,6 +69,11 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
             "age_normed",
             conjoint.groupby("RESPONDENT_ID").RESPONDENT_AGE_NORM.first().values.repeat(n_levels).reshape(n_respondents, n_levels).T,
             dims=["level", "respondent"] # FIXME this should be respondent only
+        )
+        edu = pm.ConstantData(
+            "edu",
+            conjoint.groupby("RESPONDENT_ID").Q9_EDUCATION.first().cat.remove_unused_categories().cat.codes.values,
+            dims="respondent"
         )
 
         # parameters
@@ -86,9 +94,13 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
 
         if individual_covariates:
             beta_age_normed = pm.Normal('beta_age', mu=0, sigma=1, dims="level") # TODO add covariation?
+            beta_edu = pm.Normal("beta_edu", mu=0, sigma=1, dims="level") # TODO add covariation?
+            d_edu = pm.Dirichlet("d_edu", a=np.ones([n_levels, n_educations]) * 2, transform=pm.distributions.transforms.simplex, dims=["level", "education"])
+            d_edu_cumsum = pm.math.stack([pm.math.sum(d_edu[:, :i + 1], axis=1) for i, _ in enumerate(model.coords["education"])])[edu, :]
+
             partworths = pm.Deterministic(
                 "partworths",
-                alpha + beta_age_normed * age_normed.T + individuals.T,
+                alpha + beta_age_normed * age_normed.T + beta_edu * d_edu_cumsum + individuals.T,
                 dims=["respondent", "level"]
             )
         else:
@@ -115,7 +127,7 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
             f"choice",
             p=p_left,
             observed=choice_left,
-            dims="choice_situations"
+            dims="choice_situation"
         )
 
         inference_data = pm.sample(
@@ -130,7 +142,7 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
 
 
 def filter_respondents(df, limit_respondents, n_respondents_per_country):
-    df.dropna(axis="index", subset="Q4_BIRTH_YEAR", inplace=True) # FIXME don't do this
+    df.dropna(axis="index", subset=["Q4_BIRTH_YEAR", "Q9_EDUCATION"], inplace=True) # FIXME don't do this
     if limit_respondents:
         df = df.groupby("RESPONDENT_COUNTRY").head(n_respondents_per_country * OPTIONS_PER_RESPONDENT)
     return df
