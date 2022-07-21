@@ -100,7 +100,7 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
 
         if individual_covariates:
             alpha_gender = pm.Normal('alpha_gender', mu=0, sigma=1, dims=["gender", "level"])
-            beta_age_normed = pm.Normal('beta_age', mu=0, sigma=1, dims="level") # TODO add covariation?
+            beta_age_normed = pm.Normal('beta_age_normed', mu=0, sigma=1, dims="level") # TODO add covariation?
             beta_edu = pm.Normal("beta_edu", mu=0, sigma=1, dims="level") # TODO add covariation?
             d_edu = pm.Dirichlet("d_edu", a=np.ones([n_levels, n_educations]) * 2, transform=pm.distributions.transforms.simplex, dims=["level", "education"])
             d_edu_cumsum = pm.math.stack([pm.math.sum(d_edu[:, :i + 1], axis=1) for i, _ in enumerate(model.coords["education"])])[edu, :]
