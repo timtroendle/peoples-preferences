@@ -30,7 +30,8 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
         "level": dummies.columns.values,
         "level_repeat": dummies.columns.values,
         "respondent": conjoint.index.get_level_values("RESPONDENT_ID").remove_unused_categories().categories,
-        "education": conjoint.Q9_EDUCATION.cat.remove_unused_categories().cat.categories
+        "education": conjoint.Q9_EDUCATION.cat.remove_unused_categories().cat.categories,
+        "gender": pd.get_dummies(conjoint.Q3_GENDER, drop_first=True).columns.values
     })
 
     n_levels = len(model.coords["level"])
@@ -75,6 +76,11 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
             conjoint.groupby("RESPONDENT_ID").Q9_EDUCATION.first().cat.remove_unused_categories().cat.codes.values,
             dims="respondent"
         )
+        g = pm.ConstantData(
+            "g",
+            pd.get_dummies(conjoint.groupby("RESPONDENT_ID").Q3_GENDER.first(), drop_first=True).values,
+            dims=["respondent", "gender"]
+        )
 
         # parameters
         alpha = pm.Normal('alpha', 0, sigma=4, dims="level")
@@ -93,6 +99,7 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
         individuals = pm.Deterministic("individuals", pm.math.dot(chol_individuals, z_individuals), dims=["level", "respondent"])
 
         if individual_covariates:
+            alpha_gender = pm.Normal('alpha_gender', mu=0, sigma=1, dims=["gender", "level"])
             beta_age_normed = pm.Normal('beta_age', mu=0, sigma=1, dims="level") # TODO add covariation?
             beta_edu = pm.Normal("beta_edu", mu=0, sigma=1, dims="level") # TODO add covariation?
             d_edu = pm.Dirichlet("d_edu", a=np.ones([n_levels, n_educations]) * 2, transform=pm.distributions.transforms.simplex, dims=["level", "education"])
@@ -100,7 +107,7 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
 
             partworths = pm.Deterministic(
                 "partworths",
-                alpha + beta_age_normed * age_normed.T + beta_edu * d_edu_cumsum + individuals.T,
+                alpha + pm.math.dot(g, alpha_gender) + beta_age_normed * age_normed.T + beta_edu * d_edu_cumsum + individuals.T,
                 dims=["respondent", "level"]
             )
         else:
@@ -142,7 +149,7 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
 
 
 def filter_respondents(df, limit_respondents, n_respondents_per_country):
-    df.dropna(axis="index", subset=["Q4_BIRTH_YEAR", "Q9_EDUCATION"], inplace=True) # FIXME don't do this
+    df.dropna(axis="index", subset=["Q3_GENDER", "Q4_BIRTH_YEAR", "Q9_EDUCATION"], inplace=True) # FIXME don't do this
     if limit_respondents:
         df = df.groupby("RESPONDENT_COUNTRY").head(n_respondents_per_country * OPTIONS_PER_RESPONDENT)
     return df
