@@ -415,10 +415,15 @@ models:
         n-draws: 1000
         limit-respondents: 200
         random-seed: 4000
-    hierarchical:
+    hierarchical-nocovariates:
         n-tune: 2000
         n-draws: 1000
         limit-respondents: 80
         random-seed: 4000
-    # TODO add respondent covariates
-    # TODO add interaction effects
+        individual-covariates: False
+    hierarchical-covariates:
+        n-tune: 2000
+        n-draws: 1000
+        limit-respondents: 80
+        random-seed: 4000
+        individual-covariates: True

@@ -9,8 +9,15 @@ models:
         n-draws: 2000
         limit-respondents: False
         random-seed: 4000
-    hierarchical:
+    hierarchical-nocovariates:
         n-tune: 4000
         n-draws: 2000
         limit-respondents: 1000 # TODO do not limit
         random-seed: 4000
+        individual-covariates: False
+    hierarchical-covariates:
+        n-tune: 4000
+        n-draws: 2000
+        limit-respondents: 1000 # TODO do not limit
+        random-seed: 4000
+        individual-covariates: True

@@ -3,47 +3,60 @@ import seaborn as sns
 
 
 def diagnostics(path_to_inference_data: str, path_to_trace_plot: str, path_to_pop_means_plot: str,
-                path_to_forest_plot: str, path_to_summary: str, path_to_rhos_plot: str, path_to_individuals_plot: str):
+                path_to_forest_plot: str, path_to_summary: str, path_to_rhos_plot: str,
+                hdi_prob: float, path_to_individuals_plot: str):
     inference_data = az.from_netcdf(path_to_inference_data)
+    inference_data = retransform_normalised(inference_data)
+
 
     trace_plot(inference_data, path_to_trace_plot)
-    pop_means_plot(inference_data, path_to_pop_means_plot)
-    forest_plot(inference_data, path_to_forest_plot)
+    pop_means_plot(inference_data, hdi_prob, path_to_pop_means_plot)
+    forest_plot(inference_data, hdi_prob, path_to_forest_plot)
     rhos_plot(inference_data, path_to_rhos_plot)
     individuals_plot(inference_data, path_to_individuals_plot)
-    summary(inference_data, path_to_summary)
+    summary(inference_data, hdi_prob, path_to_summary)
 
 
-def trace_plot(inference_data, path_to_plot):
+def retransform_normalised(inference_data: az.InferenceData):
+    age_std = inference_data.constant_data.age.std()
+    if "beta_age_normed" in inference_data.posterior:
+        inference_data.posterior["beta_age"] = inference_data.posterior["beta_age_normed"] / age_std
+    return inference_data
+
+
+def trace_plot(inference_data: az.InferenceData, path_to_plot: str):
     axes = az.plot_trace(
         inference_data,
-        var_names=["alpha", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept"]
+        var_names= ["alpha", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept", "beta_age"],
+        filter_vars="like"
     )
     fig = axes[0, 0].get_figure()
     fig.tight_layout()
     fig.savefig(path_to_plot)
 
 
-def pop_means_plot(inference_data, path_to_plot):
-    axes = az.plot_forest(inference_data, var_names="alpha", combined=True, hdi_prob=0.9)
+def pop_means_plot(inference_data: az.InferenceData, hdi_prob: float, path_to_plot: str):
+    axes = az.plot_forest(inference_data, var_names="alpha", combined=True, hdi_prob=hdi_prob)
     fig = axes[0].get_figure()
     fig.tight_layout()
     fig.savefig(path_to_plot)
 
 
-def forest_plot(inference_data, path_to_plot):
+def forest_plot(inference_data: az.InferenceData, hdi_prob: float, path_to_plot: str):
     axes = az.plot_forest(
         inference_data,
-        var_names=["alpha", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept", "rho_individuals"],
+        var_names=["alpha", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept",
+                   "beta_age", "rho_individuals"],
+        filter_vars="like",
         combined=False,
-        hdi_prob=0.9
+        hdi_prob=hdi_prob
     )
     fig = axes[0].get_figure()
     fig.tight_layout()
     fig.savefig(path_to_plot)
 
 
-def rhos_plot(inference_data, path_to_plot):
+def rhos_plot(inference_data: az.InferenceData, path_to_plot: str):
     rhos = (
         inference_data
         .posterior
@@ -65,7 +78,7 @@ def rhos_plot(inference_data, path_to_plot):
     g.savefig(path_to_plot)
 
 
-def individuals_plot(inference_data, path_to_plot):
+def individuals_plot(inference_data: az.InferenceData, path_to_plot: str):
     axes = az.plot_forest(
         inference_data,
         var_names="partworths",
@@ -79,13 +92,15 @@ def individuals_plot(inference_data, path_to_plot):
     fig.savefig(path_to_plot)
 
 
-def summary(inference_data, path_to_summary):
+def summary(inference_data: az.InferenceData, hdi_prob: float, path_to_summary: str):
     (
         az
         .summary(
             inference_data,
-            var_names=["alpha", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept", "rho_individuals"],
-            hdi_prob=0.9,
+            var_names=["alpha", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept",
+                       "beta_age", "rho_individuals"],
+            filter_vars="like",
+            hdi_prob=hdi_prob,
             round_to=2
         )
         .to_csv(path_to_summary)
@@ -100,5 +115,6 @@ if __name__ == "__main__":
         path_to_forest_plot=snakemake.output.forest,
         path_to_rhos_plot=snakemake.output.rhos,
         path_to_individuals_plot=snakemake.output.individuals,
-        path_to_summary=snakemake.output.summary
+        path_to_summary=snakemake.output.summary,
+        hdi_prob=snakemake.params.hdi_prob
     )

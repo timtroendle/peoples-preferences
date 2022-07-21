@@ -29,7 +29,9 @@ rule all:
     input:
         "build/report.html",
         "build/test-report.html",
-        "build/models/multinomial-logit.pdf"
+        "build/models/multinomial-logit.pdf",
+        "build/models/hierarchical-nocovariates/summary.csv",
+        "build/models/hierarchical-covariates/summary.csv"
 
 
 def pandoc_options(wildcards):
@@ -62,31 +64,6 @@ rule report:
                feature=["RESPONDENT_COUNTRY", "Q3_GENDER", "Q6_AREA"]),
         "build/clustering/4-with-country/conditional-mm.png",
         "build/clustering/4-with-country/umap.png",
-        "build/amce.png",
-        "build/mm.png",
-        "build/H1.png",
-        "build/H2.png",
-        "build/H4.png",
-        "build/H5.png",
-        "build/H6.png",
-        "build/H7.png",
-        "build/H8.png",
-        "build/H9.png",
-        "build/H11.png",
-        "build/H16.png",
-        "build/H17.png",
-        "build/H18.png",
-        "build/H19.png",
-        "build/H20.png",
-        "build/H21.png",
-        "build/H22.png",
-        "build/H23.png",
-        "build/H24.png",
-        "build/H25.png",
-        "build/H26.png",
-        "build/H27.png",
-        "build/H28.png",
-        "build/H29.png",
         "build/robustness/conditional-mm-choice-set.png",
         "build/robustness/conditional-mm-label.png",
         "build/robustness/design-validation.png",

@@ -88,33 +88,42 @@ rule multinomial_logit:
     script: "../scripts/analyse/bayes/multinomial.py"
 
 
+def hierarchical_model_config(param_name):
+    def hierarchical_model_config(wildcards):
+        name = f"hierarchical-{wildcards.name}"
+        return config["models"][name][param_name]
+    return hierarchical_model_config
+
+
 rule hierarchical:
-    message: "Fit a hierarchical Bayes model using PyMC."
+    message: "Fit hierarchical Bayes model '{wildcards.name}' using PyMC."
     input: data = rules.global_conjoint.output[0]
     params:
-        n_tune = config["models"]["hierarchical"]["n-tune"],
-        n_draws = config["models"]["hierarchical"]["n-draws"],
-        limit_respondents = config["models"]["hierarchical"]["limit-respondents"],
-        random_seed = config["models"]["hierarchical"]["random-seed"]
+        n_tune = hierarchical_model_config("n-tune"),
+        n_draws = hierarchical_model_config("n-draws"),
+        limit_respondents = hierarchical_model_config("limit-respondents"),
+        random_seed = hierarchical_model_config("random-seed"),
+        individual_covariates = hierarchical_model_config("individual-covariates")
     resources:
         runtime = 1440
     threads: 4
-    output: "build/models/hierarchical.nc"
+    output: "build/models/hierarchical-{name}.nc"
     conda: "../envs/pymc.yaml"
     script: "../scripts/analyse/bayes/hierarchical.py"
 
 
 rule diagnostics:
-    message: "Run diagnostics for hierarchical model."
+    message: "Run diagnostics for hierarchical model {wildcards.name}."
     input:
         inference_data = rules.hierarchical.output[0]
+    params: hdi_prob = 0.94
     output:
-        trace = "build/models/hierarchical/trace.png",
-        pop_means = "build/models/hierarchical/pop-means.png",
-        forest = "build/models/hierarchical/forest.png",
-        summary = "build/models/hierarchical/summary.csv",
-        rhos = "build/models/hierarchical/rhos.png",
-        individuals = "build/models/hierarchical/individuals.png"
+        trace = "build/models/hierarchical-{name}/trace.png",
+        pop_means = "build/models/hierarchical-{name}/pop-means.png",
+        forest = "build/models/hierarchical-{name}/forest.png",
+        summary = "build/models/hierarchical-{name}/summary.csv",
+        rhos = "build/models/hierarchical-{name}/rhos.png",
+        individuals = "build/models/hierarchical-{name}/individuals.png"
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/bayes/diagnostics.py"
 
