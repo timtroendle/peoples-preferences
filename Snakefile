@@ -95,7 +95,9 @@ rule test:
     input:
         test_dir = "tests",
         tests = map(str, Path("tests").glob("**/test_*.py")),
-        national_conjoints = expand("build/{country_id}/raw.feather", country_id=COUNTRY_IDS)
+        national_conjoints = expand("build/{country_id}/raw.feather", country_id=COUNTRY_IDS),
+        conjoint = "build/conjoint.feather",
+        covariate_model = "build/models/hierarchical-covariates.nc"
     params:
         config = config
     output: "build/test-report.html"
