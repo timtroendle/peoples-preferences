@@ -30,8 +30,8 @@ rule all:
         "build/report.html",
         "build/test-report.html",
         "build/models/multinomial-logit.pdf",
-        "build/models/hierarchical-nocovariates/summary.csv",
-        "build/models/hierarchical-covariates/summary.csv"
+        "build/models/hierarchical-nocovariates/summary.feather",
+        "build/models/hierarchical-covariates/summary.feather"
 
 
 def pandoc_options(wildcards):
