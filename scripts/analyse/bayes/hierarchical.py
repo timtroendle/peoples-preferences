@@ -30,7 +30,7 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
         "level": dummies.columns.values,
         "level_repeat": dummies.columns.values,
         "respondent": conjoint.index.get_level_values("RESPONDENT_ID").remove_unused_categories().categories,
-        "education": conjoint.Q9_EDUCATION.cat.remove_unused_categories().cat.categories,
+        "education": pd.get_dummies(conjoint.Q9_EDUCATION.cat.remove_unused_categories(), drop_first=True).columns.values,
         "gender": pd.get_dummies(conjoint.Q3_GENDER, drop_first=True).columns.values
     })
 
@@ -103,7 +103,7 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
             beta_age_normed = pm.Normal('beta_age_normed', mu=0, sigma=1, dims="level") # TODO add covariation?
             beta_edu = pm.Normal("beta_edu", mu=0, sigma=1, dims="level") # TODO add covariation?
             d_edu = pm.Dirichlet("d_edu", a=np.ones([n_levels, n_educations]) * 2, transform=pm.distributions.transforms.simplex, dims=["level", "education"])
-            d_edu_cumsum = pm.math.stack([pm.math.sum(d_edu[:, :i + 1], axis=1) for i, _ in enumerate(model.coords["education"])])[edu, :]
+            d_edu_cumsum = pm.math.stack([pm.math.sum(d_edu[:, :i], axis=1) for i in range(n_educations + 1)])[edu, :]
 
             partworths = pm.Deterministic(
                 "partworths",

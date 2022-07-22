@@ -1,3 +1,4 @@
+import numpy as np
 from datatest import register_accessors
 
 register_accessors()
@@ -22,12 +23,9 @@ def test_gender_covariate(covariate_model, respondents):
 
 
 def test_education_covariate(covariate_model, respondents):
-    model_education = (
-        covariate_model
-        .posterior
-        .education[covariate_model.constant_data.edu]
-        .to_series()
-    )
+    levels = ["None"] + list(covariate_model.posterior.education.values)
+    level_mapping = {i: level for i, level in enumerate(levels)}
+    model_education = covariate_model.constant_data.edu.to_series().map(level_mapping)
 
     expected_education = respondents.reindex(model_education.index).Q9_EDUCATION
 
