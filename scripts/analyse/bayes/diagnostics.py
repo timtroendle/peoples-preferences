@@ -45,7 +45,7 @@ def pop_means_plot(inference_data: az.InferenceData, hdi_prob: float, path_to_pl
 
 def forest_plot(inference_data: az.InferenceData, hdi_prob: float, path_to_plot: str):
     var_names = ["alpha", "alpha_gender", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept",
-                 "beta_age", "beta_edu", "d_edu", "rho_individuals"]
+                 "beta_age", "beta_edu", "rho_individuals"]
     axes = az.plot_forest(
         inference_data,
         var_names=var_names,
@@ -103,9 +103,9 @@ def summary(inference_data: az.InferenceData, hdi_prob: float, path_to_summary: 
                        "beta_age", "beta_edu", "d_edu", "rho_individuals"],
             filter_vars="like",
             hdi_prob=hdi_prob,
-            round_to=2
         )
-        .to_csv(path_to_summary)
+        .reset_index()
+        .to_feather(path_to_summary)
     )
 
 

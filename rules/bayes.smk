@@ -80,7 +80,7 @@ rule multinomial_logit:
         limit_respondents = config["models"]["multinomial"]["limit-respondents"],
         random_seed = config["models"]["multinomial"]["random-seed"],
     resources:
-        runtime = 30,
+        runtime = 60,
         memory = 4000
     threads: 4
     output: "build/models/multinomial-logit.nc"
@@ -121,7 +121,7 @@ rule diagnostics:
         trace = "build/models/hierarchical-{name}/trace.png",
         pop_means = "build/models/hierarchical-{name}/pop-means.png",
         forest = "build/models/hierarchical-{name}/forest.png",
-        summary = "build/models/hierarchical-{name}/summary.csv",
+        summary = "build/models/hierarchical-{name}/summary.feather",
         rhos = "build/models/hierarchical-{name}/rhos.png",
         individuals = "build/models/hierarchical-{name}/individuals.png"
     conda: "../envs/analyse.yaml"
