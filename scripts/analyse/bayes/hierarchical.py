@@ -105,9 +105,25 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
             d_edu = pm.Dirichlet("d_edu", a=np.ones([n_levels, n_educations]) * 2, transform=pm.distributions.transforms.simplex, dims=["level", "education"])
             d_edu_cumsum = pm.math.stack([pm.math.sum(d_edu[:, :i], axis=1) for i in range(n_educations + 1)])[edu, :]
 
+            gender_effect = pm.Deterministic(
+                'gender_effect',
+                pm.math.dot(g, alpha_gender),
+                dims=["respondent", "level"]
+            )
+            age_effect = pm.Deterministic(
+                'age_effect',
+                beta_age_normed * age_normed.T,
+                dims=["respondent", "level"]
+            )
+            edu_effect = pm.Deterministic(
+                'edu_effect',
+                beta_edu * d_edu_cumsum,
+                dims=["respondent", "level"]
+            )
+
             partworths = pm.Deterministic(
                 "partworths",
-                alpha + pm.math.dot(g, alpha_gender) + beta_age_normed * age_normed.T + beta_edu * d_edu_cumsum + individuals.T,
+                alpha + gender_effect + age_effect + edu_effect + individuals.T,
                 dims=["respondent", "level"]
             )
         else:

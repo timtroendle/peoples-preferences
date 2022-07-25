@@ -45,7 +45,7 @@ def pop_means_plot(inference_data: az.InferenceData, hdi_prob: float, path_to_pl
 
 def forest_plot(inference_data: az.InferenceData, hdi_prob: float, path_to_plot: str):
     var_names = ["alpha", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept",
-                 "beta_age", "beta_edu", "rho_individuals"]
+                 "beta_age", "beta_edu"]
     axes = az.plot_forest(
         inference_data,
         var_names=var_names,
@@ -80,13 +80,34 @@ def rhos_plot(inference_data: az.InferenceData, path_to_plot: str):
     g.savefig(path_to_plot)
 
 
+def draw_and_chain_mean_covariates(data):
+    return (
+        draw_and_chain_mean_nocovariates(data)
+        .sel(gender="Male") # remove "other" gender which is highly uncertain
+    )
+
+
+def draw_and_chain_mean_nocovariates(data):
+    return (
+        data
+        .mean(["draw", "chain"])
+        .expand_dims("chain")
+    )
+
+
 def individuals_plot(inference_data: az.InferenceData, path_to_plot: str):
+    if "gender_effect" in inference_data.posterior:
+        var_names=["partworths", "gender_effect", "age_effect", "edu_effect", "individuals"]
+        draw_and_chain_mean = draw_and_chain_mean_covariates
+    else:
+        var_names=["partworths", "individuals"]
+        draw_and_chain_mean = draw_and_chain_mean_nocovariates
     axes = az.plot_forest(
         inference_data,
-        var_names="partworths",
+        var_names=var_names,
         combine_dims=set(["respondent"]),
         combined=True,
-        transform=lambda data: data.mean(["draw", "chain"]).expand_dims("chain")
+        transform=draw_and_chain_mean
     )
     axes[0].set_title("Range of average individual-level partworths")
     fig = axes[0].get_figure()
