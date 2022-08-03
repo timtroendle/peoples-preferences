@@ -1,0 +1,19 @@
+dag{
+    Choice [outcome]
+    beta [latent]
+    Utility [latent]
+    Level [exposure]
+    beta -> Utility
+    Utility -> Choice
+    Level -> {beta}
+    Age -> {beta Participation Edu Partisanship CConcern Area Years}
+    Edu -> {beta Participation Partisanship CConcern Years}
+    Gender -> {beta Participation Edu Partisanship Income CConcern}
+    Income -> {beta Participation Partisanship Area}
+    CConcern -> {beta Participation Partisanship}
+    Years -> {beta Participation}
+    Renewables -> {beta Participation}
+    Area -> {beta Participation Renewables}
+    Partisanship -> {beta}
+    Country -> {beta Edu Income CConcern Years Renewables Area Partisanship}
+}

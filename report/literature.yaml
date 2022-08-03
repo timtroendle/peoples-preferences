@@ -304,6 +304,7 @@ references:
     - year: 2019
       month: 6
   language: en
+  license: 2019 Springer Nature Limited
   number: '6'
   page: 446-455
   publisher: Nature Publishing Group
@@ -666,6 +667,7 @@ references:
     - year: 2018
       month: 10
   language: en
+  license: 2018 The Author(s), under exclusive licence to Springer Nature Limited
   note: |-
     Bandiera_abtest: a
     Cg_type: Nature Research Journals
@@ -1210,6 +1212,7 @@ references:
       month: 11
       day: 28
   language: en
+  license: ©2017 Macmillan Publishers Limited. All Rights Reserved.
   title: Five ways to fix statistics
   type: webpage
   URL: http://www.nature.com/articles/d41586-017-07522-z
