@@ -60,12 +60,12 @@ NICE_NAME_COUNTRIES = {
 }
 
 
-def visualise_partworths(path_to_posterior: str, path_to_plot: str):
-    data = read_data(path_to_posterior)
+def visualise_partworths(path_to_posterior: str, facet_by_country: bool, variable_name: str, path_to_plot: str):
+    data = read_data(path_to_posterior, variable_name, facet_by_country)
 
     base = alt.Chart(data).encode(
         y=alt.Y("level", sort=list(NICE_NAME_LEVELS.values()), title="Level"),
-        x=alt.X("partworths", title="Partworth utility"),
+        x=alt.X(variable_name, title="Partworth utility"),
         color=alt.Color("attribute", sort=list(NICE_NAME_ATTRIBUTES.values()), legend=alt.Legend(title="Attribute")),
     ).properties(
         width=300,
@@ -88,9 +88,11 @@ def visualise_partworths(path_to_posterior: str, path_to_plot: str):
         x2=alt.value(4),
     )
 
+    entire_chart = (area + base_line + interval + point)
+    if facet_by_country:
+        entire_chart = entire_chart.facet(facet="Country", columns=2)
     (
-        (area + base_line + interval + point)
-        .facet(facet="Country", columns=2)
+        entire_chart
         .configure(font="Lato")
         .configure_axis(titleColor=DARK_GREY, labelColor=DARK_GREY)
         .configure_header(titleColor=DARK_GREY, labelColor=DARK_GREY)
@@ -99,7 +101,7 @@ def visualise_partworths(path_to_posterior: str, path_to_plot: str):
     )
 
 
-def read_data(path_to_posterior: str):
+def read_data(path_to_posterior: str, variable_name: str, facet_by_country: bool):
     full = az.from_netcdf(path_to_posterior)
     attr_levels = full.posterior.level.to_series().to_list()
     all_attr_levels = attr_levels + BASELINE_LEVELS
@@ -107,7 +109,7 @@ def read_data(path_to_posterior: str):
     hdi = (
         az
         .hdi(full.posterior.reindex(level=all_attr_levels), hdi_prob=0.94)
-        .partworths
+        .data_vars[variable_name]
         .to_series()
         .unstack("hdi")
         .reset_index()
@@ -119,7 +121,7 @@ def read_data(path_to_posterior: str):
     mean = (
         full
         .posterior
-        .partworths
+        .data_vars[variable_name]
         .reindex(level=all_attr_levels)
         .fillna(0)
         .mean(["chain", "draw"])
@@ -129,18 +131,28 @@ def read_data(path_to_posterior: str):
     mean["attribute"] = mean.level.str.split(":").str[0].map(NICE_NAME_ATTRIBUTES)
     mean["level"] = mean.level.str.split(":").str[1].map(NICE_NAME_LEVELS)
 
+    index_cols = ["attribute", "level", "country"] if facet_by_country else ["attribute", "level"]
+
     data = (
         pd
-        .merge(left=hdi, right=mean, on=["attribute", "level", "country"], validate="1:1")
-        .rename(columns={"country": "Country"}) # TODO ensure upper-case in a more smart way
+        .merge(left=hdi, right=mean, on=index_cols, validate="1:1")
+        .pipe(preprocess_country_if_necessary, facet_by_country)
         .assign(zero=0)
     )
-    data.Country = data.Country.map(NICE_NAME_COUNTRIES)
     return data
+
+
+def preprocess_country_if_necessary(df: pd.DataFrame, facet_by_country: bool):
+    if facet_by_country:
+        return df.assign(Country=df.country.map(NICE_NAME_COUNTRIES))
+    else:
+        return df
 
 
 if __name__ == "__main__":
     visualise_partworths(
         path_to_posterior=snakemake.input.posterior,
+        facet_by_country=snakemake.params.facet_by_country,
+        variable_name=snakemake.params.variable_name,
         path_to_plot=snakemake.output[0]
     )

@@ -118,19 +118,33 @@ rule diagnostics:
         inference_data = rules.hierarchical.output[0]
     params: hdi_prob = 0.94
     output:
-        trace = "build/models/hierarchical-{name}/trace.png",
-        pop_means = "build/models/hierarchical-{name}/pop-means.png",
-        forest = "build/models/hierarchical-{name}/forest.png",
-        summary = "build/models/hierarchical-{name}/summary.feather",
-        rhos = "build/models/hierarchical-{name}/rhos.png",
-        individuals = "build/models/hierarchical-{name}/individuals.png"
+        trace = "build/models/hierarchical-{name}/diagnostics/trace.png",
+        pop_means = "build/models/hierarchical-{name}/diagnostics/pop-means.png",
+        forest = "build/models/hierarchical-{name}/diagnostics/forest.png",
+        summary = "build/models/hierarchical-{name}/diagnostics/summary.feather",
+        rhos = "build/models/hierarchical-{name}/diagnostics/rhos.png",
+        individuals = "build/models/hierarchical-{name}/diagnostics/individuals.png"
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/bayes/diagnostics.py"
 
 
 rule visualise_partworths:
-    message: "Visualise partworths."
+    message: "Visualise population mean partworths of multinomial logit model."
     input: posterior = rules.multinomial_logit.output[0]
+    params:
+        facet_by_country = True,
+        variable_name = "partworths"
     output: "build/models/multinomial-logit.{figure_format}"
+    conda: "../envs/analyse.yaml"
+    script: "../scripts/analyse/bayes/partworths.py"
+
+
+rule visualise_population_means:
+    message: "Visualise population mean partworths of hierarchical model {wildcards.name}."
+    input: posterior = rules.hierarchical.output[0]
+    params:
+        facet_by_country = False,
+        variable_name = "alpha"
+    output: "build/models/hierarchical-{name}/pop-means.{figure_format}"
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/bayes/partworths.py"
