@@ -132,8 +132,11 @@ rule visualise_partworths:
     message: "Visualise population mean partworths of multinomial logit model."
     input: posterior = rules.multinomial_logit.output[0]
     params:
+        title="{hdi_prob:.0f}% highest density interval of population-level partworths".format(
+            hdi_prob=config["report"]["hdi_prob"] * 100),
         facet_by_country = True,
-        variable_name = "partworths"
+        variable_name = "partworths",
+        hdi_prob = config["report"]["hdi_prob"],
     output: "build/models/multinomial-logit.{figure_format}"
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/bayes/partworths.py"
@@ -143,8 +146,36 @@ rule visualise_population_means:
     message: "Visualise population mean partworths of hierarchical model {wildcards.name}."
     input: posterior = rules.hierarchical.output[0]
     params:
-        facet_by_country = False,
-        variable_name = "alpha"
+        title="{hdi_prob:.0f}% highest density interval of population-level partworths".format(
+            hdi_prob=config["report"]["hdi_prob"] * 100),
+        variable_name = "alpha",
+        hdi_prob = config["report"]["hdi_prob"],
     output: "build/models/hierarchical-{name}/pop-means.{figure_format}"
+    conda: "../envs/analyse.yaml"
+    script: "../scripts/analyse/bayes/partworths.py"
+
+
+rule visualise_partworths_heterogeneity:
+    message: "Visualise heterogeneity of partworths of hierarchical model {wildcards.name}."
+    input: posterior = rules.hierarchical.output[0]
+    params:
+        title="Range of average individual-level partworths",
+        variable_name = "partworths",
+        aggregate_individuals = True,
+        hdi_prob = None, # has no use here
+    output: "build/models/hierarchical-{name}/individual-partworths.{figure_format}"
+    conda: "../envs/analyse.yaml"
+    script: "../scripts/analyse/bayes/partworths.py"
+
+
+rule visualise_unexplained_heterogeneity:
+    message: "Visualise uenxplained heterogeneity of partworths of hierarchical model {wildcards.name}."
+    input: posterior = rules.hierarchical.output[0]
+    params:
+        title="Unexplained heterogeneity in individual-level partworths",
+        variable_name = "individuals",
+        aggregate_individuals = True,
+        hdi_prob = None, # has no use here
+    output: "build/models/hierarchical-{name}/unexplained-heterogeneity.{figure_format}"
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/bayes/partworths.py"

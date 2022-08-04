@@ -33,6 +33,10 @@ rule all:
         "build/models/hierarchical-nocovariates/diagnostics/summary.feather",
         "build/models/hierarchical-covariates/diagnostics/summary.feather",
         "build/models/hierarchical-nocovariates/pop-means.pdf",
+        "build/models/hierarchical-covariates/individual-partworths.pdf",
+        "build/models/hierarchical-covariates/unexplained-heterogeneity.pdf",
+        "build/models/hierarchical-nocovariates/individual-partworths.pdf",
+        "build/models/hierarchical-nocovariates/unexplained-heterogeneity.pdf",
 
 
 def pandoc_options(wildcards):

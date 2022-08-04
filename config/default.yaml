@@ -427,3 +427,5 @@ models:
         limit-respondents: 80
         random-seed: 4000
         individual-covariates: True
+report:
+    hdi_prob: 0.94
