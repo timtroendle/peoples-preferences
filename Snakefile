@@ -29,7 +29,7 @@ rule all:
     input:
         "build/report.html",
         "build/test-report.html",
-        "build/models/multinomial-logit.pdf",
+        "build/models/multinomial-logit/pop-means.pdf",
         "build/models/hierarchical-nocovariates/diagnostics/summary.feather",
         "build/models/hierarchical-covariates/diagnostics/summary.feather",
         "build/models/hierarchical-nocovariates/pop-means.pdf",

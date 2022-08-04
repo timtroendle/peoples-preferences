@@ -66,7 +66,7 @@ rule logistic_regression:
     resources:
         runtime = 60
     threads: 4
-    output: "build/models/logistic-regression.nc"
+    output: "build/models/logistic-regression/inference-data.nc"
     conda: "../envs/pymc.yaml"
     script: "../scripts/analyse/bayes/logistic.py"
 
@@ -83,7 +83,7 @@ rule multinomial_logit:
         runtime = 60,
         memory = 4000
     threads: 4
-    output: "build/models/multinomial-logit.nc"
+    output: "build/models/multinomial-logit/inference-data.nc"
     conda: "../envs/pymc.yaml"
     script: "../scripts/analyse/bayes/multinomial.py"
 
@@ -107,7 +107,7 @@ rule hierarchical:
     resources:
         runtime = 1440
     threads: 4
-    output: "build/models/hierarchical-{name}.nc"
+    output: "build/models/hierarchical-{name}/inference-data.nc"
     conda: "../envs/pymc.yaml"
     script: "../scripts/analyse/bayes/hierarchical.py"
 
@@ -137,7 +137,7 @@ rule visualise_partworths:
         facet_by_country = True,
         variable_name = "partworths",
         hdi_prob = config["report"]["hdi_prob"],
-    output: "build/models/multinomial-logit.{figure_format}"
+    output: "build/models/multinomial-logit/pop-means.{figure_format}"
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/bayes/partworths.py"
 
