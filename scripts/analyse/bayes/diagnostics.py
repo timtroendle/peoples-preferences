@@ -83,7 +83,7 @@ def rhos_plot(inference_data: az.InferenceData, path_to_plot: str):
 def draw_and_chain_mean_covariates(data):
     return (
         draw_and_chain_mean_nocovariates(data)
-        .sel(gender="Male") # remove "other" gender which is highly uncertain
+        .sel(gender="Male") # remove "other" gender because sample is very small
     )
 
 

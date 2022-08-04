@@ -429,3 +429,42 @@ models:
         individual-covariates: True
 report:
     hdi_prob: 0.94
+    nice-names:
+        levels:
+            Rooftop PV: Rooftop PV
+            Open-field PV: Open-field PV
+            Wind: Wind turbines
+            0.5%: Very low (0.5%)
+            1%: Low (1%)
+            2%: Medium (2%)
+            4%: High (4%)
+            8%: Very high (8%)
+            -25% .: Slight decrease (-25%)
+            +0% .: Today's level (0%)
+            +25% .: Slight increase (+25%)
+            +50% .: Moderate increase (+50%)
+            +75% .: Strong increase (+75%)
+            0%: None
+            10%: Low (10%)
+            50%: Medium (50%)
+            90%: High (90%)
+            +0%: Today's level
+            +15%: Slight increase (+15%)
+            +30%: Moderate increase (+30%)
+            +45%: Strong increase (+45%)
+            +60%: Very strong increase (+60%)
+            Public: Public
+            Community: Community
+            Private: Private
+        attributes:
+            TECHNOLOGY: Technology
+            LAND: Land
+            TRANSMISSION: Transmission
+            SHARE_IMPORTS: Share of imports
+            PRICES: Prices
+            OWNERSHIP: Ownership
+        countries:
+            DEU: Germany
+            DNK: Denmark
+            POL: Poland
+            PRT: Portugal

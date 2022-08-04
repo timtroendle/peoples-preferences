@@ -137,6 +137,7 @@ rule visualise_partworths:
         facet_by_country = True,
         variable_name = "partworths",
         hdi_prob = config["report"]["hdi_prob"],
+        nice_names = config["report"]["nice-names"],
     output: "build/models/multinomial-logit/pop-means.{figure_format}"
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/bayes/partworths.py"
@@ -150,6 +151,7 @@ rule visualise_population_means:
             hdi_prob=config["report"]["hdi_prob"] * 100),
         variable_name = "alpha",
         hdi_prob = config["report"]["hdi_prob"],
+        nice_names = config["report"]["nice-names"],
     output: "build/models/hierarchical-{name}/pop-means.{figure_format}"
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/bayes/partworths.py"
@@ -163,6 +165,7 @@ rule visualise_partworths_heterogeneity:
         variable_name = "partworths",
         aggregate_individuals = True,
         hdi_prob = None, # has no use here
+        nice_names = config["report"]["nice-names"],
     output: "build/models/hierarchical-{name}/individual-partworths.{figure_format}"
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/bayes/partworths.py"
@@ -176,6 +179,18 @@ rule visualise_unexplained_heterogeneity:
         variable_name = "individuals",
         aggregate_individuals = True,
         hdi_prob = None, # has no use here
+        nice_names = config["report"]["nice-names"],
     output: "build/models/hierarchical-{name}/unexplained-heterogeneity.{figure_format}"
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/bayes/partworths.py"
+
+
+rule visualise_covariates:
+    message: "Visualise the explaining power of covariates."
+    input: posterior = "build/models/hierarchical-covariates/inference-data.nc"
+    params:
+        interval = 0.9, # show only this share of the total interval
+        nice_names = config["report"]["nice-names"],
+    output: "build/models/hierarchical-covariates/covariates.{figure_format}"
+    conda: "../envs/analyse.yaml"
+    script: "../scripts/analyse/bayes/covariates.py"

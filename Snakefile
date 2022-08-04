@@ -37,6 +37,7 @@ rule all:
         "build/models/hierarchical-covariates/unexplained-heterogeneity.pdf",
         "build/models/hierarchical-nocovariates/individual-partworths.pdf",
         "build/models/hierarchical-nocovariates/unexplained-heterogeneity.pdf",
+        "build/models/hierarchical-covariates/covariates.pdf",
 
 
 def pandoc_options(wildcards):
