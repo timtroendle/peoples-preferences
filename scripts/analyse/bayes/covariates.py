@@ -52,11 +52,8 @@ def read_shares(path_to_posterior: str, interval: float, nice_names: dict[str, d
 
     effect_ranges = {
         name: range_across_individuals(full, f"{name.lower()}_effect", interval)
-        for name in ["Age", "Edu", "Gender", "Country", "Area", "Renewables", "Party"]
+        for name in ["Age", "Edu", "Gender", "Country", "Area", "Renewables", "Party", "Income", "Concern", "Years"]
     }
-    # TODO add income
-    # TODO add years
-    # TODO add climate concern
 
     shares = pd.DataFrame({
         name: effect_range / total_range

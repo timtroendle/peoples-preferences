@@ -95,12 +95,10 @@ def draw_and_chain_mean_nocovariates(data):
 
 def individuals_plot(inference_data: az.InferenceData, path_to_plot: str):
     if "gender_effect" in inference_data.posterior:
-        # TODO add income
-        # TODO add years
-        # TODO add climate concern
         var_names=[
             "partworths", "gender_effect", "country_effect", "area_effect", "renewables_effect",
-            "party_effect", "age_effect", "edu_effect", "individuals"
+            "party_effect", "age_effect", "years_effect", "edu_effect", "income_effect", "concern_effect",
+            "individuals"
         ]
         draw_and_chain_mean = draw_and_chain_mean_covariates
     else:

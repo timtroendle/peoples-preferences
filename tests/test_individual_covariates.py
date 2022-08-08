@@ -1,4 +1,5 @@
 from datatest import register_accessors
+import pytest
 
 register_accessors()
 
@@ -105,6 +106,27 @@ def test_education_covariate(covariate_model, respondents):
     model_education.validate(expected_education)
 
 
+def test_income_covariate(covariate_model, respondents):
+    levels = ["Below 600 EUR"] + list(covariate_model.posterior.income.values)
+    level_mapping = {i: level for i, level in enumerate(levels)}
+    model_income = covariate_model.constant_data.i.to_series().map(level_mapping)
+
+    expected_income = respondents.reindex(model_income.index).Q10_INCOME
+
+    model_income.validate(expected_income)
+
+
+@pytest.mark.xfail(reason="Hard-coded reference level can be wrong.") # FIXME store reference levels in inference data
+def test_concern_covariate(covariate_model, respondents):
+    levels = ["Not at all"] + list(covariate_model.posterior.concern.values)
+    level_mapping = {i: level for i, level in enumerate(levels)}
+    model_concern = covariate_model.constant_data.cc.to_series().map(level_mapping)
+
+    expected_concern = respondents.reindex(model_concern.index).Q11_CLIMATE_CONCERN
+
+    model_concern.validate(expected_concern)
+
+
 def test_age_covariate(covariate_model, respondents):
     model_age = covariate_model.constant_data.age.to_series()
 
@@ -112,6 +134,10 @@ def test_age_covariate(covariate_model, respondents):
 
     model_age.validate(expected_age)
 
-# TODO add income
-# TODO add years
-# TODO add climate concern
+
+def test_years_covariate(covariate_model, respondents):
+    model_years = covariate_model.constant_data.years.to_series()
+
+    expected_years = respondents.reindex(model_years.index).Q8_YEARS_REGION
+
+    model_years.validate(expected_years)
