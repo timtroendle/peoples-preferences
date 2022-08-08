@@ -49,14 +49,18 @@ def visualise_covariates(path_to_posterior: str, interval: float, nice_names: di
 def read_shares(path_to_posterior: str, interval: float, nice_names: dict[str, dict[str, str]]):
     full = az.from_netcdf(path_to_posterior)
     total_range = range_across_individuals(full, "partworths", interval)
-    age_range = range_across_individuals(full, "age_effect", interval)
-    edu_range = range_across_individuals(full, "edu_effect", interval)
-    gender_range = range_across_individuals(full, "gender_effect", interval)
+
+    effect_ranges = {
+        name: range_across_individuals(full, f"{name.lower()}_effect", interval)
+        for name in ["Age", "Edu", "Gender", "Country", "Area", "Renewables", "Party"]
+    }
+    # TODO add income
+    # TODO add years
+    # TODO add climate concern
 
     shares = pd.DataFrame({
-        "Age": age_range / total_range,
-        "Edu": edu_range / total_range,
-        "Gender": gender_range / total_range
+        name: effect_range / total_range
+        for name, effect_range in effect_ranges.items()
     })
     shares = (
         shares

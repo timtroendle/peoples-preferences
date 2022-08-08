@@ -1,9 +1,4 @@
 models:
-    modelA:
-        formula: ~ TECHNOLOGY + LAND + SHARE_IMPORTS + PRICES + TRANSMISSION + OWNERSHIP
-        n-iterations: 150000
-        burn-in-length: 100000
-        keep: 10
     multinomial:
         n-tune: 2000
         n-draws: 2000
@@ -12,12 +7,12 @@ models:
     hierarchical-nocovariates:
         n-tune: 4000
         n-draws: 2000
-        limit-respondents: False
+        limit-respondents: 1000
         random-seed: 4000
         individual-covariates: False
     hierarchical-covariates:
         n-tune: 4000
         n-draws: 2000
-        limit-respondents: False
+        limit-respondents: 1000
         random-seed: 4000
         individual-covariates: True

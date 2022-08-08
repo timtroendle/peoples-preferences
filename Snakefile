@@ -103,7 +103,7 @@ rule test:
         tests = map(str, Path("tests").glob("**/test_*.py")),
         national_conjoints = expand("build/{country_id}/raw.feather", country_id=COUNTRY_IDS),
         conjoint = "build/conjoint.feather",
-        covariate_model = "build/models/hierarchical-covariates.nc"
+        covariate_model = "build/models/hierarchical-covariates/inference-data.nc"
     params:
         config = config
     output: "build/test-report.html"

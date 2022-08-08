@@ -24,8 +24,7 @@ def retransform_normalised(inference_data: az.InferenceData):
 
 
 def trace_plot(inference_data: az.InferenceData, path_to_plot: str):
-    var_names = ["alpha", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept",
-                 "beta_age", "beta_edu"]
+    var_names = ["alpha", "beta", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept"]
     axes = az.plot_trace(
         inference_data,
         var_names=var_names,
@@ -44,8 +43,7 @@ def pop_means_plot(inference_data: az.InferenceData, hdi_prob: float, path_to_pl
 
 
 def forest_plot(inference_data: az.InferenceData, hdi_prob: float, path_to_plot: str):
-    var_names = ["alpha", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept",
-                 "beta_age", "beta_edu"]
+    var_names = ["alpha", "beta", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept"]
     axes = az.plot_forest(
         inference_data,
         var_names=var_names,
@@ -97,7 +95,13 @@ def draw_and_chain_mean_nocovariates(data):
 
 def individuals_plot(inference_data: az.InferenceData, path_to_plot: str):
     if "gender_effect" in inference_data.posterior:
-        var_names=["partworths", "gender_effect", "age_effect", "edu_effect", "individuals"]
+        # TODO add income
+        # TODO add years
+        # TODO add climate concern
+        var_names=[
+            "partworths", "gender_effect", "country_effect", "area_effect", "renewables_effect",
+            "party_effect", "age_effect", "edu_effect", "individuals"
+        ]
         draw_and_chain_mean = draw_and_chain_mean_covariates
     else:
         var_names=["partworths", "individuals"]
@@ -120,8 +124,8 @@ def summary(inference_data: az.InferenceData, hdi_prob: float, path_to_summary: 
         az
         .summary(
             inference_data,
-            var_names=["alpha", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept",
-                       "beta_age", "beta_edu", "d_edu", "rho_individuals"],
+            var_names=["alpha", "beta", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept",
+                       "d_edu", "rho_individuals"],
             filter_vars="like",
             hdi_prob=hdi_prob,
         )

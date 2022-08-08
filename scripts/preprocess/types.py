@@ -68,6 +68,8 @@ def aggregate_levels(df: pd.DataFrame, aggregated_levels: dict):
         df[new_col_name] = df[col].astype(str).map(feature_def["mapping"]).astype("category")
         if "ordered" in feature_def:
             df[new_col_name] = df[new_col_name].cat.reorder_categories(feature_def["ordered"], ordered=True)
+        elif "relevel" in feature_def:
+            df[new_col_name] = df[new_col_name].cat.reorder_categories(feature_def["relevel"], ordered=False)
     return df
 
 

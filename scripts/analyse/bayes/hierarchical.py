@@ -31,7 +31,11 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
         "level_repeat": dummies.columns.values,
         "respondent": conjoint.index.get_level_values("RESPONDENT_ID").remove_unused_categories().categories,
         "education": pd.get_dummies(conjoint.Q9_EDUCATION.cat.remove_unused_categories(), drop_first=True).columns.values,
-        "gender": pd.get_dummies(conjoint.Q3_GENDER, drop_first=True).columns.values
+        "gender": pd.get_dummies(conjoint.Q3_GENDER, drop_first=True).columns.values,
+        "country": pd.get_dummies(conjoint.RESPONDENT_COUNTRY, drop_first=True).columns.values,
+        "area": pd.get_dummies(conjoint.Q6_AREA, drop_first=True).columns.values,
+        "renewables": pd.get_dummies(conjoint.Q7_RENEWABLES, drop_first=True).columns.values,
+        "party": pd.get_dummies(conjoint.Q12_PARTY_aggregated, drop_first=True).columns.values
     })
 
     n_levels = len(model.coords["level"])
@@ -81,6 +85,26 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
             pd.get_dummies(conjoint.groupby("RESPONDENT_ID").Q3_GENDER.first(), drop_first=True).values,
             dims=["respondent", "gender"]
         )
+        c = pm.ConstantData(
+            "c",
+            pd.get_dummies(conjoint.groupby("RESPONDENT_ID").RESPONDENT_COUNTRY.first(), drop_first=True).values,
+            dims=["respondent", "country"]
+        )
+        a = pm.ConstantData(
+            "a",
+            pd.get_dummies(conjoint.groupby("RESPONDENT_ID").Q6_AREA.first(), drop_first=True).values,
+            dims=["respondent", "area"]
+        )
+        re = pm.ConstantData(
+            "re",
+            pd.get_dummies(conjoint.groupby("RESPONDENT_ID").Q7_RENEWABLES.first(), drop_first=True).values,
+            dims=["respondent", "renewables"]
+        )
+        p = pm.ConstantData(
+            "p",
+            pd.get_dummies(conjoint.groupby("RESPONDENT_ID").Q12_PARTY_aggregated.first(), drop_first=True).values,
+            dims=["respondent", "party"]
+        )
 
         # parameters
         alpha = pm.Normal('alpha', 0, sigma=4, dims="level")
@@ -99,15 +123,40 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
         individuals = pm.Deterministic("individuals", pm.math.dot(chol_individuals, z_individuals), dims=["level", "respondent"])
 
         if individual_covariates:
-            alpha_gender = pm.Normal('alpha_gender', mu=0, sigma=1, dims=["gender", "level"])
+            alpha_gender = pm.Normal('alpha_gender', mu=0, sigma=1, dims=["gender", "level"]) # TODO add covariation?
+            alpha_country = pm.Normal("alpha_country", mu=0, sigma=1, dims=["country", "level"]) # TODO add covariation?
+            alpha_area = pm.Normal('alpha_area', mu=0, sigma=1, dims=["area", "level"]) # TODO add covariation?
+            alpha_renewables = pm.Normal('alpha_renewables', mu=0, sigma=1, dims=["renewables", "level"]) # TODO add covariation?
+            alpha_party = pm.Normal('alpha_party', mu=0, sigma=1, dims=["party", "level"]) # TODO add covariation?
             beta_age_normed = pm.Normal('beta_age_normed', mu=0, sigma=1, dims="level") # TODO add covariation?
             beta_edu = pm.Normal("beta_edu", mu=0, sigma=1, dims="level") # TODO add covariation?
             d_edu = pm.Dirichlet("d_edu", a=np.ones([n_levels, n_educations]) * 2, transform=pm.distributions.transforms.simplex, dims=["level", "education"])
             d_edu_cumsum = pm.math.stack([pm.math.sum(d_edu[:, :i], axis=1) for i in range(n_educations + 1)])[edu, :]
 
+
             gender_effect = pm.Deterministic(
                 'gender_effect',
                 pm.math.dot(g, alpha_gender),
+                dims=["respondent", "level"]
+            )
+            country_effect = pm.Deterministic(
+                'country_effect',
+                pm.math.dot(c, alpha_country),
+                dims=["respondent", "level"]
+            )
+            area_effect = pm.Deterministic(
+                'area_effect',
+                pm.math.dot(a, alpha_area),
+                dims=["respondent", "level"]
+            )
+            renewables_effect = pm.Deterministic(
+                'renewables_effect',
+                pm.math.dot(re, alpha_renewables),
+                dims=["respondent", "level"]
+            )
+            party_effect = pm.Deterministic(
+                'party_effect',
+                pm.math.dot(p, alpha_party),
                 dims=["respondent", "level"]
             )
             age_effect = pm.Deterministic(
@@ -123,7 +172,8 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
 
             partworths = pm.Deterministic(
                 "partworths",
-                alpha + gender_effect + age_effect + edu_effect + individuals.T,
+                alpha + gender_effect + country_effect + area_effect + renewables_effect
+                + party_effect + age_effect + edu_effect + individuals.T,
                 dims=["respondent", "level"]
             )
         else:
@@ -165,7 +215,11 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
 
 
 def filter_respondents(df, limit_respondents, n_respondents_per_country):
-    df.dropna(axis="index", subset=["Q3_GENDER", "Q4_BIRTH_YEAR", "Q9_EDUCATION"], inplace=True) # FIXME don't do this
+    df.dropna( # FIXME don't do this
+        axis="index",
+        subset=["Q3_GENDER", "Q4_BIRTH_YEAR", "Q6_AREA", "Q7_RENEWABLES", "Q9_EDUCATION", "Q12_PARTY_aggregated"],
+        inplace=True
+    )
     if limit_respondents:
         df = df.groupby("RESPONDENT_COUNTRY").head(n_respondents_per_country * OPTIONS_PER_RESPONDENT)
     return df

@@ -278,6 +278,10 @@ new-features:
                 "Very":         High
                 "Extremely":    High
         Q12_PARTY:
+            relevel:
+                - Other
+                - Green
+                - Right
             mapping:
                 "CDU / CSU":                                            Other
                 "SPD":                                                  Other
