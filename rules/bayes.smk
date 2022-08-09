@@ -95,6 +95,34 @@ def hierarchical_model_config(param_name):
     return hierarchical_model_config
 
 
+def memory_requirements_hierarchical(wildcards, threads):
+    n_draws = hierarchical_model_config("n-draws")(wildcards)
+    if hierarchical_model_config("limit-respondents")(wildcards):
+        n_respondents = hierarchical_model_config("limit-respondents")(wildcards)
+    else:
+        n_respondents = 4000
+    req_per_respondent_and_draw = 0.0064 # (MB), empirically derived
+    if hierarchical_model_config("individual-covariates")(wildcards):
+        req_per_respondent_and_draw = req_per_respondent_and_draw * 5
+    total_memory = req_per_respondent_and_draw * n_respondents * n_draws
+    requested_memory = (total_memory / threads) * 1.2
+    return requested_memory if requested_memory > 16000 else 16000
+
+
+def runtime_hierarchical(wildcards):
+    n_tune = hierarchical_model_config("n-tune")(wildcards)
+    n_draws = hierarchical_model_config("n-draws")(wildcards)
+    n_iterations = n_tune + n_draws
+    if hierarchical_model_config("limit-respondents")(wildcards):
+        n_respondents = hierarchical_model_config("limit-respondents")(wildcards)
+    else:
+        n_respondents = 4000
+    req_per_respondent_and_iteration = 1 / 30000 # (min), empirically derived
+    if hierarchical_model_config("individual-covariates")(wildcards):
+        req_per_respondent_and_iteration = req_per_respondent_and_iteration * 5
+    return req_per_respondent_and_iteration * n_respondents * n_iterations * 1.2
+
+
 rule hierarchical:
     message: "Fit hierarchical Bayes model '{wildcards.name}' using PyMC."
     input: data = rules.global_conjoint.output[0]
@@ -105,7 +133,8 @@ rule hierarchical:
         random_seed = hierarchical_model_config("random-seed"),
         individual_covariates = hierarchical_model_config("individual-covariates")
     resources:
-        runtime = 1440
+        runtime = runtime_hierarchical,
+        memory = memory_requirements_hierarchical
     threads: 4
     output: "build/models/hierarchical-{name}/inference-data.nc"
     conda: "../envs/pymc.yaml"
@@ -124,6 +153,9 @@ rule diagnostics:
         summary = "build/models/hierarchical-{name}/diagnostics/summary.feather",
         rhos = "build/models/hierarchical-{name}/diagnostics/rhos.png",
         individuals = "build/models/hierarchical-{name}/diagnostics/individuals.png"
+    resources:
+        runtime = 60,
+        memory = 64000
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/bayes/diagnostics.py"
 
@@ -153,6 +185,9 @@ rule visualise_population_means:
         hdi_prob = config["report"]["hdi_prob"],
         nice_names = config["report"]["nice-names"],
     output: "build/models/hierarchical-{name}/pop-means.{figure_format}"
+    resources:
+        runtime = 60,
+        memory = 64000
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/bayes/partworths.py"
 
@@ -167,6 +202,9 @@ rule visualise_partworths_heterogeneity:
         hdi_prob = None, # has no use here
         nice_names = config["report"]["nice-names"],
     output: "build/models/hierarchical-{name}/individual-partworths.{figure_format}"
+    resources:
+        runtime = 60,
+        memory = 64000
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/bayes/partworths.py"
 
@@ -181,6 +219,9 @@ rule visualise_unexplained_heterogeneity:
         hdi_prob = None, # has no use here
         nice_names = config["report"]["nice-names"],
     output: "build/models/hierarchical-{name}/unexplained-heterogeneity.{figure_format}"
+    resources:
+        runtime = 60,
+        memory = 64000
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/bayes/partworths.py"
 
@@ -192,5 +233,8 @@ rule visualise_covariates:
         interval = 0.9, # show only this share of the total interval
         nice_names = config["report"]["nice-names"],
     output: "build/models/hierarchical-covariates/covariates.{figure_format}"
+    resources:
+        runtime = 60,
+        memory = 64000
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/bayes/covariates.py"
