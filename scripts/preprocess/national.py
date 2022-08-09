@@ -1,8 +1,13 @@
 from datetime import date
 from itertools import filterfalse
+from typing import Callable
 
 import pandas as pd
 
+YEAR_OF_STUDY = 2022
+MIN_AGE = 18
+MAX_AGE = 120
+UNREASONABLE_HIGH_AGE = 1000
 INDEX_COLUMNS = ["RESPONDENT_ID", "CHOICE_SET", "LABEL"]
 COLUMNS_TO_DROP = [
     "SURVEY_ID", # TODO check what this is
@@ -43,6 +48,7 @@ def preprocess_conjoint(path_to_conjointly_data: str, path_to_respondi_data: str
         .pipe(filter_pre_test, pre_test_threshold)
         .pipe(shift_q12_party, q12_party_base)
         .assign(WEIGHT=population_count / 1e6) # FIXME must handle the fact that numbers of responses per country vary.
+        .pipe(fix_broken_entries)
         .reset_index()
         .to_feather(path_to_output)
     )
@@ -156,6 +162,65 @@ def undummify(df, prefix_sep="_O"):
             series_list.append(df[col])
     undummified_df = pd.concat(series_list, axis=1)
     return undummified_df
+
+
+class CoinjointDataFix:
+
+    def __init__(self, col: str, reason: str, mask: Callable[[pd.Series], pd.Series],
+                 fix: Callable[[pd.Series], pd.Series]):
+        self.__col = col
+        self.__mask = mask
+        self.__fix = fix
+        self.__reason = reason
+
+    def __call__(self, df):
+        if self.sum_broken(df) > 0:
+            print(f"{self.__col}: " + self.__reason.format(self.sum_broken(df)))
+            data_mask = self.__mask(df[self.__col])
+            df.loc[data_mask, self.__col] = self.__fix(df.loc[data_mask, self.__col])
+            assert self.sum_broken(df) == 0
+        return df
+
+    def sum_broken(self, df):
+        respondents = df.groupby("RESPONDENT_ID").first()
+        return sum(self.__mask(respondents[self.__col]))
+
+
+def fix_broken_entries(df):
+    fixes = [
+        CoinjointDataFix(
+            col="Q4_BIRTH_YEAR",
+            mask=lambda col: col < 0,
+            fix=lambda negative: negative.abs(),
+            reason="{} respondents indicated negative birth years. These will be considered positive."
+        ),
+        CoinjointDataFix(
+            col="Q4_BIRTH_YEAR",
+            mask=lambda col: (col < MAX_AGE) & (col >= MIN_AGE),
+            fix=lambda age: YEAR_OF_STUDY - age,
+            reason="{} respondents indicated their age instead of birth year. They will be transformed to birth years."
+        ),
+        CoinjointDataFix(
+            col="Q8_YEARS_REGION",
+            mask=lambda col: col < 0,
+            fix=lambda negative: negative.abs(),
+            reason="{} respondents indicated negative years in region. These will be considered positive."
+        ),
+        CoinjointDataFix(
+            col="Q8_YEARS_REGION",
+            mask=lambda col: col > UNREASONABLE_HIGH_AGE,
+            fix=lambda calendar_years: YEAR_OF_STUDY - calendar_years,
+            reason=(
+                "{} respondents indicated calendar years in region instead of number years. "
+                + "Will convert to number of years."
+            )
+        )
+    ]
+
+    for fix in fixes:
+        df = fix(df)
+
+    return df
 
 
 if __name__ == "__main__":
