@@ -26,7 +26,7 @@ def visualise_covariates(path_to_posterior: str, interval: float, nice_names: di
         x=alt.X(
             'share',
             title="Covariate-induced variation across individuals relative to total variation",
-            scale=alt.Scale(domain=(-0.1, 1.4)),
+            scale=alt.Scale(domain=(-0.1, 2)),
             axis=alt.Axis(format='.0%')
         ),
         y=alt.Y("level", sort=list(nice_names["levels"].values()), title="Level"),
@@ -76,8 +76,8 @@ def range_across_individuals(idata: az.InferenceData, variable_name: str, interv
     individual_partworths = (
         idata
         .posterior
-        .mean(["draw", "chain"])
         .data_vars[variable_name]
+        .mean(["draw", "chain"])
     )
     return (
         individual_partworths.quantile(q=1 - (1 - interval) / 2, dim="respondent")

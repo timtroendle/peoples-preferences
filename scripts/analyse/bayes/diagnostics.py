@@ -18,8 +18,11 @@ def diagnostics(path_to_inference_data: str, path_to_trace_plot: str, path_to_po
 
 def retransform_normalised(inference_data: az.InferenceData):
     age_std = inference_data.constant_data.age.std()
+    years_std = inference_data.constant_data.years.std()
     if "beta_age_normed" in inference_data.posterior:
         inference_data.posterior["beta_age"] = inference_data.posterior["beta_age_normed"] / age_std
+    if "beta_years_normed" in inference_data.posterior:
+        inference_data.posterior["beta_years"] = inference_data.posterior["beta_years_normed"] / years_std
     return inference_data
 
 
