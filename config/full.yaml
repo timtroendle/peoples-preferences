@@ -10,13 +10,13 @@ models:
         limit-respondents: False
         random-seed: 4000
     hierarchical-nocovariates:
-        n-tune: 4000
+        n-tune: 8000
         n-draws: 2000
         limit-respondents: False
         random-seed: 4000
         individual-covariates: False
     hierarchical-covariates:
-        n-tune: 4000
+        n-tune: 8000
         n-draws: 2000
         limit-respondents: False
         random-seed: 4000
