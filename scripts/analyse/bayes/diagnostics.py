@@ -40,7 +40,9 @@ def trace_plot(inference_data: az.InferenceData, path_to_plot: str):
 
 def pop_means_plot(inference_data: az.InferenceData, hdi_prob: float, path_to_plot: str):
     axes = az.plot_forest(inference_data, var_names="alpha", combined=True, hdi_prob=hdi_prob)
-    fig = axes[0].get_figure()
+    ax = axes[0]
+    ax.vlines(x=0, ymin=ax.get_ylim()[0], ymax=ax.get_ylim()[1], color="black", linestyles="dotted")
+    fig = ax.get_figure()
     fig.tight_layout()
     fig.savefig(path_to_plot)
 
@@ -54,7 +56,9 @@ def forest_plot(inference_data: az.InferenceData, hdi_prob: float, path_to_plot:
         combined=False,
         hdi_prob=hdi_prob
     )
-    fig = axes[0].get_figure()
+    ax = axes[0]
+    ax.vlines(x=0, ymin=ax.get_ylim()[0], ymax=ax.get_ylim()[1], color="black", linestyles="dotted")
+    fig = ax.get_figure()
     fig.tight_layout()
     fig.savefig(path_to_plot)
 
@@ -114,8 +118,10 @@ def individuals_plot(inference_data: az.InferenceData, path_to_plot: str):
         combined=True,
         transform=draw_and_chain_mean
     )
-    axes[0].set_title("Range of average individual-level partworths")
-    fig = axes[0].get_figure()
+    ax = axes[0]
+    ax.vlines(x=0, ymin=ax.get_ylim()[0], ymax=ax.get_ylim()[1], color="black", linestyles="dotted")
+    ax.set_title("Range of average individual-level partworths")
+    fig = ax.get_figure()
     fig.tight_layout()
     fig.savefig(path_to_plot)
 
