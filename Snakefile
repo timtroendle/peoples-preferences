@@ -5,6 +5,7 @@ COUNTRY_IDS = ["DEU", "POL", "PRT", "DNK"]
 
 configfile: "config/default.yaml"
 include: "rules/preprocess.smk"
+include: "rules/utils.smk"
 include: "rules/analyse.smk"
 include: "rules/bayes.smk"
 include: "./rules/sync.smk"
@@ -30,8 +31,8 @@ rule all:
         "build/report.html",
         "build/test-report.html",
         "build/models/multinomial-logit/pop-means.pdf",
-        "build/models/hierarchical-nocovariates/diagnostics/summary.feather",
-        "build/models/hierarchical-covariates/diagnostics/summary.feather",
+        "build/models/hierarchical-nocovariates/diagnostics/summary.csv",
+        "build/models/hierarchical-covariates/diagnostics/summary.csv",
         "build/models/hierarchical-nocovariates/pop-means.pdf",
         "build/models/hierarchical-covariates/individual-partworths.pdf",
         "build/models/hierarchical-covariates/unexplained-heterogeneity.pdf",
