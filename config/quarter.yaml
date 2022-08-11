@@ -10,9 +10,13 @@ models:
         limit-respondents: 1000
         random-seed: 4000
         individual-covariates: False
+        runtime: 720 # (min)
+        memory: 46000 # (MB)
     hierarchical-covariates:
         n-tune: 6000
         n-draws: 2000
         limit-respondents: 1000
         random-seed: 4000
         individual-covariates: True
+        runtime: 1440 # (min)
+        memory: 96000 # (MB)

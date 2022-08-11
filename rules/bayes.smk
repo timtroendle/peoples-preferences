@@ -95,34 +95,6 @@ def hierarchical_model_config(param_name):
     return hierarchical_model_config
 
 
-def memory_requirements_hierarchical(wildcards, threads):
-    n_draws = hierarchical_model_config("n-draws")(wildcards)
-    if hierarchical_model_config("limit-respondents")(wildcards):
-        n_respondents = hierarchical_model_config("limit-respondents")(wildcards)
-    else:
-        n_respondents = 4000
-    req_per_respondent_and_draw = 0.0064 # (MB), empirically derived
-    if hierarchical_model_config("individual-covariates")(wildcards):
-        req_per_respondent_and_draw = req_per_respondent_and_draw * 5
-    total_memory = req_per_respondent_and_draw * n_respondents * n_draws
-    requested_memory = (total_memory / threads) * 1.2
-    return requested_memory if requested_memory > 16000 else 16000
-
-
-def runtime_hierarchical(wildcards):
-    n_tune = hierarchical_model_config("n-tune")(wildcards)
-    n_draws = hierarchical_model_config("n-draws")(wildcards)
-    n_iterations = n_tune + n_draws
-    if hierarchical_model_config("limit-respondents")(wildcards):
-        n_respondents = hierarchical_model_config("limit-respondents")(wildcards)
-    else:
-        n_respondents = 4000
-    req_per_respondent_and_iteration = 1 / 30000 # (min), empirically derived
-    if hierarchical_model_config("individual-covariates")(wildcards):
-        req_per_respondent_and_iteration = req_per_respondent_and_iteration * 5
-    return req_per_respondent_and_iteration * n_respondents * n_iterations * 1.2
-
-
 rule hierarchical:
     message: "Fit hierarchical Bayes model '{wildcards.name}' using PyMC."
     input: data = rules.global_conjoint.output[0]
@@ -133,8 +105,8 @@ rule hierarchical:
         random_seed = hierarchical_model_config("random-seed"),
         individual_covariates = hierarchical_model_config("individual-covariates")
     resources:
-        runtime = runtime_hierarchical,
-        memory = memory_requirements_hierarchical
+        runtime = hierarchical_model_config("runtime"),
+        memory = lambda wildcards, threads: hierarchical_model_config("memory")(wildcards) // threads
     threads: 4
     output: "build/models/hierarchical-{name}/inference-data.nc"
     conda: "../envs/pymc.yaml"

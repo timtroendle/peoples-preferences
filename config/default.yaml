@@ -425,12 +425,16 @@ models:
         limit-respondents: 80
         random-seed: 4000
         individual-covariates: False
+        runtime: 240 # (min)
+        memory: 16000 # (MB)
     hierarchical-covariates:
         n-tune: 2000
         n-draws: 500
         limit-respondents: 80
         random-seed: 4000
         individual-covariates: True
+        runtime: 240 # (min)
+        memory: 16000 # (MB)
 report:
     hdi_prob: 0.94
     nice-names:

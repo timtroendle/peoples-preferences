@@ -10,14 +10,18 @@ models:
         limit-respondents: False
         random-seed: 4000
     hierarchical-nocovariates:
-        n-tune: 8000
+        n-tune: 10000
         n-draws: 2000
         limit-respondents: False
         random-seed: 4000
         individual-covariates: False
+        runtime: 1440 # (min)
+        memory: 96000 # (MB)
     hierarchical-covariates:
-        n-tune: 8000
+        n-tune: 10000
         n-draws: 2000
         limit-respondents: False
         random-seed: 4000
         individual-covariates: True
+        runtime: 2880 # (min)
+        memory: 320000 # (MB)
