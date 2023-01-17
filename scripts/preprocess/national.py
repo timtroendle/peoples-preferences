@@ -188,25 +188,25 @@ class CoinjointDataFix:
 
 def fix_broken_entries(df):
     fixes = [
-        CoinjointDataFix(
+        CoinjointDataFix( # ASSUME negative birth years should be positive.
             col="Q4_BIRTH_YEAR",
             mask=lambda col: col < 0,
             fix=lambda negative: negative.abs(),
             reason="{} respondents indicated negative birth years. These will be considered positive."
         ),
-        CoinjointDataFix(
+        CoinjointDataFix( # ASSUME age entered instead of birth year.
             col="Q4_BIRTH_YEAR",
             mask=lambda col: (col < MAX_AGE) & (col >= MIN_AGE),
             fix=lambda age: YEAR_OF_STUDY - age,
             reason="{} respondents indicated their age instead of birth year. They will be transformed to birth years."
         ),
-        CoinjointDataFix(
+        CoinjointDataFix( # ASSUME negative years in region should be positive.
             col="Q8_YEARS_REGION",
             mask=lambda col: col < 0,
             fix=lambda negative: negative.abs(),
             reason="{} respondents indicated negative years in region. These will be considered positive."
         ),
-        CoinjointDataFix(
+        CoinjointDataFix( # ASSUME calendar years should be number years in region.
             col="Q8_YEARS_REGION",
             mask=lambda col: col > UNREASONABLE_HIGH_AGE,
             fix=lambda calendar_years: YEAR_OF_STUDY - calendar_years,
