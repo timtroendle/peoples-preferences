@@ -110,7 +110,7 @@ rule visualise_population_means:
     message: "Visualise population mean partworths of hierarchical model {wildcards.name}."
     input: posterior = rules.hierarchical.output[0]
     params:
-        title="{hdi_prob:.0f}% highest density interval of population-level partworths".format(
+        title = "{hdi_prob:.0f}% highest density interval of population-level partworths".format(
             hdi_prob=config["report"]["hdi_prob"] * 100),
         variable_name = "alpha",
         hdi_prob = config["report"]["hdi_prob"],
@@ -127,7 +127,7 @@ rule visualise_partworths_heterogeneity:
     message: "Visualise heterogeneity of partworths of hierarchical model {wildcards.name}."
     input: posterior = rules.hierarchical.output[0]
     params:
-        title="Range of average individual-level partworths",
+        title = "Range of average individual-level partworths",
         variable_name = "partworths",
         aggregate_individuals = True,
         hdi_prob = None, # has no use here
@@ -141,10 +141,10 @@ rule visualise_partworths_heterogeneity:
 
 
 rule visualise_unexplained_heterogeneity:
-    message: "Visualise uenxplained heterogeneity of partworths of hierarchical model {wildcards.name}."
+    message: "Visualise unexplained heterogeneity of partworths of hierarchical model {wildcards.name}."
     input: posterior = rules.hierarchical.output[0]
     params:
-        title="Unexplained heterogeneity in individual-level partworths",
+        title = "Unexplained heterogeneity in individual-level partworths",
         variable_name = "individuals",
         aggregate_individuals = True,
         hdi_prob = None, # has no use here

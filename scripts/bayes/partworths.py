@@ -38,15 +38,8 @@ def visualise_partworths(path_to_posterior: str, facet_by_country: bool, aggrega
         color=alt.Color("attribute", sort=list(nice_names["attributes"].values()), legend=alt.Legend(title="Attribute")),
     ).properties(
         width=300,
-        height=300
+        height=400
     )
-
-    interval = base.mark_rule(strokeWidth=1.5, opacity=0.6).encode(
-        x="lower",
-        x2="higher"
-    )
-
-    point = base.mark_circle(opacity=1)
 
     base_line = alt.Chart(data).mark_rule(color=DARK_GREY, strokeDash=[4], opacity=0.8).encode(
         x='zero:Q'
@@ -57,7 +50,18 @@ def visualise_partworths(path_to_posterior: str, facet_by_country: bool, aggrega
         x2=alt.value(4),
     )
 
-    entire_chart = (area + base_line + interval + point)
+    if aggregate_individuals:
+        main_marks = base.mark_boxplot(opacity=1, size=10)
+    else:
+        point = base.mark_circle(opacity=1)
+        interval = base.mark_rule(strokeWidth=1.5, opacity=0.6).encode(
+            x="lower",
+            x2="higher"
+        )
+        main_marks = (point + interval)
+
+    entire_chart = (area + base_line + main_marks)
+
     if facet_by_country:
         entire_chart = entire_chart.facet("Country", columns=2, title=title)
     (
@@ -75,22 +79,22 @@ def read_data(path_to_posterior: str, variable_name: str, facet_by_country: bool
     full = az.from_netcdf(path_to_posterior)
     attr_levels = full.posterior.level.to_series().to_list()
     all_attr_levels = attr_levels + BASELINE_LEVELS
+    fill_value = pd.NA if aggregate_individuals else 0
 
-    if aggregate_individuals:
-        # interval is mean across individuals
-        individual_partworths = (
-            full
-            .posterior
-            .mean(["draw", "chain"])
-            .data_vars[variable_name]
-            .reindex(level=all_attr_levels)
-            .fillna(0)
-        )
-        interval = pd.DataFrame({
-            "lower": individual_partworths.min("respondent").to_series(),
-            "higher": individual_partworths.max("respondent").to_series()
-        }).reset_index()
-    else:
+    expected_value = (
+        full
+        .posterior
+        .data_vars[variable_name]
+        .reindex(level=all_attr_levels)
+        .fillna(fill_value)
+        .mean(["chain", "draw"])
+        .to_series()
+        .reset_index()
+    )
+    expected_value["attribute"] = expected_value.level.str.split(":").str[0].map(nice_names["attributes"])
+    expected_value["level"] = expected_value.level.str.split(":").str[1].map(nice_names["levels"])
+
+    if not aggregate_individuals:
         # interval is highest density interval
         interval = (
             az
@@ -101,29 +105,16 @@ def read_data(path_to_posterior: str, variable_name: str, facet_by_country: bool
             .reset_index()
             .fillna(0)
         )
-    interval["attribute"] = interval.level.str.split(":").str[0].map(nice_names["attributes"])
-    interval["level"] = interval.level.str.split(":").str[1].map(nice_names["levels"])
+        interval["attribute"] = interval.level.str.split(":").str[0].map(nice_names["attributes"])
+        interval["level"] = interval.level.str.split(":").str[1].map(nice_names["levels"])
 
-    mean_vars = ["chain", "draw", "respondent"] if aggregate_individuals else ["chain", "draw"]
-
-    mean = (
-        full
-        .posterior
-        .data_vars[variable_name]
-        .reindex(level=all_attr_levels)
-        .fillna(0)
-        .mean(mean_vars)
-        .to_series()
-        .reset_index()
-    )
-    mean["attribute"] = mean.level.str.split(":").str[0].map(nice_names["attributes"])
-    mean["level"] = mean.level.str.split(":").str[1].map(nice_names["levels"])
-
-    index_cols = ["attribute", "level", "country"] if facet_by_country else ["attribute", "level"]
+        index_cols = ["attribute", "level", "country"] if facet_by_country else ["attribute", "level"]
+        data = pd.merge(left=interval, right=expected_value, on=index_cols, validate="1:1")
+    else:
+        data = expected_value
 
     data = (
-        pd
-        .merge(left=interval, right=mean, on=index_cols, validate="1:1")
+        data
         .pipe(preprocess_country_if_necessary, facet_by_country, nice_names["countries"])
         .assign(zero=0)
     )

@@ -3,6 +3,7 @@ channels:
     - conda-forge
 dependencies:
     - python=3.11
+    - ipdb=0.13.11
     - numpy=1.24.1
     - pandas=1.5.2
     - pyarrow=10.0.1
