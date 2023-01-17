@@ -14,47 +14,6 @@ def memory_requirements_plots(wildcards):
     return memory_bayes if memory_bayes > 16000 else 16000
 
 
-rule bayesm_model:
-    message: "Fit hierarchical Bayes model {wildcards.model}."
-    input:
-        data = rules.global_conjoint.output[0]
-    params:
-        formula = lambda wildcards: config["models"][f"{wildcards.model}"]["formula"],
-        n_iterations = lambda wildcards: config["models"][f"{wildcards.model}"]["n-iterations"],
-        keep = lambda wildcards: config["models"][f"{wildcards.model}"]["keep"],
-    log: "build/logs/{model}/bayesm.log"
-    output: "build/models/{model}/betas.feather"
-    resources:
-        runtime = 240,
-        memory = memory_requirements_bayes
-    conda: "../envs/bayesm.yaml"
-    script: "../scripts/analyse/bayes/bayesm.R"
-
-
-rule convergence_plot:
-    message: "Plot convergence of {wildcards.model} parameters."
-    input:
-        betas = rules.bayesm_model.output[0]
-    params: burn_in = lambda wildcards: config["models"][f"{wildcards.model}"]["burn-in-length"],
-    output: "build/models/{model}/convergence.png"
-    resources:
-        memory = memory_requirements_plots
-    conda: "../envs/default.yaml"
-    script: "../scripts/analyse/bayes/convergence.py"
-
-
-rule level_part_worth_utility:
-    message: "Plot part-worth utility of all {wildcards.model} levels."
-    input:
-        betas = rules.bayesm_model.output[0]
-    params: burn_in = lambda wildcards: config["models"][f"{wildcards.model}"]["burn-in-length"],
-    output: "build/models/{model}/level-part-worths.png"
-    resources:
-        memory = memory_requirements_plots
-    conda: "../envs/default.yaml"
-    script: "../scripts/analyse/bayes/levels.py"
-
-
 rule logistic_regression:
     message: "Fit a simplistic logistic regression model."
     input:
@@ -68,7 +27,7 @@ rule logistic_regression:
     threads: 4
     output: "build/models/logistic-regression/inference-data.nc"
     conda: "../envs/pymc.yaml"
-    script: "../scripts/analyse/bayes/logistic.py"
+    script: "../scripts/bayes/logistic.py"
 
 
 rule multinomial_logit:
@@ -85,7 +44,7 @@ rule multinomial_logit:
     threads: 4
     output: "build/models/multinomial-logit/inference-data.nc"
     conda: "../envs/pymc.yaml"
-    script: "../scripts/analyse/bayes/multinomial.py"
+    script: "../scripts/bayes/multinomial.py"
 
 
 def hierarchical_model_config(param_name):
@@ -110,7 +69,7 @@ rule hierarchical:
     threads: 4
     output: "build/models/hierarchical-{name}/inference-data.nc"
     conda: "../envs/pymc.yaml"
-    script: "../scripts/analyse/bayes/hierarchical.py"
+    script: "../scripts/bayes/hierarchical.py"
 
 
 rule diagnostics:
@@ -129,7 +88,7 @@ rule diagnostics:
         runtime = 60,
         memory = 64000
     conda: "../envs/analyse.yaml"
-    script: "../scripts/analyse/bayes/diagnostics.py"
+    script: "../scripts/bayes/diagnostics.py"
 
 
 rule visualise_partworths:
@@ -144,7 +103,7 @@ rule visualise_partworths:
         nice_names = config["report"]["nice-names"],
     output: "build/models/multinomial-logit/pop-means.{figure_format}"
     conda: "../envs/analyse.yaml"
-    script: "../scripts/analyse/bayes/partworths.py"
+    script: "../scripts/bayes/partworths.py"
 
 
 rule visualise_population_means:
@@ -161,7 +120,7 @@ rule visualise_population_means:
         runtime = 60,
         memory = 64000
     conda: "../envs/analyse.yaml"
-    script: "../scripts/analyse/bayes/partworths.py"
+    script: "../scripts/bayes/partworths.py"
 
 
 rule visualise_partworths_heterogeneity:
@@ -178,7 +137,7 @@ rule visualise_partworths_heterogeneity:
         runtime = 60,
         memory = 64000
     conda: "../envs/analyse.yaml"
-    script: "../scripts/analyse/bayes/partworths.py"
+    script: "../scripts/bayes/partworths.py"
 
 
 rule visualise_unexplained_heterogeneity:
@@ -195,7 +154,7 @@ rule visualise_unexplained_heterogeneity:
         runtime = 60,
         memory = 64000
     conda: "../envs/analyse.yaml"
-    script: "../scripts/analyse/bayes/partworths.py"
+    script: "../scripts/bayes/partworths.py"
 
 
 rule visualise_covariates:
@@ -209,4 +168,4 @@ rule visualise_covariates:
         runtime = 60,
         memory = 64000
     conda: "../envs/analyse.yaml"
-    script: "../scripts/analyse/bayes/covariates.py"
+    script: "../scripts/bayes/covariates.py"
