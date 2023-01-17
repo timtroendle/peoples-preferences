@@ -19,4 +19,4 @@ dependencies:
     - r-plyr=1.8.6
     - r-ggstance=0.3.5
     - r-cregg=0.4.0
-    - r-arrow=7.0.0
+    - r-arrow=9.0.0

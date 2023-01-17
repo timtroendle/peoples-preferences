@@ -75,5 +75,5 @@ rule design_validation_plot:
     input:
         data = rules.global_conjoint.output[0]
     output: "build/robustness/design-validation.png"
-    conda: "../envs/default.yaml"
+    conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/design_validation.py"

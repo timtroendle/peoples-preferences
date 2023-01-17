@@ -45,7 +45,7 @@ def _create_config_plugin(snakemake):
         def country_id(self, national_conjoint):
             return national_conjoint.loc[:, "RESPONDENT_COUNTRY"].iloc[0]
 
-        @pytest.fixture
+        @pytest.fixture(scope="session")
         def covariate_model(self):
             return az.from_netcdf(snakemake.input.covariate_model)
 

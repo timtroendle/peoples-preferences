@@ -4,7 +4,7 @@ channels:
     - r
 dependencies:
     - r=4.1
-    - r-arrow=7.0.0
+    - r-arrow=9.0.0
     - r-ggplot2=3.3.5
     - r-plyr=1.8.6
     - r-dplyr=1.0.8

@@ -2,13 +2,11 @@ name: analyse
 channels:
     - conda-forge
 dependencies:
-    - python=3.10
-    - numpy=1.22.4
-    - pandas=1.4.2
-    - pyarrow=8.0.0
+    - python=3.11
+    - numpy=1.24.1
+    - pandas=1.5.2
+    - pyarrow=10.0.1
     - arviz=0.12.1
     - altair=4.2.0
-    - altair_saver=0.5.0
-    - vega-cli=5.17.0
-    - vega-lite-cli=4.17.0
+    - matplotlib=3.6.2
     - seaborn=0.11.2

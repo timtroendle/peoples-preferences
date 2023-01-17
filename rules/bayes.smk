@@ -101,7 +101,7 @@ rule visualise_partworths:
         variable_name = "partworths",
         hdi_prob = config["report"]["hdi_prob"],
         nice_names = config["report"]["nice-names"],
-    output: "build/models/multinomial-logit/pop-means.{figure_format}"
+    output: "build/models/multinomial-logit/pop-means.vega.json"
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/partworths.py"
 
@@ -115,7 +115,7 @@ rule visualise_population_means:
         variable_name = "alpha",
         hdi_prob = config["report"]["hdi_prob"],
         nice_names = config["report"]["nice-names"],
-    output: "build/models/hierarchical-{name}/pop-means.{figure_format}"
+    output: "build/models/hierarchical-{name}/pop-means.vega.json"
     resources:
         runtime = 60,
         memory = 64000
@@ -132,7 +132,7 @@ rule visualise_partworths_heterogeneity:
         aggregate_individuals = True,
         hdi_prob = None, # has no use here
         nice_names = config["report"]["nice-names"],
-    output: "build/models/hierarchical-{name}/individual-partworths.{figure_format}"
+    output: "build/models/hierarchical-{name}/individual-partworths.vega.json"
     resources:
         runtime = 60,
         memory = 64000
@@ -149,7 +149,7 @@ rule visualise_unexplained_heterogeneity:
         aggregate_individuals = True,
         hdi_prob = None, # has no use here
         nice_names = config["report"]["nice-names"],
-    output: "build/models/hierarchical-{name}/unexplained-heterogeneity.{figure_format}"
+    output: "build/models/hierarchical-{name}/unexplained-heterogeneity.vega.json"
     resources:
         runtime = 60,
         memory = 64000
@@ -163,7 +163,7 @@ rule visualise_covariates:
     params:
         interval = 0.9, # show only this share of the total interval
         nice_names = config["report"]["nice-names"],
-    output: "build/models/hierarchical-covariates/covariates.{figure_format}"
+    output: "build/models/hierarchical-covariates/covariates.vega.json"
     resources:
         runtime = 60,
         memory = 64000
