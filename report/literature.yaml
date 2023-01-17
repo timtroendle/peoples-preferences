@@ -549,6 +549,151 @@ references:
   type: article
   URL: https://psyarxiv.com/m6bsn/
 
+- id: Coppock:2015
+  abstract: >-
+    A small but growing social science literature examines the correspondence
+    between experimental results obtained in lab and field settings. This
+    article reviews this literature and reanalyzes a set of recent experiments
+    carried out in parallel in both the lab and field. Using a standardized
+    format that calls attention to both the experimental estimates and the
+    statistical uncertainty surrounding them, the study analyzes the overall
+    pattern of lab-field correspondence, which is found to be quite strong
+    (Spearman's ρ = 0.73). Recognizing that this correlation may be distorted by
+    the ad hoc manner in which lab-field comparisons are constructed (as well as
+    the selective manner in which results are reported and published), the
+    article concludes by suggesting directions for future research, stressing in
+    particular the need for more systematic investigation of treatment effect
+    heterogeneity.
+  accessed:
+    - year: 2023
+      month: 1
+      day: 9
+  author:
+    - family: Coppock
+      given: Alexander
+    - family: Green
+      given: Donald P.
+  citation-key: Coppock:2015
+  container-title: Political Science Research and Methods
+  DOI: 10.1017/psrm.2014.10
+  ISSN: 2049-8470, 2049-8489
+  issue: '1'
+  issued:
+    - year: 2015
+      month: 1
+  language: en
+  page: 113-131
+  publisher: Cambridge University Press
+  source: Cambridge University Press
+  title: >-
+    Assessing the Correspondence between Experimental Results Obtained in the
+    Lab and Field: A Review of Recent Social Science Research*
+  title-short: >-
+    Assessing the Correspondence between Experimental Results Obtained in the
+    Lab and Field
+  type: article-journal
+  URL: >-
+    https://www.cambridge.org/core/journals/political-science-research-and-methods/article/assessing-the-correspondence-between-experimental-results-obtained-in-the-lab-and-field-a-review-of-recent-social-science-research/785631685DB69596ACC90256D332592E
+  volume: '3'
+
+- id: Coppock:2018
+  abstract: >-
+    The extent to which survey experiments conducted with nonrepresentative
+    convenience samples are generalizable to target populations depends
+    critically on the degree of treatment effect heterogeneity. Recent inquiries
+    have found a strong correspondence between sample average treatment effects
+    estimated in nationally representative experiments and in replication
+    studies conducted with convenience samples. We consider here two possible
+    explanations: low levels of effect heterogeneity or high levels of effect
+    heterogeneity that are unrelated to selection into the convenience sample.
+    We analyze subgroup conditional average treatment effects using 27
+    original–replication study pairs (encompassing 101,745 individual survey
+    responses) to assess the extent to which subgroup effect estimates
+    generalize. While there are exceptions, the overwhelming pattern that
+    emerges is one of treatment effect homogeneity, providing a partial
+    explanation for strong correspondence across both unconditional and
+    conditional average treatment effect estimates.
+  accessed:
+    - year: 2023
+      month: 1
+      day: 6
+  author:
+    - family: Coppock
+      given: Alexander
+    - family: Leeper
+      given: Thomas J.
+    - family: Mullinix
+      given: Kevin J.
+  citation-key: Coppock:2018
+  container-title: Proceedings of the National Academy of Sciences
+  DOI: 10.1073/pnas.1808083115
+  issue: '49'
+  issued:
+    - year: 2018
+      month: 12
+      day: 4
+  page: 12441-12446
+  publisher: Proceedings of the National Academy of Sciences
+  source: pnas.org (Atypon)
+  title: Generalizability of heterogeneous treatment effect estimates across samples
+  type: article-journal
+  URL: https://www.pnas.org/doi/full/10.1073/pnas.1808083115
+  volume: '115'
+
+- id: Dasandi:2022
+  abstract: >-
+    Public support for climate policies is important for their efficacy, yet
+    little is known about how different framings of climate change affect public
+    support for climate policies around the world. Here we report findings from
+    a conjoint experiment of 7,500 adults in five countries – China, Germany,
+    India, UK, and USA – to identify climate messages that elicit greater
+    support for policies to tackle climate change. Messages were randomly varied
+    on four attributes: positive (opportunity) or negative (threat) framings,
+    theme (health, environment, economy, migration), scale (individual,
+    community, national, global), and time (current, 2030, 2050). We find that a
+    positive frame, health and environmental frames, and global and immediate
+    frames bolster public support. We examine differences between countries, and
+    across groups within countries – particularly focusing on the effect of
+    these frames among individuals that are unconcerned about climate change.
+    Among this group, positive and health frames increase the likelihood of
+    support for climate policies, indicating the relevance of these frames for
+    shifting policy preferences for different audience groups.
+  accessed:
+    - year: 2022
+      month: 10
+      day: 24
+  author:
+    - family: Dasandi
+      given: Niheer
+    - family: Graham
+      given: Hilary
+    - family: Hudson
+      given: David
+    - family: Jankin
+      given: Slava
+    - family: Hudson
+      given: Jennifer
+      non-dropping-particle: vanHeerde-
+    - family: Watts
+      given: Nick
+  citation-key: Dasandi:2022
+  container-title: Communications Earth & Environment
+  DOI: 10.1038/s43247-022-00571-x
+  ISSN: 2662-4435
+  issue: '1'
+  issued:
+    - year: 2022
+      month: 10
+      day: 20
+  page: '239'
+  source: www.nature.com
+  title: >-
+    Positive, global, and health or environment framing bolsters public support
+    for climate policies | Communications Earth & Environment
+  type: article-journal
+  URL: https://www.nature.com/articles/s43247-022-00571-x#Sec6
+  volume: '3'
+
 - id: Day:2010
   accessed:
     - year: 2021
@@ -685,6 +830,151 @@ references:
   URL: https://www.nature.com/articles/s41560-018-0235-8
   volume: '3'
 
+- id: Diener:2022
+  abstract: >-
+    It is often claimed that only experiments can support strong causal
+    inferences and therefore they should be privileged in the behavioral
+    sciences. We disagree. Overvaluing experiments results in their overuse both
+    by researchers and decision makers and in an underappreciation of their
+    shortcomings. Neglect of other methods often follows. Experiments can
+    suggest whether X causes Y in a specific experimental setting; however, they
+    often fail to elucidate either the mechanisms responsible for an effect or
+    the strength of an effect in everyday natural settings. In this article, we
+    consider two overarching issues. First, experiments have important
+    limitations. We highlight problems with external, construct,
+    statistical-conclusion, and internal validity; replicability; and conceptual
+    issues associated with simple X causes Y thinking. Second,
+    quasi-experimental and nonexperimental methods are absolutely essential. As
+    well as themselves estimating causal effects, these other methods can
+    provide information and understanding that goes beyond that provided by
+    experiments. A research program progresses best when experiments are not
+    treated as privileged but instead are combined with these other methods.
+  accessed:
+    - year: 2022
+      month: 11
+      day: 29
+  author:
+    - family: Diener
+      given: Ed
+    - family: Northcott
+      given: Robert
+    - family: Zyphur
+      given: Michael J.
+    - family: West
+      given: Stephen G.
+  citation-key: Diener:2022
+  container-title: Perspectives on Psychological Science
+  container-title-short: Perspect Psychol Sci
+  DOI: 10.1177/17456916211037670
+  ISSN: 1745-6916
+  issue: '4'
+  issued:
+    - year: 2022
+      month: 7
+      day: 1
+  language: en
+  page: 1101-1119
+  publisher: SAGE Publications Inc
+  source: SAGE Journals
+  title: Beyond Experiments
+  type: article-journal
+  URL: https://doi.org/10.1177/17456916211037670
+  volume: '17'
+
+- id: Egami:2021
+  abstract: >-
+    Generalizing estimates of causal effects from an experiment to a target
+    population is of interest to scientists. However, researchers are usually
+    constrained by available covariate information. Analysts can often collect
+    many fewer variables from population samples than from experimental samples,
+    which has limited applicability of existing approaches that assume rich
+    covariate data from both experimental and population samples. In this
+    article, we examine how to select covariates necessary for generalizing
+    experimental results under such data constraints. In our concrete context of
+    a large-scale development program in Uganda, although more than 40
+    pre-treatment covariates are available in the experiment, only 8 of them
+    were also measured in a target population. We propose a method to estimate a
+    separating set—a set of variables affecting both the sampling mechanism and
+    treatment effect heterogeneity—and show that the population average
+    treatment effect (PATE) can be identified by adjusting for estimated
+    separating sets. Our algorithm only requires a rich set of covariates in the
+    experimental data, not in the target population, by incorporating
+    researcher-specific constraints on what variables are measured in the
+    population data. Analysing the development experiment in Uganda, we show
+    that the proposed algorithm can allow for the PATE estimation in situations
+    where conventional methods fail due to data requirements.
+  accessed:
+    - year: 2023
+      month: 1
+      day: 9
+  author:
+    - family: Egami
+      given: Naoki
+    - family: Hartman
+      given: Erin
+  citation-key: Egami:2021
+  container-title: 'Journal of the Royal Statistical Society: Series A (Statistics in Society)'
+  DOI: 10.1111/rssa.12734
+  ISSN: 1467-985X
+  issue: '4'
+  issued:
+    - year: 2021
+  language: en
+  note: '_eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1111/rssa.12734'
+  page: 1524-1548
+  source: Wiley Online Library
+  title: >-
+    Covariate selection for generalizing experimental results: Application to a
+    large-scale development program in Uganda*
+  title-short: Covariate selection for generalizing experimental results
+  type: article-journal
+  URL: https://onlinelibrary.wiley.com/doi/abs/10.1111/rssa.12734
+  volume: '184'
+
+- id: Egami:2022
+  abstract: >-
+    The external validity of causal findings is a focus of long-standing debates
+    in the social sciences. Although the issue has been extensively studied at
+    the conceptual level, in practice few empirical studies include an explicit
+    analysis that is directed toward externally valid inferences. In this
+    article, we make three contributions to improve empirical approaches for
+    external validity. First, we propose a formal framework that encompasses
+    four dimensions of external validity: -, -, -, and C-validity (populations,
+    treatments, outcomes, and contexts). The proposed framework synthesizes
+    diverse external validity concerns. We then distinguish two goals of
+    generalization. To conduct effect-generalization—generalizing the magnitude
+    of causal effects—we introduce three estimators of the target population
+    causal effects. For sign-generalization—generalizing the direction of causal
+    effects—we propose a novel multiple-testing procedure under weaker
+    assumptions. We illustrate our methods through field, survey, and lab
+    experiments as well as observational studies.
+  accessed:
+    - year: 2023
+      month: 1
+      day: 9
+  author:
+    - family: Egami
+      given: Naoki
+    - family: Hartman
+      given: Erin
+  citation-key: Egami:2022
+  container-title: American Political Science Review
+  DOI: 10.1017/S0003055422000880
+  ISSN: 0003-0554, 1537-5943
+  issued:
+    - year: 2022
+      month: 10
+      day: 10
+  language: en
+  page: 1-19
+  publisher: Cambridge University Press
+  source: Cambridge University Press
+  title: 'Elements of External Validity: Framework, Design, and Analysis'
+  title-short: Elements of External Validity
+  type: article-journal
+  URL: >-
+    https://www.cambridge.org/core/journals/american-political-science-review/article/elements-of-external-validity-framework-design-and-analysis/2D0914404C84B3F169732FF1D5E39420
+
 - id: EuropeanCommission:2016a
   author:
     - literal: European Commission
@@ -728,6 +1018,45 @@ references:
   type: article-journal
   URL: https://www.americanscientist.org/article/the-statistical-crisis-in-science
   volume: '102'
+
+- id: Gerring:2012
+  abstract: >-
+    This article attempts to reformulate and resuscitate the seemingly prosaic
+    methodological task of description, which is often derided in favour of
+    causal analysis. First, the problem of definition is addressed: what does
+    this category of analysis (‘description’) refer to? Secondly, a taxonomy of
+    descriptive arguments is offered, emphasizing the diversity contained within
+    this genre of empirical analysis. Thirdly, the demise of description within
+    political science is charted over the past century, with comparisons to
+    other disciplines. Fourthly, it is argued that the task of description ought
+    to be approached independently, not merely as a handmaiden of causal
+    theories. Fifthly, the methodological difficulties of descriptive inference
+    are addressed. Finally, fruitful research areas within the rubric of
+    description are reviewed.
+  accessed:
+    - year: 2022
+      month: 10
+      day: 15
+  author:
+    - family: Gerring
+      given: John
+  citation-key: Gerring:2012
+  container-title: British Journal of Political Science
+  DOI: 10.1017/S0007123412000130
+  ISSN: 0007-1234, 1469-2112
+  issue: '4'
+  issued:
+    - year: 2012
+      month: 10
+  language: en
+  page: 721-746
+  publisher: Cambridge University Press
+  source: Cambridge University Press
+  title: Mere Description
+  type: article-journal
+  URL: >-
+    https://www.cambridge.org/core/journals/british-journal-of-political-science/article/mere-description/833643C6242D3A45D48BAAC3EF0C33D0
+  volume: '42'
 
 - id: Graham:2020
   author:
@@ -911,10 +1240,9 @@ references:
       given: William H
   citation-key: 'Hensher:'
   language: en
-  page: '743'
   source: Zotero
   title: Applied Choice Analysis
-  type: article-journal
+  type: book
 
 - id: Hubner:2019
   accessed:
@@ -1360,10 +1688,9 @@ references:
       given: Joffre D
   citation-key: 'Louviere:'
   language: en
-  page: '420'
   source: Zotero
   title: Stated Choice Methods
-  type: article-journal
+  type: book
 
 - id: Louviere:2010
   abstract: >-
@@ -1406,6 +1733,45 @@ references:
   type: article-journal
   URL: https://www.sciencedirect.com/science/article/pii/S1755534513700149
   volume: '3'
+
+- id: Matthews:2022
+  abstract: >-
+    Human activities have caused global temperatures to increase by 1.25°C, and
+    the current emissions trajectory suggests that we will exceed 1.5°C in less
+    than 10 years. Though the growth rate of global carbon dioxide emissions has
+    slowed and many countries have strengthened their emissions targets, current
+    midcentury net zero goals are insufficient to limit global warming to 1.5°C
+    above preindustrial temperatures. The primary barriers to the achievement of
+    a 1.5°C-compatible pathway are not geophysical but rather reflect inertia in
+    our political and technological systems. Both political and corporate
+    leadership are needed to overcome this inertia, supported by increased
+    societal recognition of the need for system-level and individual lifestyle
+    changes. The available evidence does not yet indicate that the world has
+    seriously committed to achieving the 1.5°C goal.
+  accessed:
+    - year: 2023
+      month: 1
+      day: 9
+  author:
+    - family: Matthews
+      given: H. Damon
+    - family: Wynes
+      given: Seth
+  citation-key: Matthews:2022
+  container-title: Science
+  DOI: 10.1126/science.abo3378
+  issue: '6600'
+  issued:
+    - year: 2022
+      month: 6
+      day: 24
+  page: 1404-1409
+  publisher: American Association for the Advancement of Science
+  source: science.org (Atypon)
+  title: Current global efforts are insufficient to limit warming to 1.5°C
+  type: article-journal
+  URL: https://www.science.org/doi/10.1126/science.abo3378
+  volume: '376'
 
 - id: 'McCulloug:'
   author:
@@ -2111,10 +2477,9 @@ references:
       given: Kenneth
   citation-key: 'Train:'
   language: en
-  page: '388'
   source: Zotero
   title: Discrete Choice Methods with Simulation
-  type: article-journal
+  type: book
 
 - id: Trondle:2019
   author:
@@ -2314,4 +2679,58 @@ references:
     from a choice experiment on policies against vehicle emissions
   type: article-journal
   volume: '40'
+
+- id: Xexakis:2022
+  abstract: >-
+    With the European Green Deal, the European Union (EU27) aims to achieve an
+    ambitious decarbonization of its electricity supply, while actively
+    involving its citizens. Scenarios from energy and electricity sector models
+    seek to inform this transition, although it is unclear to what extent these
+    scenarios are aligned with the views of the citizens. In this study, four
+    multi-organization, multi-model ensembles of existing electricity supply
+    scenarios have been compiled for France, Germany, Poland, and the whole EU27
+    in 2035, leading to 612 scenarios in total. These scenarios were then
+    compared with 601 preferred scenarios elicited from French, German, and
+    Polish citizens in a survey with an interactive scenario tool. Results show
+    that model-based and citizens’ preferred scenarios converged only on having
+    moderate shares of onshore and offshore wind power and low shares of biomass
+    and waste incineration. In contrast to the majority of model-based
+    scenarios, most Polish and German citizens preferred a deeper
+    decarbonization for their national electricity supply, while French citizens
+    preferred a deeper denuclearization. Additionally, most citizens of all
+    three countries used significant shares of solar photovoltaics and low
+    shares of fossil fuels with carbon capture and storage, hence diverging from
+    model-based scenarios. Similar patterns were found for the EU27 scenarios:
+    many model-based scenarios included large shares of nuclear power, natural
+    gas, and coal, while surveyed citizens preferred scenarios dominated by
+    diverse renewable sources. European modelers should now quantify these
+    missing scenarios so that the EU27 energy transition can be informed by
+    modeling that is in line with citizens’ perspectives.
+  accessed:
+    - year: 2022
+      month: 8
+      day: 16
+  author:
+    - family: Xexakis
+      given: Georgios
+    - family: Trutnevyte
+      given: Evelina
+  citation-key: Xexakis:2022
+  container-title: Renewable and Sustainable Energy Transition
+  container-title-short: Renewable and Sustainable Energy Transition
+  DOI: 10.1016/j.rset.2022.100031
+  ISSN: 2667-095X
+  issued:
+    - year: 2022
+      month: 8
+      day: 1
+  language: en
+  page: '100031'
+  source: ScienceDirect
+  title: >-
+    Model-based scenarios of EU27 electricity supply are not aligned with the
+    perspectives of French, German, and Polish citizens
+  type: article-journal
+  URL: https://www.sciencedirect.com/science/article/pii/S2667095X22000150
+  volume: '2'
 ...
