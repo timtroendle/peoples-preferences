@@ -1,9 +1,13 @@
+from pathlib import Path
+
 import arviz as az
+import pandas as pd
 import seaborn as sns
 
 
 def diagnostics(path_to_inference_data: str, path_to_trace_plot: str, path_to_pop_means_plot: str,
                 path_to_forest_plot: str, path_to_summary: str, path_to_rhos_plot: str,
+                path_to_confusion_matrix: str, path_to_accuracy: str,
                 hdi_prob: float, path_to_individuals_plot: str):
     inference_data = az.from_netcdf(path_to_inference_data)
     inference_data = retransform_normalised(inference_data)
@@ -14,6 +18,7 @@ def diagnostics(path_to_inference_data: str, path_to_trace_plot: str, path_to_po
     rhos_plot(inference_data, path_to_rhos_plot)
     individuals_plot(inference_data, path_to_individuals_plot)
     summary(inference_data, hdi_prob, path_to_summary)
+    prediction_accuracy(inference_data, path_to_confusion_matrix, path_to_accuracy)
 
 
 def retransform_normalised(inference_data: az.InferenceData):
@@ -141,6 +146,24 @@ def summary(inference_data: az.InferenceData, hdi_prob: float, path_to_summary: 
     )
 
 
+def prediction_accuracy(inference_data: az.InferenceData, path_to_confusion_matrix: str, path_to_accuracy: str):
+    best_estimate = (
+        inference_data
+        .posterior
+        .p_left
+        .mean(["chain", "draw"])
+        .to_series()
+        .map(lambda x: 1 if x >= 0.5 else 0)
+    )
+    choices = inference_data.observed_data.choice.to_series()
+    confusion_matrix = pd.crosstab(choices, best_estimate)
+    accuracy = (confusion_matrix.loc[0, 0] + confusion_matrix.loc[1, 1]) / confusion_matrix.sum().sum()
+
+    confusion_matrix.to_csv(path_to_confusion_matrix)
+    with Path(path_to_accuracy).open("w") as f_acc:
+        f_acc.write(f"{accuracy:.2f}")
+
+
 if __name__ == "__main__":
     diagnostics(
         path_to_inference_data=snakemake.input.inference_data,
@@ -150,5 +173,7 @@ if __name__ == "__main__":
         path_to_rhos_plot=snakemake.output.rhos,
         path_to_individuals_plot=snakemake.output.individuals,
         path_to_summary=snakemake.output.summary,
+        path_to_confusion_matrix=snakemake.output.confusion,
+        path_to_accuracy=snakemake.output.accuracy,
         hdi_prob=snakemake.params.hdi_prob
     )

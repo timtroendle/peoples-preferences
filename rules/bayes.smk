@@ -83,7 +83,9 @@ rule diagnostics:
         forest = "build/models/hierarchical-{name}/diagnostics/forest.png",
         summary = "build/models/hierarchical-{name}/diagnostics/summary.feather",
         rhos = "build/models/hierarchical-{name}/diagnostics/rhos.png",
-        individuals = "build/models/hierarchical-{name}/diagnostics/individuals.png"
+        individuals = "build/models/hierarchical-{name}/diagnostics/individuals.png",
+        confusion = "build/models/hierarchical-{name}/diagnostics/confusion-matrix.csv",
+        accuracy = "build/models/hierarchical-{name}/diagnostics/in-sample-prediction-accuracy.txt"
     resources:
         runtime = 60,
         memory = 64000

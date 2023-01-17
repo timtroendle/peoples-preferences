@@ -5,9 +5,9 @@ COUNTRY_IDS = ["DEU", "POL", "PRT", "DNK"]
 
 configfile: "config/default.yaml"
 include: "rules/preprocess.smk"
-include: "rules/utils.smk"
 include: "rules/analyse.smk"
 include: "rules/bayes.smk"
+include: "rules/utils.smk"
 include: "./rules/sync.smk"
 localrules: all, report, clean
 wildcard_constraints:

@@ -240,7 +240,11 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
 
         u_left = left_intercept[r] + pm.math.sum(partworths[r, :] * dummies_left, axis=1)
         u_right = pm.math.sum(partworths[r, :] * dummies_right, axis=1)
-        p_left = pm.math.exp(u_left) / (pm.math.exp(u_left) + pm.math.exp(u_right))
+        p_left = pm.Deterministic(
+            "p_left",
+            pm.math.exp(u_left) / (pm.math.exp(u_left) + pm.math.exp(u_right)),
+            dims="choice_situation"
+        )
 
         pm.Bernoulli(
             f"choice",

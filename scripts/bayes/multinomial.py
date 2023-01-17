@@ -56,7 +56,11 @@ def multinomial_logit_model(path_to_data: str, n_tune: int, n_draws: int, n_core
 
         u_left = intercept_left[c] + pm.math.sum(partworths[c] * dummies_left, axis=1)
         u_right = pm.math.sum(partworths[c] * dummies_right, axis=1)
-        p_left = pm.math.exp(u_left) / (pm.math.exp(u_left) + pm.math.exp(u_right))
+        p_left = pm.Deterministic(
+            "p_left",
+            pm.math.exp(u_left) / (pm.math.exp(u_left) + pm.math.exp(u_right)),
+            dims="choice_situations"
+        )
 
         pm.Bernoulli(
             f"choice",
