@@ -30,12 +30,12 @@ rule all:
     input:
         "build/report.html",
         "build/test-report.html",
-        "build/models/multinomial-logit/pop-means.pdf",
-        "build/models/hierarchical-nocovariates/diagnostics/summary.csv",
-        "build/models/hierarchical-nocovariates/pop-means.pdf",
-        "build/models/hierarchical-nocovariates/country-differences.pdf",
-        "build/models/hierarchical-nocovariates/individual-partworths.pdf",
-        "build/models/hierarchical-nocovariates/unexplained-heterogeneity.pdf",
+        "build/results/models/multinomial-logit/pop-means.pdf",
+        "build/results/models/hierarchical-nocovariates/diagnostics/summary.csv",
+        "build/results/models/hierarchical-nocovariates/pop-means.pdf",
+        "build/results/models/hierarchical-nocovariates/country-differences.pdf",
+        "build/results/models/hierarchical-nocovariates/individual-partworths.pdf",
+        "build/results/models/hierarchical-nocovariates/unexplained-heterogeneity.pdf",
 
 
 def pandoc_options(wildcards):
@@ -63,14 +63,14 @@ rule report:
         "report/fonts/KlinicSlabBookIt.otf",
         "report/fonts/KlinicSlabMedium.otf",
         "report/fonts/KlinicSlabMediumIt.otf",
-        expand("build/{country_id}/respondent-stats.csv", country_id=COUNTRY_IDS),
-        expand("build/clustering/4-with-country/umap-{feature}.png",
+        expand("build/results/respondent-stats-{country_id}.csv", country_id=COUNTRY_IDS),
+        expand("build/results/clustering/4-with-country/umap-{feature}.png",
                feature=["RESPONDENT_COUNTRY", "Q3_GENDER", "Q6_AREA"]),
-        "build/clustering/4-with-country/conditional-mm.png",
-        "build/clustering/4-with-country/umap.png",
-        "build/robustness/conditional-mm-choice-set.png",
-        "build/robustness/conditional-mm-label.png",
-        "build/robustness/design-validation.png",
+        "build/results/clustering/4-with-country/conditional-mm.png",
+        "build/results/clustering/4-with-country/umap.png",
+        "build/results/robustness/conditional-mm-choice-set.png",
+        "build/results/robustness/conditional-mm-label.png",
+        "build/results/robustness/design-validation.png",
     params: options = pandoc_options
     output: "build/report.{suffix}"
     wildcard_constraints:
@@ -99,9 +99,9 @@ rule test:
     input:
         test_dir = "tests",
         tests = map(str, Path("tests").glob("**/test_*.py")),
-        national_conjoints = expand("build/{country_id}/raw.feather", country_id=COUNTRY_IDS),
-        conjoint = "build/conjoint.feather",
-        covariate_model = "build/models/hierarchical-nocovariates/inference-data.nc" # FIXME use covariate model
+        national_conjoints = expand("build/data/{country_id}.feather", country_id=COUNTRY_IDS),
+        conjoint = "build/data/conjoint.feather",
+        covariate_model = "build/results/models/hierarchical-nocovariates/inference-data.nc" # FIXME use covariate model
     params:
         config = config
     output: "build/test-report.html"

@@ -25,7 +25,7 @@ rule logistic_regression:
     resources:
         runtime = 60
     threads: 4
-    output: "build/models/logistic-regression/inference-data.nc"
+    output: "build/results/models/logistic-regression/inference-data.nc"
     conda: "../envs/pymc.yaml"
     script: "../scripts/bayes/logistic.py"
 
@@ -42,7 +42,7 @@ rule multinomial_logit:
         runtime = 60,
         memory = 4000
     threads: 4
-    output: "build/models/multinomial-logit/inference-data.nc"
+    output: "build/results/models/multinomial-logit/inference-data.nc"
     conda: "../envs/pymc.yaml"
     script: "../scripts/bayes/multinomial.py"
 
@@ -67,7 +67,7 @@ rule hierarchical:
         runtime = hierarchical_model_config("runtime"),
         memory = lambda wildcards, threads: hierarchical_model_config("memory")(wildcards) // threads
     threads: 4
-    output: "build/models/hierarchical-{name}/inference-data.nc"
+    output: "build/results/models/hierarchical-{name}/inference-data.nc"
     conda: "../envs/pymc.yaml"
     script: "../scripts/bayes/hierarchical.py"
 
@@ -78,15 +78,15 @@ rule diagnostics:
         inference_data = rules.hierarchical.output[0]
     params: hdi_prob = 0.94
     output:
-        trace = "build/models/hierarchical-{name}/diagnostics/trace.png",
-        pop_means = "build/models/hierarchical-{name}/diagnostics/pop-means.png",
-        forest = "build/models/hierarchical-{name}/diagnostics/forest.png",
-        summary = "build/models/hierarchical-{name}/diagnostics/summary.feather",
-        rhos_individual = "build/models/hierarchical-{name}/diagnostics/rhos-individual.png",
-        rhos_country = "build/models/hierarchical-{name}/diagnostics/rhos-country.png",
-        individuals = "build/models/hierarchical-{name}/diagnostics/individuals.png",
-        confusion = "build/models/hierarchical-{name}/diagnostics/confusion-matrix.csv",
-        accuracy = "build/models/hierarchical-{name}/diagnostics/in-sample-prediction-accuracy.txt"
+        trace = "build/results/models/hierarchical-{name}/diagnostics/trace.png",
+        pop_means = "build/results/models/hierarchical-{name}/diagnostics/pop-means.png",
+        forest = "build/results/models/hierarchical-{name}/diagnostics/forest.png",
+        summary = "build/results/models/hierarchical-{name}/diagnostics/summary.feather",
+        rhos_individual = "build/results/models/hierarchical-{name}/diagnostics/rhos-individual.png",
+        rhos_country = "build/results/models/hierarchical-{name}/diagnostics/rhos-country.png",
+        individuals = "build/results/models/hierarchical-{name}/diagnostics/individuals.png",
+        confusion = "build/results/models/hierarchical-{name}/diagnostics/confusion-matrix.csv",
+        accuracy = "build/results/models/hierarchical-{name}/diagnostics/in-sample-prediction-accuracy.txt"
     resources:
         runtime = 60,
         memory = 64000
@@ -102,7 +102,7 @@ rule visualise_partworths:
         variable_name = "partworths",
         hdi_prob = config["report"]["hdi_prob"],
         nice_names = config["report"]["nice-names"],
-    output: "build/models/multinomial-logit/pop-means.vega.json"
+    output: "build/results/models/multinomial-logit/pop-means.vega.json"
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/partworths.py"
 
@@ -114,7 +114,7 @@ rule visualise_population_means:
         variable_name = "alpha",
         hdi_prob = config["report"]["hdi_prob"],
         nice_names = config["report"]["nice-names"],
-    output: "build/models/hierarchical-{name}/pop-means.vega.json"
+    output: "build/results/models/hierarchical-{name}/pop-means.vega.json"
     resources:
         runtime = 60,
         memory = 64000
@@ -131,7 +131,7 @@ rule visualise_country_differences:
         aggregate_individuals = False,
         hdi_prob = config["report"]["hdi_prob"],
         nice_names = config["report"]["nice-names"],
-    output: "build/models/hierarchical-{name}/country-differences.vega.json"
+    output: "build/results/models/hierarchical-{name}/country-differences.vega.json"
     resources:
         runtime = 60,
         memory = 64000
@@ -147,7 +147,7 @@ rule visualise_partworths_heterogeneity:
         aggregate_individuals = True,
         hdi_prob = None, # has no use here
         nice_names = config["report"]["nice-names"],
-    output: "build/models/hierarchical-{name}/individual-partworths.vega.json"
+    output: "build/results/models/hierarchical-{name}/individual-partworths.vega.json"
     resources:
         runtime = 60,
         memory = 64000
@@ -163,7 +163,7 @@ rule visualise_unexplained_heterogeneity:
         aggregate_individuals = True,
         hdi_prob = None, # has no use here
         nice_names = config["report"]["nice-names"],
-    output: "build/models/hierarchical-{name}/unexplained-heterogeneity.vega.json"
+    output: "build/results/models/hierarchical-{name}/unexplained-heterogeneity.vega.json"
     resources:
         runtime = 60,
         memory = 64000
@@ -177,7 +177,7 @@ rule visualise_covariates:
     params:
         interval = 0.9, # show only this share of the total interval
         nice_names = config["report"]["nice-names"],
-    output: "build/models/hierarchical-covariates/covariates.vega.json"
+    output: "build/results/models/hierarchical-covariates/covariates.vega.json"
     resources:
         runtime = 60,
         memory = 64000

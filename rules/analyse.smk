@@ -2,7 +2,7 @@ rule national_respondents:
     message: "Statistical overview over respondents in {wildcards.country_id}."
     input:
         data = rules.global_conjoint.output[0]
-    output: "build/{country_id}/respondent-stats.csv"
+    output: "build/results/respondent-stats-{country_id}.csv"
     conda: "../envs/default.yaml"
     script: "../scripts/analyse/respondents.py"
 
@@ -15,10 +15,10 @@ rule clustering:
         features = lambda wildcards: config["clustering"][wildcards.cluster]["features"],
         n_cluster = lambda wildcards: config["clustering"][wildcards.cluster]["n-cluster"]
     output:
-        data = "build/clustering/{cluster}/clustered.feather",
-        tree = "build/clustering/{cluster}/tree.png",
-        umap = "build/clustering/{cluster}/umap.png",
-        silh = "build/clustering/{cluster}/silhouette.png"
+        data = "build/results/clustering/{cluster}/clustered.feather",
+        tree = "build/results/clustering/{cluster}/tree.png",
+        umap = "build/results/clustering/{cluster}/umap.png",
+        silh = "build/results/clustering/{cluster}/silhouette.png"
     conda: "../envs/clustering.yaml"
     script: "../scripts/analyse/clustering.R"
 
@@ -29,7 +29,7 @@ rule cluster_analysis:
         data = rules.clustering.output.data
     params:
         features = lambda wildcards: config["clustering"][wildcards.cluster]["features"]
-    output: "build/clustering/{cluster}/umap-{feature}.png"
+    output: "build/results/clustering/{cluster}/umap-{feature}.png"
     conda: "../envs/clustering.yaml"
     script: "../scripts/analyse/umap.R"
 
@@ -41,7 +41,7 @@ rule conditional_mm_of_cluster:
     params:
         estimate = "mm",
         by = "cluster"
-    output: "build/clustering/{cluster}/conditional-mm.png"
+    output: "build/results/clustering/{cluster}/conditional-mm.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/conditional_mm_plot.R"
 
@@ -53,7 +53,7 @@ rule robustness_check_choice_set_number:
     params:
         estimate = "mm",
         by = "CHOICE_SET"
-    output: "build/robustness/conditional-mm-choice-set.png"
+    output: "build/results/robustness/conditional-mm-choice-set.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/conditional_mm_plot.R"
 
@@ -65,7 +65,7 @@ rule robustness_check_label_number:
     params:
         estimate = "mm",
         by = "LABEL"
-    output: "build/robustness/conditional-mm-label.png"
+    output: "build/results/robustness/conditional-mm-label.png"
     conda: "../envs/cjoint.yaml"
     script: "../scripts/analyse/conditional_mm_plot.R"
 
@@ -74,6 +74,6 @@ rule design_validation_plot:
     message: "Plot conditional probabilities of all levels."
     input:
         data = rules.global_conjoint.output[0]
-    output: "build/robustness/design-validation.png"
+    output: "build/results/robustness/design-validation.png"
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/design_validation.py"
