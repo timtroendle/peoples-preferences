@@ -6,7 +6,8 @@ import seaborn as sns
 
 
 def diagnostics(path_to_inference_data: str, path_to_trace_plot: str, path_to_pop_means_plot: str,
-                path_to_forest_plot: str, path_to_summary: str, path_to_rhos_plot: str,
+                path_to_forest_plot: str, path_to_summary: str, path_to_rhos_individual_plot: str,
+                path_to_rhos_country_plot: str,
                 path_to_confusion_matrix: str, path_to_accuracy: str,
                 hdi_prob: float, path_to_individuals_plot: str):
     inference_data = az.from_netcdf(path_to_inference_data)
@@ -15,7 +16,8 @@ def diagnostics(path_to_inference_data: str, path_to_trace_plot: str, path_to_po
     trace_plot(inference_data, path_to_trace_plot)
     pop_means_plot(inference_data, hdi_prob, path_to_pop_means_plot)
     forest_plot(inference_data, hdi_prob, path_to_forest_plot)
-    rhos_plot(inference_data, path_to_rhos_plot)
+    rhos_plot(inference_data, "rho_individuals", path_to_rhos_individual_plot)
+    rhos_plot(inference_data, "rho_country", path_to_rhos_country_plot)
     individuals_plot(inference_data, path_to_individuals_plot)
     summary(inference_data, hdi_prob, path_to_summary)
     prediction_accuracy(inference_data, path_to_confusion_matrix, path_to_accuracy)
@@ -32,7 +34,7 @@ def retransform_normalised(inference_data: az.InferenceData):
 
 
 def trace_plot(inference_data: az.InferenceData, path_to_plot: str):
-    var_names = ["alpha", "beta", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept"]
+    var_names = ["alpha", "beta", "sigma_individuals", "sigma_country", "mu_left_intercept", "sigma_left_intercept"]
     axes = az.plot_trace(
         inference_data,
         var_names=var_names,
@@ -68,20 +70,19 @@ def forest_plot(inference_data: az.InferenceData, hdi_prob: float, path_to_plot:
     fig.savefig(path_to_plot)
 
 
-def rhos_plot(inference_data: az.InferenceData, path_to_plot: str):
+def rhos_plot(inference_data: az.InferenceData, parameter: str, path_to_plot: str):
     rhos = (
         inference_data
-        .posterior
-        .rho_individuals
+        .posterior[parameter]
         .mean(["draw"])
-        .to_dataframe()["rho_individuals"]
+        .to_dataframe()[parameter]
         .reset_index()
     )
     level_mapper = inference_data.constant_data.level.to_series().reset_index(drop=True).to_dict()
     def heatmap(df):
         return (
             df
-            .pivot(index="level", columns="level_repeat", values="rho_individuals")
+            .pivot(index="level", columns="level_repeat", values=parameter)
             .rename(index=level_mapper, columns=level_mapper)
         )
 
@@ -136,8 +137,9 @@ def summary(inference_data: az.InferenceData, hdi_prob: float, path_to_summary: 
         az
         .summary(
             inference_data,
-            var_names=["alpha", "beta", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept",
-                       "d_edu", "rho_individuals"],
+            var_names=["alpha", "beta", "sigma_country", "sigma_individuals",
+                       "mu_left_intercept", "sigma_left_intercept",
+                       "d_edu", "rho_individuals", "rho_country"],
             filter_vars="like",
             hdi_prob=hdi_prob,
         )
@@ -170,7 +172,8 @@ if __name__ == "__main__":
         path_to_trace_plot=snakemake.output.trace,
         path_to_pop_means_plot=snakemake.output.pop_means,
         path_to_forest_plot=snakemake.output.forest,
-        path_to_rhos_plot=snakemake.output.rhos,
+        path_to_rhos_individual_plot=snakemake.output.rhos_individual,
+        path_to_rhos_country_plot=snakemake.output.rhos_country,
         path_to_individuals_plot=snakemake.output.individuals,
         path_to_summary=snakemake.output.summary,
         path_to_confusion_matrix=snakemake.output.confusion,

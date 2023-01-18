@@ -422,7 +422,7 @@ models:
     hierarchical-nocovariates:
         n-tune: 2000
         n-draws: 500
-        limit-respondents: 80
+        limit-respondents: 20
         random-seed: 4000
         individual-covariates: False
         runtime: 240 # (min)

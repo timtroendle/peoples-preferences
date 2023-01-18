@@ -33,7 +33,7 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
         "respondent": conjoint.index.get_level_values("RESPONDENT_ID").remove_unused_categories().categories,
         "education": pd.get_dummies(conjoint.Q9_EDUCATION.cat.remove_unused_categories(), drop_first=True).columns.values,
         "gender": pd.get_dummies(conjoint.Q3_GENDER, drop_first=True).columns.values,
-        "country": pd.get_dummies(conjoint.RESPONDENT_COUNTRY, drop_first=True).columns.values,
+        "country": conjoint.RESPONDENT_COUNTRY.cat.categories,
         "area": pd.get_dummies(conjoint.Q6_AREA, drop_first=True).columns.values,
         "renewables": pd.get_dummies(conjoint.Q7_RENEWABLES, drop_first=True).columns.values,
         "party": pd.get_dummies(conjoint.Q12_PARTY_aggregated, drop_first=True).columns.values,
@@ -111,8 +111,8 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
         )
         c = pm.ConstantData(
             "c",
-            pd.get_dummies(conjoint.groupby("RESPONDENT_ID").RESPONDENT_COUNTRY.first(), drop_first=True).values,
-            dims=["respondent", "country"]
+            conjoint.groupby("RESPONDENT_ID").RESPONDENT_COUNTRY.first().cat.codes,
+            dims=["respondent"]
         )
         a = pm.ConstantData(
             "a",
@@ -132,7 +132,28 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
 
         # parameters
         alpha = pm.Normal('alpha', 0, sigma=4, dims="level")
-        chol_individuals, rho_individuals, sigma_individuals = pm.LKJCholeskyCov(
+
+        chol_country, rho_country, sigma_country = pm.LKJCholeskyCov(
+            "chol_country",
+            n=len(model.coords["level"]),
+            eta=4,
+            sd_dist=pm.Exponential.dist(1.0),
+            compute_corr=True,
+            store_in_trace=False
+        )
+        pm.Deterministic("sigma_country", sigma_country, dims="level")
+        pm.Deterministic("rho_country", rho_country, dims=["level", "level_repeat"])
+
+        z_country = pm.Normal("z_country", 0.0, 1.0, dims=["level", "country"])
+        countries = pm.Deterministic("countries", pm.math.dot(chol_country, z_country), dims=["level", "country"])
+
+        country_effect = pm.Deterministic(
+            'country_effect',
+            countries[:, c].T,
+            dims=["respondent", "level"]
+        )
+
+        chol_individuals, rho_individuals, sigma_individuals = pm.LKJCholeskyCov( # TODO should these be per-country?
             "chol_individuals",
             n=len(model.coords["level"]),
             eta=4,
@@ -148,7 +169,6 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
 
         if individual_covariates:
             alpha_gender = pm.Normal('alpha_gender', mu=0, sigma=1, dims=["gender", "level"]) # TODO add covariation?
-            alpha_country = pm.Normal("alpha_country", mu=0, sigma=1, dims=["country", "level"]) # TODO add covariation?
             alpha_area = pm.Normal('alpha_area', mu=0, sigma=1, dims=["area", "level"]) # TODO add covariation?
             alpha_renewables = pm.Normal('alpha_renewables', mu=0, sigma=1, dims=["renewables", "level"]) # TODO add covariation?
             alpha_party = pm.Normal('alpha_party', mu=0, sigma=1, dims=["party", "level"]) # TODO add covariation?
@@ -167,11 +187,6 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
             gender_effect = pm.Deterministic(
                 'gender_effect',
                 pm.math.dot(g, alpha_gender),
-                dims=["respondent", "level"]
-            )
-            country_effect = pm.Deterministic(
-                'country_effect',
-                pm.math.dot(c, alpha_country),
                 dims=["respondent", "level"]
             )
             area_effect = pm.Deterministic(
@@ -225,7 +240,7 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
         else:
             partworths = pm.Deterministic(
                 "partworths",
-                alpha + individuals.T,
+                alpha + country_effect + individuals.T,
                 dims=["respondent", "level"]
             )
 

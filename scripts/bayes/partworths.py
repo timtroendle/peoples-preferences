@@ -18,7 +18,7 @@ BASELINE_LEVELS = [ # TODO ADD FROM CONFIG
 
 
 def visualise_partworths(path_to_posterior: str, facet_by_country: bool, aggregate_individuals: bool,
-                         variable_name: str, hdi_prob: float, title: str, nice_names: dict[str, dict[str, str]],
+                         variable_name: str, hdi_prob: float, nice_names: dict[str, dict[str, str]],
                          path_to_plot: str):
     data = read_data(
         path_to_posterior=path_to_posterior,
@@ -30,8 +30,7 @@ def visualise_partworths(path_to_posterior: str, facet_by_country: bool, aggrega
     )
 
     base = alt.Chart(
-        data,
-        title=title,
+        data
     ).encode(
         y=alt.Y("level", sort=list(nice_names["levels"].values()), title="Level"),
         x=alt.X(variable_name, title="Partworth utility"),
@@ -63,7 +62,7 @@ def visualise_partworths(path_to_posterior: str, facet_by_country: bool, aggrega
     entire_chart = (area + base_line + main_marks)
 
     if facet_by_country:
-        entire_chart = entire_chart.facet("Country", columns=2, title=title)
+        entire_chart = entire_chart.facet("Country", columns=2)
     (
         entire_chart
         .configure(font="Lato")
@@ -135,7 +134,6 @@ def optional_param(name: str, default):
 if __name__ == "__main__":
     visualise_partworths(
         path_to_posterior=snakemake.input.posterior,
-        title=snakemake.params.title,
         nice_names=snakemake.params.nice_names,
         facet_by_country=optional_param("facet_by_country", False),
         aggregate_individuals=optional_param("aggregate_individuals", False),

@@ -4,6 +4,7 @@ import pytest
 register_accessors()
 
 
+@pytest.mark.skip(reason="Covariate model currently unused")
 def test_gender_covariate(covariate_model, respondents):
     model_gender = (
         covariate_model
@@ -22,6 +23,7 @@ def test_gender_covariate(covariate_model, respondents):
     model_gender.validate(expected_gender)
 
 
+@pytest.mark.skip(reason="Covariate model currently unused")
 def test_country_covariate(covariate_model, respondents):
     model_country = (
         covariate_model
@@ -40,6 +42,7 @@ def test_country_covariate(covariate_model, respondents):
     model_country.validate(expected_country)
 
 
+@pytest.mark.skip(reason="Covariate model currently unused")
 def test_area_covariate(covariate_model, respondents):
     model_area = (
         covariate_model
@@ -58,6 +61,7 @@ def test_area_covariate(covariate_model, respondents):
     model_area.validate(expected_area)
 
 
+@pytest.mark.skip(reason="Covariate model currently unused")
 def test_renewables_covariate(covariate_model, respondents):
     model_renewables = (
         covariate_model
@@ -77,6 +81,7 @@ def test_renewables_covariate(covariate_model, respondents):
     model_renewables.validate(expected_renewables)
 
 
+@pytest.mark.skip(reason="Covariate model currently unused")
 def test_party_covariate(covariate_model, respondents):
     model_party = (
         covariate_model
@@ -96,6 +101,7 @@ def test_party_covariate(covariate_model, respondents):
     model_party.validate(expected_party)
 
 
+@pytest.mark.skip(reason="Covariate model currently unused")
 def test_education_covariate(covariate_model, respondents):
     levels = ["None"] + list(covariate_model.posterior.education.values)
     level_mapping = {i: level for i, level in enumerate(levels)}
@@ -106,6 +112,7 @@ def test_education_covariate(covariate_model, respondents):
     model_education.validate(expected_education)
 
 
+@pytest.mark.skip(reason="Covariate model currently unused")
 def test_income_covariate(covariate_model, respondents):
     levels = ["Below 600 EUR"] + list(covariate_model.posterior.income.values)
     level_mapping = {i: level for i, level in enumerate(levels)}
@@ -117,6 +124,7 @@ def test_income_covariate(covariate_model, respondents):
 
 
 @pytest.mark.xfail(reason="Hard-coded reference level can be wrong.") # FIXME store reference levels in inference data
+@pytest.mark.skip(reason="Covariate model currently unused")
 def test_concern_covariate(covariate_model, respondents):
     levels = ["Not at all"] + list(covariate_model.posterior.concern.values)
     level_mapping = {i: level for i, level in enumerate(levels)}
@@ -127,6 +135,7 @@ def test_concern_covariate(covariate_model, respondents):
     model_concern.validate(expected_concern)
 
 
+@pytest.mark.skip(reason="Covariate model currently unused")
 def test_age_covariate(covariate_model, respondents):
     model_age = covariate_model.constant_data.age.to_series()
 
@@ -135,6 +144,7 @@ def test_age_covariate(covariate_model, respondents):
     model_age.validate(expected_age)
 
 
+@pytest.mark.skip(reason="Covariate model currently unused")
 def test_years_covariate(covariate_model, respondents):
     model_years = covariate_model.constant_data.years.to_series()
 

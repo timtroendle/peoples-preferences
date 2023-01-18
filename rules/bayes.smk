@@ -82,7 +82,8 @@ rule diagnostics:
         pop_means = "build/models/hierarchical-{name}/diagnostics/pop-means.png",
         forest = "build/models/hierarchical-{name}/diagnostics/forest.png",
         summary = "build/models/hierarchical-{name}/diagnostics/summary.feather",
-        rhos = "build/models/hierarchical-{name}/diagnostics/rhos.png",
+        rhos_individual = "build/models/hierarchical-{name}/diagnostics/rhos-individual.png",
+        rhos_country = "build/models/hierarchical-{name}/diagnostics/rhos-country.png",
         individuals = "build/models/hierarchical-{name}/diagnostics/individuals.png",
         confusion = "build/models/hierarchical-{name}/diagnostics/confusion-matrix.csv",
         accuracy = "build/models/hierarchical-{name}/diagnostics/in-sample-prediction-accuracy.txt"
@@ -97,8 +98,6 @@ rule visualise_partworths:
     message: "Visualise population mean partworths of multinomial logit model."
     input: posterior = rules.multinomial_logit.output[0]
     params:
-        title="{hdi_prob:.0f}% highest density interval of population-level partworths".format(
-            hdi_prob=config["report"]["hdi_prob"] * 100),
         facet_by_country = True,
         variable_name = "partworths",
         hdi_prob = config["report"]["hdi_prob"],
@@ -112,8 +111,6 @@ rule visualise_population_means:
     message: "Visualise population mean partworths of hierarchical model {wildcards.name}."
     input: posterior = rules.hierarchical.output[0]
     params:
-        title = "{hdi_prob:.0f}% highest density interval of population-level partworths".format(
-            hdi_prob=config["report"]["hdi_prob"] * 100),
         variable_name = "alpha",
         hdi_prob = config["report"]["hdi_prob"],
         nice_names = config["report"]["nice-names"],
@@ -125,11 +122,27 @@ rule visualise_population_means:
     script: "../scripts/bayes/partworths.py"
 
 
+rule visualise_country_differences:
+    message: "Visualise heterogeneity of partworths of hierarchical model {wildcards.name}."
+    input: posterior = rules.hierarchical.output[0]
+    params:
+        variable_name = "countries",
+        facet_by_country = True,
+        aggregate_individuals = False,
+        hdi_prob = config["report"]["hdi_prob"],
+        nice_names = config["report"]["nice-names"],
+    output: "build/models/hierarchical-{name}/country-differences.vega.json"
+    resources:
+        runtime = 60,
+        memory = 64000
+    conda: "../envs/analyse.yaml"
+    script: "../scripts/bayes/partworths.py"
+
+
 rule visualise_partworths_heterogeneity:
     message: "Visualise heterogeneity of partworths of hierarchical model {wildcards.name}."
     input: posterior = rules.hierarchical.output[0]
     params:
-        title = "Range of average individual-level partworths",
         variable_name = "partworths",
         aggregate_individuals = True,
         hdi_prob = None, # has no use here
@@ -146,7 +159,6 @@ rule visualise_unexplained_heterogeneity:
     message: "Visualise unexplained heterogeneity of partworths of hierarchical model {wildcards.name}."
     input: posterior = rules.hierarchical.output[0]
     params:
-        title = "Unexplained heterogeneity in individual-level partworths",
         variable_name = "individuals",
         aggregate_individuals = True,
         hdi_prob = None, # has no use here
