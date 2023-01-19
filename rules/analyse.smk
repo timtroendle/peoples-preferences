@@ -77,3 +77,15 @@ rule design_validation_plot:
     output: "build/results/robustness/design-validation.png"
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/design_validation.py"
+
+
+rule likert_plot:
+    message: "Plot likert items."
+    input:
+        data = rules.global_conjoint.output[0]
+    params:
+        likert_items = config["report"]["nice-names"]["likert-items"],
+        colors = config["report"]["colors"]["likert"]
+    output: "build/results/likert-items.vega.json"
+    conda: "../envs/analyse.yaml"
+    script: "../scripts/analyse/likert.py"
