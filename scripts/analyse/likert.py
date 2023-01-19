@@ -9,10 +9,14 @@ likert = CategoricalDtype(
     categories=["Strongly disagree", "Disagree", "Neither agree nor disagree", "Agree", "Strongly agree"],
     ordered=True
 )
+agreement = CategoricalDtype(
+    categories=["No agreement", "Low agreement", "Moderate agreement", "High agreement", "Very high agreement"],
+    ordered=True
+)
 
 
 def plot_likert_items(path_to_data: str, items: dict[str, str], colors: list[str], path_to_plot: str):
-    data = read_data(path_to_data, items)
+    data = read_data(path_to_data, items, likert)
 
     base = alt.Chart(
         data
@@ -37,9 +41,30 @@ def plot_likert_items(path_to_data: str, items: dict[str, str], colors: list[str
     ).properties(
         width=300
     )
+    finalise_and_write_plot(base, path_to_plot)
 
+
+def plot_agreement_items(path_to_data: str, items: dict[str, str], path_to_plot: str):
+    data = read_data(path_to_data, items, agreement)
+
+    base = alt.Chart(
+        data
+    ).transform_calculate(
+        Question="split(datum.question, '||')"
+    ).encode(
+        x=alt.X("sum(percentage)", type="quantitative", title="Percentage", axis=alt.Axis(format="%"), scale={"domain": [0, 1]}, sort=agreement.categories.values),
+        y=alt.Y("country", type="nominal", title="Country"),
+        color=alt.Color("type", type="ordinal", title="Response", sort=agreement.categories.values),
+        order=alt.Order('type_order', sort="ascending")
+    ).properties(
+        width=300
+    )
+    finalise_and_write_plot(base, path_to_plot)
+
+
+def finalise_and_write_plot(chart: alt.Chart, path_to_plot: str):
     (
-        base
+        chart
         .mark_bar()
         .facet("Question:N", columns=2)
         .configure(font="Lato")
@@ -50,7 +75,7 @@ def plot_likert_items(path_to_data: str, items: dict[str, str], colors: list[str
     )
 
 
-def read_data(path_to_data: str, items: dict[str, str]) -> pd.DataFrame:
+def read_data(path_to_data: str, items: dict[str, str], dtype: pd.CategoricalDtype) -> pd.DataFrame:
     data = pd.read_feather(path_to_data)
     percentages = [
         data.loc[:, [q, "RESPONDENT_COUNTRY"]].groupby("RESPONDENT_COUNTRY").value_counts(normalize=True)
@@ -67,7 +92,8 @@ def read_data(path_to_data: str, items: dict[str, str]) -> pd.DataFrame:
     df_percentages = (
         df_percentages
         .assign(
-            type=df_percentages.type.astype(likert),
+            type=df_percentages.type.astype(dtype),
+            type_order=df_percentages.type.astype(dtype).cat.codes
         )
         .sort_values(by=["question", "country", "type"])
     )
@@ -75,9 +101,16 @@ def read_data(path_to_data: str, items: dict[str, str]) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-    plot_likert_items(
-        path_to_data=snakemake.input.data,
-        path_to_plot=snakemake.output[0],
-        items=snakemake.params.likert_items,
-        colors=snakemake.params.colors
-    )
+    if snakemake.params.type == "likert":
+        plot_likert_items(
+            path_to_data=snakemake.input.data,
+            path_to_plot=snakemake.output[0],
+            items=snakemake.params.plot_items,
+            colors=snakemake.params.colors
+        )
+    else:
+        plot_agreement_items(
+            path_to_data=snakemake.input.data,
+            path_to_plot=snakemake.output[0],
+            items=snakemake.params.plot_items,
+        )

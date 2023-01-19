@@ -84,8 +84,21 @@ rule likert_plot:
     input:
         data = rules.global_conjoint.output[0]
     params:
-        likert_items = config["report"]["nice-names"]["likert-items"],
-        colors = config["report"]["colors"]["likert"]
+        plot_items = config["report"]["nice-names"]["likert-items"],
+        colors = config["report"]["colors"]["likert"],
+        type = "likert"
     output: "build/results/likert-items.vega.json"
+    conda: "../envs/analyse.yaml"
+    script: "../scripts/analyse/likert.py"
+
+
+rule agreement_plot:
+    message: "Plot agreement items."
+    input:
+        data = rules.global_conjoint.output[0]
+    params:
+        plot_items = config["report"]["nice-names"]["agreement-items"],
+        type = "agrement"
+    output: "build/results/agreement-items.vega.json"
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/likert.py"

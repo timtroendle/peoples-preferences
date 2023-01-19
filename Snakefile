@@ -36,6 +36,8 @@ rule all:
         "build/results/models/hierarchical-nocovariates-nocovariances/country-differences.pdf",
         "build/results/models/hierarchical-nocovariates-nocovariances/individual-partworths.pdf",
         "build/results/models/hierarchical-nocovariates-nocovariances/unexplained-heterogeneity.pdf",
+        "build/results/likert-items.pdf",
+        "build/results/agreement-items.pdf"
 
 
 def pandoc_options(wildcards):

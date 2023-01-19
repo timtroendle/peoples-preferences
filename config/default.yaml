@@ -503,3 +503,8 @@ report:
             Q23_DEMOCRATISATION: The energy transition facilitates democratisation, providing everyone || with the opportunity to participate.
             Q24_RESOURCES: Wind and solar generators should only be built at locations || with best ressources.
             Q25_DEPLOYMENT: For the success of the energy transition, I advocate and support || the construction of wind turbines in my neighbourhood.
+        agreement-items:
+            Q15_ATTRIBUTE_IMPORTANCE_O1: The electricity system in my region should be just.
+            Q15_ATTRIBUTE_IMPORTANCE_O2: The electricity system in my region should be cost-efficient.
+            Q15_ATTRIBUTE_IMPORTANCE_O3: The electricity system in my region should be climate-friendly.
+            Q15_ATTRIBUTE_IMPORTANCE_O4: The electricity system in my region should impact landscapes minimally.
