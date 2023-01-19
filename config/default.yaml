@@ -425,6 +425,7 @@ models:
         limit-respondents: 20
         random-seed: 4000
         individual-covariates: False
+        covariances: True
         runtime: 240 # (min)
         memory: 16000 # (MB)
     hierarchical-covariates:
@@ -433,6 +434,16 @@ models:
         limit-respondents: 80
         random-seed: 4000
         individual-covariates: True
+        covariances: True
+        runtime: 240 # (min)
+        memory: 16000 # (MB)
+    hierarchical-nocovariates-nocovariances:
+        n-tune: 2000
+        n-draws: 500
+        limit-respondents: 80
+        random-seed: 4000
+        individual-covariates: False
+        covariances: False
         runtime: 240 # (min)
         memory: 16000 # (MB)
 report:

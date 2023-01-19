@@ -71,6 +71,9 @@ def forest_plot(inference_data: az.InferenceData, hdi_prob: float, path_to_plot:
 
 
 def rhos_plot(inference_data: az.InferenceData, parameter: str, path_to_plot: str):
+    if not parameter in inference_data.posterior:
+        Path(path_to_plot).touch() # FIXME not a smart solution
+        return
     rhos = (
         inference_data
         .posterior[parameter]

@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 import pymc as pm
+import aesara.tensor as at
+
 
 ATTRIBUTES = [
     "TECHNOLOGY",
@@ -16,7 +18,7 @@ YEAR_OF_SURVEY = 2022
 
 def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: int, limit_respondents: bool,
                        n_respondents_per_country: int, random_seed: int, individual_covariates: bool,
-                       path_to_output: str):
+                       covariances: bool, path_to_output: str):
     conjoint = (
         pd
         .read_feather(path_to_data)
@@ -41,6 +43,7 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
         "concern": pd.get_dummies(conjoint.Q11_CLIMATE_CONCERN.cat.remove_unused_categories(), drop_first=True).columns.values
     })
 
+    n_countries = len(model.coords["country"])
     n_levels = len(model.coords["level"])
     n_respondents = len(model.coords["respondent"])
     n_educations = len(model.coords["education"])
@@ -133,19 +136,27 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
         # parameters
         alpha = pm.Normal('alpha', 0, sigma=4, dims="level")
 
-        chol_country, rho_country, sigma_country = pm.LKJCholeskyCov(
-            "chol_country",
-            n=len(model.coords["level"]),
-            eta=4,
-            sd_dist=pm.Exponential.dist(1.0),
-            compute_corr=True,
-            store_in_trace=False
-        )
-        pm.Deterministic("sigma_country", sigma_country, dims="level")
-        pm.Deterministic("rho_country", rho_country, dims=["level", "level_repeat"])
-
         z_country = pm.Normal("z_country", 0.0, 1.0, dims=["level", "country"])
-        countries = pm.Deterministic("countries", pm.math.dot(chol_country, z_country), dims=["level", "country"])
+        if covariances:
+            chol_country, rho_country, sigma_country = pm.LKJCholeskyCov(
+                "chol_country",
+                n=len(model.coords["level"]),
+                eta=4,
+                sd_dist=pm.Exponential.dist(0.5),
+                compute_corr=True,
+                store_in_trace=False
+            )
+            pm.Deterministic("sigma_country", sigma_country, dims="level")
+            pm.Deterministic("rho_country", rho_country, dims=["level", "level_repeat"])
+
+            countries = pm.Deterministic("countries", pm.math.dot(chol_country, z_country), dims=["level", "country"])
+        else:
+            sigma_country = pm.Exponential('sigma_country', 0.5, dims="level")
+            countries = pm.Deterministic(
+                'countries',
+                at.reshape((pm.math.flatten(z_country) * at.repeat(sigma_country, n_countries)), (n_levels, n_countries)), # FIXME easier cell-wise product
+                dims=["level", "country"]
+            )
 
         country_effect = pm.Deterministic(
             'country_effect',
@@ -153,19 +164,31 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
             dims=["respondent", "level"]
         )
 
-        chol_individuals, rho_individuals, sigma_individuals = pm.LKJCholeskyCov( # TODO should these be per-country?
-            "chol_individuals",
-            n=len(model.coords["level"]),
-            eta=4,
-            sd_dist=pm.Exponential.dist(1.0),
-            compute_corr=True,
-            store_in_trace=False
-        )
-        pm.Deterministic("sigma_individuals", sigma_individuals, dims="level")
-        pm.Deterministic("rho_individuals", rho_individuals, dims=["level", "level_repeat"])
-
         z_individuals = pm.Normal("z_individuals", 0.0, 1.0, dims=["level", "respondent"])
-        individuals = pm.Deterministic("individuals", pm.math.dot(chol_individuals, z_individuals), dims=["level", "respondent"])
+        if covariances:
+            chol_individuals, rho_individuals, sigma_individuals = pm.LKJCholeskyCov( # TODO should these be per-country?
+                "chol_individuals",
+                n=len(model.coords["level"]),
+                eta=4,
+                sd_dist=pm.Exponential.dist(0.5),
+                compute_corr=True,
+                store_in_trace=False
+            )
+            pm.Deterministic("sigma_individuals", sigma_individuals, dims="level")
+            pm.Deterministic("rho_individuals", rho_individuals, dims=["level", "level_repeat"])
+
+            individuals = pm.Deterministic(
+                "individuals",
+                pm.math.dot(chol_individuals, z_individuals),
+                dims=["level", "respondent"]
+            )
+        else:
+            sigma_individuals = pm.Exponential('sigma_individuals', 0.5, dims="level")
+            individuals = pm.Deterministic(
+                "individuals",
+                at.reshape((pm.math.flatten(z_individuals) * at.repeat(sigma_individuals, n_respondents)), (n_levels, n_respondents)), # FIXME easier cell-wise product
+                dims=["level", "respondent"]
+            )
 
         if individual_covariates:
             alpha_gender = pm.Normal('alpha_gender', mu=0, sigma=1, dims=["gender", "level"]) # TODO add covariation?
@@ -312,5 +335,6 @@ if __name__ == "__main__":
         n_cores=snakemake.threads,
         random_seed=snakemake.params.random_seed,
         individual_covariates=snakemake.params.individual_covariates,
+        covariances=snakemake.params.covariances,
         path_to_output=snakemake.output[0]
     )

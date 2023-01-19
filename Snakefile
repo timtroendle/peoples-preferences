@@ -31,11 +31,11 @@ rule all:
         "build/report.html",
         "build/test-report.html",
         "build/results/models/multinomial-logit/pop-means.pdf",
-        "build/results/models/hierarchical-nocovariates/diagnostics/summary.csv",
-        "build/results/models/hierarchical-nocovariates/pop-means.pdf",
-        "build/results/models/hierarchical-nocovariates/country-differences.pdf",
-        "build/results/models/hierarchical-nocovariates/individual-partworths.pdf",
-        "build/results/models/hierarchical-nocovariates/unexplained-heterogeneity.pdf",
+        "build/results/models/hierarchical-nocovariates-nocovariances/diagnostics/summary.csv",
+        "build/results/models/hierarchical-nocovariates-nocovariances/pop-means.pdf",
+        "build/results/models/hierarchical-nocovariates-nocovariances/country-differences.pdf",
+        "build/results/models/hierarchical-nocovariates-nocovariances/individual-partworths.pdf",
+        "build/results/models/hierarchical-nocovariates-nocovariances/unexplained-heterogeneity.pdf",
 
 
 def pandoc_options(wildcards):
@@ -101,7 +101,7 @@ rule test:
         tests = map(str, Path("tests").glob("**/test_*.py")),
         national_conjoints = expand("build/data/{country_id}.feather", country_id=COUNTRY_IDS),
         conjoint = "build/data/conjoint.feather",
-        covariate_model = "build/results/models/hierarchical-nocovariates/inference-data.nc" # FIXME use covariate model
+        covariate_model = "build/results/models/hierarchical-nocovariates-nocovariances/inference-data.nc" # FIXME use covariate model
     params:
         config = config
     output: "build/test-report.html"

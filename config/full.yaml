@@ -25,3 +25,12 @@ models:
         individual-covariates: True
         runtime: 2880 # (min)
         memory: 320000 # (MB)
+    hierarchical-nocovariates-nocovariances:
+        n-tune: 10000
+        n-draws: 3000
+        limit-respondents: False
+        random-seed: 4000
+        individual-covariates: False
+        covariances: False
+        runtime: 1440 # (min)
+        memory: 96000 # (MB)

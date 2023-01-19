@@ -62,7 +62,8 @@ rule hierarchical:
         n_draws = hierarchical_model_config("n-draws"),
         limit_respondents = hierarchical_model_config("limit-respondents"),
         random_seed = hierarchical_model_config("random-seed"),
-        individual_covariates = hierarchical_model_config("individual-covariates")
+        individual_covariates = hierarchical_model_config("individual-covariates"),
+        covariances = hierarchical_model_config("covariances")
     resources:
         runtime = hierarchical_model_config("runtime"),
         memory = lambda wildcards, threads: hierarchical_model_config("memory")(wildcards) // threads
