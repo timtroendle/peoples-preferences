@@ -100,7 +100,7 @@ rule visualise_partworths:
     input: posterior = rules.multinomial_logit.output[0]
     params:
         facet_by_country = True,
-        variable_name = "partworths",
+        variable_names = "partworths",
         hdi_prob = config["report"]["hdi_prob"],
         nice_names = config["report"]["nice-names"],
     output: "build/results/models/multinomial-logit/pop-means.vega.json"
@@ -112,7 +112,7 @@ rule visualise_population_means:
     message: "Visualise population mean partworths of hierarchical model {wildcards.name}."
     input: posterior = rules.hierarchical.output[0]
     params:
-        variable_name = "alpha",
+        variable_names = "alpha",
         hdi_prob = config["report"]["hdi_prob"],
         nice_names = config["report"]["nice-names"],
     output: "build/results/models/hierarchical-{name}/pop-means.vega.json"
@@ -124,10 +124,10 @@ rule visualise_population_means:
 
 
 rule visualise_country_differences:
-    message: "Visualise heterogeneity of partworths of hierarchical model {wildcards.name}."
+    message: "Visualise country differences of hierarchical model {wildcards.name}."
     input: posterior = rules.hierarchical.output[0]
     params:
-        variable_name = "countries",
+        variable_names = "countries",
         facet_by_country = True,
         aggregate_individuals = False,
         hdi_prob = config["report"]["hdi_prob"],
@@ -140,11 +140,28 @@ rule visualise_country_differences:
     script: "../scripts/bayes/partworths.py"
 
 
+rule visualise_country_means:
+    message: "Visualise country means of hierarchical model {wildcards.name}."
+    input: posterior = rules.hierarchical.output[0]
+    params:
+        variable_names = ["alpha", "countries"],
+        facet_by_country = True,
+        aggregate_individuals = False,
+        hdi_prob = config["report"]["hdi_prob"],
+        nice_names = config["report"]["nice-names"],
+    output: "build/results/models/hierarchical-{name}/country-means.vega.json"
+    resources:
+        runtime = 60,
+        memory = 64000
+    conda: "../envs/analyse.yaml"
+    script: "../scripts/bayes/partworths.py"
+
+
 rule visualise_partworths_heterogeneity:
     message: "Visualise heterogeneity of partworths of hierarchical model {wildcards.name}."
     input: posterior = rules.hierarchical.output[0]
     params:
-        variable_name = "partworths",
+        variable_names = "partworths",
         aggregate_individuals = True,
         hdi_prob = None, # has no use here
         nice_names = config["report"]["nice-names"],
@@ -160,7 +177,7 @@ rule visualise_unexplained_heterogeneity:
     message: "Visualise unexplained heterogeneity of partworths of hierarchical model {wildcards.name}."
     input: posterior = rules.hierarchical.output[0]
     params:
-        variable_name = "individuals",
+        variable_names = "individuals",
         aggregate_individuals = True,
         hdi_prob = None, # has no use here
         nice_names = config["report"]["nice-names"],

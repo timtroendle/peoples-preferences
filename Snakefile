@@ -34,6 +34,7 @@ rule all:
         "build/results/models/hierarchical-nocovariates-nocovariances/diagnostics/summary.csv",
         "build/results/models/hierarchical-nocovariates-nocovariances/pop-means.pdf",
         "build/results/models/hierarchical-nocovariates-nocovariances/country-differences.pdf",
+        "build/results/models/hierarchical-nocovariates-nocovariances/country-means.pdf",
         "build/results/models/hierarchical-nocovariates-nocovariances/individual-partworths.pdf",
         "build/results/models/hierarchical-nocovariates-nocovariances/unexplained-heterogeneity.pdf",
         "build/results/likert-items.pdf",

@@ -1,4 +1,7 @@
+from typing import Union
+
 import pandas as pd
+import xarray as xr
 import arviz as az
 
 import altair as alt
@@ -16,13 +19,16 @@ BASELINE_LEVELS = [ # TODO ADD FROM CONFIG
     "SHARE_IMPORTS:0%"
 ]
 
+EXPECTED_VALUE = "expected"
+
 
 def visualise_partworths(path_to_posterior: str, facet_by_country: bool, aggregate_individuals: bool,
-                         variable_name: str, hdi_prob: float, nice_names: dict[str, dict[str, str]],
+                         variable_names: Union[str, list[str]], hdi_prob: float,
+                         nice_names: dict[str, dict[str, str]],
                          path_to_plot: str):
     data = read_data(
         path_to_posterior=path_to_posterior,
-        variable_name=variable_name,
+        variable_names=variable_names,
         facet_by_country=facet_by_country,
         aggregate_individuals=aggregate_individuals,
         hdi_prob=hdi_prob,
@@ -33,7 +39,7 @@ def visualise_partworths(path_to_posterior: str, facet_by_country: bool, aggrega
         data
     ).encode(
         y=alt.Y("level", sort=list(nice_names["levels"].values()), title="Level"),
-        x=alt.X(variable_name, title="Partworth utility"),
+        x=alt.X(EXPECTED_VALUE, title="Partworth utility"),
         color=alt.Color("attribute", sort=list(nice_names["attributes"].values()), legend=alt.Legend(title="Attribute")),
     ).properties(
         width=300,
@@ -73,20 +79,25 @@ def visualise_partworths(path_to_posterior: str, facet_by_country: bool, aggrega
     )
 
 
-def read_data(path_to_posterior: str, variable_name: str, facet_by_country: bool, aggregate_individuals: True,
-              nice_names: dict[str, dict[str, str]], hdi_prob: float):
+def read_data(path_to_posterior: str, variable_names: Union[str, list[str]], facet_by_country: bool,
+              aggregate_individuals: True, nice_names: dict[str, dict[str, str]], hdi_prob: float):
     full = az.from_netcdf(path_to_posterior)
     attr_levels = full.posterior.level.to_series().to_list()
     all_attr_levels = attr_levels + BASELINE_LEVELS
     fill_value = pd.NA if aggregate_individuals else 0
 
-    expected_value = (
+    posterior = (
         full
-        .posterior
-        .data_vars[variable_name]
+        .posterior[variable_names]
+        .pipe(sum_variables_if_more_than_one)
         .reindex(level=all_attr_levels)
         .fillna(fill_value)
+    )
+
+    expected_value = (
+        posterior
         .mean(["chain", "draw"])
+        .rename(EXPECTED_VALUE)
         .to_series()
         .reset_index()
     )
@@ -97,12 +108,12 @@ def read_data(path_to_posterior: str, variable_name: str, facet_by_country: bool
         # interval is highest density interval
         interval = (
             az
-            .hdi(full.posterior.reindex(level=all_attr_levels), hdi_prob=hdi_prob)
-            .data_vars[variable_name]
+            .hdi(posterior, hdi_prob=hdi_prob)
+            .to_array()
+            .isel(variable=0)
             .to_series()
             .unstack("hdi")
             .reset_index()
-            .fillna(0)
         )
         interval["attribute"] = interval.level.str.split(":").str[0].map(nice_names["attributes"])
         interval["level"] = interval.level.str.split(":").str[1].map(nice_names["levels"])
@@ -118,6 +129,14 @@ def read_data(path_to_posterior: str, variable_name: str, facet_by_country: bool
         .assign(zero=0)
     )
     return data
+
+
+def sum_variables_if_more_than_one(data: Union[xr.DataArray, xr.Dataset]) -> xr.DataArray:
+    try:
+        return data.to_array().sum("variable")
+    except AttributeError:
+        # not a Dataset
+        return data
 
 
 def preprocess_country_if_necessary(df: pd.DataFrame, facet_by_country: bool, nice_country_names):
@@ -137,7 +156,7 @@ if __name__ == "__main__":
         nice_names=snakemake.params.nice_names,
         facet_by_country=optional_param("facet_by_country", False),
         aggregate_individuals=optional_param("aggregate_individuals", False),
-        variable_name=snakemake.params.variable_name,
+        variable_names=snakemake.params.variable_names,
         hdi_prob=snakemake.params.hdi_prob,
         path_to_plot=snakemake.output[0]
     )
