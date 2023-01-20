@@ -7,6 +7,7 @@ cluster-sync:
     receive-ignore: .syncignore-receive
     cluster-base-dir: ~/Develop/peoples-preferences
     local-results-dir: build/cluster
+push-directory: ~/Documents/work/projects/peoples-preferences/Zwischenergebnisse/
 data-types:
     RESPONDENT_ID:
         type: factor

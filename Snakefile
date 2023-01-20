@@ -1,3 +1,6 @@
+import datetime
+from pathlib import Path
+
 from snakemake.utils import min_version
 
 PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-secnos --citeproc"
@@ -86,6 +89,16 @@ rule report:
         ln -s ../build .
         {PANDOC} report.md  --metadata-file=pandoc-metadata.yaml {params.options} \
         -o ../build/report.{wildcards.suffix}
+        """
+
+
+rule push:
+    message: "Copy cluster build to {params.push_directory}."
+    params: push_directory = Path(config["push-directory"] + "/" + datetime.date.today().isoformat()).as_posix()
+    shell:
+        """
+        mkdir {params.push_directory}
+        cp -R build/cluster/ {params.push_directory}
         """
 
 
