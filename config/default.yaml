@@ -410,11 +410,6 @@ parameters:
         POL: 22
         PRT: 34
 models:
-    modelA:
-        formula: ~ TECHNOLOGY + LAND + SHARE_IMPORTS + PRICES + OWNERSHIP # FIXME add transmission
-        n-iterations: 5000
-        burn-in-length: 2500
-        keep: 1
     multinomial:
         n-tune: 1000
         n-draws: 1000

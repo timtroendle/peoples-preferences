@@ -24,31 +24,41 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
         .read_feather(path_to_data)
         .set_index(["RESPONDENT_ID", "CHOICE_SET", "LABEL"])
         .pipe(filter_respondents, limit_respondents, n_respondents_per_country)
+    )
+    if covariances:
+        conjoint = (
+            conjoint
         .pipe(prepare_respondent_age)
         .pipe(prepare_years_region)
-    )
+        )
     dummies = pd.get_dummies(conjoint.loc[:, ATTRIBUTES], drop_first=True, prefix_sep=":")
 
     model = pm.Model(coords={
         "level": dummies.columns.values,
         "level_repeat": dummies.columns.values,
         "respondent": conjoint.index.get_level_values("RESPONDENT_ID").remove_unused_categories().categories,
-        "education": pd.get_dummies(conjoint.Q9_EDUCATION.cat.remove_unused_categories(), drop_first=True).columns.values,
-        "gender": pd.get_dummies(conjoint.Q3_GENDER, drop_first=True).columns.values,
         "country": conjoint.RESPONDENT_COUNTRY.cat.categories,
-        "area": pd.get_dummies(conjoint.Q6_AREA, drop_first=True).columns.values,
-        "renewables": pd.get_dummies(conjoint.Q7_RENEWABLES, drop_first=True).columns.values,
-        "party": pd.get_dummies(conjoint.Q12_PARTY_aggregated, drop_first=True).columns.values,
-        "income": pd.get_dummies(conjoint.Q10_INCOME.cat.remove_unused_categories(), drop_first=True).columns.values,
-        "concern": pd.get_dummies(conjoint.Q11_CLIMATE_CONCERN.cat.remove_unused_categories(), drop_first=True).columns.values
     })
 
     n_countries = len(model.coords["country"])
     n_levels = len(model.coords["level"])
     n_respondents = len(model.coords["respondent"])
-    n_educations = len(model.coords["education"])
-    n_incomes = len(model.coords["income"])
-    n_concerns = len(model.coords["concern"])
+
+    if individual_covariates:
+        covariate_coords = {
+            "education": pd.get_dummies(conjoint.Q9_EDUCATION.cat.remove_unused_categories(), drop_first=True).columns.values,
+            "gender": pd.get_dummies(conjoint.Q3_GENDER, drop_first=True).columns.values,
+            "area": pd.get_dummies(conjoint.Q6_AREA, drop_first=True).columns.values,
+            "renewables": pd.get_dummies(conjoint.Q7_RENEWABLES, drop_first=True).columns.values,
+            "party": pd.get_dummies(conjoint.Q12_PARTY_aggregated, drop_first=True).columns.values,
+            "income": pd.get_dummies(conjoint.Q10_INCOME.cat.remove_unused_categories(), drop_first=True).columns.values,
+            "concern": pd.get_dummies(conjoint.Q11_CLIMATE_CONCERN.cat.remove_unused_categories(), drop_first=True).columns.values
+        }
+        model.coords.update(covariate_coords)
+
+        n_educations = len(model.coords["education"])
+        n_incomes = len(model.coords["income"])
+        n_concerns = len(model.coords["concern"])
 
     with model:
         # data
@@ -72,66 +82,67 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
             conjoint.xs("Left", level="LABEL").CHOICE_INDICATOR.values,
             dims="choice_situation"
         )
-        age = pm.ConstantData(
-            "age",
-            conjoint.groupby("RESPONDENT_ID").RESPONDENT_AGE.first().values,
-            dims="respondent"
-        )
-        age_normed = pm.ConstantData(
-            "age_normed",
-            conjoint.groupby("RESPONDENT_ID").RESPONDENT_AGE_NORM.first().values.repeat(n_levels).reshape(n_respondents, n_levels).T,
-            dims=["level", "respondent"] # FIXME this should be respondent only
-        )
-        years = pm.ConstantData(
-            "years",
-            conjoint.groupby("RESPONDENT_ID").Q8_YEARS_REGION.first().values,
-            dims="respondent"
-        )
-        years_normed = pm.ConstantData(
-            "years_normed",
-            conjoint.groupby("RESPONDENT_ID").Q8_YEARS_REGION_NORM.first().values.repeat(n_levels).reshape(n_respondents, n_levels).T,
-            dims=["level", "respondent"] # FIXME this should be respondent only
-        )
-        edu = pm.ConstantData(
-            "edu",
-            conjoint.groupby("RESPONDENT_ID").Q9_EDUCATION.first().cat.remove_unused_categories().cat.codes.values,
-            dims="respondent"
-        )
-        i = pm.ConstantData(
-            "i",
-            conjoint.groupby("RESPONDENT_ID").Q10_INCOME.first().cat.remove_unused_categories().cat.codes.values,
-            dims="respondent"
-        )
-        cc = pm.ConstantData(
-            "cc",
-            conjoint.groupby("RESPONDENT_ID").Q11_CLIMATE_CONCERN.first().cat.remove_unused_categories().cat.codes.values,
-            dims="respondent"
-        )
-        g = pm.ConstantData(
-            "g",
-            pd.get_dummies(conjoint.groupby("RESPONDENT_ID").Q3_GENDER.first(), drop_first=True).values,
-            dims=["respondent", "gender"]
-        )
         c = pm.ConstantData(
             "c",
             conjoint.groupby("RESPONDENT_ID").RESPONDENT_COUNTRY.first().cat.codes,
             dims=["respondent"]
         )
-        a = pm.ConstantData(
-            "a",
-            pd.get_dummies(conjoint.groupby("RESPONDENT_ID").Q6_AREA.first(), drop_first=True).values,
-            dims=["respondent", "area"]
-        )
-        re = pm.ConstantData(
-            "re",
-            pd.get_dummies(conjoint.groupby("RESPONDENT_ID").Q7_RENEWABLES.first(), drop_first=True).values,
-            dims=["respondent", "renewables"]
-        )
-        p = pm.ConstantData(
-            "p",
-            pd.get_dummies(conjoint.groupby("RESPONDENT_ID").Q12_PARTY_aggregated.first(), drop_first=True).values,
-            dims=["respondent", "party"]
-        )
+        if individual_covariates:
+            age = pm.ConstantData(
+                "age",
+                conjoint.groupby("RESPONDENT_ID").RESPONDENT_AGE.first().values,
+                dims="respondent"
+            )
+            age_normed = pm.ConstantData(
+                "age_normed",
+                conjoint.groupby("RESPONDENT_ID").RESPONDENT_AGE_NORM.first().values.repeat(n_levels).reshape(n_respondents, n_levels).T,
+                dims=["level", "respondent"] # FIXME this should be respondent only
+            )
+            years = pm.ConstantData(
+                "years",
+                conjoint.groupby("RESPONDENT_ID").Q8_YEARS_REGION.first().values,
+                dims="respondent"
+            )
+            years_normed = pm.ConstantData(
+                "years_normed",
+                conjoint.groupby("RESPONDENT_ID").Q8_YEARS_REGION_NORM.first().values.repeat(n_levels).reshape(n_respondents, n_levels).T,
+                dims=["level", "respondent"] # FIXME this should be respondent only
+            )
+            edu = pm.ConstantData(
+                "edu",
+                conjoint.groupby("RESPONDENT_ID").Q9_EDUCATION.first().cat.remove_unused_categories().cat.codes.values,
+                dims="respondent"
+            )
+            i = pm.ConstantData(
+                "i",
+                conjoint.groupby("RESPONDENT_ID").Q10_INCOME.first().cat.remove_unused_categories().cat.codes.values,
+                dims="respondent"
+            )
+            cc = pm.ConstantData(
+                "cc",
+                conjoint.groupby("RESPONDENT_ID").Q11_CLIMATE_CONCERN.first().cat.remove_unused_categories().cat.codes.values,
+                dims="respondent"
+            )
+            g = pm.ConstantData(
+                "g",
+                pd.get_dummies(conjoint.groupby("RESPONDENT_ID").Q3_GENDER.first(), drop_first=True).values,
+                dims=["respondent", "gender"]
+            )
+            a = pm.ConstantData(
+                "a",
+                pd.get_dummies(conjoint.groupby("RESPONDENT_ID").Q6_AREA.first(), drop_first=True).values,
+                dims=["respondent", "area"]
+            )
+            re = pm.ConstantData(
+                "re",
+                pd.get_dummies(conjoint.groupby("RESPONDENT_ID").Q7_RENEWABLES.first(), drop_first=True).values,
+                dims=["respondent", "renewables"]
+            )
+            p = pm.ConstantData(
+                "p",
+                pd.get_dummies(conjoint.groupby("RESPONDENT_ID").Q12_PARTY_aggregated.first(), drop_first=True).values,
+                dims=["respondent", "party"]
+            )
 
         # parameters
         alpha = pm.Normal('alpha', 0, sigma=4, dims="level")
@@ -303,12 +314,6 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
 
 
 def filter_respondents(df, limit_respondents, n_respondents_per_country):
-    df.dropna( # FIXME don't do this
-        axis="index",
-        subset=["Q3_GENDER", "Q4_BIRTH_YEAR", "Q6_AREA", "Q7_RENEWABLES", "Q8_YEARS_REGION",
-                "Q9_EDUCATION", "Q10_INCOME", "Q11_CLIMATE_CONCERN", "Q12_PARTY_aggregated"],
-        inplace=True
-    )
     if limit_respondents:
         df = df.groupby("RESPONDENT_COUNTRY").head(n_respondents_per_country * OPTIONS_PER_RESPONDENT)
     return df

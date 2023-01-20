@@ -1,19 +1,3 @@
-def memory_requirements_bayes(wildcards):
-    n_iterations = config["models"][wildcards.model]["n-iterations"]
-    keep = config["models"][wildcards.model]["keep"]
-    n_respondents = 4000
-    n_parameters = 20
-    n_data_points = n_iterations * n_respondents * n_parameters / keep
-    mega_byte = n_data_points * 64 / 8 / 1_000_000
-    requested_memory = mega_byte * 5
-    return requested_memory if requested_memory > 16000 else 16000
-
-
-def memory_requirements_plots(wildcards):
-    memory_bayes = memory_requirements_bayes(wildcards)
-    return memory_bayes if memory_bayes > 16000 else 16000
-
-
 rule logistic_regression:
     message: "Fit a simplistic logistic regression model."
     input:

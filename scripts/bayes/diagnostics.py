@@ -2,6 +2,7 @@ from pathlib import Path
 
 import arviz as az
 import pandas as pd
+import xarray as xr
 import seaborn as sns
 
 
@@ -12,6 +13,10 @@ def diagnostics(path_to_inference_data: str, path_to_trace_plot: str, path_to_po
                 hdi_prob: float, path_to_individuals_plot: str):
     inference_data = az.from_netcdf(path_to_inference_data)
     inference_data = retransform_normalised(inference_data)
+    observed_data = inference_data.observed_data.load() # This avoids a weird segmentation fault on my machine.
+                                                        # It seems this segmentation fault is caused by too many
+                                                        # accesses to the data. Therefore, I am loading it into
+                                                        # memory here.
 
     trace_plot(inference_data, path_to_trace_plot)
     pop_means_plot(inference_data, hdi_prob, path_to_pop_means_plot)
@@ -20,15 +25,15 @@ def diagnostics(path_to_inference_data: str, path_to_trace_plot: str, path_to_po
     rhos_plot(inference_data, "rho_country", path_to_rhos_country_plot)
     individuals_plot(inference_data, path_to_individuals_plot)
     summary(inference_data, hdi_prob, path_to_summary)
-    prediction_accuracy(inference_data, path_to_confusion_matrix, path_to_accuracy)
+    prediction_accuracy(inference_data, observed_data, path_to_confusion_matrix, path_to_accuracy)
 
 
 def retransform_normalised(inference_data: az.InferenceData):
-    age_std = inference_data.constant_data.age.std()
-    years_std = inference_data.constant_data.years.std()
     if "beta_age_normed" in inference_data.posterior:
+        age_std = inference_data.constant_data.age.std()
         inference_data.posterior["beta_age"] = inference_data.posterior["beta_age_normed"] / age_std
     if "beta_years_normed" in inference_data.posterior:
+        years_std = inference_data.constant_data.years.std()
         inference_data.posterior["beta_years"] = inference_data.posterior["beta_years_normed"] / years_std
     return inference_data
 
@@ -151,7 +156,7 @@ def summary(inference_data: az.InferenceData, hdi_prob: float, path_to_summary: 
     )
 
 
-def prediction_accuracy(inference_data: az.InferenceData, path_to_confusion_matrix: str, path_to_accuracy: str):
+def prediction_accuracy(inference_data: az.InferenceData, observed_data: xr.Dataset, path_to_confusion_matrix: str, path_to_accuracy: str):
     best_estimate = (
         inference_data
         .posterior
@@ -160,7 +165,7 @@ def prediction_accuracy(inference_data: az.InferenceData, path_to_confusion_matr
         .to_series()
         .map(lambda x: 1 if x >= 0.5 else 0)
     )
-    choices = inference_data.observed_data.choice.to_series()
+    choices = observed_data.choice.to_series()
     confusion_matrix = pd.crosstab(choices, best_estimate)
     accuracy = (confusion_matrix.loc[0, 0] + confusion_matrix.loc[1, 1]) / confusion_matrix.sum().sum()
 

@@ -32,5 +32,5 @@ models:
         random-seed: 4000
         individual-covariates: False
         covariances: False
-        runtime: 1440 # (min)
-        memory: 96000 # (MB)
+        runtime: 2880 # (min)
+        memory: 180000 # (MB)
