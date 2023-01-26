@@ -86,10 +86,20 @@ rule likert_plot:
     params:
         plot_items = config["report"]["nice-names"]["likert-items"],
         colors = config["report"]["colors"]["likert"],
+        by_country = False,
         type = "likert"
     output: "build/results/likert-items.vega.json"
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/likert.py"
+
+
+use rule likert_plot as likert_plot_by_country with:
+    params:
+        plot_items = config["report"]["nice-names"]["likert-items"],
+        colors = config["report"]["colors"]["likert"],
+        by_country = True,
+        type = "likert"
+    output: "build/results/likert-items-by-country.vega.json"
 
 
 rule agreement_plot:
@@ -98,7 +108,16 @@ rule agreement_plot:
         data = rules.global_conjoint.output[0]
     params:
         plot_items = config["report"]["nice-names"]["agreement-items"],
+        by_country = False,
         type = "agrement"
     output: "build/results/agreement-items.vega.json"
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/likert.py"
+
+
+use rule agreement_plot as agreement_plot_by_country with:
+    params:
+        plot_items = config["report"]["nice-names"]["agreement-items"],
+        by_country = True,
+        type = "agrement"
+    output: "build/results/agreement-items-by-country.vega.json"
