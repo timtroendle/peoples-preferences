@@ -147,7 +147,7 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
         # parameters
         alpha = pm.Normal('alpha', 0, sigma=4, dims="level")
 
-        z_country = pm.Normal("z_country", 0.0, 1.0, dims=["level", "country"])
+        z_country = pm.ZeroSumNormal("z_country", sigma=1.0, dims=["level", "country"], zerosum_axes=1)
         if covariances:
             chol_country, rho_country, sigma_country = pm.LKJCholeskyCov(
                 "chol_country",

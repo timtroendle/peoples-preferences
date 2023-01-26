@@ -145,6 +145,48 @@ references:
   URL: http://www.nature.com/articles/d41586-019-00857-9
   volume: '567'
 
+- id: Arceneaux:2023
+  abstract: >-
+    Public policy is often about numbers that affect people’s lives in
+    fundamental ways. Given the central importance of numbers, we examine
+    anchoring, a heuristic in which people are influenced by an initial number
+    in expressing a preference. Across a series of experiments and three unique
+    surveys, we find evidence of anchoring effects, but not uniformly so. In
+    contrast to experiments in psychology and behavioral economics, we find no
+    evidence that irrelevant or arbitrary anchors shape policy preferences. Yet,
+    when provided politically relevant anchors that clearly correspond to the
+    policy proposal, we find evidence of strong effects, even in the face of
+    party cues or in the absence of a status quo policy point. Taken together,
+    our results demonstrate that there is a psychological explanation for why
+    the status quo occupies a powerful position in policy debates as well as why
+    agenda setting is so influential.
+  accessed:
+    - year: 2023
+      month: 1
+      day: 25
+  author:
+    - family: Arceneaux
+      given: Kevin
+    - family: Nicholson
+      given: Stephen P.
+  citation-key: Arceneaux:2023
+  container-title: Political Behavior
+  container-title-short: Polit Behav
+  DOI: 10.1007/s11109-022-09847-6
+  ISSN: 1573-6687
+  issued:
+    - year: 2023
+      month: 1
+      day: 21
+  language: en
+  source: Springer Link
+  title: >-
+    Anchoring Political Preferences: The Psychological Foundations of Status Quo
+    Bias and the Boundaries of Elite Manipulation
+  title-short: Anchoring Political Preferences
+  type: article-journal
+  URL: https://doi.org/10.1007/s11109-022-09847-6
+
 - id: Baker:2016
   accessed:
     - year: 2021
