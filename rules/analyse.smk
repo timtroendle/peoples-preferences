@@ -90,7 +90,7 @@ rule likert_plot:
         type = "likert"
     output: "build/results/likert-items.vega.json"
     conda: "../envs/analyse.yaml"
-    script: "../scripts/analyse/likert.py"
+    script: "../scripts/analyse/shares.py"
 
 
 use rule likert_plot as likert_plot_by_country with:
@@ -112,7 +112,7 @@ rule agreement_plot:
         type = "agreement"
     output: "build/results/agreement-items.vega.json"
     conda: "../envs/analyse.yaml"
-    script: "../scripts/analyse/likert.py"
+    script: "../scripts/analyse/shares.py"
 
 
 use rule agreement_plot as agreement_plot_by_country with:
@@ -134,7 +134,7 @@ rule gender_plot:
         type = "demographics"
     output: "build/results/gender.vega.json"
     conda: "../envs/analyse.yaml"
-    script: "../scripts/analyse/likert.py"
+    script: "../scripts/analyse/shares.py"
 
 
 use rule gender_plot as area_plot with:
