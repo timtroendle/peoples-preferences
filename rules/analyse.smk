@@ -109,7 +109,7 @@ rule agreement_plot:
     params:
         plot_items = config["report"]["nice-names"]["agreement-items"],
         by_country = False,
-        type = "agrement"
+        type = "agreement"
     output: "build/results/agreement-items.vega.json"
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/likert.py"
@@ -119,5 +119,46 @@ use rule agreement_plot as agreement_plot_by_country with:
     params:
         plot_items = config["report"]["nice-names"]["agreement-items"],
         by_country = True,
-        type = "agrement"
+        type = "agreement"
     output: "build/results/agreement-items-by-country.vega.json"
+
+
+rule gender_plot:
+    message: "Plot gender distribution."
+    input:
+        data = rules.global_conjoint.output[0]
+    params:
+        plot_items = {"Q3_GENDER": "Gender"},
+        by_country = True,
+        category_colors = config["report"]["colors"]["categories"],
+        type = "demographics"
+    output: "build/results/gender.vega.json"
+    conda: "../envs/analyse.yaml"
+    script: "../scripts/analyse/likert.py"
+
+
+use rule gender_plot as area_plot with:
+    params:
+        plot_items = {"Q6_AREA": "Area"},
+        by_country = True,
+        category_colors = config["report"]["colors"]["categories"],
+        type = "demographics"
+    output: "build/results/area.vega.json"
+
+
+use rule gender_plot as education_plot with:
+    params:
+        plot_items = {"Q9_EDUCATION": "Education"},
+        by_country = True,
+        category_colors = config["report"]["colors"]["categories"],
+        type = "demographics"
+    output: "build/results/education.vega.json"
+
+
+use rule gender_plot as income_plot with:
+    params:
+        plot_items = {"Q10_INCOME": "Income"},
+        by_country = True,
+        category_colors = config["report"]["colors"]["categories"],
+        type = "demographics"
+    output: "build/results/income.vega.json"

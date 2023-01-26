@@ -451,6 +451,10 @@ report:
             - "#E5E5E5"
             - "#ABD9D4"
             - "#5AB4AD"
+        categories:
+            - "#679436"
+            - "#4F6DB8"
+            - "#424242"
     nice-names:
         levels:
             Rooftop PV: Rooftop PV

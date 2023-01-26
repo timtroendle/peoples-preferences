@@ -42,6 +42,10 @@ rule all:
         "build/results/models/hierarchical-nocovariates-nocovariances/unexplained-heterogeneity.pdf",
         "build/results/likert-items.pdf",
         "build/results/agreement-items.pdf",
+        "build/results/gender.pdf",
+        "build/results/area.pdf",
+        "build/results/income.pdf",
+        "build/results/education.pdf",
         "build/results/likert-items-by-country.pdf",
         "build/results/agreement-items-by-country.pdf"
 
