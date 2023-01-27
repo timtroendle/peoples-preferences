@@ -40,6 +40,7 @@ rule all:
         "build/results/models/hierarchical-nocovariates-nocovariances/country-means.pdf",
         "build/results/models/hierarchical-nocovariates-nocovariances/individual-partworths.pdf",
         "build/results/models/hierarchical-nocovariates-nocovariances/unexplained-heterogeneity.pdf",
+        "build/results/models/hierarchical-nocovariates-nocovariances/left-option.pdf",
         "build/results/likert-items.pdf",
         "build/results/agreement-items.pdf",
         "build/results/gender.pdf",

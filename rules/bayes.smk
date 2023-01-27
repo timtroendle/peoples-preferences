@@ -185,3 +185,15 @@ rule visualise_covariates:
         memory = 64000
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/covariates.py"
+
+
+rule visualise_mu_left_intercept:
+    message: "Density plot of left intercept."
+    input:
+        data = "build/results/models/{model}/inference-data.nc"
+    params:
+        variable_name = "mu_left_intercept",
+        nice_variable_name = "Mean additional partworth utility of left option"
+    output: "build/results/models/{model}/left-option.vega.json"
+    conda: "../envs/analyse.yaml"
+    script: "../scripts/bayes/density.py"
