@@ -5,6 +5,14 @@ from snakemake.utils import min_version
 
 PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-secnos --citeproc"
 COUNTRY_IDS = ["DEU", "POL", "PRT", "DNK"]
+NONE_BASELINE_ATTRIBUTE_LEVELS = [
+    'TECHNOLOGY:Open-field__PV', 'TECHNOLOGY:Wind',
+    'LAND:1%', 'LAND:2%', 'LAND:4%', 'LAND:8%',
+    'TRANSMISSION:+0%__.', 'TRANSMISSION:+25%__.', 'TRANSMISSION:+50%__.', 'TRANSMISSION:+75%__.',
+    'SHARE_IMPORTS:10%', 'SHARE_IMPORTS:50%', 'SHARE_IMPORTS:90%',
+    'PRICES:+15%', 'PRICES:+30%', 'PRICES:+45%', 'PRICES:+60%',
+    'OWNERSHIP:Community', 'OWNERSHIP:Private'
+]
 
 configfile: "config/default.yaml"
 include: "rules/preprocess.smk"
@@ -15,7 +23,8 @@ include: "./rules/sync.smk"
 localrules: all, report, clean
 wildcard_constraints:
     country_id = "|".join(COUNTRY_IDS),
-    figure_format = "png|pdf"
+    figure_format = "png|pdf",
+    level = "|".join([a.replace("+", "\+") for a in NONE_BASELINE_ATTRIBUTE_LEVELS])
 min_version("7.8")
 
 onstart:
@@ -41,6 +50,11 @@ rule all:
         "build/results/models/hierarchical-nocovariates-nocovariances/individual-partworths.pdf",
         "build/results/models/hierarchical-nocovariates-nocovariances/unexplained-heterogeneity.pdf",
         "build/results/models/hierarchical-nocovariates-nocovariances/left-option.pdf",
+        "build/results/models/hierarchical-nocovariates-nocovariances/varying/left-intercept.pdf",
+        expand(
+            "build/results/models/hierarchical-nocovariates-nocovariances/varying/{level}.pdf",
+            level=NONE_BASELINE_ATTRIBUTE_LEVELS
+        ),
         "build/results/likert-items.pdf",
         "build/results/agreement-items.pdf",
         "build/results/gender.pdf",

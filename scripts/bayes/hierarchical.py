@@ -28,8 +28,8 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
     if covariances:
         conjoint = (
             conjoint
-        .pipe(prepare_respondent_age)
-        .pipe(prepare_years_region)
+            .pipe(prepare_respondent_age)
+            .pipe(prepare_years_region)
         )
     dummies = pd.get_dummies(conjoint.loc[:, ATTRIBUTES], drop_first=True, prefix_sep=":")
 

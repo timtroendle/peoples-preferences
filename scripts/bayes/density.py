@@ -10,7 +10,7 @@ def plot_density(path_to_inference_data: str, variable_name: str, nice_variable_
 
     df = data.posterior[variable_name].to_dataframe().reset_index()
 
-    base = (
+    (
         alt
         .Chart(
             df
@@ -35,8 +35,6 @@ def plot_density(path_to_inference_data: str, variable_name: str, nice_variable_
         .configure_legend(titleColor=DARK_GREY, labelColor=DARK_GREY)
         .save(path_to_plot)
     )
-
-
 
 
 if __name__ == "__main__":

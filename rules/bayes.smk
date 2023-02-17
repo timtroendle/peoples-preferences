@@ -85,7 +85,7 @@ rule visualise_partworths:
     params:
         facet_by_country = True,
         variable_names = "partworths",
-        hdi_prob = config["report"]["hdi_prob"],
+        hdi_prob = config["report"]["hdi-prob"]["default"],
         nice_names = config["report"]["nice-names"],
     output: "build/results/models/multinomial-logit/pop-means.vega.json"
     conda: "../envs/analyse.yaml"
@@ -97,7 +97,7 @@ rule visualise_population_means:
     input: posterior = rules.hierarchical.output[0]
     params:
         variable_names = "alpha",
-        hdi_prob = config["report"]["hdi_prob"],
+        hdi_prob = config["report"]["hdi-prob"]["default"],
         nice_names = config["report"]["nice-names"],
     output: "build/results/models/hierarchical-{name}/pop-means.vega.json"
     resources:
@@ -114,7 +114,7 @@ rule visualise_country_differences:
         variable_names = "countries",
         facet_by_country = True,
         aggregate_individuals = False,
-        hdi_prob = config["report"]["hdi_prob"],
+        hdi_prob = config["report"]["hdi-prob"]["default"],
         nice_names = config["report"]["nice-names"],
     output: "build/results/models/hierarchical-{name}/country-differences.vega.json"
     resources:
@@ -131,7 +131,7 @@ rule visualise_country_means:
         variable_names = ["alpha", "countries"],
         facet_by_country = True,
         aggregate_individuals = False,
-        hdi_prob = config["report"]["hdi_prob"],
+        hdi_prob = config["report"]["hdi-prob"]["default"],
         nice_names = config["report"]["nice-names"],
     output: "build/results/models/hierarchical-{name}/country-means.vega.json"
     resources:
@@ -197,3 +197,31 @@ rule visualise_mu_left_intercept:
     output: "build/results/models/{model}/left-option.vega.json"
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/density.py"
+
+
+rule visualise_varying_left_option_effect:
+    message: "Visualise heterogeneity of left-hand option partworth of hierarchical model {wildcards.name}."
+    input: posterior = rules.hierarchical.output[0]
+    params:
+        varying_variable_name = "left_intercept",
+        pop_means_variable_name = "mu_left_intercept",
+        level_choice = {},
+        narrow_hdi = config["report"]["hdi-prob"]["narrow"],
+        wide_hdi = config["report"]["hdi-prob"]["default"]
+    output: "build/results/models/hierarchical-{name}/varying/left-intercept.vega.json"
+    conda: "../envs/analyse.yaml"
+    script: "../scripts/bayes/varying.py"
+
+
+rule visualise_varying_attribute_levels:
+    message: "Visualise heterogeneity of attribute level partworth of hierarchical model {wildcards.name}."
+    input: posterior = rules.hierarchical.output[0]
+    params:
+        varying_variable_name = "partworths",
+        pop_means_variable_name = "alpha",
+        level_choice = lambda wildcards, output: {"level": wildcards["level"].replace("__", " ")},
+        narrow_hdi = config["report"]["hdi-prob"]["narrow"],
+        wide_hdi = config["report"]["hdi-prob"]["default"]
+    output: "build/results/models/hierarchical-{name}/varying/{level}.vega.json"
+    conda: "../envs/analyse.yaml"
+    script: "../scripts/bayes/varying.py"

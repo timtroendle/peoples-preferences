@@ -1,3 +1,6 @@
+localrules: render_vega_lite
+
+
 rule feather_to_csv:
     message: "Transform {wildcards.filename}.feather to csv."
     input:
@@ -15,4 +18,4 @@ rule render_vega_lite:
         pdf = "build/{path}/{filename}.pdf"
     conda: "../envs/vega.yaml"
     # vl2pdf not usable because of https://github.com/queryverse/VegaLite.jl/issues/383
-    shell: "vl2vg {input.json} | vg2pdf > {output.pdf}"
+    shell: "vl2vg '{input.json}' | vg2pdf > '{output.pdf}'"

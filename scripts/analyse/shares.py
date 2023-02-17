@@ -79,9 +79,7 @@ def finalise_and_write_plot(chart: alt.Chart, by_country: bool, facet_by: str, p
     if by_country:
         chart = chart.encode(y=alt.Y("country", type="nominal", title="Country"))
     chart = chart.mark_bar()
-    print(facet_by)
     if facet_by:
-        print("faceting")
         chart = chart.facet(f"{facet_by}:N", columns=2)
     (
         chart

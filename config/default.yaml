@@ -443,7 +443,9 @@ models:
         runtime: 240 # (min)
         memory: 16000 # (MB)
 report:
-    hdi_prob: 0.94
+    hdi-prob:
+        default: 0.94
+        narrow: 0.6
     colors:
         likert:
             - "#D8B365"
