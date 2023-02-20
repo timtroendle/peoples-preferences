@@ -5,10 +5,11 @@ import altair as alt
 DARK_GREY = "#424242"
 
 
-def plot_density(path_to_inference_data: str, variable_name: str, nice_variable_name: str, path_to_plot: str):
+def plot_density(path_to_inference_data: str, distribution_type: str, variable_name: str, nice_variable_name: str,
+                 path_to_plot: str):
     data = az.from_netcdf(path_to_inference_data)
 
-    df = data.posterior[variable_name].to_dataframe().reset_index()
+    df = data[distribution_type][variable_name].to_dataframe().reset_index()
 
     (
         alt
@@ -40,6 +41,7 @@ def plot_density(path_to_inference_data: str, variable_name: str, nice_variable_
 if __name__ == "__main__":
     plot_density(
         path_to_inference_data=snakemake.input.data,
+        distribution_type=snakemake.wildcards.dist,
         path_to_plot=snakemake.output[0],
         variable_name=snakemake.params.variable_name,
         nice_variable_name=snakemake.params.nice_variable_name

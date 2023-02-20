@@ -24,7 +24,8 @@ localrules: all, report, clean
 wildcard_constraints:
     country_id = "|".join(COUNTRY_IDS),
     figure_format = "png|pdf",
-    level = "|".join([a.replace("+", "\+") for a in NONE_BASELINE_ATTRIBUTE_LEVELS])
+    level = "|".join([a.replace("+", "\+") for a in NONE_BASELINE_ATTRIBUTE_LEVELS]),
+    dist = "prior|posterior"
 min_version("7.8")
 
 onstart:
@@ -37,24 +38,29 @@ onerror:
         shell("echo "" | mail -s 'peoples-preferences failed' {config[email]}")
 
 
+def full_hierarchical_model_analysis(model: str, dist: str):
+    return [
+        f"build/results/models/hierarchical-{model}/{dist}/diagnostics/summary.csv",
+        f"build/results/models/hierarchical-{model}/{dist}/pop-means.pdf",
+        f"build/results/models/hierarchical-{model}/{dist}/country-differences.pdf",
+        f"build/results/models/hierarchical-{model}/{dist}/country-means.pdf",
+        f"build/results/models/hierarchical-{model}/{dist}/individual-partworths.pdf",
+        f"build/results/models/hierarchical-{model}/{dist}/unexplained-heterogeneity.pdf",
+        f"build/results/models/hierarchical-{model}/{dist}/left-option.pdf",
+        f"build/results/models/hierarchical-{model}/{dist}/varying/left-intercept.pdf"
+    ] + [
+        f"build/results/models/hierarchical-{model}/{dist}/varying/{level}.pdf"
+        for level in NONE_BASELINE_ATTRIBUTE_LEVELS
+    ]
+
 rule all:
     message: "Run entire analysis and compile report."
     input:
         "build/report.html",
         "build/test-report.html",
-        "build/results/models/multinomial-logit/pop-means.pdf",
-        "build/results/models/hierarchical-nocovariates-nocovariances/diagnostics/summary.csv",
-        "build/results/models/hierarchical-nocovariates-nocovariances/pop-means.pdf",
-        "build/results/models/hierarchical-nocovariates-nocovariances/country-differences.pdf",
-        "build/results/models/hierarchical-nocovariates-nocovariances/country-means.pdf",
-        "build/results/models/hierarchical-nocovariates-nocovariances/individual-partworths.pdf",
-        "build/results/models/hierarchical-nocovariates-nocovariances/unexplained-heterogeneity.pdf",
-        "build/results/models/hierarchical-nocovariates-nocovariances/left-option.pdf",
-        "build/results/models/hierarchical-nocovariates-nocovariances/varying/left-intercept.pdf",
-        expand(
-            "build/results/models/hierarchical-nocovariates-nocovariances/varying/{level}.pdf",
-            level=NONE_BASELINE_ATTRIBUTE_LEVELS
-        ),
+        "build/results/models/multinomial-logit/posterior/pop-means.pdf",
+        full_hierarchical_model_analysis(model="nocovariates-nocovariances", dist="prior"),
+        full_hierarchical_model_analysis(model="nocovariates-nocovariances", dist="posterior"),
         "build/results/likert-items.pdf",
         "build/results/agreement-items.pdf",
         "build/results/gender.pdf",

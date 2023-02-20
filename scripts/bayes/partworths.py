@@ -22,12 +22,13 @@ BASELINE_LEVELS = [ # TODO ADD FROM CONFIG
 EXPECTED_VALUE = "expected"
 
 
-def visualise_partworths(path_to_posterior: str, facet_by_country: bool, aggregate_individuals: bool,
-                         variable_names: Union[str, list[str]], hdi_prob: float,
+def visualise_partworths(path_to_inference_data: str, facet_by_country: bool, aggregate_individuals: bool,
+                         variable_names: Union[str, list[str]], hdi_prob: float, distribution_type: str,
                          nice_names: dict[str, dict[str, str]],
                          path_to_plot: str):
     data = read_data(
-        path_to_posterior=path_to_posterior,
+        path_to_inference_data=path_to_inference_data,
+        distribution_type=distribution_type,
         variable_names=variable_names,
         facet_by_country=facet_by_country,
         aggregate_individuals=aggregate_individuals,
@@ -79,23 +80,23 @@ def visualise_partworths(path_to_posterior: str, facet_by_country: bool, aggrega
     )
 
 
-def read_data(path_to_posterior: str, variable_names: Union[str, list[str]], facet_by_country: bool,
+def read_data(path_to_inference_data: str, variable_names: Union[str, list[str]], facet_by_country: bool,
+              distribution_type: str,
               aggregate_individuals: True, nice_names: dict[str, dict[str, str]], hdi_prob: float):
-    full = az.from_netcdf(path_to_posterior)
-    attr_levels = full.posterior.level.to_series().to_list()
+    full = az.from_netcdf(path_to_inference_data)[distribution_type]
+    attr_levels = full.level.to_series().to_list()
     all_attr_levels = attr_levels + BASELINE_LEVELS
     fill_value = pd.NA if aggregate_individuals else 0
 
-    posterior = (
-        full
-        .posterior[variable_names]
+    data = (
+        full[variable_names]
         .pipe(sum_variables_if_more_than_one)
         .reindex(level=all_attr_levels)
         .fillna(fill_value)
     )
 
     expected_value = (
-        posterior
+        data
         .mean(["chain", "draw"])
         .rename(EXPECTED_VALUE)
         .to_series()
@@ -108,7 +109,7 @@ def read_data(path_to_posterior: str, variable_names: Union[str, list[str]], fac
         # interval is highest density interval
         interval = (
             az
-            .hdi(posterior, hdi_prob=hdi_prob)
+            .hdi(data, hdi_prob=hdi_prob)
             .to_array()
             .isel(variable=0)
             .to_series()
@@ -152,7 +153,8 @@ def optional_param(name: str, default):
 
 if __name__ == "__main__":
     visualise_partworths(
-        path_to_posterior=snakemake.input.posterior,
+        path_to_inference_data=snakemake.input.data,
+        distribution_type=snakemake.wildcards.dist,
         nice_names=snakemake.params.nice_names,
         facet_by_country=optional_param("facet_by_country", False),
         aggregate_individuals=optional_param("aggregate_individuals", False),

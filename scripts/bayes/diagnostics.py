@@ -7,17 +7,20 @@ import xarray as xr
 import seaborn as sns
 
 
-def diagnostics(path_to_inference_data: str, path_to_trace_plot: str, path_to_pop_means_plot: str,
+def diagnostics(path_to_inference_data: str, distribution_type: str,
+                path_to_trace_plot: str, path_to_pop_means_plot: str,
                 path_to_forest_plot: str, path_to_summary: str, path_to_rhos_individual_plot: str,
                 path_to_rhos_country_plot: str,
                 path_to_confusion_matrix: str, path_to_accuracy: str,
                 hdi_prob: float, path_to_individuals_plot: str):
     inference_data = az.from_netcdf(path_to_inference_data)
-    inference_data = retransform_normalised(inference_data)
     observed_data = inference_data.observed_data.load() # This avoids a weird segmentation fault on my machine.
                                                         # It seems this segmentation fault is caused by too many
                                                         # accesses to the data. Therefore, I am loading it into
                                                         # memory here.
+    constant_data = inference_data.constant_data
+    inference_data = inference_data[distribution_type]
+    inference_data = retransform_normalised(inference_data, constant_data)
 
     trace_plot(inference_data, path_to_trace_plot)
     pop_means_plot(inference_data, hdi_prob, path_to_pop_means_plot)
@@ -29,17 +32,17 @@ def diagnostics(path_to_inference_data: str, path_to_trace_plot: str, path_to_po
     prediction_accuracy(inference_data, observed_data, path_to_confusion_matrix, path_to_accuracy)
 
 
-def retransform_normalised(inference_data: az.InferenceData):
-    if "beta_age_normed" in inference_data.posterior:
-        age_std = inference_data.constant_data.age.std()
-        inference_data.posterior["beta_age"] = inference_data.posterior["beta_age_normed"] / age_std
-    if "beta_years_normed" in inference_data.posterior:
+def retransform_normalised(inference_data: xr.Dataset, constant_data: xr.Dataset):
+    if "beta_age_normed" in inference_data:
+        age_std = constant_data.age.std()
+        inference_data["beta_age"] = inference_data["beta_age_normed"] / age_std
+    if "beta_years_normed" in inference_data:
         years_std = inference_data.constant_data.years.std()
-        inference_data.posterior["beta_years"] = inference_data.posterior["beta_years_normed"] / years_std
+        inference_data["beta_years"] = inference_data["beta_years_normed"] / years_std
     return inference_data
 
 
-def trace_plot(inference_data: az.InferenceData, path_to_plot: str):
+def trace_plot(inference_data: xr.Dataset, path_to_plot: str):
     var_names = ["alpha", "beta", "sigma_individuals", "sigma_country", "mu_left_intercept", "sigma_left_intercept"]
     axes = az.plot_trace(
         inference_data,
@@ -51,7 +54,7 @@ def trace_plot(inference_data: az.InferenceData, path_to_plot: str):
     fig.savefig(path_to_plot)
 
 
-def pop_means_plot(inference_data: az.InferenceData, hdi_prob: float, path_to_plot: str):
+def pop_means_plot(inference_data: xr.Dataset, hdi_prob: float, path_to_plot: str):
     axes = az.plot_forest(inference_data, var_names="alpha", combined=True, hdi_prob=hdi_prob)
     ax = axes[0]
     ax.vlines(x=0, ymin=ax.get_ylim()[0], ymax=ax.get_ylim()[1], color="black", linestyles="dotted")
@@ -60,7 +63,7 @@ def pop_means_plot(inference_data: az.InferenceData, hdi_prob: float, path_to_pl
     fig.savefig(path_to_plot)
 
 
-def forest_plot(inference_data: az.InferenceData, hdi_prob: float, path_to_plot: str):
+def forest_plot(inference_data: xr.Dataset, hdi_prob: float, path_to_plot: str):
     var_names = ["alpha", "beta", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept"]
     axes = az.plot_forest(
         inference_data,
@@ -76,12 +79,11 @@ def forest_plot(inference_data: az.InferenceData, hdi_prob: float, path_to_plot:
     fig.savefig(path_to_plot)
 
 
-def rhos_plot(inference_data: az.InferenceData, rho: str, var: str, path_to_plot: str):
-    level_mapper = inference_data.constant_data.level.to_series().reset_index(drop=True).to_dict()
-    if rho in inference_data.posterior:
+def rhos_plot(inference_data: xr.Dataset, rho: str, var: str, path_to_plot: str):
+    level_mapper = inference_data.level.to_series().reset_index(drop=True).to_dict()
+    if rho in inference_data:
         data = (
-            inference_data
-            .posterior[rho]
+            inference_data[rho]
             .mean(["draw"])
             .to_dataframe()[rho]
             .reset_index()
@@ -96,8 +98,7 @@ def rhos_plot(inference_data: az.InferenceData, rho: str, var: str, path_to_plot
     else:
         # calculate rhos yourself
         data = (
-            inference_data
-            .posterior[var]
+            inference_data[var]
         )
         data = pd.concat([correlation_across_level(data, chain) for chain in data.chain])
 
@@ -153,8 +154,8 @@ def draw_and_chain_mean_nocovariates(data):
     )
 
 
-def individuals_plot(inference_data: az.InferenceData, path_to_plot: str):
-    if "gender_effect" in inference_data.posterior:
+def individuals_plot(inference_data: xr.Dataset, path_to_plot: str):
+    if "gender_effect" in inference_data:
         var_names = [
             "partworths", "gender_effect", "country_effect", "area_effect", "renewables_effect",
             "party_effect", "age_effect", "years_effect", "edu_effect", "income_effect", "concern_effect",
@@ -179,7 +180,7 @@ def individuals_plot(inference_data: az.InferenceData, path_to_plot: str):
     fig.savefig(path_to_plot)
 
 
-def summary(inference_data: az.InferenceData, hdi_prob: float, path_to_summary: str):
+def summary(inference_data: xr.Dataset, hdi_prob: float, path_to_summary: str):
     (
         az
         .summary(
@@ -195,11 +196,10 @@ def summary(inference_data: az.InferenceData, hdi_prob: float, path_to_summary: 
     )
 
 
-def prediction_accuracy(inference_data: az.InferenceData, observed_data: xr.Dataset, path_to_confusion_matrix: str,
+def prediction_accuracy(inference_data: xr.Dataset, observed_data: xr.Dataset, path_to_confusion_matrix: str,
                         path_to_accuracy: str):
     best_estimate = (
         inference_data
-        .posterior
         .p_left
         .mean(["chain", "draw"])
         .to_series()
@@ -217,6 +217,7 @@ def prediction_accuracy(inference_data: az.InferenceData, observed_data: xr.Data
 if __name__ == "__main__":
     diagnostics(
         path_to_inference_data=snakemake.input.inference_data,
+        distribution_type=snakemake.wildcards.dist,
         path_to_trace_plot=snakemake.output.trace,
         path_to_pop_means_plot=snakemake.output.pop_means,
         path_to_forest_plot=snakemake.output.forest,
