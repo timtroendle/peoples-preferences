@@ -1,3 +1,4 @@
+from functools import cache
 from pathlib import Path
 
 import arviz as az
@@ -21,8 +22,8 @@ def diagnostics(path_to_inference_data: str, path_to_trace_plot: str, path_to_po
     trace_plot(inference_data, path_to_trace_plot)
     pop_means_plot(inference_data, hdi_prob, path_to_pop_means_plot)
     forest_plot(inference_data, hdi_prob, path_to_forest_plot)
-    rhos_plot(inference_data, "rho_individuals", path_to_rhos_individual_plot)
-    rhos_plot(inference_data, "rho_country", path_to_rhos_country_plot)
+    rhos_plot(inference_data, rho="rho_individuals", var="individuals", path_to_plot=path_to_rhos_individual_plot)
+    rhos_plot(inference_data, rho="rho_country", var="countries", path_to_plot=path_to_rhos_country_plot)
     individuals_plot(inference_data, path_to_individuals_plot)
     summary(inference_data, hdi_prob, path_to_summary)
     prediction_accuracy(inference_data, observed_data, path_to_confusion_matrix, path_to_accuracy)
@@ -75,28 +76,66 @@ def forest_plot(inference_data: az.InferenceData, hdi_prob: float, path_to_plot:
     fig.savefig(path_to_plot)
 
 
-def rhos_plot(inference_data: az.InferenceData, parameter: str, path_to_plot: str):
-    if not parameter in inference_data.posterior:
-        Path(path_to_plot).touch() # FIXME not a smart solution
-        return
-    rhos = (
-        inference_data
-        .posterior[parameter]
-        .mean(["draw"])
-        .to_dataframe()[parameter]
-        .reset_index()
-    )
+def rhos_plot(inference_data: az.InferenceData, rho: str, var: str, path_to_plot: str):
     level_mapper = inference_data.constant_data.level.to_series().reset_index(drop=True).to_dict()
-    def heatmap(df):
-        return (
-            df
-            .pivot(index="level", columns="level_repeat", values=parameter)
-            .rename(index=level_mapper, columns=level_mapper)
+    if rho in inference_data.posterior:
+        data = (
+            inference_data
+            .posterior[rho]
+            .mean(["draw"])
+            .to_dataframe()[rho]
+            .reset_index()
         )
 
-    g = sns.FacetGrid(rhos, col='chain', col_wrap=2, height=6)
+        def heatmap(df):
+            return (
+                df
+                .pivot(index="level", columns="level_repeat", values=rho)
+                .rename(index=level_mapper, columns=level_mapper)
+            )
+    else:
+        # calculate rhos yourself
+        data = (
+            inference_data
+            .posterior[var]
+        )
+        data = pd.concat([correlation_across_level(data, chain) for chain in data.chain])
+
+        def heatmap(df: pd.DataFrame):
+            return (
+                df["correlation"]
+                .unstack()
+            )
+
+    g = sns.FacetGrid(data, col='chain', col_wrap=2, height=6)
     g.map_dataframe(lambda data, color: sns.heatmap(heatmap(data), square=True, vmin=-1, vmax=1))
     g.savefig(path_to_plot)
+
+
+def correlation_across_level(data: xr.DataArray, chain: int) -> pd.DataFrame:
+    levels = [level.item() for level in data.level]
+    data = data.sel(chain=chain)
+
+    @cache
+    def correlation(level1: str, level2: str) -> float:
+        if level1 == level2:
+            return 1.0
+        else:
+            return xr.corr(data.sel(level=level1), data.sel(level=level2)).item()
+
+    return (
+        pd
+        .DataFrame(
+            index=levels,
+            data={
+                level1: [correlation(*sorted([level1, level2])) for level2 in levels]
+                for level1 in levels
+            }
+        )
+        .stack() # from heatmap-form to long-form to be usable within Seaborn's FacetGrid
+        .to_frame("correlation")
+        .assign(chain=chain.item())
+    )
 
 
 def draw_and_chain_mean_covariates(data):
@@ -116,14 +155,14 @@ def draw_and_chain_mean_nocovariates(data):
 
 def individuals_plot(inference_data: az.InferenceData, path_to_plot: str):
     if "gender_effect" in inference_data.posterior:
-        var_names=[
+        var_names = [
             "partworths", "gender_effect", "country_effect", "area_effect", "renewables_effect",
             "party_effect", "age_effect", "years_effect", "edu_effect", "income_effect", "concern_effect",
             "individuals"
         ]
         draw_and_chain_mean = draw_and_chain_mean_covariates
     else:
-        var_names=["partworths", "individuals"]
+        var_names = ["partworths", "individuals"]
         draw_and_chain_mean = draw_and_chain_mean_nocovariates
     axes = az.plot_forest(
         inference_data,
@@ -156,7 +195,8 @@ def summary(inference_data: az.InferenceData, hdi_prob: float, path_to_summary: 
     )
 
 
-def prediction_accuracy(inference_data: az.InferenceData, observed_data: xr.Dataset, path_to_confusion_matrix: str, path_to_accuracy: str):
+def prediction_accuracy(inference_data: az.InferenceData, observed_data: xr.Dataset, path_to_confusion_matrix: str,
+                        path_to_accuracy: str):
     best_estimate = (
         inference_data
         .posterior
