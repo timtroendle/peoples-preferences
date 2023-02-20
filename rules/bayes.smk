@@ -71,7 +71,8 @@ rule diagnostics:
         rhos_country = "build/results/models/hierarchical-{name}/{dist}/diagnostics/rhos-country.png",
         individuals = "build/results/models/hierarchical-{name}/{dist}/diagnostics/individuals.png",
         confusion = "build/results/models/hierarchical-{name}/{dist}/diagnostics/confusion-matrix.csv",
-        accuracy = "build/results/models/hierarchical-{name}/{dist}/diagnostics/in-sample-prediction-accuracy.txt"
+        accuracy = "build/results/models/hierarchical-{name}/{dist}/diagnostics/in-sample-prediction-accuracy.txt",
+        probability = "build/results/models/hierarchical-{name}/{dist}/diagnostics/choice-probability.png"
     resources:
         runtime = 60,
         memory = 64000

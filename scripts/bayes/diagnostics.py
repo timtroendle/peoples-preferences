@@ -10,7 +10,7 @@ import seaborn as sns
 def diagnostics(path_to_inference_data: str, distribution_type: str,
                 path_to_trace_plot: str, path_to_pop_means_plot: str,
                 path_to_forest_plot: str, path_to_summary: str, path_to_rhos_individual_plot: str,
-                path_to_rhos_country_plot: str,
+                path_to_rhos_country_plot: str, path_to_choice_probability_plot: str,
                 path_to_confusion_matrix: str, path_to_accuracy: str,
                 hdi_prob: float, path_to_individuals_plot: str):
     inference_data = az.from_netcdf(path_to_inference_data)
@@ -30,6 +30,7 @@ def diagnostics(path_to_inference_data: str, distribution_type: str,
     individuals_plot(inference_data, path_to_individuals_plot)
     summary(inference_data, hdi_prob, path_to_summary)
     prediction_accuracy(inference_data, observed_data, path_to_confusion_matrix, path_to_accuracy)
+    choice_probability_plot(inference_data, path_to_choice_probability_plot)
 
 
 def retransform_normalised(inference_data: xr.Dataset, constant_data: xr.Dataset):
@@ -214,6 +215,17 @@ def prediction_accuracy(inference_data: xr.Dataset, observed_data: xr.Dataset, p
         f_acc.write(f"{accuracy:.2f}")
 
 
+def choice_probability_plot(inference_data: xr.Dataset, path_to_plot: str):
+    axes = az.plot_density(
+        inference_data,
+        var_names=["p_left"],
+        combine_dims=set(["chain", "draw", "choice_situation"])
+    )
+    fig = axes[0, 0].get_figure()
+    fig.tight_layout()
+    fig.savefig(path_to_plot)
+
+
 if __name__ == "__main__":
     diagnostics(
         path_to_inference_data=snakemake.input.inference_data,
@@ -227,5 +239,6 @@ if __name__ == "__main__":
         path_to_summary=snakemake.output.summary,
         path_to_confusion_matrix=snakemake.output.confusion,
         path_to_accuracy=snakemake.output.accuracy,
+        path_to_choice_probability_plot=snakemake.output.probability,
         hdi_prob=snakemake.params.hdi_prob
     )
