@@ -110,7 +110,7 @@ def rhos_plot(inference_data: xr.Dataset, rho: str, var: str, path_to_plot: str)
             )
 
     g = sns.FacetGrid(data, col='chain', col_wrap=2, height=6)
-    g.map_dataframe(lambda data, color: sns.heatmap(heatmap(data), square=True, vmin=-1, vmax=1))
+    g.map_dataframe(lambda data, color: sns.heatmap(heatmap(data), square=True, vmin=-1, vmax=1, cmap="vlag"))
     g.savefig(path_to_plot)
 
 
