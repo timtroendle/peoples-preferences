@@ -1,6 +1,5 @@
 import pandas as pd
-import pymc3 as pm
-import arviz as az
+import pymc as pm
 
 
 def logistic_regression_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: int,
@@ -14,12 +13,12 @@ def logistic_regression_model(path_to_data: str, n_tune: int, n_draws: int, n_co
     })
 
     with model:
-        α = pm.Normal('α', mu=0, sd=10)
+        α = pm.Normal('α', mu=0, sigma=10)
         partworths = pm.Normal("partworths", 0, 10, dims="partsworths") # TODO or MVN?
         u = α + pm.math.dot(dummies.values, partworths)
 
         θ = pm.math.sigmoid(u)
-        y_1 = pm.Bernoulli('y_1', p=θ, observed=pure_conjoint.CHOICE_INDICATOR.values)
+        pm.Bernoulli('y_1', p=θ, observed=pure_conjoint.CHOICE_INDICATOR.values)
 
         inference_data = pm.sample(
             draws=n_draws,
