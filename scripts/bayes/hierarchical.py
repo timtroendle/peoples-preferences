@@ -287,8 +287,16 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
             dims="respondent"
         )
 
-        u_left = left_intercept[r] + pm.math.sum(partworths[r, :] * dummies_left, axis=1)
-        u_right = pm.math.sum(partworths[r, :] * dummies_right, axis=1)
+        u_left = pm.Deterministic(
+            "u_left",
+            left_intercept[r] + pm.math.sum(partworths[r, :] * dummies_left, axis=1),
+            dims="choice_situation"
+        )
+        u_right = pm.Deterministic(
+            "u_right",
+            pm.math.sum(partworths[r, :] * dummies_right, axis=1),
+            dims="choice_situation"
+        )
         p_left = pm.Deterministic(
             "p_left",
             pm.math.exp(u_left) / (pm.math.exp(u_left) + pm.math.exp(u_right)),

@@ -72,7 +72,8 @@ rule diagnostics:
         individuals = "build/results/models/hierarchical-{name}/{dist}/diagnostics/individuals.png",
         confusion = "build/results/models/hierarchical-{name}/{dist}/diagnostics/confusion-matrix.csv",
         accuracy = "build/results/models/hierarchical-{name}/{dist}/diagnostics/in-sample-prediction-accuracy.txt",
-        probability = "build/results/models/hierarchical-{name}/{dist}/diagnostics/choice-probability.png"
+        probability = "build/results/models/hierarchical-{name}/{dist}/diagnostics/choice-probability.png",
+        utility = "build/results/models/hierarchical-{name}/{dist}/diagnostics/utility.png",
     resources:
         runtime = 60,
         memory = 64000
