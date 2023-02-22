@@ -144,7 +144,7 @@ rule test:
         tests = map(str, Path("tests").glob("**/test_*.py")),
         national_conjoints = expand("build/data/{country_id}.feather", country_id=COUNTRY_IDS),
         conjoint = "build/data/conjoint.feather",
-        covariate_model = "build/results/models/hierarchical-nocovariates-nocovariances/inference-data.nc" # FIXME use covariate model
+        covariate_model = "build/results/models/hierarchical-nocovariates-nocovariances/prior/inference-data.nc" # FIXME use covariate model
     params:
         config = config
     output: "build/test-report.html"

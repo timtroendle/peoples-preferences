@@ -11,7 +11,7 @@ models:
         random-seed: 4000
         individual-covariates: False
         runtime: 720 # (min)
-        memory: 46000 # (MB)
+        mem_mb: 46000
     hierarchical-covariates:
         n-tune: 6000
         n-draws: 2000
@@ -19,4 +19,4 @@ models:
         random-seed: 4000
         individual-covariates: True
         runtime: 1440 # (min)
-        memory: 96000 # (MB)
+        mem_mb: 96000

@@ -423,7 +423,7 @@ models:
         individual-covariates: False
         covariances: True
         runtime: 240 # (min)
-        memory: 16000 # (MB)
+        mem_mb: 16000
     hierarchical-covariates:
         n-tune: 2000
         n-draws: 500
@@ -432,7 +432,7 @@ models:
         individual-covariates: True
         covariances: True
         runtime: 240 # (min)
-        memory: 16000 # (MB)
+        mem_mb: 16000
     hierarchical-nocovariates-nocovariances:
         n-tune: 2000
         n-draws: 500
@@ -441,7 +441,7 @@ models:
         individual-covariates: False
         covariances: False
         runtime: 240 # (min)
-        memory: 16000 # (MB)
+        mem_mb: 16000
 report:
     hdi-prob:
         default: 0.94

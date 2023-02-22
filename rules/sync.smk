@@ -23,12 +23,17 @@ rule receive:
         url = config["cluster-sync"]["url"],
         cluster_base_dir = config["cluster-sync"]["cluster-base-dir"],
         cluster_build_dir = config["cluster-sync"]["cluster-base-dir"] + "/build/",
-        local_results_dir = config["cluster-sync"]["local-results-dir"]
+        cluster_log_dir = config["cluster-sync"]["cluster-base-dir"] + "/.snakemake/slurm_logs/",
+        local_results_dir = config["cluster-sync"]["local-results-dir"],
+        local_logs_dir = config["cluster-sync"]["local-results-dir"] + "/../logs/slurm/"
     conda: "../envs/shell.yaml"
     shell:
         """
         rsync -avzh --progress --delete -r --exclude-from={params.receive_ignore} \
         {params.url}:{params.cluster_build_dir} {params.local_results_dir}
+
+        rsync -avzh --progress --delete -r --exclude-from={params.receive_ignore} \
+        {params.url}:{params.cluster_log_dir} {params.local_logs_dir}
         """
 
 

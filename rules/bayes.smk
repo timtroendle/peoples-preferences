@@ -24,7 +24,7 @@ rule multinomial_logit:
         random_seed = config["models"]["multinomial"]["random-seed"],
     resources:
         runtime = 60,
-        memory = 4000
+        mem_mb_per_cpu = 4000
     threads: 4
     output: "build/results/models/multinomial-logit/{dist}/inference-data.nc"
     conda: "../envs/pymc.yaml"
@@ -50,7 +50,7 @@ rule hierarchical:
         covariances = hierarchical_model_config("covariances")
     resources:
         runtime = hierarchical_model_config("runtime"),
-        memory = lambda wildcards, threads: hierarchical_model_config("memory")(wildcards) // threads
+        mem_mb_per_cpu = lambda wildcards, threads: hierarchical_model_config("mem_mb")(wildcards) // threads
     threads: 4
     output: "build/results/models/hierarchical-{name}/{dist}/inference-data.nc"
     conda: "../envs/pymc.yaml"
@@ -76,7 +76,7 @@ rule diagnostics:
         utility = "build/results/models/hierarchical-{name}/{dist}/diagnostics/utility.png",
     resources:
         runtime = 60,
-        memory = 64000
+        mem_mb_per_cpu = 64000
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/diagnostics.py"
 
@@ -104,7 +104,7 @@ rule visualise_population_means:
     output: "build/results/models/hierarchical-{name}/{dist}/pop-means.vega.json"
     resources:
         runtime = 60,
-        memory = 64000
+        mem_mb_per_cpu = 64000
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/partworths.py"
 
@@ -121,7 +121,7 @@ rule visualise_country_differences:
     output: "build/results/models/hierarchical-{name}/{dist}/country-differences.vega.json"
     resources:
         runtime = 60,
-        memory = 64000
+        mem_mb_per_cpu = 64000
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/partworths.py"
 
@@ -138,7 +138,7 @@ rule visualise_country_means:
     output: "build/results/models/hierarchical-{name}/{dist}/country-means.vega.json"
     resources:
         runtime = 60,
-        memory = 64000
+        mem_mb_per_cpu = 64000
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/partworths.py"
 
@@ -154,7 +154,7 @@ rule visualise_partworths_heterogeneity:
     output: "build/results/models/hierarchical-{name}/{dist}/individual-partworths.vega.json"
     resources:
         runtime = 60,
-        memory = 64000
+        mem_mb_per_cpu = 64000
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/partworths.py"
 
@@ -170,7 +170,7 @@ rule visualise_unexplained_heterogeneity:
     output: "build/results/models/hierarchical-{name}/{dist}/unexplained-heterogeneity.vega.json"
     resources:
         runtime = 60,
-        memory = 64000
+        mem_mb_per_cpu = 64000
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/partworths.py"
 
@@ -184,7 +184,7 @@ rule visualise_covariates:
     output: "build/results/models/hierarchical-covariates/{dist}/covariates.vega.json"
     resources:
         runtime = 60,
-        memory = 64000
+        mem_mb_per_cpu = 64000
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/covariates.py"
 
