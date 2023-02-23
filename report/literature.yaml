@@ -2765,6 +2765,59 @@ references:
   type: article-journal
   volume: '40'
 
+- id: Winter:2022
+  abstract: >-
+    Reaching net-zero targets requires massive increases in wind energy
+    production, but efforts to build wind farms can meet stern local opposition.
+    Here, inspired by related work on vaccinations, we examine whether
+    opposition to wind farms is associated with a world view that conspiracies
+    are common (‘conspiracy mentality’). In eight pre-registered studies
+    (collective N = 4,170), we found moderate-to-large relationships between
+    various indices of conspiracy beliefs and wind farm opposition. Indeed, the
+    relationship between wind farm opposition and conspiracy beliefs was many
+    times greater than its relationship with age, gender, education and
+    political orientation. Information provision increased support, even among
+    those high in conspiracy mentality. However, information provision was less
+    effective when it was presented as a debate (that is, including negative
+    arguments) and among participants who endorsed specific conspiracy theories
+    about wind farms. Thus, the data suggest preventive measures are more
+    realistic than informational interventions to curb the potentially negative
+    impact of conspiracy beliefs.
+  accessed:
+    - year: 2023
+      month: 2
+      day: 23
+  author:
+    - family: Winter
+      given: Kevin
+    - family: Hornsey
+      given: Matthew J.
+    - family: Pummerer
+      given: Lotte
+    - family: Sassenberg
+      given: Kai
+  citation-key: Winter:2022
+  container-title: Nature Energy
+  container-title-short: Nat Energy
+  DOI: 10.1038/s41560-022-01164-w
+  ISSN: 2058-7546
+  issue: '12'
+  issued:
+    - year: 2022
+      month: 12
+  language: en
+  license: 2022 The Author(s)
+  number: '12'
+  page: 1200-1207
+  publisher: Nature Publishing Group
+  source: www.nature.com
+  title: >-
+    Anticipating and defusing the role of conspiracy beliefs in shaping
+    opposition to wind farms
+  type: article-journal
+  URL: https://www.nature.com/articles/s41560-022-01164-w
+  volume: '7'
+
 - id: Xexakis:2022
   abstract: >-
     With the European Green Deal, the European Union (EU27) aims to achieve an

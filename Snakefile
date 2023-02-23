@@ -58,7 +58,6 @@ rule all:
     input:
         "build/report.html",
         "build/test-report.html",
-        "build/results/models/multinomial-logit/posterior/pop-means.pdf",
         full_hierarchical_model_analysis(model="nocovariates-nocovariances", dist="prior"),
         full_hierarchical_model_analysis(model="nocovariates-nocovariances", dist="posterior"),
         "build/results/likert-items.pdf",

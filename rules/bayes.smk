@@ -34,7 +34,11 @@ rule multinomial_logit:
 def hierarchical_model_config(param_name):
     def hierarchical_model_config(wildcards):
         name = f"hierarchical-{wildcards.name}"
-        return config["models"][name][param_name]
+        param = config["models"][name][param_name]
+        try:
+            return param[wildcards.dist]
+        except   TypeError:
+            return param
     return hierarchical_model_config
 
 
@@ -51,7 +55,7 @@ rule hierarchical:
     resources:
         runtime = hierarchical_model_config("runtime"),
         mem_mb_per_cpu = lambda wildcards, threads: hierarchical_model_config("mem_mb")(wildcards) // threads
-    threads: 4
+    threads: lambda wildcards: hierarchical_model_config("threads")(wildcards)
     output: "build/results/models/hierarchical-{name}/{dist}/inference-data.nc"
     conda: "../envs/pymc.yaml"
     script: "../scripts/bayes/hierarchical.py"

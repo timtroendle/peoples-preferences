@@ -145,7 +145,7 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
             )
 
         # parameters
-        alpha = pm.Normal('alpha', 0, sigma=4, dims="level")
+        alpha = pm.Normal('alpha', 0, sigma=1, dims="level")
 
         z_country = pm.ZeroSumNormal("z_country", sigma=1.0, dims=["level", "country"], zerosum_axes=1)
         if covariances:
@@ -153,7 +153,7 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
                 "chol_country",
                 n=len(model.coords["level"]),
                 eta=4,
-                sd_dist=pm.Exponential.dist(0.5),
+                sd_dist=pm.Exponential.dist(2),
                 compute_corr=True,
                 store_in_trace=False
             )
@@ -162,7 +162,7 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
 
             countries = pm.Deterministic("countries", pm.math.dot(chol_country, z_country), dims=["level", "country"])
         else:
-            sigma_country = pm.Exponential('sigma_country', 0.5, dims="level")
+            sigma_country = pm.Exponential('sigma_country', 2, dims="level")
             countries = pm.Deterministic(
                 'countries',
                 at.reshape((pm.math.flatten(z_country) * at.repeat(sigma_country, n_countries)), (n_levels, n_countries)), # FIXME easier cell-wise product
@@ -181,7 +181,7 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
                 "chol_individuals",
                 n=len(model.coords["level"]),
                 eta=4,
-                sd_dist=pm.Exponential.dist(0.5),
+                sd_dist=pm.Exponential.dist(2),
                 compute_corr=True,
                 store_in_trace=False
             )
@@ -194,7 +194,7 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
                 dims=["level", "respondent"]
             )
         else:
-            sigma_individuals = pm.Exponential('sigma_individuals', 0.5, dims="level")
+            sigma_individuals = pm.Exponential('sigma_individuals', 2, dims="level")
             individuals = pm.Deterministic(
                 "individuals",
                 at.reshape((pm.math.flatten(z_individuals) * at.repeat(sigma_individuals, n_respondents)), (n_levels, n_respondents)), # FIXME easier cell-wise product
@@ -278,8 +278,8 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
                 dims=["respondent", "level"]
             )
 
-        mu_left_intercept = pm.Normal('mu_left_intercept', 0, sigma=4)
-        sigma_left_intercept = pm.Exponential('sigma_left_intercept', 1)
+        mu_left_intercept = pm.Normal('mu_left_intercept', 0, sigma=0.25)
+        sigma_left_intercept = pm.Exponential('sigma_left_intercept', 3)
         z_left_intercept = pm.Normal("z_left_intercept", 0, sigma=1, dims="respondent")
         left_intercept = pm.Deterministic( # TODO let covar with partsworths
             'left_intercept',

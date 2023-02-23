@@ -417,31 +417,58 @@ models:
         random-seed: 4000
     hierarchical-nocovariates:
         n-tune: 2000
-        n-draws: 500
+        n-draws:
+            prior: 500
+            posterior: 500
         limit-respondents: 20
         random-seed: 4000
         individual-covariates: False
         covariances: True
-        runtime: 240 # (min)
-        mem_mb: 16000
+        runtime: # (min)
+            prior: 10
+            posterior: 10
+        mem_mb:
+            prior: 16000
+            posterior: 16000
+        threads:
+            prior: 1
+            posterior: 4
     hierarchical-covariates:
         n-tune: 2000
-        n-draws: 500
+        n-draws:
+            prior: 500
+            posterior: 500
         limit-respondents: 80
         random-seed: 4000
         individual-covariates: True
         covariances: True
-        runtime: 240 # (min)
-        mem_mb: 16000
+        runtime: # (min)
+            prior: 10
+            posterior: 10
+        mem_mb:
+            prior: 16000
+            posterior: 16000
+        threads:
+            prior: 1
+            posterior: 4
     hierarchical-nocovariates-nocovariances:
         n-tune: 2000
-        n-draws: 500
+        n-draws:
+            prior: 500
+            posterior: 500
         limit-respondents: 80
         random-seed: 4000
         individual-covariates: False
         covariances: False
-        runtime: 240 # (min)
-        mem_mb: 16000
+        runtime: # (min)
+            prior: 10
+            posterior: 10
+        mem_mb:
+            prior: 16000
+            posterior: 16000
+        threads:
+            prior: 1
+            posterior: 4
 report:
     hdi-prob:
         default: 0.94
