@@ -1,3 +1,20 @@
+rule synthetic_data:
+    message:
+        "Create synthetic input data."
+    input:
+        original = rules.global_conjoint.output[0]
+    params:
+        n_respondents = config["parameters"]["synthetic-data"]["n-respondents"],
+        n_sets_per_respondent = config["parameters"]["synthetic-data"]["n-choice-sets-per-respondent"],
+        seed = config["parameters"]["synthetic-data"]["seed"]
+    output:
+        "build/data/synthetic.feather"
+    conda:
+        "../envs/default.yaml"
+    script:
+        "../scripts/bayes/synthesise.py"
+
+
 rule logistic_regression:
     message: "Fit a simplistic logistic regression model."
     input:
@@ -231,3 +248,4 @@ rule visualise_varying_attribute_levels:
     output: "build/results/models/hierarchical-{name}/{dist}/varying/{level}.vega.json"
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/varying.py"
+
