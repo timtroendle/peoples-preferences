@@ -20,11 +20,16 @@ BASELINE_LEVELS = [ # TODO ADD FROM CONFIG
 ]
 
 EXPECTED_VALUE = "expected"
+ESTIMAND_NAME = {
+    "prior": "Partworth utility",
+    "posterior": "Partworth utility",
+    "amce": "Average marginal component effect"
+}
 
 
 def visualise_partworths(path_to_inference_data: str, facet_by_country: bool, aggregate_individuals: bool,
                          variable_names: Union[str, list[str]], hdi_prob: float, sample_type: str,
-                         nice_names: dict[str, dict[str, str]],
+                         nice_names: dict[str, dict[str, str]], estimand_name: str,
                          path_to_plot: str):
     data = read_data(
         path_to_inference_data=path_to_inference_data,
@@ -40,7 +45,7 @@ def visualise_partworths(path_to_inference_data: str, facet_by_country: bool, ag
         data
     ).encode(
         y=alt.Y("level", sort=list(nice_names["levels"].values()), title="Level"),
-        x=alt.X(EXPECTED_VALUE, title="Partworth utility"),
+        x=alt.X(EXPECTED_VALUE, title=estimand_name),
         color=alt.Color("attribute", sort=list(nice_names["attributes"].values()), legend=alt.Legend(title="Attribute")),
     ).properties(
         width=300,
@@ -156,6 +161,7 @@ if __name__ == "__main__":
         path_to_inference_data=snakemake.input.data,
         sample_type=snakemake.wildcards.sample,
         nice_names=snakemake.params.nice_names,
+        estimand_name=ESTIMAND_NAME[snakemake.wildcards.sample],
         facet_by_country=optional_param("facet_by_country", False),
         aggregate_individuals=optional_param("aggregate_individuals", False),
         variable_names=snakemake.params.variable_names,

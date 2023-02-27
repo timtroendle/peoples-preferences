@@ -106,6 +106,19 @@ rule predict:
         '../scripts/bayes/hierarchical.py'
 
 
+rule prediction_amces:
+    message:
+        "Calculate AMCEs from predicted probabilities."
+    input:
+        data = "build/results/models/hierarchical-{name}/prediction/inference-data.nc"
+    output:
+        "build/results/models/hierarchical-{name}/amce/inference-data.nc"
+    conda:
+        "../envs/pymc.yaml"
+    script:
+        "../scripts/bayes/amce.py"
+
+
 rule diagnostics:
     message: "Run diagnostics for hierarchical model {wildcards.name}."
     input:
@@ -299,3 +312,19 @@ rule visualise_varying_attribute_levels:
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/varying.py"
 
+
+rule visualise_amces:
+    message: "Visualise AMCEs of hierarchical model {wildcards.name}."
+    input: data = rules.prediction_amces.output[0]
+    params:
+        variable_names = "p",
+        hdi_prob = config["report"]["hdi-prob"]["default"],
+        nice_names = config["report"]["nice-names"],
+    output: "build/results/models/hierarchical-{name}/{sample}/pop-means.vega.json"
+    wildcard_constraints:
+        sample = "amce"
+    resources:
+        runtime = 60,
+        mem_mb_per_cpu = 64000
+    conda: "../envs/analyse.yaml"
+    script: "../scripts/bayes/partworths.py"
