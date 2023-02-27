@@ -14,7 +14,7 @@ OPTIONS_PER_RESPONDENT = 16
 
 
 def multinomial_logit_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: int, limit_respondents: bool,
-                            n_respondents_per_country: int, random_seed: int, distribution_type: str,
+                            n_respondents_per_country: int, random_seed: int, sample_type: str,
                             path_to_output: str):
     conjoint = (
         pd
@@ -70,7 +70,7 @@ def multinomial_logit_model(path_to_data: str, n_tune: int, n_draws: int, n_core
             dims="choice_situations"
         )
 
-        match distribution_type:
+        match sample_type:
             case "prior":
                 inference_data = pm.sample_prior_predictive(samples=n_draws, random_seed=random_seed)
             case "posterior":
@@ -82,7 +82,7 @@ def multinomial_logit_model(path_to_data: str, n_tune: int, n_draws: int, n_core
                     return_inferencedata=True
                 )
             case _:
-                raise ValueError(f"Unknown distribution type {distribution_type}.")
+                raise ValueError(f"Unknown sample type {sample_type}.")
 
     inference_data.to_netcdf(path_to_output)
 
@@ -90,7 +90,7 @@ def multinomial_logit_model(path_to_data: str, n_tune: int, n_draws: int, n_core
 if __name__ == "__main__":
     multinomial_logit_model(
         path_to_data=snakemake.input.data,
-        distribution_type=snakemake.wildcards.dist,
+        sample_type=snakemake.wildcards.sample,
         n_tune=snakemake.params.n_tune,
         n_draws=snakemake.params.n_draws,
         n_cores=snakemake.threads,

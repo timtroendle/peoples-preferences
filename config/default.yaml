@@ -410,7 +410,7 @@ parameters:
         POL: 22
         PRT: 34
     synthetic-data:
-        n-respondents: 50
+        n-respondents: 80
         n-choice-sets-per-respondent: 8
         seed: 3987
 models:
@@ -431,9 +431,11 @@ models:
         runtime: # (min)
             prior: 10
             posterior: 10
+            prediction: 10
         mem_mb:
             prior: 16000
             posterior: 16000
+            prediction: 16000
         threads:
             prior: 1
             posterior: 4
@@ -449,9 +451,11 @@ models:
         runtime: # (min)
             prior: 10
             posterior: 10
+            prediction: 10
         mem_mb:
             prior: 16000
             posterior: 16000
+            prediction: 16000
         threads:
             prior: 1
             posterior: 4
@@ -467,9 +471,11 @@ models:
         runtime: # (min)
             prior: 10
             posterior: 10
+            prediction: 10
         mem_mb:
             prior: 16000
             posterior: 16000
+            prediction: 16000
         threads:
             prior: 1
             posterior: 4

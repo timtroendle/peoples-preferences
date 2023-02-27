@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import pymc as pm
 import aesara.tensor as at
+import arviz as az
 
 
 ATTRIBUTES = [
@@ -16,9 +17,83 @@ OPTIONS_PER_RESPONDENT = 16
 YEAR_OF_SURVEY = 2022
 
 
-def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: int, limit_respondents: bool,
-                       n_respondents_per_country: int, random_seed: int, individual_covariates: bool,
-                       covariances: bool, distribution_type: str, path_to_output: str):
+def sample_prior(path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
+                 individual_covariates: bool, covariances: bool, n_draws: int, random_seed: int,
+                 path_to_output: str):
+    model = hierarchical_model(
+        path_to_data=path_to_data,
+        limit_respondents=limit_respondents,
+        n_respondents_per_country=n_respondents_per_country,
+        individual_covariates=individual_covariates,
+        covariances=covariances
+    )
+    (
+        pm
+        .sample_prior_predictive(samples=n_draws, model=model, random_seed=random_seed)
+        .to_netcdf(path_to_output)
+    )
+
+
+def sample_posterior(path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
+                     individual_covariates: bool, covariances: bool, n_draws: int, n_tune: int,
+                     n_cores: int, random_seed: int, path_to_output: str):
+    model = hierarchical_model(
+        path_to_data=path_to_data,
+        limit_respondents=limit_respondents,
+        n_respondents_per_country=n_respondents_per_country,
+        individual_covariates=individual_covariates,
+        covariances=covariances
+    )
+    (
+        pm
+        .sample(
+            model=model,
+            draws=n_draws,
+            tune=n_tune,
+            cores=n_cores,
+            random_seed=random_seed,
+            return_inferencedata=True,
+            target_accept=0.9
+        )
+        .to_netcdf(path_to_output)
+    )
+
+
+def predict(path_to_in_sample_data: str, path_to_trace_data: str, path_to_out_sample_data: str,
+            limit_respondents: bool, n_respondents_per_country: int, individual_covariates: bool,
+            covariances: bool, random_seed: int, path_to_output: str):
+    if individual_covariates:
+        raise NotImplementedError("Prediction for models with individual covariates is not implemented.")
+    model = hierarchical_model(
+        path_to_data=path_to_in_sample_data,
+        limit_respondents=limit_respondents,
+        n_respondents_per_country=n_respondents_per_country,
+        individual_covariates=individual_covariates,
+        covariances=covariances
+    )
+    inference_data = az.from_netcdf(path_to_trace_data)
+    new_data = pd.read_feather(path_to_out_sample_data).set_index(["RESPONDENT_ID", "CHOICE_SET", "LABEL"])
+    dummies = pd.get_dummies(new_data.loc[:, ATTRIBUTES], drop_first=True, prefix_sep=":")
+    with model:
+        pm.set_data({
+            "r": new_data.xs("Left", level="LABEL").index.get_level_values("RESPONDENT_ID").remove_unused_categories().codes,
+            "dummies_left": dummies.xs("Left", level="LABEL").values,
+            "dummies_right": dummies.xs("Right", level="LABEL").values,
+            "c": new_data.groupby("RESPONDENT_ID").RESPONDENT_COUNTRY.first().cat.codes
+        })
+        inference_data = pm.sample_posterior_predictive(
+            inference_data,
+            var_names=["p_left"],
+            return_inferencedata=True,
+            predictions=True,
+            extend_inferencedata=False,
+            random_seed=random_seed,
+        )
+    inference_data.to_netcdf(path_to_output)
+
+
+def hierarchical_model(path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
+                       individual_covariates: bool, covariances: bool):
     conjoint = (
         pd
         .read_feather(path_to_data)
@@ -62,17 +137,17 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
 
     with model:
         # data
-        r = pm.ConstantData(
+        r = pm.MutableData(
             "r",
             conjoint.xs("Left", level="LABEL").index.get_level_values("RESPONDENT_ID").remove_unused_categories().codes,
             dims="choice_situation"
         )
-        dummies_left = pm.ConstantData(
+        dummies_left = pm.MutableData(
             "dummies_left",
             dummies.xs("Left", level="LABEL").values,
             dims=["choice_situation", "level"]
         )
-        dummies_right = pm.ConstantData(
+        dummies_right = pm.MutableData(
             "dummies_right",
             dummies.xs("Right", level="LABEL").values,
             dims=["choice_situation", "level"]
@@ -82,7 +157,7 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
             conjoint.xs("Left", level="LABEL").CHOICE_INDICATOR.values,
             dims="choice_situation"
         )
-        c = pm.ConstantData(
+        c = pm.MutableData(
             "c",
             conjoint.groupby("RESPONDENT_ID").RESPONDENT_COUNTRY.first().cat.codes,
             dims=["respondent"]
@@ -310,22 +385,7 @@ def hierarchical_model(path_to_data: str, n_tune: int, n_draws: int, n_cores: in
             dims="choice_situation"
         )
 
-        match distribution_type:
-            case "prior":
-                inference_data = pm.sample_prior_predictive(samples=n_draws, random_seed=random_seed)
-            case "posterior":
-                inference_data = pm.sample(
-                    draws=n_draws,
-                    tune=n_tune,
-                    cores=n_cores,
-                    random_seed=random_seed,
-                    return_inferencedata=True,
-                    target_accept=0.9
-                )
-            case _:
-                raise ValueError(f"Unknown distribution type {distribution_type}.")
-
-    inference_data.to_netcdf(path_to_output)
+    return model
 
 
 def filter_respondents(df, limit_respondents, n_respondents_per_country):
@@ -346,16 +406,42 @@ def prepare_years_region(df):
 
 
 if __name__ == "__main__":
-    hierarchical_model(
-        path_to_data=snakemake.input.data,
-        distribution_type=snakemake.wildcards.dist,
-        n_tune=snakemake.params.n_tune,
-        n_draws=snakemake.params.n_draws,
-        limit_respondents=bool(snakemake.params.limit_respondents),
-        n_respondents_per_country=int(snakemake.params.limit_respondents) // 4,
-        n_cores=snakemake.threads,
-        random_seed=snakemake.params.random_seed,
-        individual_covariates=snakemake.params.individual_covariates,
-        covariances=snakemake.params.covariances,
-        path_to_output=snakemake.output[0]
-    )
+    match snakemake.wildcards.sample:
+        case "prior":
+            sample_prior(
+                path_to_data=snakemake.input.data,
+                n_draws=snakemake.params.n_draws,
+                limit_respondents=bool(snakemake.params.limit_respondents),
+                n_respondents_per_country=int(snakemake.params.limit_respondents) // 4,
+                random_seed=snakemake.params.random_seed,
+                individual_covariates=snakemake.params.individual_covariates,
+                covariances=snakemake.params.covariances,
+                path_to_output=snakemake.output[0]
+            )
+        case "posterior":
+            sample_posterior(
+                path_to_data=snakemake.input.data,
+                n_tune=snakemake.params.n_tune,
+                n_draws=snakemake.params.n_draws,
+                limit_respondents=bool(snakemake.params.limit_respondents),
+                n_respondents_per_country=int(snakemake.params.limit_respondents) // 4,
+                n_cores=snakemake.threads,
+                random_seed=snakemake.params.random_seed,
+                individual_covariates=snakemake.params.individual_covariates,
+                covariances=snakemake.params.covariances,
+                path_to_output=snakemake.output[0]
+            )
+        case "prediction":
+            predict(
+                path_to_in_sample_data=snakemake.input.in_sample,
+                path_to_out_sample_data=snakemake.input.out_sample,
+                path_to_trace_data=snakemake.input.trace,
+                limit_respondents=bool(snakemake.params.limit_respondents),
+                n_respondents_per_country=int(snakemake.params.limit_respondents) // 4,
+                random_seed=snakemake.params.random_seed,
+                individual_covariates=snakemake.params.individual_covariates,
+                covariances=snakemake.params.covariances,
+                path_to_output=snakemake.output[0]
+            )
+        case _:
+            raise ValueError(f"Unknown type {snakemake.wildcards.sample}.")

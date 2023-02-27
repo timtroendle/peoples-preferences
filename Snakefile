@@ -25,7 +25,7 @@ wildcard_constraints:
     country_id = "|".join(COUNTRY_IDS),
     figure_format = "png|pdf",
     level = "|".join([a.replace("+", "\+") for a in NONE_BASELINE_ATTRIBUTE_LEVELS]),
-    dist = "prior|posterior"
+    sample = "prior|posterior|prediction",
 min_version("7.8")
 
 onstart:
@@ -38,18 +38,18 @@ onerror:
         shell("echo "" | mail -s 'peoples-preferences failed' {config[email]}")
 
 
-def full_hierarchical_model_analysis(model: str, dist: str):
+def full_hierarchical_model_analysis(model: str, sample: str):
     return [
-        f"build/results/models/hierarchical-{model}/{dist}/diagnostics/summary.csv",
-        f"build/results/models/hierarchical-{model}/{dist}/pop-means.pdf",
-        f"build/results/models/hierarchical-{model}/{dist}/country-differences.pdf",
-        f"build/results/models/hierarchical-{model}/{dist}/country-means.pdf",
-        f"build/results/models/hierarchical-{model}/{dist}/individual-partworths.pdf",
-        f"build/results/models/hierarchical-{model}/{dist}/unexplained-heterogeneity.pdf",
-        f"build/results/models/hierarchical-{model}/{dist}/left-option.pdf",
-        f"build/results/models/hierarchical-{model}/{dist}/varying/left-intercept.pdf"
+        f"build/results/models/hierarchical-{model}/{sample}/diagnostics/summary.csv",
+        f"build/results/models/hierarchical-{model}/{sample}/pop-means.pdf",
+        f"build/results/models/hierarchical-{model}/{sample}/country-differences.pdf",
+        f"build/results/models/hierarchical-{model}/{sample}/country-means.pdf",
+        f"build/results/models/hierarchical-{model}/{sample}/individual-partworths.pdf",
+        f"build/results/models/hierarchical-{model}/{sample}/unexplained-heterogeneity.pdf",
+        f"build/results/models/hierarchical-{model}/{sample}/left-option.pdf",
+        f"build/results/models/hierarchical-{model}/{sample}/varying/left-intercept.pdf"
     ] + [
-        f"build/results/models/hierarchical-{model}/{dist}/varying/{level}.pdf"
+        f"build/results/models/hierarchical-{model}/{sample}/varying/{level}.pdf"
         for level in NONE_BASELINE_ATTRIBUTE_LEVELS
     ]
 
@@ -58,8 +58,8 @@ rule all:
     input:
         "build/report.html",
         "build/test-report.html",
-        full_hierarchical_model_analysis(model="nocovariates-nocovariances", dist="prior"),
-        full_hierarchical_model_analysis(model="nocovariates-nocovariances", dist="posterior"),
+        full_hierarchical_model_analysis(model="nocovariates-nocovariances", sample="prior"),
+        full_hierarchical_model_analysis(model="nocovariates-nocovariances", sample="posterior"),
         "build/results/likert-items.pdf",
         "build/results/agreement-items.pdf",
         "build/results/gender.pdf",

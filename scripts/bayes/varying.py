@@ -8,9 +8,9 @@ DARK_GREY = "#424242"
 
 
 def plot_varying_effects(path_to_inference_data: str, varying_variable_name: str, pop_mean_variable_name: str,
-                         distribution_type: str,
+                         sample_type: str,
                          level_choice: dict[str, str], narrow_hdi: float, wide_hdi: str, path_to_plot: str):
-    data = az.from_netcdf(path_to_inference_data)[distribution_type]
+    data = az.from_netcdf(path_to_inference_data)[sample_type]
     varying = uncertainty_areas(
         varying=data[varying_variable_name].sel(level_choice, drop=True),
         wide_hdi=wide_hdi,
@@ -107,7 +107,7 @@ def uncertainty_areas(varying: xr.DataArray, wide_hdi: float, narrow_hdi: float)
 if __name__ == "__main__":
     plot_varying_effects(
         path_to_inference_data=snakemake.input.data,
-        distribution_type=snakemake.wildcards.dist,
+        sample_type=snakemake.wildcards.sample,
         varying_variable_name=snakemake.params.varying_variable_name,
         pop_mean_variable_name=snakemake.params.pop_means_variable_name,
         level_choice=snakemake.params.level_choice,

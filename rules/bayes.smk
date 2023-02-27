@@ -32,7 +32,7 @@ rule logistic_regression:
 
 
 rule multinomial_logit:
-    message: "Sample {wildcards.dist} from a multinomial logit model."
+    message: "Sample {wildcards.sample} from a multinomial logit model."
     input: data = rules.global_conjoint.output[0]
     params:
         n_tune = config["models"]["multinomial"]["n-tune"],
@@ -43,7 +43,7 @@ rule multinomial_logit:
         runtime = 60,
         mem_mb_per_cpu = 4000
     threads: 4
-    output: "build/results/models/multinomial-logit/{dist}/inference-data.nc"
+    output: "build/results/models/multinomial-logit/{sample}/inference-data.nc"
     conda: "../envs/pymc.yaml"
     script: "../scripts/bayes/multinomial.py"
 
@@ -53,14 +53,14 @@ def hierarchical_model_config(param_name):
         name = f"hierarchical-{wildcards.name}"
         param = config["models"][name][param_name]
         try:
-            return param[wildcards.dist]
+            return param[wildcards.sample]
         except   TypeError:
             return param
     return hierarchical_model_config
 
 
 rule hierarchical:
-    message: "Sample {wildcards.dist} from hierarchical Bayes model '{wildcards.name}' using PyMC."
+    message: "Sample {wildcards.sample} from hierarchical Bayes model '{wildcards.name}' using PyMC."
     input: data = rules.global_conjoint.output[0]
     params:
         n_tune = hierarchical_model_config("n-tune"),
@@ -73,9 +73,37 @@ rule hierarchical:
         runtime = hierarchical_model_config("runtime"),
         mem_mb_per_cpu = lambda wildcards, threads: hierarchical_model_config("mem_mb")(wildcards) // threads
     threads: lambda wildcards: hierarchical_model_config("threads")(wildcards)
-    output: "build/results/models/hierarchical-{name}/{dist}/inference-data.nc"
+    output: "build/results/models/hierarchical-{name}/{sample}/inference-data.nc"
+    wildcard_constraints:
+        sample = "prior|posterior"
     conda: "../envs/pymc.yaml"
     script: "../scripts/bayes/hierarchical.py"
+
+
+rule predict:
+    message:
+        "Predict from hierarchical Bayes model '{wildcards.name}' using PyMC."
+    input:
+        in_sample = rules.global_conjoint.output[0],
+        out_sample = rules.synthetic_data.output[0],
+        trace = "build/results/models/hierarchical-{name}/posterior/inference-data.nc"
+    params:
+        limit_respondents = hierarchical_model_config("limit-respondents"),
+        random_seed = hierarchical_model_config("random-seed"),
+        individual_covariates = hierarchical_model_config("individual-covariates"),
+        covariances = hierarchical_model_config("covariances"),
+    resources:
+        runtime = hierarchical_model_config("runtime"),
+        mem_mb_per_cpu = lambda wildcards, threads: hierarchical_model_config("mem_mb")(wildcards) // threads
+    threads: 1
+    output:
+        "build/results/models/hierarchical-{name}/{sample}/inference-data.nc"
+    wildcard_constraints:
+        sample = "prediction"
+    conda:
+        '../envs/pymc.yaml'
+    script:
+        '../scripts/bayes/hierarchical.py'
 
 
 rule diagnostics:
@@ -84,20 +112,22 @@ rule diagnostics:
         inference_data = rules.hierarchical.output[0]
     params: hdi_prob = 0.94
     output:
-        trace = "build/results/models/hierarchical-{name}/{dist}/diagnostics/trace.png",
-        pop_means = "build/results/models/hierarchical-{name}/{dist}/diagnostics/pop-means.png",
-        forest = "build/results/models/hierarchical-{name}/{dist}/diagnostics/forest.png",
-        summary = "build/results/models/hierarchical-{name}/{dist}/diagnostics/summary.feather",
-        rhos_individual = "build/results/models/hierarchical-{name}/{dist}/diagnostics/rhos-individual.png",
-        rhos_country = "build/results/models/hierarchical-{name}/{dist}/diagnostics/rhos-country.png",
-        individuals = "build/results/models/hierarchical-{name}/{dist}/diagnostics/individuals.png",
-        confusion = "build/results/models/hierarchical-{name}/{dist}/diagnostics/confusion-matrix.csv",
-        accuracy = "build/results/models/hierarchical-{name}/{dist}/diagnostics/in-sample-prediction-accuracy.txt",
-        probability = "build/results/models/hierarchical-{name}/{dist}/diagnostics/choice-probability.png",
-        utility = "build/results/models/hierarchical-{name}/{dist}/diagnostics/utility.png",
+        trace = "build/results/models/hierarchical-{name}/{sample}/diagnostics/trace.png",
+        pop_means = "build/results/models/hierarchical-{name}/{sample}/diagnostics/pop-means.png",
+        forest = "build/results/models/hierarchical-{name}/{sample}/diagnostics/forest.png",
+        summary = "build/results/models/hierarchical-{name}/{sample}/diagnostics/summary.feather",
+        rhos_individual = "build/results/models/hierarchical-{name}/{sample}/diagnostics/rhos-individual.png",
+        rhos_country = "build/results/models/hierarchical-{name}/{sample}/diagnostics/rhos-country.png",
+        individuals = "build/results/models/hierarchical-{name}/{sample}/diagnostics/individuals.png",
+        confusion = "build/results/models/hierarchical-{name}/{sample}/diagnostics/confusion-matrix.csv",
+        accuracy = "build/results/models/hierarchical-{name}/{sample}/diagnostics/in-sample-prediction-accuracy.txt",
+        probability = "build/results/models/hierarchical-{name}/{sample}/diagnostics/choice-probability.png",
+        utility = "build/results/models/hierarchical-{name}/{sample}/diagnostics/utility.png",
     resources:
         runtime = 60,
         mem_mb_per_cpu = 64000
+    wildcard_constraints:
+        sample = "prior|posterior"
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/diagnostics.py"
 
@@ -110,7 +140,9 @@ rule visualise_partworths:
         variable_names = "partworths",
         hdi_prob = config["report"]["hdi-prob"]["default"],
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/multinomial-logit/{dist}/pop-means.vega.json"
+    output: "build/results/models/multinomial-logit/{sample}/pop-means.vega.json"
+    wildcard_constraints:
+        sample = "prior|posterior"
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/partworths.py"
 
@@ -122,10 +154,12 @@ rule visualise_population_means:
         variable_names = "alpha",
         hdi_prob = config["report"]["hdi-prob"]["default"],
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/hierarchical-{name}/{dist}/pop-means.vega.json"
+    output: "build/results/models/hierarchical-{name}/{sample}/pop-means.vega.json"
     resources:
         runtime = 60,
         mem_mb_per_cpu = 64000
+    wildcard_constraints:
+        sample = "prior|posterior"
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/partworths.py"
 
@@ -139,10 +173,12 @@ rule visualise_country_differences:
         aggregate_individuals = False,
         hdi_prob = config["report"]["hdi-prob"]["default"],
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/hierarchical-{name}/{dist}/country-differences.vega.json"
+    output: "build/results/models/hierarchical-{name}/{sample}/country-differences.vega.json"
     resources:
         runtime = 60,
         mem_mb_per_cpu = 64000
+    wildcard_constraints:
+        sample = "prior|posterior"
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/partworths.py"
 
@@ -156,10 +192,12 @@ rule visualise_country_means:
         aggregate_individuals = False,
         hdi_prob = config["report"]["hdi-prob"]["default"],
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/hierarchical-{name}/{dist}/country-means.vega.json"
+    output: "build/results/models/hierarchical-{name}/{sample}/country-means.vega.json"
     resources:
         runtime = 60,
         mem_mb_per_cpu = 64000
+    wildcard_constraints:
+        sample = "prior|posterior"
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/partworths.py"
 
@@ -172,10 +210,12 @@ rule visualise_partworths_heterogeneity:
         aggregate_individuals = True,
         hdi_prob = None, # has no use here
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/hierarchical-{name}/{dist}/individual-partworths.vega.json"
+    output: "build/results/models/hierarchical-{name}/{sample}/individual-partworths.vega.json"
     resources:
         runtime = 60,
         mem_mb_per_cpu = 64000
+    wildcard_constraints:
+        sample = "prior|posterior"
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/partworths.py"
 
@@ -188,24 +228,28 @@ rule visualise_unexplained_heterogeneity:
         aggregate_individuals = True,
         hdi_prob = None, # has no use here
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/hierarchical-{name}/{dist}/unexplained-heterogeneity.vega.json"
+    output: "build/results/models/hierarchical-{name}/{sample}/unexplained-heterogeneity.vega.json"
     resources:
         runtime = 60,
         mem_mb_per_cpu = 64000
+    wildcard_constraints:
+        sample = "prior|posterior"
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/partworths.py"
 
 
 rule visualise_covariates:
     message: "Visualise the explaining power of covariates."
-    input: data = "build/models/hierarchical-covariates/{dist}/inference-data.nc"
+    input: data = "build/models/hierarchical-covariates/{sample}/inference-data.nc"
     params:
         interval = 0.9, # show only this share of the total interval
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/hierarchical-covariates/{dist}/covariates.vega.json"
+    output: "build/results/models/hierarchical-covariates/{sample}/covariates.vega.json"
     resources:
         runtime = 60,
         mem_mb_per_cpu = 64000
+    wildcard_constraints:
+        sample = "prior|posterior"
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/covariates.py"
 
@@ -217,7 +261,9 @@ rule visualise_mu_left_intercept:
     params:
         variable_name = "mu_left_intercept",
         nice_variable_name = "Mean additional partworth utility of left option"
-    output: "build/results/models/hierarchical-{name}/{dist}/left-option.vega.json"
+    output: "build/results/models/hierarchical-{name}/{sample}/left-option.vega.json"
+    wildcard_constraints:
+        sample = "prior|posterior"
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/density.py"
 
@@ -231,7 +277,9 @@ rule visualise_varying_left_option_effect:
         level_choice = {},
         narrow_hdi = config["report"]["hdi-prob"]["narrow"],
         wide_hdi = config["report"]["hdi-prob"]["default"]
-    output: "build/results/models/hierarchical-{name}/{dist}/varying/left-intercept.vega.json"
+    output: "build/results/models/hierarchical-{name}/{sample}/varying/left-intercept.vega.json"
+    wildcard_constraints:
+        sample = "prior|posterior"
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/varying.py"
 
@@ -245,7 +293,9 @@ rule visualise_varying_attribute_levels:
         level_choice = lambda wildcards, output: {"level": wildcards["level"].replace("__", " ")},
         narrow_hdi = config["report"]["hdi-prob"]["narrow"],
         wide_hdi = config["report"]["hdi-prob"]["default"]
-    output: "build/results/models/hierarchical-{name}/{dist}/varying/{level}.vega.json"
+    output: "build/results/models/hierarchical-{name}/{sample}/varying/{level}.vega.json"
+    wildcard_constraints:
+        sample = "prior|posterior"
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/varying.py"
 

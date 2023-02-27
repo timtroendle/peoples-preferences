@@ -1,3 +1,6 @@
+parameters:
+    synthetic-data:
+        n-respondents: 1000
 models:
     multinomial:
         n-tune: 2000
@@ -12,9 +15,11 @@ models:
         runtime: # (min)
             prior: 60
             posterior: 720
+            prediction: 60
         mem_mb:
             prior: 16000
             posterior: 46000
+            prediction: 16000
     hierarchical-covariates:
         n-tune: 6000
         n-draws:
@@ -24,6 +29,8 @@ models:
         runtime: # (min)
             prior: 60
             posterior: 1440
+            prediction: 60
         mem_mb:
             prior: 16000
             posterior: 96000
+            prediction: 16000

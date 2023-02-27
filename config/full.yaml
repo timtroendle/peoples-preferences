@@ -1,3 +1,6 @@
+parameters:
+    synthetic-data:
+        n-respondents: 4103
 models:
     modelA:
         formula: ~ TECHNOLOGY + LAND + SHARE_IMPORTS + PRICES + TRANSMISSION + OWNERSHIP
@@ -17,9 +20,11 @@ models:
         runtime: # (min)
             prior: 60
             posterior: 1440
+            prediction: 60
         mem_mb:
             prior: 48000
             posterior: 96000
+            memory: 48000
     hierarchical-covariates:
         n-tune: 10000
         n-draws:
@@ -29,9 +34,11 @@ models:
         runtime: # (min)
             prior: 60
             posterior: 2880
+            prediction: 60
         mem_mb:
             prior: 48000
             posterior: 320000
+            memory: 48000
     hierarchical-nocovariates-nocovariances:
         n-tune: 10000
         n-draws:
@@ -41,6 +48,8 @@ models:
         runtime: # (min)
             prior: 60
             posterior: 2880
+            prediction: 60
         mem_mb:
             prior: 48000
             posterior: 180000
+            prediction: 48000

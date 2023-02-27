@@ -7,7 +7,7 @@ import xarray as xr
 import seaborn as sns
 
 
-def diagnostics(path_to_inference_data: str, distribution_type: str,
+def diagnostics(path_to_inference_data: str, sample_type: str,
                 path_to_trace_plot: str, path_to_pop_means_plot: str,
                 path_to_forest_plot: str, path_to_summary: str, path_to_rhos_individual_plot: str,
                 path_to_rhos_country_plot: str, path_to_choice_probability_plot: str,
@@ -19,7 +19,7 @@ def diagnostics(path_to_inference_data: str, distribution_type: str,
                                                         # accesses to the data. Therefore, I am loading it into
                                                         # memory here.
     constant_data = inference_data.constant_data
-    inference_data = inference_data[distribution_type]
+    inference_data = inference_data[sample_type]
     inference_data = retransform_normalised(inference_data, constant_data)
 
     trace_plot(inference_data, path_to_trace_plot)
@@ -243,7 +243,7 @@ def utility_plot(inference_data: xr.Dataset, hdi_prob: float, path_to_plot: str)
 if __name__ == "__main__":
     diagnostics(
         path_to_inference_data=snakemake.input.inference_data,
-        distribution_type=snakemake.wildcards.dist,
+        sample_type=snakemake.wildcards.sample,
         path_to_trace_plot=snakemake.output.trace,
         path_to_pop_means_plot=snakemake.output.pop_means,
         path_to_forest_plot=snakemake.output.forest,

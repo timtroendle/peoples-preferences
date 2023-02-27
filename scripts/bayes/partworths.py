@@ -23,12 +23,12 @@ EXPECTED_VALUE = "expected"
 
 
 def visualise_partworths(path_to_inference_data: str, facet_by_country: bool, aggregate_individuals: bool,
-                         variable_names: Union[str, list[str]], hdi_prob: float, distribution_type: str,
+                         variable_names: Union[str, list[str]], hdi_prob: float, sample_type: str,
                          nice_names: dict[str, dict[str, str]],
                          path_to_plot: str):
     data = read_data(
         path_to_inference_data=path_to_inference_data,
-        distribution_type=distribution_type,
+        sample_type=sample_type,
         variable_names=variable_names,
         facet_by_country=facet_by_country,
         aggregate_individuals=aggregate_individuals,
@@ -81,9 +81,9 @@ def visualise_partworths(path_to_inference_data: str, facet_by_country: bool, ag
 
 
 def read_data(path_to_inference_data: str, variable_names: Union[str, list[str]], facet_by_country: bool,
-              distribution_type: str,
+              sample_type: str,
               aggregate_individuals: True, nice_names: dict[str, dict[str, str]], hdi_prob: float):
-    full = az.from_netcdf(path_to_inference_data)[distribution_type]
+    full = az.from_netcdf(path_to_inference_data)[sample_type]
     attr_levels = full.level.to_series().to_list()
     all_attr_levels = attr_levels + BASELINE_LEVELS
     fill_value = pd.NA if aggregate_individuals else 0
@@ -154,7 +154,7 @@ def optional_param(name: str, default):
 if __name__ == "__main__":
     visualise_partworths(
         path_to_inference_data=snakemake.input.data,
-        distribution_type=snakemake.wildcards.dist,
+        sample_type=snakemake.wildcards.sample,
         nice_names=snakemake.params.nice_names,
         facet_by_country=optional_param("facet_by_country", False),
         aggregate_individuals=optional_param("aggregate_individuals", False),
