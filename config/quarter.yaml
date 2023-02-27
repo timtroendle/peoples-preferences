@@ -20,6 +20,20 @@ models:
             prior: 16000
             posterior: 46000
             prediction: 16000
+    hierarchical-nocovariates-nocovariances:
+        n-tune: 6000
+        n-draws:
+            prior: 1000
+            posterior: 2000
+        limit-respondents: 1000
+        runtime: # (min)
+            prior: 60
+            posterior: 1440
+            prediction: 60
+        mem_mb:
+            prior: 16000
+            posterior: 96000
+            prediction: 16000
     hierarchical-covariates:
         n-tune: 6000
         n-draws:
