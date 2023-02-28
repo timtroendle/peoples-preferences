@@ -39,7 +39,7 @@ NONE_BASE_LEVELS = { # TODO take from config
 
 def AMCE(path_to_prediction_data: str, path_to_output: str):
     data = az.from_netcdf(path_to_prediction_data)
-    amces = calculate_AMCE(data)
+    amces = calculate_AMCE(data) # TODO handle left-hand side intercept
     amces.to_netcdf(path_to_output, group="amce")
 
 

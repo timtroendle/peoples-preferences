@@ -410,7 +410,7 @@ parameters:
         POL: 22
         PRT: 34
     synthetic-data:
-        n-respondents: 80
+        n-respondents: 80 # TODO allow to predict for more respondents than in the data
         n-choice-sets-per-respondent: 8
         seed: 3987
 models:
@@ -424,7 +424,7 @@ models:
         n-draws:
             prior: 500
             posterior: 500
-        limit-respondents: 20
+        limit-respondents: 80
         random-seed: 4000
         individual-covariates: False
         covariances: True
