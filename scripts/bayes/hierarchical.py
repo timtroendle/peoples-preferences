@@ -100,7 +100,7 @@ def hierarchical_model(path_to_data: str, limit_respondents: bool, n_respondents
         .set_index(["RESPONDENT_ID", "CHOICE_SET", "LABEL"])
         .pipe(filter_respondents, limit_respondents, n_respondents_per_country)
     )
-    if covariances:
+    if individual_covariates:
         conjoint = (
             conjoint
             .pipe(prepare_respondent_age)
