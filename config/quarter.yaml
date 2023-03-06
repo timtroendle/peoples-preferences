@@ -14,7 +14,7 @@ models:
         limit-respondents: 1000
         runtime: # (min)
             prior: 60
-            posterior: 720
+            posterior: 2880
             prediction: 60
         mem_mb:
             prior: 16000

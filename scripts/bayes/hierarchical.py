@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import pymc as pm
@@ -44,19 +46,23 @@ def sample_posterior(path_to_data: str, limit_respondents: bool, n_respondents_p
         individual_covariates=individual_covariates,
         covariances=covariances
     )
-    (
-        pm
-        .sample(
-            model=model,
-            draws=n_draws,
-            tune=n_tune,
-            cores=n_cores,
-            random_seed=random_seed,
-            return_inferencedata=True,
-            target_accept=0.9
-        )
-        .to_netcdf(path_to_output)
+
+    inference_data = pm.sample(
+        model=model,
+        draws=n_draws,
+        tune=n_tune,
+        cores=n_cores,
+        random_seed=random_seed,
+        return_inferencedata=True,
+        target_accept=0.9
     )
+    # The following line should not be necessary as Snakemake takes care of ensuring folders
+    # exist. However, I've seen this failing on very long running jobs on the cluster in which
+    # Snakemake crashed during job execution. After Snakemake's crash, the folder did not exist
+    # (anymore?) and the job failed. As posterior sampling takes very long, this must not happen
+    # and the following line ensures it does not.
+    Path(path_to_output).parent.mkdir(exist_ok=True, parents=True)
+    inference_data.to_netcdf(path_to_output)
 
 
 def predict(path_to_in_sample_data: str, path_to_trace_data: str, path_to_out_sample_data: str,
