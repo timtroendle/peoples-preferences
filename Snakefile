@@ -126,6 +126,7 @@ rule push:
         """
         mkdir {params.push_directory}
         cp -R build/cluster/ {params.push_directory}
+        cp -R build/logs/ {params.push_directory}/logs/
         """
 
 

@@ -23,9 +23,11 @@ rule receive:
         url = config["cluster-sync"]["url"],
         cluster_base_dir = config["cluster-sync"]["cluster-base-dir"],
         cluster_build_dir = config["cluster-sync"]["cluster-base-dir"] + "/build/",
-        cluster_log_dir = config["cluster-sync"]["cluster-base-dir"] + "/.snakemake/slurm_logs/",
+        cluster_snakemake_log_dir = config["cluster-sync"]["cluster-base-dir"] + "/.snakemake/log/",
+        cluster_slurm_log_dir = config["cluster-sync"]["cluster-base-dir"] + "/.snakemake/slurm_logs/",
         local_results_dir = config["cluster-sync"]["local-results-dir"],
-        local_logs_dir = config["cluster-sync"]["local-results-dir"] + "/../logs/slurm/"
+        local_slurm_logs_dir = config["cluster-sync"]["local-results-dir"] + "/../logs/slurm/",
+        local_snakemake_logs_dir = config["cluster-sync"]["local-results-dir"] + "/../logs/snakemake/"
     conda: "../envs/shell.yaml"
     shell:
         """
@@ -33,7 +35,10 @@ rule receive:
         {params.url}:{params.cluster_build_dir} {params.local_results_dir}
 
         rsync -avzh --progress --delete -r --exclude-from={params.receive_ignore} \
-        {params.url}:{params.cluster_log_dir} {params.local_logs_dir}
+        {params.url}:{params.cluster_slurm_log_dir} {params.local_slurm_logs_dir}
+
+        rsync -avzh --progress --delete -r --exclude-from={params.receive_ignore} \
+        {params.url}:{params.cluster_snakemake_log_dir} {params.local_snakemake_logs_dir}
         """
 
 
