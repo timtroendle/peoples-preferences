@@ -3,10 +3,11 @@ channels:
     - conda-forge
 dependencies:
     - python=3.11
-    - numpy=1.24.1
+    - numpy=1.24.2
     - pandas=1.5.2
     - pyarrow=10.0.1
-    - aesara=2.8.7
-    - arviz=0.14.0
-    - blas=2.115
-    - pymc=4.4.0
+    - pytensor=2.10.1
+    - netCDF4=1.6.3
+    - arviz=0.15.1
+    - blas=2.116
+    - pymc=5.2.0

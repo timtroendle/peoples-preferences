@@ -3,7 +3,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import pymc as pm
-import aesara.tensor as at
+import pytensor.tensor as pt
 import arviz as az
 
 
@@ -246,7 +246,7 @@ def hierarchical_model(path_to_data: str, limit_respondents: bool, n_respondents
             sigma_country = pm.Exponential('sigma_country', 2, dims="level")
             countries = pm.Deterministic(
                 'countries',
-                at.reshape((pm.math.flatten(z_country) * at.repeat(sigma_country, n_countries)), (n_levels, n_countries)), # FIXME easier cell-wise product
+                pt.reshape((pm.math.flatten(z_country) * pt.repeat(sigma_country, n_countries)), (n_levels, n_countries)), # FIXME easier cell-wise product
                 dims=["level", "country"]
             )
 
@@ -278,7 +278,7 @@ def hierarchical_model(path_to_data: str, limit_respondents: bool, n_respondents
             sigma_individuals = pm.Exponential('sigma_individuals', 2, dims="level")
             individuals = pm.Deterministic(
                 "individuals",
-                at.reshape((pm.math.flatten(z_individuals) * at.repeat(sigma_individuals, n_respondents)), (n_levels, n_respondents)), # FIXME easier cell-wise product
+                pt.reshape((pm.math.flatten(z_individuals) * pt.repeat(sigma_individuals, n_respondents)), (n_levels, n_respondents)), # FIXME easier cell-wise product
                 dims=["level", "respondent"]
             )
 
