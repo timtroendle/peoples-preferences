@@ -460,7 +460,7 @@ models:
             prior: 1
             posterior: 4
     hierarchical-nocovariates-nocovariances:
-        n-tune: 2000
+        n-tune: 500
         n-draws:
             prior: 500
             posterior: 500

@@ -313,6 +313,56 @@ references:
   URL: https://www.nowpublishers.com/article/Details/ECO-036
   volume: '10'
 
+- id: Bergquist:2022
+  abstract: >-
+    Public acceptance is a precondition for implementing taxes and laws aimed at
+    mitigating climate change. However, it still remains challenging to
+    understand its determinants for the climate community. Here, we use a
+    meta-analytic approach to examine the role of public opinion about climate
+    change taxes and laws. Fifteen variables were examined by synthesizing 89
+    datasets from 51 articles across 33 countries, with a total sample of
+    119,465 participants. Among all factors, perceived fairness and
+    effectiveness were the most important determinants. Self-enhancement values
+    and knowledge about climate change showed weak relationships and demographic
+    variables showed only weak or close to zero effects. Our meta-analytic
+    results provide useful insights and have the potential to inform climate
+    change researchers, practitioners and policymakers to better design climate
+    policy instruments.
+  accessed:
+    - year: 2023
+      month: 3
+      day: 23
+  author:
+    - family: Bergquist
+      given: Magnus
+    - family: Nilsson
+      given: Andreas
+    - family: Harring
+      given: Niklas
+    - family: Jagers
+      given: Sverker C.
+  citation-key: Bergquist:2022
+  container-title: Nature Climate Change
+  container-title-short: Nat. Clim. Chang.
+  DOI: 10.1038/s41558-022-01297-6
+  ISSN: 1758-6798
+  issue: '3'
+  issued:
+    - year: 2022
+      month: 3
+  language: en
+  license: 2022 The Author(s)
+  number: '3'
+  page: 235-240
+  publisher: Nature Publishing Group
+  source: www.nature.com
+  title: >-
+    Meta-analyses of fifteen determinants of public opinion about climate change
+    taxes and laws
+  type: article-journal
+  URL: https://www.nature.com/articles/s41558-022-01297-6
+  volume: '12'
+
 - id: Boudet:2019
   abstract: >-
     Energy’s central place in economic, political and social systems—and the
@@ -962,7 +1012,6 @@ references:
   issued:
     - year: 2021
   language: en
-  note: '_eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1111/rssa.12734'
   page: 1524-1548
   source: Wiley Online Library
   title: >-
@@ -1553,6 +1602,149 @@ references:
   URL: https://linkinghub.elsevier.com/retrieve/pii/S0095069616304624
   volume: '82'
 
+- id: Lazer:2009
+  accessed:
+    - year: 2023
+      month: 3
+      day: 6
+  author:
+    - family: Lazer
+      given: David
+    - family: Pentland
+      given: Alex
+    - family: Adamic
+      given: Lada
+    - family: Aral
+      given: Sinan
+    - family: Barabási
+      given: Albert-László
+    - family: Brewer
+      given: Devon
+    - family: Christakis
+      given: Nicholas
+    - family: Contractor
+      given: Noshir
+    - family: Fowler
+      given: James
+    - family: Gutmann
+      given: Myron
+    - family: Jebara
+      given: Tony
+    - family: King
+      given: Gary
+    - family: Macy
+      given: Michael
+    - family: Roy
+      given: Deb
+    - family: Van Alstyne
+      given: Marshall
+  citation-key: Lazer:2009
+  container-title: Science
+  container-title-short: Science
+  DOI: 10.1126/science.1167742
+  ISSN: 0036-8075, 1095-9203
+  issue: '5915'
+  issued:
+    - year: 2009
+      month: 2
+      day: 6
+  language: en
+  page: 721-723
+  source: DOI.org (Crossref)
+  title: Computational Social Science
+  type: article-journal
+  URL: https://www.science.org/doi/10.1126/science.1167742
+  volume: '323'
+
+- id: Lazer:2018
+  abstract: >-
+    A breezy, personal guide provides a road map to solid computational social
+    science research
+              , 
+                
+                  Generally, social scientists have been poorly equipped to deal with the 21st-cen­tury deluge of large-scale complex data. Computer scientists, well equipped to handle the data, are often ignorant of social theory and of foundational research methods in the social sciences. What is needed is an articula­tion of core principles of designing research that are accessible to multiple disciplines. Into this breach steps Matthew Salganik with
+                  Bit by Bit.
+  accessed:
+    - year: 2023
+      month: 3
+      day: 6
+  author:
+    - family: Lazer
+      given: David
+  citation-key: Lazer:2018
+  container-title: Science
+  container-title-short: Science
+  DOI: 10.1126/science.aaq0679
+  ISSN: 0036-8075, 1095-9203
+  issue: '6371'
+  issued:
+    - year: 2018
+      month: 1
+      day: 5
+  language: en
+  page: 42-42
+  source: DOI.org (Crossref)
+  title: >-
+    Social science, today **Bit by Bit: Social Research in the Digital Age**
+    *Matthew J. Salganik* Princeton University Press, 2017. 445 pp.
+  title-short: Social science, today **Bit by Bit**
+  type: article-journal
+  URL: https://www.science.org/doi/10.1126/science.aaq0679
+  volume: '359'
+
+- id: Lazer:2020
+  accessed:
+    - year: 2023
+      month: 3
+      day: 6
+  author:
+    - family: Lazer
+      given: David M. J.
+    - family: Pentland
+      given: Alex
+    - family: Watts
+      given: Duncan J.
+    - family: Aral
+      given: Sinan
+    - family: Athey
+      given: Susan
+    - family: Contractor
+      given: Noshir
+    - family: Freelon
+      given: Deen
+    - family: Gonzalez-Bailon
+      given: Sandra
+    - family: King
+      given: Gary
+    - family: Margetts
+      given: Helen
+    - family: Nelson
+      given: Alondra
+    - family: Salganik
+      given: Matthew J.
+    - family: Strohmaier
+      given: Markus
+    - family: Vespignani
+      given: Alessandro
+    - family: Wagner
+      given: Claudia
+  citation-key: Lazer:2020
+  container-title: Science
+  DOI: 10.1126/science.aaz8170
+  issue: '6507'
+  issued:
+    - year: 2020
+      month: 8
+      day: 28
+  page: 1060-1062
+  publisher: American Association for the Advancement of Science
+  source: science.org (Atypon)
+  title: 'Computational social science: Obstacles and opportunities'
+  title-short: Computational social science
+  type: article-journal
+  URL: https://www.science.org/doi/10.1126/science.aaz8170
+  volume: '369'
+
 - id: Leek:2017
   abstract: >-
     As debate rumbles on about how and how much poor statistics is to blame for
@@ -1719,6 +1911,36 @@ references:
   type: article-journal
   URL: http://pubsonline.informs.org/doi/abs/10.1287/mksc.15.2.173
   volume: '15'
+
+- id: Levi:2022
+  abstract: |-
+    Abstract
+              Political conflicts about energy and climate change policies have often local implications, yet little is known about local public opinion towards these policies. Here, we estimate support towards 26 climate change mitigation policies for 402 German counties and for up to four periods of time. We find that local support for climate policies varies by up to 60 percentage points across German counties. While support for the expansion of wind power plants and solar power plants have converged over the last years, attitudes on the phase out of coal power have polarized across regions. Using a spatial panel analysis, we detect that support for the expansion of wind and solar plants correlate with the actual development of solar and wind capacities in these regions. Moreover, the spread of climate policy opinion is strongly determined by spatial diffusion as change in one region positively influences the trajectory of policy opinion among its neighbors.
+  accessed:
+    - year: 2023
+      month: 3
+      day: 2
+  author:
+    - family: Levi
+      given: Sebastian
+    - family: Wolf
+      given: Ingo
+    - family: Sommer
+      given: Stephan
+    - family: Howe
+      given: Peter
+  citation-key: Levi:2022
+  DOI: 10.21203/rs.3.rs-2088048/v1
+  genre: preprint
+  issued:
+    - year: 2022
+      month: 9
+      day: 22
+  publisher: In Review
+  source: DOI.org (Crossref)
+  title: Local support of climate change policies is driven by spatial diffusion
+  type: report
+  URL: https://www.researchsquare.com/article/rs-2088048/v1
 
 - id: 'Louviere:'
   author:
@@ -1937,7 +2159,6 @@ references:
   issued:
     - year: 2018
   language: en
-  note: '_eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1111/ajps.12357'
   page: 760-775
   source: Wiley Online Library
   title: >-
@@ -2162,6 +2383,64 @@ references:
   type: article-journal
   URL: https://www.cell.com/joule/abstract/S2542-4351(22)00236-7
   volume: '6'
+
+- id: Plum:2019
+  abstract: >-
+    Energy transition towards a sustainable system comprising various energy
+    sources is a major challenge. We conducted a representative survey in the
+    German-speaking part of Switzerland to elicit the population's preferences
+    for electricity from solar, wind or natural gas under different
+    institutional and site-specific conditions. Based on a choice experiment we
+    found a consistent preference for electricity based on solar energy and - to
+    a lesser degree - wind energy, built in existing industrial and commercial
+    areas. We identified five distinct population groups, three of which have a
+    very pronounced profile concerning energy attributes: ‘Pro Renewables', ‘Pro
+    Switzerland’, and ‘Pro Landscape’. The largest two groups, 'Moderates' and
+    ‘Contra Status Quo’ value attributes fairly equally. All groups except Pro
+    Landscape prefer electricity from Switzerland, and all groups except Pro
+    Switzerland accept imports of renewable electricity, preferably from plants
+    operated by Swiss firms. We suggest that unfamiliarity rather than
+    nationalism is at the root of opposition to imports of renewables. An energy
+    mix focusing on renewables and including border-crossing electricity
+    infrastructure could pave the way for a cost-efficient energy transition
+    towards a sustainable and resilient electricity system. Our results show
+    that it would also be publicly acceptable by the majority of the Swiss
+    population.
+  accessed:
+    - year: 2023
+      month: 3
+      day: 23
+  author:
+    - family: Plum
+      given: Christiane
+    - family: Olschewski
+      given: Roland
+    - family: Jobin
+      given: Marilou
+    - family: Vliet
+      given: Oscar
+      non-dropping-particle: van
+  citation-key: Plum:2019
+  container-title: Energy Policy
+  container-title-short: Energy Policy
+  DOI: 10.1016/j.enpol.2019.03.054
+  ISSN: 0301-4215
+  issued:
+    - year: 2019
+      month: 7
+      day: 1
+  language: en
+  page: 181-196
+  source: ScienceDirect
+  title: >-
+    Public preferences for the Swiss electricity system after the nuclear
+    phase-out: A choice experiment
+  title-short: >-
+    Public preferences for the Swiss electricity system after the nuclear
+    phase-out
+  type: article-journal
+  URL: https://www.sciencedirect.com/science/article/pii/S0301421519302277
+  volume: '130'
 
 - id: Rand:2017
   abstract: >-

@@ -40,7 +40,7 @@ models:
             posterior: 320000
             memory: 48000
     hierarchical-nocovariates-nocovariances:
-        n-tune: 10000
+        n-tune: 3000
         n-draws:
             prior: 1000
             posterior: 3000

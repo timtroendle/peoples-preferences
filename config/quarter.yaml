@@ -21,7 +21,7 @@ models:
             posterior: 46000
             prediction: 16000
     hierarchical-nocovariates-nocovariances:
-        n-tune: 6000
+        n-tune: 2000
         n-draws:
             prior: 1000
             posterior: 2000
