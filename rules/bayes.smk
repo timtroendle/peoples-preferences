@@ -67,7 +67,7 @@ rule hierarchical:
         n_draws = hierarchical_model_config("n-draws"),
         limit_respondents = hierarchical_model_config("limit-respondents"),
         random_seed = hierarchical_model_config("random-seed"),
-        individual_covariates = hierarchical_model_config("individual-covariates"),
+        model_variety = hierarchical_model_config("model-variety"),
         covariances = hierarchical_model_config("covariances")
     resources:
         runtime = hierarchical_model_config("runtime"),
@@ -90,7 +90,7 @@ rule predict:
     params:
         limit_respondents = hierarchical_model_config("limit-respondents"),
         random_seed = hierarchical_model_config("random-seed"),
-        individual_covariates = hierarchical_model_config("individual-covariates"),
+        model_variety = hierarchical_model_config("model-variety"),
         covariances = hierarchical_model_config("covariances"),
     resources:
         runtime = hierarchical_model_config("runtime"),
@@ -123,14 +123,14 @@ rule diagnostics:
     message: "Run diagnostics for hierarchical model {wildcards.name}."
     input:
         inference_data = rules.hierarchical.output[0]
-    params: hdi_prob = 0.94
+    params:
+        hdi_prob = 0.94,
+        rho_plot_dir = lambda wildcards: f"build/results/models/hierarchical-{wildcards.name}/{wildcards.sample}/diagnostics/rho"
     output:
         trace = "build/results/models/hierarchical-{name}/{sample}/diagnostics/trace.png",
         pop_means = "build/results/models/hierarchical-{name}/{sample}/diagnostics/pop-means.png",
         forest = "build/results/models/hierarchical-{name}/{sample}/diagnostics/forest.png",
         summary = "build/results/models/hierarchical-{name}/{sample}/diagnostics/summary.feather",
-        rhos_individual = "build/results/models/hierarchical-{name}/{sample}/diagnostics/rhos-individual.png",
-        rhos_country = "build/results/models/hierarchical-{name}/{sample}/diagnostics/rhos-country.png",
         individuals = "build/results/models/hierarchical-{name}/{sample}/diagnostics/individuals.png",
         confusion = "build/results/models/hierarchical-{name}/{sample}/diagnostics/confusion-matrix.csv",
         accuracy = "build/results/models/hierarchical-{name}/{sample}/diagnostics/in-sample-prediction-accuracy.txt",
@@ -181,7 +181,7 @@ rule visualise_country_differences:
     message: "Visualise country differences of hierarchical model {wildcards.name}."
     input: data = rules.hierarchical.output[0]
     params:
-        variable_names = "countries",
+        variable_names = "effect_country",
         facet_by_country = True,
         aggregate_individuals = False,
         hdi_prob = config["report"]["hdi-prob"]["default"],
@@ -200,7 +200,7 @@ rule visualise_country_means:
     message: "Visualise country means of hierarchical model {wildcards.name}."
     input: data = rules.hierarchical.output[0]
     params:
-        variable_names = ["alpha", "countries"],
+        variable_names = ["alpha", "effect_country"],
         facet_by_country = True,
         aggregate_individuals = False,
         hdi_prob = config["report"]["hdi-prob"]["default"],
@@ -237,7 +237,7 @@ rule visualise_unexplained_heterogeneity:
     message: "Visualise unexplained heterogeneity of partworths of hierarchical model {wildcards.name}."
     input: data = rules.hierarchical.output[0]
     params:
-        variable_names = "individuals",
+        variable_names = "effect_respondent",
         aggregate_individuals = True,
         hdi_prob = None, # has no use here
         nice_names = config["report"]["nice-names"],

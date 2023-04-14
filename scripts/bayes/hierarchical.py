@@ -1,6 +1,5 @@
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 import pymc as pm
 import arviz as az
@@ -19,13 +18,12 @@ YEAR_OF_SURVEY = 2022
 
 
 def sample_prior(path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
-                 individual_covariates: bool, covariances: bool, n_draws: int, random_seed: int,
+                 model_variety: str, covariances: bool, n_draws: int, random_seed: int,
                  path_to_output: str):
-    model = hierarchical_model(
+    model = HierarchicalModel.for_variety(model_variety)(
         path_to_data=path_to_data,
         limit_respondents=limit_respondents,
         n_respondents_per_country=n_respondents_per_country,
-        individual_covariates=individual_covariates,
         covariances=covariances
     )
     (
@@ -36,13 +34,12 @@ def sample_prior(path_to_data: str, limit_respondents: bool, n_respondents_per_c
 
 
 def sample_posterior(path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
-                     individual_covariates: bool, covariances: bool, n_draws: int, n_tune: int,
+                     model_variety: str, covariances: bool, n_draws: int, n_tune: int,
                      n_cores: int, random_seed: int, path_to_output: str):
-    model = hierarchical_model(
+    model = HierarchicalModel.for_variety(model_variety)(
         path_to_data=path_to_data,
         limit_respondents=limit_respondents,
         n_respondents_per_country=n_respondents_per_country,
-        individual_covariates=individual_covariates,
         covariances=covariances
     )
 
@@ -65,15 +62,14 @@ def sample_posterior(path_to_data: str, limit_respondents: bool, n_respondents_p
 
 
 def predict(path_to_in_sample_data: str, path_to_trace_data: str, path_to_out_sample_data: str,
-            limit_respondents: bool, n_respondents_per_country: int, individual_covariates: bool,
+            limit_respondents: bool, n_respondents_per_country: int, model_variety: str,
             covariances: bool, random_seed: int, path_to_output: str):
-    if individual_covariates:
-        raise NotImplementedError("Prediction for models with individual covariates is not implemented.")
-    model = hierarchical_model(
+    if model_variety == "mrp":
+        raise NotImplementedError("Prediction for models with covariates is not implemented.")
+    model = HierarchicalModel.for_variety(model_variety)(
         path_to_data=path_to_in_sample_data,
         limit_respondents=limit_respondents,
         n_respondents_per_country=n_respondents_per_country,
-        individual_covariates=individual_covariates,
         covariances=covariances
     )
     inference_data = az.from_netcdf(path_to_trace_data)
@@ -97,54 +93,35 @@ def predict(path_to_in_sample_data: str, path_to_trace_data: str, path_to_out_sa
     inference_data.to_netcdf(path_to_output)
 
 
-def hierarchical_model(path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
-                       individual_covariates: bool, covariances: bool):
-    conjoint = (
-        pd
-        .read_feather(path_to_data)
-        .set_index(["RESPONDENT_ID", "CHOICE_SET", "LABEL"])
-        .pipe(filter_respondents, limit_respondents, n_respondents_per_country)
-    )
-    if individual_covariates:
-        conjoint = (
-            conjoint
-            .pipe(prepare_respondent_age)
-            .pipe(prepare_years_region)
+class HierarchicalModel(pm.Model):
+    variety = None
+    variety_versions = {}
+
+    def __init__(self, path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
+                 covariances: bool, name: str = ""):
+        super().__init__(name)
+        self.covariances = covariances
+
+        self.conjoint = (
+            pd
+            .read_feather(path_to_data)
+            .set_index(["RESPONDENT_ID", "CHOICE_SET", "LABEL"])
+            .pipe(filter_respondents, limit_respondents, n_respondents_per_country)
         )
-    dummies = pd.get_dummies(conjoint.loc[:, ATTRIBUTES], drop_first=True, prefix_sep=":")
+        self.preprocess_data()
 
-    model = pm.Model(coords={
-        "level": dummies.columns.values,
-        "level_repeat": dummies.columns.values,
-        "respondent": conjoint.index.get_level_values("RESPONDENT_ID").remove_unused_categories().categories,
-        "country": conjoint.RESPONDENT_COUNTRY.cat.categories,
-    })
+        dummies = pd.get_dummies(self.conjoint.loc[:, ATTRIBUTES], drop_first=True, prefix_sep=":")
 
-    n_countries = len(model.coords["country"])
-    n_levels = len(model.coords["level"])
-    n_respondents = len(model.coords["respondent"])
+        self.add_coords({
+            "level": dummies.columns.values,
+            "level_repeat": dummies.columns.values,
+            "respondent": self.conjoint.index.get_level_values("RESPONDENT_ID").remove_unused_categories().categories,
+            "country": self.conjoint.RESPONDENT_COUNTRY.cat.categories,
+        })
 
-    if individual_covariates:
-        covariate_coords = {
-            "education": pd.get_dummies(conjoint.Q9_EDUCATION.cat.remove_unused_categories(), drop_first=True).columns.values,
-            "gender": pd.get_dummies(conjoint.Q3_GENDER, drop_first=True).columns.values,
-            "area": pd.get_dummies(conjoint.Q6_AREA, drop_first=True).columns.values,
-            "renewables": pd.get_dummies(conjoint.Q7_RENEWABLES, drop_first=True).columns.values,
-            "party": pd.get_dummies(conjoint.Q12_PARTY_aggregated, drop_first=True).columns.values,
-            "income": pd.get_dummies(conjoint.Q10_INCOME.cat.remove_unused_categories(), drop_first=True).columns.values,
-            "concern": pd.get_dummies(conjoint.Q11_CLIMATE_CONCERN.cat.remove_unused_categories(), drop_first=True).columns.values
-        }
-        model.coords.update(covariate_coords)
-
-        n_educations = len(model.coords["education"])
-        n_incomes = len(model.coords["income"])
-        n_concerns = len(model.coords["concern"])
-
-    with model:
-        # data
         r = pm.MutableData(
             "r",
-            conjoint.xs("Left", level="LABEL").index.get_level_values("RESPONDENT_ID").remove_unused_categories().codes,
+            self.conjoint.xs("Left", level="LABEL").index.get_level_values("RESPONDENT_ID").remove_unused_categories().codes,
             dims="choice_situation"
         )
         dummies_left = pm.MutableData(
@@ -159,198 +136,16 @@ def hierarchical_model(path_to_data: str, limit_respondents: bool, n_respondents
         )
         choice_left = pm.ConstantData(
             "choice_left",
-            conjoint.xs("Left", level="LABEL").CHOICE_INDICATOR.values,
+            self.conjoint.xs("Left", level="LABEL").CHOICE_INDICATOR.values,
             dims="choice_situation"
         )
-        c = pm.MutableData(
+        pm.MutableData(
             "c",
-            conjoint.groupby("RESPONDENT_ID").RESPONDENT_COUNTRY.first().cat.codes,
+            self.conjoint.groupby("RESPONDENT_ID").RESPONDENT_COUNTRY.first().cat.codes,
             dims=["respondent"]
         )
-        if individual_covariates:
-            age = pm.ConstantData(
-                "age",
-                conjoint.groupby("RESPONDENT_ID").RESPONDENT_AGE.first().values,
-                dims="respondent"
-            )
-            age_normed = pm.ConstantData(
-                "age_normed",
-                conjoint.groupby("RESPONDENT_ID").RESPONDENT_AGE_NORM.first().values.repeat(n_levels).reshape(n_respondents, n_levels).T,
-                dims=["level", "respondent"] # FIXME this should be respondent only
-            )
-            years = pm.ConstantData(
-                "years",
-                conjoint.groupby("RESPONDENT_ID").Q8_YEARS_REGION.first().values,
-                dims="respondent"
-            )
-            years_normed = pm.ConstantData(
-                "years_normed",
-                conjoint.groupby("RESPONDENT_ID").Q8_YEARS_REGION_NORM.first().values.repeat(n_levels).reshape(n_respondents, n_levels).T,
-                dims=["level", "respondent"] # FIXME this should be respondent only
-            )
-            edu = pm.ConstantData(
-                "edu",
-                conjoint.groupby("RESPONDENT_ID").Q9_EDUCATION.first().cat.remove_unused_categories().cat.codes.values,
-                dims="respondent"
-            )
-            i = pm.ConstantData(
-                "i",
-                conjoint.groupby("RESPONDENT_ID").Q10_INCOME.first().cat.remove_unused_categories().cat.codes.values,
-                dims="respondent"
-            )
-            cc = pm.ConstantData(
-                "cc",
-                conjoint.groupby("RESPONDENT_ID").Q11_CLIMATE_CONCERN.first().cat.remove_unused_categories().cat.codes.values,
-                dims="respondent"
-            )
-            g = pm.ConstantData(
-                "g",
-                pd.get_dummies(conjoint.groupby("RESPONDENT_ID").Q3_GENDER.first(), drop_first=True).values,
-                dims=["respondent", "gender"]
-            )
-            a = pm.ConstantData(
-                "a",
-                pd.get_dummies(conjoint.groupby("RESPONDENT_ID").Q6_AREA.first(), drop_first=True).values,
-                dims=["respondent", "area"]
-            )
-            re = pm.ConstantData(
-                "re",
-                pd.get_dummies(conjoint.groupby("RESPONDENT_ID").Q7_RENEWABLES.first(), drop_first=True).values,
-                dims=["respondent", "renewables"]
-            )
-            p = pm.ConstantData(
-                "p",
-                pd.get_dummies(conjoint.groupby("RESPONDENT_ID").Q12_PARTY_aggregated.first(), drop_first=True).values,
-                dims=["respondent", "party"]
-            )
 
-        # parameters
-        alpha = pm.Normal('alpha', 0, sigma=1, dims="level")
-
-        z_country = pm.Normal("z_country", mu=0, sigma=1.0, dims=["level", "country"])
-        if covariances:
-            chol_country, rho_country, sigma_country = pm.LKJCholeskyCov(
-                "chol_country",
-                n=len(model.coords["level"]),
-                eta=4,
-                sd_dist=pm.Exponential.dist(2),
-                compute_corr=True,
-                store_in_trace=False
-            )
-            pm.Deterministic("sigma_country", sigma_country, dims="level")
-            pm.Deterministic("rho_country", rho_country, dims=["level", "level_repeat"])
-
-            countries = pm.Deterministic("countries", pm.math.dot(chol_country, z_country), dims=["level", "country"])
-        else:
-            sigma_country = pm.Exponential('sigma_country', 2, dims="level")
-            countries = pm.Deterministic(
-                'countries',
-                (z_country.T * sigma_country).T,
-                dims=["level", "country"]
-            )
-
-        z_individuals = pm.Normal("z_individuals", 0.0, 1.0, dims=["level", "respondent"])
-        if covariances:
-            chol_individuals, rho_individuals, sigma_individuals = pm.LKJCholeskyCov( # TODO should these be per-country?
-                "chol_individuals",
-                n=len(model.coords["level"]),
-                eta=4,
-                sd_dist=pm.Exponential.dist(2),
-                compute_corr=True,
-                store_in_trace=False
-            )
-            pm.Deterministic("sigma_individuals", sigma_individuals, dims="level")
-            pm.Deterministic("rho_individuals", rho_individuals, dims=["level", "level_repeat"])
-
-            individuals = pm.Deterministic(
-                "individuals",
-                pm.math.dot(chol_individuals, z_individuals),
-                dims=["level", "respondent"]
-            )
-        else:
-            sigma_individuals = pm.Exponential('sigma_individuals', 2, dims="level")
-            individuals = pm.Deterministic(
-                "individuals",
-                (z_individuals.T * sigma_individuals).T,
-                dims=["level", "respondent"]
-            )
-
-        if individual_covariates:
-            alpha_gender = pm.Normal('alpha_gender', mu=0, sigma=1, dims=["gender", "level"]) # TODO add covariation?
-            alpha_area = pm.Normal('alpha_area', mu=0, sigma=1, dims=["area", "level"]) # TODO add covariation?
-            alpha_renewables = pm.Normal('alpha_renewables', mu=0, sigma=1, dims=["renewables", "level"]) # TODO add covariation?
-            alpha_party = pm.Normal('alpha_party', mu=0, sigma=1, dims=["party", "level"]) # TODO add covariation?
-            beta_age_normed = pm.Normal('beta_age_normed', mu=0, sigma=1, dims="level") # TODO add covariation?
-            beta_years_normed = pm.Normal('beta_years_normed', mu=0, sigma=1, dims="level") # TODO add covariation?
-            beta_edu = pm.Normal("beta_edu", mu=0, sigma=1, dims="level") # TODO add covariation?
-            beta_income = pm.Normal("beta_income", mu=0, sigma=1, dims="level") # TODO add covariation?
-            beta_concern = pm.Normal("beta_concern", mu=0, sigma=1, dims="level") # TODO add covariation?
-            d_edu = pm.Dirichlet("d_edu", a=np.ones([n_levels, n_educations]) * 2, transform=pm.distributions.transforms.simplex, dims=["level", "education"])
-            d_edu_cumsum = pm.math.stack([pm.math.sum(d_edu[:, :i], axis=1) for i in range(n_educations + 1)])[edu, :]
-            d_income = pm.Dirichlet("d_income", a=np.ones([n_levels, n_incomes]) * 2, transform=pm.distributions.transforms.simplex, dims=["level", "income"])
-            d_income_cumsum = pm.math.stack([pm.math.sum(d_income[:, :i], axis=1) for i in range(n_incomes + 1)])[i, :]
-            d_concern = pm.Dirichlet("d_concern", a=np.ones([n_levels, n_concerns]) * 2, transform=pm.distributions.transforms.simplex, dims=["level", "concern"])
-            d_concern_cumsum = pm.math.stack([pm.math.sum(d_concern[:, :i], axis=1) for i in range(n_concerns + 1)])[cc, :]
-
-            gender_effect = pm.Deterministic(
-                'gender_effect',
-                pm.math.dot(g, alpha_gender),
-                dims=["respondent", "level"]
-            )
-            area_effect = pm.Deterministic(
-                'area_effect',
-                pm.math.dot(a, alpha_area),
-                dims=["respondent", "level"]
-            )
-            renewables_effect = pm.Deterministic(
-                'renewables_effect',
-                pm.math.dot(re, alpha_renewables),
-                dims=["respondent", "level"]
-            )
-            party_effect = pm.Deterministic(
-                'party_effect',
-                pm.math.dot(p, alpha_party),
-                dims=["respondent", "level"]
-            )
-            age_effect = pm.Deterministic(
-                'age_effect',
-                beta_age_normed * age_normed.T,
-                dims=["respondent", "level"]
-            )
-            years_effect = pm.Deterministic(
-                'years_effect',
-                beta_years_normed * years_normed.T,
-                dims=["respondent", "level"]
-            )
-            edu_effect = pm.Deterministic(
-                'edu_effect',
-                beta_edu * d_edu_cumsum,
-                dims=["respondent", "level"]
-            )
-            income_effect = pm.Deterministic(
-                'income_effect',
-                beta_income * d_income_cumsum,
-                dims=["respondent", "level"]
-            )
-            concern_effect = pm.Deterministic(
-                'concern_effect',
-                beta_concern * d_concern_cumsum,
-                dims=["respondent", "level"]
-            )
-
-            partworths = pm.Deterministic(
-                "partworths",
-                alpha + gender_effect + country_effect + area_effect + renewables_effect
-                + party_effect + age_effect + years_effect + edu_effect + income_effect + concern_effect
-                + individuals.T,
-                dims=["respondent", "level"]
-            )
-        else:
-            partworths = pm.Deterministic(
-                "partworths",
-                alpha + countries[:, c].T + individuals.T,
-                dims=["respondent", "level"]
-            )
+        partworths = self.build_partworths()
 
         mu_left_intercept = pm.Normal('mu_left_intercept', 0, sigma=0.25)
         sigma_left_intercept = pm.Exponential('sigma_left_intercept', 3)
@@ -384,7 +179,113 @@ def hierarchical_model(path_to_data: str, limit_respondents: bool, n_respondents
             dims="choice_situation"
         )
 
-    return model
+    def preprocess_data(self):
+        pass # generally no more preprocessing is necessary
+
+    def build_partworths(self):
+        raise NotImplementedError("Partworth is defined for subclasses only.")
+
+    def add_varying_effect(self, dim: str, eta: float = 4, sd: float = 2):
+        z = pm.Normal(f"z_{dim}", mu=0.0, sigma=1.0, dims=["level", dim])
+        if self.covariances:
+            chol, rho, sigma = pm.LKJCholeskyCov(
+                f"chol_{dim}",
+                n=len(self.coords["level"]),
+                eta=eta,
+                sd_dist=pm.Exponential.dist(sd),
+                compute_corr=True,
+                store_in_trace=False
+            )
+            pm.Deterministic(f"sigma_{dim}", sigma, dims="level")
+            pm.Deterministic(f"rho_{dim}", rho, dims=["level", "level_repeat"])
+
+            effect = pm.Deterministic(f"effect_{dim}", pm.math.dot(chol, z), dims=["level", dim])
+        else:
+            sigma = pm.Exponential(f"sigma_{dim}", sd, dims="level")
+            effect = pm.Deterministic(
+                f"effect_{dim}",
+                (z.T * sigma).T,
+                dims=["level", dim]
+            )
+        return effect
+
+    @classmethod
+    def register(cls):
+        HierarchicalModel.variety_versions[cls.variety] = cls
+
+    @classmethod
+    def for_variety(cls, variety_id):
+        if variety_id not in HierarchicalModel.variety_versions.keys():
+            raise ValueError(f"Unknown model variety: {variety_id}.")
+        return HierarchicalModel.variety_versions[variety_id]
+
+
+class NocovariatesModel(HierarchicalModel):
+    variety = 'nocovariates'
+
+    def __init__(self, path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
+                 covariances: bool, name: str = ""):
+        super().__init__(path_to_data, limit_respondents, n_respondents_per_country, covariances)
+
+    def build_partworths(self):
+        alpha = pm.Normal('alpha', 0, sigma=1, dims="level")
+        country = self.add_varying_effect("country", eta=4, sd=2)
+        respondent = self.add_varying_effect("respondent", eta=4, sd=2)
+        return pm.Deterministic(
+            "partworths",
+            alpha + country[:, self.c].T + respondent.T,
+            dims=["respondent", "level"]
+        )
+
+
+class MrPModel(HierarchicalModel):
+    variety = 'mrp'
+
+    def __init__(self, path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
+                 covariances: bool, name: str = ""):
+        super().__init__(path_to_data, limit_respondents, n_respondents_per_country, covariances)
+
+    def preprocess_data(self):
+        self.conjoint = (
+            self
+            .conjoint
+            .pipe(remove_respondents_with_missing_data) # FIXME don't do this
+            .pipe(prepare_respondent_age)
+            .pipe(prepare_years_region)
+        )
+
+    def build_partworths(self):
+        covariate_coords = { # TODO add EDU and AGE
+            "gender": self.conjoint.Q3_GENDER.cat.categories,
+        }
+        self.add_coords(covariate_coords)
+
+        g = pm.MutableData(
+            "g",
+            self.conjoint.groupby("RESPONDENT_ID").Q3_GENDER.first().cat.codes,
+            dims=["respondent"]
+        )
+
+        alpha = pm.Normal('alpha', 0, sigma=1, dims="level")
+        country = self.add_varying_effect("country", eta=4, sd=2)
+        gender = self.add_varying_effect("gender", eta=4, sd=2)
+        # TODO add edu and age varying effects
+        return pm.Deterministic(
+            "partworths", # TODO remove individuals in this model?
+            alpha + country[:, self.c].T + gender[:, g].T, # TODO add edu and age varying effects
+            dims=["respondent", "level"]
+        )
+
+
+NocovariatesModel.register()
+MrPModel.register()
+
+
+def remove_respondents_with_missing_data(df):
+    return df.dropna(
+        axis="index",
+        subset=["Q3_GENDER"], # TODO add AGE and EDU
+    )
 
 
 def filter_respondents(df, limit_respondents, n_respondents_per_country):
@@ -413,7 +314,7 @@ if __name__ == "__main__":
                 limit_respondents=bool(snakemake.params.limit_respondents),
                 n_respondents_per_country=int(snakemake.params.limit_respondents) // 4,
                 random_seed=snakemake.params.random_seed,
-                individual_covariates=snakemake.params.individual_covariates,
+                model_variety=snakemake.params.model_variety,
                 covariances=snakemake.params.covariances,
                 path_to_output=snakemake.output[0]
             )
@@ -426,7 +327,7 @@ if __name__ == "__main__":
                 n_respondents_per_country=int(snakemake.params.limit_respondents) // 4,
                 n_cores=snakemake.threads,
                 random_seed=snakemake.params.random_seed,
-                individual_covariates=snakemake.params.individual_covariates,
+                model_variety=snakemake.params.model_variety,
                 covariances=snakemake.params.covariances,
                 path_to_output=snakemake.output[0]
             )
@@ -438,7 +339,7 @@ if __name__ == "__main__":
                 limit_respondents=bool(snakemake.params.limit_respondents),
                 n_respondents_per_country=int(snakemake.params.limit_respondents) // 4,
                 random_seed=snakemake.params.random_seed,
-                individual_covariates=snakemake.params.individual_covariates,
+                model_variety=snakemake.params.model_variety,
                 covariances=snakemake.params.covariances,
                 path_to_output=snakemake.output[0]
             )

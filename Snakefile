@@ -60,7 +60,6 @@ rule all:
         "build/test-report.html",
         full_hierarchical_model_analysis(model="nocovariates-nocovariances", sample="prior"),
         full_hierarchical_model_analysis(model="nocovariates-nocovariances", sample="posterior"),
-        "build/results/models/hierarchical-nocovariates-nocovariances/amce/pop-means.pdf",
         "build/results/likert-items.pdf",
         "build/results/agreement-items.pdf",
         "build/results/gender.pdf",

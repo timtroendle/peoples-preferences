@@ -419,34 +419,14 @@ models:
         n-draws: 1000
         limit-respondents: 200
         random-seed: 4000
-    hierarchical-nocovariates:
+    hierarchical-nocovariates-covariances:
         n-tune: 2000
         n-draws:
             prior: 500
             posterior: 500
         limit-respondents: 80
         random-seed: 4000
-        individual-covariates: False
-        covariances: True
-        runtime: # (min)
-            prior: 10
-            posterior: 10
-            prediction: 10
-        mem_mb:
-            prior: 16000
-            posterior: 16000
-            prediction: 16000
-        threads:
-            prior: 1
-            posterior: 4
-    hierarchical-covariates:
-        n-tune: 2000
-        n-draws:
-            prior: 500
-            posterior: 500
-        limit-respondents: 80
-        random-seed: 4000
-        individual-covariates: True
+        model-varietey: nocovariates
         covariances: True
         runtime: # (min)
             prior: 10
@@ -466,7 +446,27 @@ models:
             posterior: 500
         limit-respondents: 80
         random-seed: 4000
-        individual-covariates: False
+        model-variety: nocovariates
+        covariances: False
+        runtime: # (min)
+            prior: 10
+            posterior: 10
+            prediction: 10
+        mem_mb:
+            prior: 16000
+            posterior: 16000
+            prediction: 16000
+        threads:
+            prior: 1
+            posterior: 4
+    hierarchical-mrp:
+        n-tune: 500
+        n-draws:
+            prior: 500
+            posterior: 500
+        limit-respondents: 80
+        random-seed: 4000
+        model-variety: mrp
         covariances: False
         runtime: # (min)
             prior: 10

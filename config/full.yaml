@@ -11,7 +11,7 @@ models:
         n-tune: 2000
         n-draws: 2000
         limit-respondents: False
-    hierarchical-nocovariates:
+    hierarchical-nocovariates-covariances:
         n-tune: 10000
         n-draws:
             prior: 1000
@@ -25,8 +25,8 @@ models:
             prior: 48000
             posterior: 96000
             memory: 48000
-    hierarchical-covariates:
-        n-tune: 10000
+    hierarchical-nocovariates-nocovariances:
+        n-tune: 3000
         n-draws:
             prior: 1000
             posterior: 3000
@@ -37,9 +37,9 @@ models:
             prediction: 60
         mem_mb:
             prior: 48000
-            posterior: 320000
-            memory: 48000
-    hierarchical-nocovariates-nocovariances:
+            posterior: 180000
+            prediction: 48000
+    hierarchical-mrp:
         n-tune: 3000
         n-draws:
             prior: 1000

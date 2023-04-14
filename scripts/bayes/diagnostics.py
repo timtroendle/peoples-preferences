@@ -9,8 +9,8 @@ import seaborn as sns
 
 def diagnostics(path_to_inference_data: str, sample_type: str,
                 path_to_trace_plot: str, path_to_pop_means_plot: str,
-                path_to_forest_plot: str, path_to_summary: str, path_to_rhos_individual_plot: str,
-                path_to_rhos_country_plot: str, path_to_choice_probability_plot: str,
+                path_to_forest_plot: str, path_to_summary: str, path_to_rhos_plot_dir: str,
+                path_to_choice_probability_plot: str,
                 path_to_confusion_matrix: str, path_to_accuracy: str, path_to_utility_plot: str,
                 hdi_prob: float, path_to_individuals_plot: str):
     inference_data = az.from_netcdf(path_to_inference_data)
@@ -18,15 +18,12 @@ def diagnostics(path_to_inference_data: str, sample_type: str,
                                                         # It seems this segmentation fault is caused by too many
                                                         # accesses to the data. Therefore, I am loading it into
                                                         # memory here.
-    constant_data = inference_data.constant_data
     inference_data = inference_data[sample_type]
-    inference_data = retransform_normalised(inference_data, constant_data)
 
     trace_plot(inference_data, path_to_trace_plot)
     pop_means_plot(inference_data, hdi_prob, path_to_pop_means_plot)
     forest_plot(inference_data, hdi_prob, path_to_forest_plot)
-    rhos_plot(inference_data, rho="rho_individuals", var="individuals", path_to_plot=path_to_rhos_individual_plot)
-    rhos_plot(inference_data, rho="rho_country", var="countries", path_to_plot=path_to_rhos_country_plot)
+    rhos_plots(inference_data, path_to_dir=path_to_rhos_plot_dir)
     individuals_plot(inference_data, path_to_individuals_plot)
     summary(inference_data, hdi_prob, path_to_summary)
     prediction_accuracy(inference_data, observed_data, path_to_confusion_matrix, path_to_accuracy)
@@ -34,18 +31,8 @@ def diagnostics(path_to_inference_data: str, sample_type: str,
     utility_plot(inference_data, hdi_prob, path_to_utility_plot)
 
 
-def retransform_normalised(inference_data: xr.Dataset, constant_data: xr.Dataset):
-    if "beta_age_normed" in inference_data:
-        age_std = constant_data.age.std()
-        inference_data["beta_age"] = inference_data["beta_age_normed"] / age_std
-    if "beta_years_normed" in inference_data:
-        years_std = inference_data.constant_data.years.std()
-        inference_data["beta_years"] = inference_data["beta_years_normed"] / years_std
-    return inference_data
-
-
 def trace_plot(inference_data: xr.Dataset, path_to_plot: str):
-    var_names = ["alpha", "beta", "sigma_individuals", "sigma_country", "mu_left_intercept", "sigma_left_intercept"]
+    var_names = ["alpha", "sigma", "mu_left_intercept"]
     axes = az.plot_trace(
         inference_data,
         var_names=var_names,
@@ -66,7 +53,7 @@ def pop_means_plot(inference_data: xr.Dataset, hdi_prob: float, path_to_plot: st
 
 
 def forest_plot(inference_data: xr.Dataset, hdi_prob: float, path_to_plot: str):
-    var_names = ["alpha", "beta", "sigma_individuals", "mu_left_intercept", "sigma_left_intercept"]
+    var_names = ["alpha", "sigma", "mu_left_intercept"]
     axes = az.plot_forest(
         inference_data,
         var_names=var_names,
@@ -79,6 +66,17 @@ def forest_plot(inference_data: xr.Dataset, hdi_prob: float, path_to_plot: str):
     fig = ax.get_figure()
     fig.tight_layout()
     fig.savefig(path_to_plot)
+
+
+def rhos_plots(inference_data: xr.Dataset, path_to_dir: str):
+    path_to_dir = Path(path_to_dir)
+    path_to_dir.mkdir(parents=True, exist_ok=True)
+    varying_effects = filter(lambda var: "effect" in var, inference_data.data_vars.keys())
+    for varying_effect in varying_effects:
+        variable = varying_effect.split("_")[-1]
+        rho = f"rho_{variable}"
+        path_to_plot = path_to_dir / f"{variable}.png"
+        rhos_plot(inference_data, rho, varying_effect, path_to_plot)
 
 
 def rhos_plot(inference_data: xr.Dataset, rho: str, var: str, path_to_plot: str):
@@ -141,14 +139,7 @@ def correlation_across_level(data: xr.DataArray, chain: int) -> pd.DataFrame:
     )
 
 
-def draw_and_chain_mean_covariates(data):
-    return (
-        draw_and_chain_mean_nocovariates(data)
-        .sel(gender="Male") # remove "other" gender because sample is very small
-    )
-
-
-def draw_and_chain_mean_nocovariates(data):
+def draw_and_chain_mean(data):
     return (
         data
         .mean(["draw", "chain"])
@@ -157,19 +148,11 @@ def draw_and_chain_mean_nocovariates(data):
 
 
 def individuals_plot(inference_data: xr.Dataset, path_to_plot: str):
-    if "gender_effect" in inference_data:
-        var_names = [
-            "partworths", "gender_effect", "country_effect", "area_effect", "renewables_effect",
-            "party_effect", "age_effect", "years_effect", "edu_effect", "income_effect", "concern_effect",
-            "individuals"
-        ]
-        draw_and_chain_mean = draw_and_chain_mean_covariates
-    else:
-        var_names = ["partworths", "individuals"]
-        draw_and_chain_mean = draw_and_chain_mean_nocovariates
+    var_names = ["partworths", "effect"]
     axes = az.plot_forest(
         inference_data,
         var_names=var_names,
+        filter_vars="like",
         combine_dims=set(["respondent"]),
         combined=True,
         transform=draw_and_chain_mean
@@ -187,9 +170,7 @@ def summary(inference_data: xr.Dataset, hdi_prob: float, path_to_summary: str):
         az
         .summary(
             inference_data,
-            var_names=["alpha", "beta", "sigma_country", "sigma_individuals",
-                       "mu_left_intercept", "sigma_left_intercept",
-                       "d_edu", "rho_individuals", "rho_country"],
+            var_names=["alpha", "sigma", "mu_left_intercept", "rho"],
             filter_vars="like",
             hdi_prob=hdi_prob,
         )
@@ -247,8 +228,7 @@ if __name__ == "__main__":
         path_to_trace_plot=snakemake.output.trace,
         path_to_pop_means_plot=snakemake.output.pop_means,
         path_to_forest_plot=snakemake.output.forest,
-        path_to_rhos_individual_plot=snakemake.output.rhos_individual,
-        path_to_rhos_country_plot=snakemake.output.rhos_country,
+        path_to_rhos_plot_dir=snakemake.params.rho_plot_dir,
         path_to_individuals_plot=snakemake.output.individuals,
         path_to_summary=snakemake.output.summary,
         path_to_confusion_matrix=snakemake.output.confusion,
