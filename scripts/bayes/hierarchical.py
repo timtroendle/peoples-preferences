@@ -227,7 +227,7 @@ def hierarchical_model(path_to_data: str, limit_respondents: bool, n_respondents
         # parameters
         alpha = pm.Normal('alpha', 0, sigma=1, dims="level")
 
-        z_country = pm.ZeroSumNormal("z_country", sigma=1.0, dims=["level", "country"], zerosum_axes=1)
+        z_country = pm.Normal("z_country", mu=0, sigma=1.0, dims=["level", "country"])
         if covariances:
             chol_country, rho_country, sigma_country = pm.LKJCholeskyCov(
                 "chol_country",
@@ -248,12 +248,6 @@ def hierarchical_model(path_to_data: str, limit_respondents: bool, n_respondents
                 (z_country.T * sigma_country).T,
                 dims=["level", "country"]
             )
-
-        country_effect = pm.Deterministic(
-            'country_effect',
-            countries[:, c].T,
-            dims=["respondent", "level"]
-        )
 
         z_individuals = pm.Normal("z_individuals", 0.0, 1.0, dims=["level", "respondent"])
         if covariances:
@@ -354,7 +348,7 @@ def hierarchical_model(path_to_data: str, limit_respondents: bool, n_respondents
         else:
             partworths = pm.Deterministic(
                 "partworths",
-                alpha + country_effect + individuals.T,
+                alpha + countries[:, c].T + individuals.T,
                 dims=["respondent", "level"]
             )
 
