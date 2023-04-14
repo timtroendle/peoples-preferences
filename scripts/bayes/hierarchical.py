@@ -250,29 +250,40 @@ class MrPModel(HierarchicalModel):
             self
             .conjoint
             .pipe(remove_respondents_with_missing_data) # FIXME don't do this
-            .pipe(prepare_respondent_age)
-            .pipe(prepare_years_region)
         )
 
     def build_partworths(self):
-        covariate_coords = { # TODO add EDU and AGE
+        covariate_coords = {
             "gender": self.conjoint.Q3_GENDER.cat.categories,
+            "age": self.conjoint.Q4_BIRTH_YEAR_aggregated.cat.categories,
+            "education": self.conjoint.Q9_EDUCATION.cat.categories
         }
         self.add_coords(covariate_coords)
 
         g = pm.MutableData(
             "g",
             self.conjoint.groupby("RESPONDENT_ID").Q3_GENDER.first().cat.codes,
-            dims=["respondent"]
+            dims="respondent"
+        )
+        a = pm.MutableData(
+            "a",
+            self.conjoint.groupby("RESPONDENT_ID").Q4_BIRTH_YEAR_aggregated.first().cat.codes,
+            dims="respondent"
+        )
+        e = pm.MutableData(
+            "e",
+            self.conjoint.groupby("RESPONDENT_ID").Q9_EDUCATION.first().cat.codes,
+            dims="respondent"
         )
 
         alpha = pm.Normal('alpha', 0, sigma=1, dims="level")
         country = self.add_varying_effect("country", eta=4, sd=2)
         gender = self.add_varying_effect("gender", eta=4, sd=2)
-        # TODO add edu and age varying effects
+        age = self.add_varying_effect("age", eta=4, sd=2)
+        edu = self.add_varying_effect("education", eta=4, sd=2)
         return pm.Deterministic(
-            "partworths", # TODO remove individuals in this model?
-            alpha + country[:, self.c].T + gender[:, g].T, # TODO add edu and age varying effects
+            "partworths",
+            alpha + country[:, self.c].T + gender[:, g].T + age[:, a].T + edu[:, e].T,
             dims=["respondent", "level"]
         )
 
@@ -284,24 +295,13 @@ MrPModel.register()
 def remove_respondents_with_missing_data(df):
     return df.dropna(
         axis="index",
-        subset=["Q3_GENDER"], # TODO add AGE and EDU
+        subset=["Q3_GENDER", "Q4_BIRTH_YEAR_aggregated", "Q9_EDUCATION"],
     )
 
 
 def filter_respondents(df, limit_respondents, n_respondents_per_country):
     if limit_respondents:
         df = df.groupby("RESPONDENT_COUNTRY").head(n_respondents_per_country * OPTIONS_PER_RESPONDENT)
-    return df
-
-
-def prepare_respondent_age(df):
-    df["RESPONDENT_AGE"] = YEAR_OF_SURVEY - df["Q4_BIRTH_YEAR"].astype("int")
-    df["RESPONDENT_AGE_NORM"] = (df["RESPONDENT_AGE"] - df["RESPONDENT_AGE"].mean()) / df["RESPONDENT_AGE"].std()
-    return df
-
-
-def prepare_years_region(df):
-    df["Q8_YEARS_REGION_NORM"] = (df["Q8_YEARS_REGION"] - df["Q8_YEARS_REGION"].mean()) / df["Q8_YEARS_REGION"].std()
     return df
 
 
