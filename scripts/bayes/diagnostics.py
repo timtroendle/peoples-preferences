@@ -153,7 +153,7 @@ def individuals_plot(inference_data: xr.Dataset, path_to_plot: str):
         inference_data,
         var_names=var_names,
         filter_vars="like",
-        combine_dims=set(["respondent"]),
+        combine_dims={"respondent", "country", "admin1"},
         combined=True,
         transform=draw_and_chain_mean
     )

@@ -27,7 +27,8 @@ COLUMNS_TO_DROP = [
 ]
 
 
-def preprocess_conjoint(path_to_conjointly_data: str, path_to_respondi_data: str, country_id: str,
+def preprocess_conjoint(path_to_conjointly_data: str, path_to_respondi_data: str, path_to_geonames: str,
+                        country_id: str,
                         population_count: int, pre_test_threshold: date, q12_party_base: int,
                         path_to_output: str):
     respondi = pd.read_excel(path_to_respondi_data, parse_dates=[2])
@@ -44,10 +45,10 @@ def preprocess_conjoint(path_to_conjointly_data: str, path_to_respondi_data: str
         .drop(columns=COLUMNS_TO_DROP, errors="ignore")
         .fillna({"RESPONDENT_COUNTRY": country_id})
         .pipe(merge_respondi_data, respondi)
+        .pipe(merge_geonames, path_to_geonames)
         .pipe(undummify_dataset)
         .pipe(filter_pre_test, pre_test_threshold)
         .pipe(shift_q12_party, q12_party_base)
-        .assign(WEIGHT=population_count / 1e6) # FIXME must handle the fact that numbers of responses per country vary.
         .pipe(fix_broken_entries)
         .reset_index()
         .to_feather(path_to_output)
@@ -69,6 +70,45 @@ def merge_respondi_data(df, respondi: pd.DataFrame):
     columns = list(df.columns)
     index_for_duration = columns.index("RESPONDENT_COUNTRY")
     return df.reindex(columns=columns[:index_for_duration + 1] + columns[-2:] + columns[index_for_duration + 1:-2])
+
+
+def merge_geonames(df: pd.DataFrame, path_to_geonames: str) -> pd.DataFrame:
+    geonames = (
+        pd
+        .read_table(
+            path_to_geonames,
+            header=None,
+            names=[
+                "country code", "postal code", "place code", "admin name1", "admin code1",
+                "admin name2", "admin code2", "admin name3", "admin code3",
+                "latitude", "longitude", "accuracy"
+            ],
+            index_col=False,
+            dtype={
+                "postal code": "str",
+                "admin name1": "category",
+                "admin name2": "category",
+                "admin name3": "category"
+            }
+        )
+        .rename(columns={
+            "postal code": "RESPONDENT_POSTAL_CODE",
+            "admin name1": "RESPONDENT_ADMIN_NAME1",
+            "admin name2": "RESPONDENT_ADMIN_NAME2",
+            "admin name3": "RESPONDENT_ADMIN_NAME3",
+            "latitude": "LATITUDE",
+            "longitude": "LONGITUDE"
+        })
+        .drop(columns={"country code", "admin code1", "admin code2", "admin code3", "place code", "accuracy"})
+        .groupby("RESPONDENT_POSTAL_CODE")
+        .first() # remove duplicte postal codes (for different place names)
+    )
+    return (
+        df
+        .reset_index()
+        .merge(geonames, left_on="Q5_POSTCODE", right_on="RESPONDENT_POSTAL_CODE", how="left")
+        .set_index(INDEX_COLUMNS)
+    )
 
 
 def undummify_dataset(df):
@@ -227,6 +267,7 @@ if __name__ == "__main__":
     preprocess_conjoint(
         path_to_conjointly_data=snakemake.input.conjointly,
         path_to_respondi_data=snakemake.input.respondi,
+        path_to_geonames=snakemake.input.geonames,
         country_id=snakemake.wildcards.country_id,
         population_count=int(snakemake.params.population),
         pre_test_threshold=snakemake.params.pre_test_threshold,

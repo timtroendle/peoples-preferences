@@ -256,7 +256,8 @@ class MrPModel(HierarchicalModel):
         covariate_coords = {
             "gender": self.conjoint.Q3_GENDER.cat.categories,
             "age": self.conjoint.Q4_BIRTH_YEAR_aggregated.cat.categories,
-            "education": self.conjoint.Q9_EDUCATION.cat.categories
+            "education": self.conjoint.Q9_EDUCATION.cat.categories,
+            "admin1": self.conjoint.RESPONDENT_ADMIN_NAME1.cat.categories
         }
         self.add_coords(covariate_coords)
 
@@ -275,15 +276,21 @@ class MrPModel(HierarchicalModel):
             self.conjoint.groupby("RESPONDENT_ID").Q9_EDUCATION.first().cat.codes,
             dims="respondent"
         )
+        adm1 = pm.MutableData(
+            "adm1",
+            self.conjoint.groupby("RESPONDENT_ID").RESPONDENT_ADMIN_NAME1.first().cat.codes,
+            dims="respondent"
+        )
 
         alpha = pm.Normal('alpha', 0, sigma=1, dims="level")
         country = self.add_varying_effect("country", eta=4, sd=2)
+        admin1 = self.add_varying_effect("admin1", eta=4, sd=2)
         gender = self.add_varying_effect("gender", eta=4, sd=2)
         age = self.add_varying_effect("age", eta=4, sd=2)
         edu = self.add_varying_effect("education", eta=4, sd=2)
         return pm.Deterministic(
             "partworths",
-            alpha + country[:, self.c].T + gender[:, g].T + age[:, a].T + edu[:, e].T,
+            alpha + country[:, self.c].T + admin1[:, adm1].T + gender[:, g].T + age[:, a].T + edu[:, e].T,
             dims=["respondent", "level"]
         )
 
@@ -295,7 +302,7 @@ MrPModel.register()
 def remove_respondents_with_missing_data(df):
     return df.dropna(
         axis="index",
-        subset=["Q3_GENDER", "Q4_BIRTH_YEAR_aggregated", "Q9_EDUCATION"],
+        subset=["Q3_GENDER", "Q4_BIRTH_YEAR_aggregated", "Q9_EDUCATION", "RESPONDENT_ADMIN_NAME1"],
     )
 
 

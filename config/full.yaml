@@ -40,16 +40,16 @@ models:
             posterior: 180000
             prediction: 48000
     hierarchical-mrp:
-        n-tune: 3000
+        n-tune: 2000
         n-draws:
             prior: 1000
-            posterior: 3000
+            posterior: 2000
         limit-respondents: False
         runtime: # (min)
             prior: 60
-            posterior: 2880
+            posterior: 1440
             prediction: 60
         mem_mb:
-            prior: 48000
-            posterior: 180000
-            prediction: 48000
+            prior: 16000
+            posterior: 48000
+            prediction: 16000

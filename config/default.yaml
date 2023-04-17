@@ -1,6 +1,7 @@
 data-sources:
     conjointly: data/raw-data-{country_id}.csv
     respondi: data/respondi/Masterdata_14979_{country_id}.xlsx
+    geonames: http://download.geonames.org/export/zip/{country_id}.zip
 cluster-sync:
     url: euler.ethz.ch
     send-ignore: .syncignore-send
@@ -60,6 +61,15 @@ data-types:
             - Community
             - Private
     RESPONDENT_COUNTRY:
+        type: factor
+        ordered: False
+    RESPONDENT_ADMIN_NAME1:
+        type: factor
+        ordered: False
+    RESPONDENT_ADMIN_NAME2:
+        type: factor
+        ordered: False
+    RESPONDENT_ADMIN_NAME3:
         type: factor
         ordered: False
     RESPONDENT_DEVICE_USED_IN_SURVEY:

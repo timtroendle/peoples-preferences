@@ -2079,6 +2079,60 @@ references:
   URL: https://linkinghub.elsevier.com/retrieve/pii/S0301421520307047
   volume: '148'
 
+- id: Merk:2023
+  abstract: >-
+    Efficient and sustainable solutions for offsetting residual emissions via
+    carbon dioxide removal are a major challenge. Proposed removal methods
+    result in trade-offs with other Sustainable Development Goals, and the
+    removal needs of many countries exceed their domestic potentials. Here, we
+    examine the public acceptability of conducting afforestation and direct air
+    capture programmes domestically in Germany or abroad. To uncover the
+    relative importance of various programme attributes, we use a multifactorial
+    vignette experiment. We find that afforestation receives stronger support
+    than direct capture. Next to the costs to households, minimising
+    environmental impacts on biodiversity in forests and the use of renewable
+    energy for direct capture are more important for acceptability than the
+    permanence of storage. Further, individuals strongly prefer domestic
+    programmes to offsets in other countries. These findings suggest significant
+    discrepancies between strong public preferences for domestic carbon removal
+    with low environmental side-effects and the too low potential for such
+    removals.
+  accessed:
+    - year: 2023
+      month: 4
+      day: 14
+  author:
+    - family: Merk
+      given: Christine
+    - family: Liebe
+      given: Ulf
+    - family: Meyerhoff
+      given: Jürgen
+    - family: Rehdanz
+      given: Katrin
+  citation-key: Merk:2023
+  container-title: Communications Earth & Environment
+  container-title-short: Commun Earth Environ
+  DOI: 10.1038/s43247-023-00713-9
+  ISSN: 2662-4435
+  issue: '1'
+  issued:
+    - year: 2023
+      month: 4
+      day: 13
+  language: en
+  license: 2023 The Author(s)
+  number: '1'
+  page: 1-9
+  publisher: Nature Publishing Group
+  source: www.nature.com
+  title: >-
+    German citizens’ preference for domestic carbon dioxide removal by
+    afforestation is incompatible with national removal potential
+  type: article-journal
+  URL: https://www.nature.com/articles/s43247-023-00713-9
+  volume: '4'
+
 - id: Mize:2022
   abstract: >-
     In the midst of the current causal revolution, experimental methods are
