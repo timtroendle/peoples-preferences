@@ -2,6 +2,11 @@ data-sources:
     conjointly: data/raw-data-{country_id}.csv
     respondi: data/respondi/Masterdata_14979_{country_id}.xlsx
     geonames: http://download.geonames.org/export/zip/{country_id}.zip
+    zensus:
+        url: https://ergebnisse2011.zensus2022.de/api/rest/2020/data/table?username={user}&password={password}&name={table}&area=all&regionalvariable=GEOBL3&job=false"
+        age: 1000A-1002
+        gender: 1000A-1013
+        education: 2000S-1005
 cluster-sync:
     url: euler.ethz.ch
     send-ignore: .syncignore-send
@@ -380,6 +385,27 @@ new-features:
                 - Medium
                 - Strong
                 - Very strong
+census:
+    DEU:
+        gender:
+            Männlich: Male
+            Weiblich: Female
+        age:
+            18 bis 24 Jahre: 18-24
+            25 bis 29 Jahre: 25-29
+            30 bis 39 Jahre: 30-39
+            40 bis 49 Jahre: 40-49
+            50 bis 64 Jahre: 50-64
+            65 bis 74 Jahre: 65-74
+            75 Jahre und älter: 75-100
+        education:
+            Ohne Abschluss: None # TODO `None, but in education` missing
+            Lehre, Berufsausbildung im dualen System: Vocational
+            Fachschulabschluss: Vocational # TODO check whether correct
+            Abschluss einer Fachakademie oder Berufsakademie: Master craftsman # TODO check whether correct
+            Fachhochschulabschluss: Bachelor or Master
+            Hochschulabschluss: Bachelor or Master
+            Promotion: Doctor
 clustering:
     4-with-country:
         features:

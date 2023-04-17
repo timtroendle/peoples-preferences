@@ -27,6 +27,9 @@ wildcard_constraints:
     level = "|".join([a.replace("+", "\+") for a in NONE_BASELINE_ATTRIBUTE_LEVELS]),
     sample = "prior|posterior|prediction",
 min_version("7.8")
+envvars:
+    "ZENSUS_USER",
+    "ZENSUS_PASSWORD"
 
 onstart:
     shell("mkdir -p build/logs")

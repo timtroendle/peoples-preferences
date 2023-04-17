@@ -10,6 +10,11 @@ You need [conda](https://conda.io/docs/index.html) to run the analysis. Using co
 
     conda env create -f environment.yaml
 
+You need an account to download German Zensus data and provide credentials to the workflow.
+
+1. [Register for an account](https://ergebnisse2011.zensus2022.de/datenbank/online?Menu=Anmeldung#abreadcrumb).
+2. Add environmental variables `ZENSUS_USER` and `ZENSUS_PASSWORD` in which you store username and password.
+
 ## Run the analysis
 
     snakemake

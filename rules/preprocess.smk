@@ -29,6 +29,32 @@ rule geonames:
         """
 
 
+rule download_german_census:
+    message: "Download German census data {wildcards.table}."
+    params:
+        url = lambda wildcards: config["data-sources"]["zensus"]["url"].format(
+            user=os.environ["ZENSUS_USER"],
+            password=os.environ["ZENSUS_PASSWORD"],
+            table=wildcards["table"]
+        )
+    output:
+        data = "data/automatic/zensus/{table}.csv"
+    conda: "../envs/preprocess.yaml"
+    script: "../scripts/preprocess/zensus.py"
+
+
+rule german_census:
+    message: "Preprocess German census data for dimension {wildcards.dim}."
+    input:
+        data = lambda wildcards: "data/automatic/zensus/{table}.csv".format(table=config["data-sources"]["zensus"][wildcards.dim])
+    params:
+        name_mapping = lambda wildcards: config["census"]["DEU"][wildcards.dim]
+    output:
+        "build/data/census/DEU/{dim}.feather"
+    conda: "../envs/preprocess.yaml"
+    script: "../scripts/preprocess/zensus.py"
+
+
 rule national_conjoint_raw:
     message: "Preprocess conjoint data for country {wildcards.country_id}."
     input:
