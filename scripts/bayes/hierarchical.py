@@ -228,7 +228,7 @@ class HierarchicalModel(pm.Model):
             )
         return effect
 
-    def poststratify(self, inference_data: xr.Dataset, census: xr.Dataset) -> xr.DataArray:
+    def poststratify(self, inference_data: xr.Dataset, census: xr.Dataset) -> az.InferenceData:
         raise NotImplementedError("Poststratification not implemented.")
 
     @classmethod
@@ -326,7 +326,7 @@ class MrPModel(HierarchicalModel):
             dims=["respondent", "level"]
         )
 
-    def poststratify(self, inference_data: xr.Dataset, census: xr.Dataset) -> xr.DataArray:
+    def poststratify(self, inference_data: xr.Dataset, census: xr.Dataset) -> az.InferenceData:
         alpha = inference_data.alpha
         country_partworth = inference_data.effect_country.sel(country=census.country)
         region_partworth = inference_data["effect_admin1"]
@@ -336,12 +336,16 @@ class MrPModel(HierarchicalModel):
             for feature in ["age", "gender", "education"]
         ]
 
-        return (
+        partworth = (
             alpha
             + country_partworth
             + region_partworth
             + sum(feature_partworths)
-        ).rename("partworth")
+        )
+        return az.convert_to_inference_data(
+            partworth.rename("partworths"),
+            group="poststratify"
+        )
 
     def poststratify_feature(self, inference_data: xr.Dataset, feature: str, census: xr.Dataset) -> xr.DataArray:
         effect = inference_data[f"effect_{feature}"]

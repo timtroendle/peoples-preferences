@@ -23,7 +23,8 @@ EXPECTED_VALUE = "expected"
 ESTIMAND_NAME = {
     "prior": "Partworth utility",
     "posterior": "Partworth utility",
-    "amce": "Average marginal component effect"
+    "amce": "Average marginal component effect",
+    "poststratify": "Partworth utility"
 }
 
 
