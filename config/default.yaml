@@ -4,9 +4,10 @@ data-sources:
     geonames: http://download.geonames.org/export/zip/{country_id}.zip
     zensus:
         url: https://ergebnisse2011.zensus2022.de/api/rest/2020/data/table?username={user}&password={password}&name={table}&area=all&regionalvariable=GEOBL3&job=false"
-        age: 1000A-1002
-        gender: 1000A-1013
-        education: 2000S-1005
+        features:
+            age: 1000A-1002
+            gender: 1000A-1013
+            education: 2000S-1005
 cluster-sync:
     url: euler.ethz.ch
     send-ignore: .syncignore-send

@@ -119,6 +119,28 @@ rule prediction_amces:
         "../scripts/bayes/amce.py"
 
 
+rule poststratify:
+    message:
+        "Poststratify results from hierarchical Bayes model '{wildcards.name}'."
+    input:
+        conjoint = rules.global_conjoint.output[0],
+        inference_data = "build/results/models/hierarchical-{name}/posterior/inference-data.nc",
+        census = rules.census.output[0]
+    params:
+        limit_respondents = hierarchical_model_config("limit-respondents"),
+        model_variety = hierarchical_model_config("model-variety"),
+        covariances = hierarchical_model_config("covariances"),
+    threads: 1
+    output:
+        "build/results/models/hierarchical-{name}/{sample}/inference-data.nc"
+    wildcard_constraints:
+        sample = "poststratify"
+    conda:
+        '../envs/pymc.yaml'
+    script:
+        '../scripts/bayes/hierarchical.py'
+
+
 rule diagnostics:
     message: "Run diagnostics for hierarchical model {wildcards.name}."
     input:

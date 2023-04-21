@@ -29,14 +29,14 @@ def download_zensus_table(url: str, path_to_output: str):
     data.to_csv(path_to_output, header=True, index=True)
 
 
-def preprocess_zensus_table(path_to_input: str, dim_name: str, name_mapping: dict[str, str], path_to_output: str):
+def preprocess_zensus_table(path_to_input: str, feature_name: str, name_mapping: dict[str, str], path_to_output: str):
     (
         pd
         .read_csv(path_to_input, index_col=0)
         .drop(columns="Deutschland", errors="ignore")
         .rename(index=name_mapping, columns=lambda name: name[3:])
         .loc[name_mapping.values(), :]
-        .rename_axis(index=dim_name)
+        .rename_axis(index=feature_name)
         .groupby(level=0, axis=0)
         .sum() # sum over multiple external categories if they match our internal category
         .reset_index()
@@ -53,7 +53,7 @@ if __name__ == "__main__":
     except AttributeError:
         preprocess_zensus_table(
             path_to_input=snakemake.input.data,
-            dim_name=snakemake.wildcards.dim,
+            feature_name=snakemake.wildcards.feature,
             name_mapping=snakemake.params.name_mapping,
             path_to_output=snakemake.output[0]
         )

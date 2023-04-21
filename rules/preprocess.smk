@@ -44,15 +44,29 @@ rule download_german_census:
 
 
 rule german_census:
-    message: "Preprocess German census data for dimension {wildcards.dim}."
+    message: "Preprocess German census data for feature {wildcards.feature}."
     input:
-        data = lambda wildcards: "data/automatic/zensus/{table}.csv".format(table=config["data-sources"]["zensus"][wildcards.dim])
+        data = lambda wildcards: "data/automatic/zensus/{table}.csv".format(
+            table=config["data-sources"]["zensus"]["features"][wildcards.feature]
+        )
     params:
-        name_mapping = lambda wildcards: config["census"]["DEU"][wildcards.dim]
+        name_mapping = lambda wildcards: config["census"]["DEU"][wildcards.feature]
     output:
-        "build/data/census/DEU/{dim}.feather"
+        "build/data/census/DEU/{feature}.feather"
     conda: "../envs/preprocess.yaml"
     script: "../scripts/preprocess/zensus.py"
+
+
+rule census:
+    message: "Merge all census files."
+    input:
+        features = expand("build/data/census/DEU/{feature}.feather", feature=config["data-sources"]["zensus"]["features"])
+    output:
+        "build/data/census.nc"
+    conda:
+        "../envs/preprocess.yaml"
+    script:
+        "../scripts/preprocess/census.py"
 
 
 rule national_conjoint_raw:

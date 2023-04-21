@@ -3,6 +3,7 @@ from pathlib import Path
 import pandas as pd
 import pymc as pm
 import arviz as az
+import xarray as xr
 
 
 ATTRIBUTES = [
@@ -91,6 +92,24 @@ def predict(path_to_in_sample_data: str, path_to_trace_data: str, path_to_out_sa
             random_seed=random_seed,
         )
     inference_data.to_netcdf(path_to_output)
+
+
+def poststratify(path_to_conjoint: str, limit_respondents: bool, n_respondents_per_country: int,
+                 model_variety: str, covariances: bool, path_to_inference_data: str, path_to_census: str,
+                 path_to_output: str):
+    model = HierarchicalModel.for_variety(model_variety)(
+        path_to_data=path_to_conjoint,
+        limit_respondents=limit_respondents,
+        n_respondents_per_country=n_respondents_per_country,
+        covariances=covariances
+    )
+    (
+        model
+        .poststratify(
+            az.from_netcdf(path_to_inference_data).posterior,
+            xr.open_dataset(path_to_census))
+        .to_netcdf(path_to_output)
+    )
 
 
 class HierarchicalModel(pm.Model):
@@ -209,6 +228,9 @@ class HierarchicalModel(pm.Model):
             )
         return effect
 
+    def poststratify(self, inference_data: xr.Dataset, census: xr.Dataset) -> xr.DataArray:
+        raise NotImplementedError("Poststratification not implemented.")
+
     @classmethod
     def register(cls):
         HierarchicalModel.variety_versions[cls.variety] = cls
@@ -243,6 +265,7 @@ class MrPModel(HierarchicalModel):
 
     def __init__(self, path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
                  covariances: bool, name: str = ""):
+        n_respondents_per_country = n_respondents_per_country * 4 # to compensate limiting to a single country
         super().__init__(path_to_data, limit_respondents, n_respondents_per_country, covariances)
 
     def preprocess_data(self):
@@ -250,6 +273,15 @@ class MrPModel(HierarchicalModel):
             self
             .conjoint
             .pipe(remove_respondents_with_missing_data) # FIXME don't do this
+        )
+        self.limit_to_germany()
+
+    def limit_to_germany(self):
+        self.conjoint = (
+            self
+            .conjoint
+            .where(self.conjoint.RESPONDENT_COUNTRY == "DEU")
+            .dropna(subset="RESPONDENT_COUNTRY")
         )
 
     def build_partworths(self):
@@ -293,6 +325,34 @@ class MrPModel(HierarchicalModel):
             alpha + country[:, self.c].T + admin1[:, adm1].T + gender[:, g].T + age[:, a].T + edu[:, e].T,
             dims=["respondent", "level"]
         )
+
+    def poststratify(self, inference_data: xr.Dataset, census: xr.Dataset) -> xr.DataArray:
+        alpha = inference_data.alpha
+        country_partworth = inference_data.effect_country.sel(country=census.country)
+        region_partworth = inference_data["effect_admin1"]
+
+        feature_partworths = [
+            self.poststratify_feature(inference_data, feature, census)
+            for feature in ["age", "gender", "education"]
+        ]
+
+        return (
+            alpha
+            + country_partworth
+            + region_partworth
+            + sum(feature_partworths)
+        ).rename("partworth")
+
+    def poststratify_feature(self, inference_data: xr.Dataset, feature: str, census: xr.Dataset) -> xr.DataArray:
+        effect = inference_data[f"effect_{feature}"]
+        frequencies_feature = census[f"frequency_{feature}"]
+        return self.regional_average_partworth(effect, frequencies_feature)
+
+    def regional_average_partworth(self, effect: xr.DataArray, frequencies: xr.DataArray) -> xr.DataArray:
+        dimension = set(frequencies.dims) - {"admin1"}
+        assert len(dimension) == 1
+        dimension = dimension.pop()
+        return (effect * frequencies).sum(dimension) / frequencies.sum(dimension)
 
 
 NocovariatesModel.register()
@@ -348,6 +408,17 @@ if __name__ == "__main__":
                 random_seed=snakemake.params.random_seed,
                 model_variety=snakemake.params.model_variety,
                 covariances=snakemake.params.covariances,
+                path_to_output=snakemake.output[0]
+            )
+        case "poststratify":
+            poststratify(
+                path_to_conjoint=snakemake.input.conjoint,
+                limit_respondents=snakemake.params.limit_respondents,
+                n_respondents_per_country=int(snakemake.params.limit_respondents) // 4,
+                model_variety=snakemake.params.model_variety,
+                covariances=snakemake.params.covariances,
+                path_to_inference_data=snakemake.input.inference_data,
+                path_to_census=snakemake.input.census,
                 path_to_output=snakemake.output[0]
             )
         case _:
