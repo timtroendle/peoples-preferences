@@ -4,6 +4,9 @@ import pandas as pd
 
 DARK_GREY = "#424242"
 
+WIDTH_SINGLE_COLUMN = 220 - 1
+WIDTH_TWO_COLUMNS = 236
+
 
 def plot_likert_items(path_to_data: str, items: dict[str, str], by_country: bool,
                       colors: list[str], path_to_plot: str):
@@ -29,8 +32,6 @@ def plot_likert_items(path_to_data: str, items: dict[str, str], by_country: bool
         x=alt.X("nx1", type="quantitative", title="Percentage", axis=alt.Axis(format="%"), scale={"domain": [-1, 1]}),
         x2=alt.X2("nx2"),
         color=alt.Color("type", type="nominal", title="Response", scale=alt.Scale(domain=dtype.categories.values, range=colors)),
-    ).properties(
-        width=300
     )
     finalise_and_write_plot(base, by_country, facet_by="Question", path_to_plot=path_to_plot)
 
@@ -47,8 +48,6 @@ def plot_agreement_items(path_to_data: str, items: dict[str, str], by_country: b
         x=alt.X("sum(percentage)", type="quantitative", title="Percentage", axis=alt.Axis(format="%"), scale={"domain": [0, 1]}, sort=dtype.categories.values),
         color=alt.Color("type", type="ordinal", title="Response", sort=dtype.categories.values),
         order=alt.Order('type_order', sort="ascending")
-    ).properties(
-        width=300
     )
     finalise_and_write_plot(base, by_country, facet_by="Question", path_to_plot=path_to_plot)
 
@@ -69,8 +68,6 @@ def plot_demographics_item(path_to_data: str, items: dict[str, str], category_co
         x=alt.X("sum(percentage)", type="quantitative", title="Percentage", axis=alt.Axis(format="%"), scale={"domain": [0, 1]}, sort=dtype.categories.values),
         color=chart_colors,
         order=alt.Order('type_order', sort="ascending")
-    ).properties(
-        width=300
     )
     finalise_and_write_plot(base, by_country, facet_by=None, path_to_plot=path_to_plot)
 
@@ -86,7 +83,8 @@ def finalise_and_write_plot(chart: alt.Chart, by_country: bool, facet_by: str, p
         .configure(font="Lato")
         .configure_axis(titleColor=DARK_GREY, labelColor=DARK_GREY)
         .configure_header(titleColor=DARK_GREY, labelColor=DARK_GREY)
-        .configure_legend(titleColor=DARK_GREY, labelColor=DARK_GREY)
+        .configure_legend(titleColor=DARK_GREY, labelColor=DARK_GREY, orient="bottom", columns=3)
+        .configure_view(continuousWidth=WIDTH_SINGLE_COLUMN if not facet_by else WIDTH_TWO_COLUMNS)
         .save(path_to_plot)
     )
 

@@ -26,6 +26,8 @@ ESTIMAND_NAME = {
     "amce": "Average marginal component effect",
     "poststratify": "Partworth utility"
 }
+WIDTH_SINGLE_PLOT = 400 - 7
+WIDTH_SINGLE_PLOT_IN_FACETS = 96.5
 
 
 def visualise_partworths(path_to_inference_data: str, facet_by_country: bool, aggregate_individuals: bool,
@@ -49,8 +51,7 @@ def visualise_partworths(path_to_inference_data: str, facet_by_country: bool, ag
         x=alt.X(EXPECTED_VALUE, title=estimand_name),
         color=alt.Color("attribute", sort=list(nice_names["attributes"].values()), legend=alt.Legend(title="Attribute")),
     ).properties(
-        width=300,
-        height=400
+        width=WIDTH_SINGLE_PLOT if not facet_by_country else WIDTH_SINGLE_PLOT_IN_FACETS,
     )
 
     base_line = alt.Chart(data).mark_rule(color=DARK_GREY, strokeDash=[4], opacity=0.8).encode(
@@ -70,18 +71,19 @@ def visualise_partworths(path_to_inference_data: str, facet_by_country: bool, ag
             x="lower",
             x2="higher"
         )
-        main_marks = (point + interval)
+        main_marks = (interval + point)
 
     entire_chart = (area + base_line + main_marks)
 
     if facet_by_country:
-        entire_chart = entire_chart.facet("Country", columns=2)
+        entire_chart = entire_chart.facet(alt.Column('Country', title=None), columns=4)
     (
         entire_chart
-        .configure(font="Lato")
+        .configure(font="Lato", facet=alt.CompositionConfig(spacing=0))
+        .configure_view(step=16)
         .configure_axis(titleColor=DARK_GREY, labelColor=DARK_GREY)
         .configure_header(titleColor=DARK_GREY, labelColor=DARK_GREY)
-        .configure_legend(titleColor=DARK_GREY, labelColor=DARK_GREY)
+        .configure_legend(titleColor=DARK_GREY, labelColor=DARK_GREY, orient="bottom", columns=3)
         .save(path_to_plot)
     )
 

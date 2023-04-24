@@ -6,6 +6,9 @@ import xarray as xr
 
 DARK_GREY = "#424242"
 
+TOTAL_WIDTH = 431
+WIDTH_RATIO_VARYING = 0.8
+
 
 def plot_varying_effects(path_to_inference_data: str, varying_variable_name: str, pop_mean_variable_name: str,
                          sample_type: str,
@@ -53,8 +56,7 @@ def create_chart_of_varying_effects(varying: pd.DataFrame):
             x=alt.X("respondent:N", title="Respondent", axis=alt.Axis(labels=False, ticks=False), sort=alt.EncodingSortField(field="mean")),
             y=alt.Y("mean:Q", title="Individual partworths")
         ).properties(
-            width=250,
-            height=200
+            width=TOTAL_WIDTH * WIDTH_RATIO_VARYING,
         )
     )
     interval_narrow = (
@@ -84,8 +86,7 @@ def create_chart_of_pop_means(pop_means: pd.DataFrame, variable_name: str):
             y=alt.Y(f"{variable_name}:Q", title="Population-mean partworth"),
             x=alt.X("density:Q", title="Density", sort="ascending")
         ).properties(
-            width=50,
-            height=200
+            width=TOTAL_WIDTH * (1 - WIDTH_RATIO_VARYING),
         ).mark_line(
             orient=alt.Orientation("horizontal")
         )

@@ -44,15 +44,15 @@ onerror:
 def full_hierarchical_model_analysis(model: str, sample: str):
     return [
         f"build/results/models/hierarchical-{model}/{sample}/diagnostics/summary.csv",
-        f"build/results/models/hierarchical-{model}/{sample}/pop-means.pdf",
-        f"build/results/models/hierarchical-{model}/{sample}/country-differences.pdf",
-        f"build/results/models/hierarchical-{model}/{sample}/country-means.pdf",
-        f"build/results/models/hierarchical-{model}/{sample}/individual-partworths.pdf",
-        f"build/results/models/hierarchical-{model}/{sample}/unexplained-heterogeneity.pdf",
-        f"build/results/models/hierarchical-{model}/{sample}/left-option.pdf",
-        f"build/results/models/hierarchical-{model}/{sample}/varying/left-intercept.pdf"
+        f"build/results/models/hierarchical-{model}/{sample}/pop-means.png",
+        f"build/results/models/hierarchical-{model}/{sample}/country-differences.png",
+        f"build/results/models/hierarchical-{model}/{sample}/country-means.png",
+        f"build/results/models/hierarchical-{model}/{sample}/individual-partworths.png",
+        f"build/results/models/hierarchical-{model}/{sample}/unexplained-heterogeneity.png",
+        f"build/results/models/hierarchical-{model}/{sample}/left-option.png",
+        f"build/results/models/hierarchical-{model}/{sample}/varying/left-intercept.png"
     ] + [
-        f"build/results/models/hierarchical-{model}/{sample}/varying/{level}.pdf"
+        f"build/results/models/hierarchical-{model}/{sample}/varying/{level}.png"
         for level in NONE_BASELINE_ATTRIBUTE_LEVELS
     ]
 
@@ -63,14 +63,14 @@ rule all:
         "build/test-report.html",
         full_hierarchical_model_analysis(model="nocovariates-nocovariances", sample="prior"),
         full_hierarchical_model_analysis(model="nocovariates-nocovariances", sample="posterior"),
-        "build/results/analysis/likert-items.pdf",
-        "build/results/analysis/agreement-items.pdf",
-        "build/results/analysis/gender.pdf",
-        "build/results/analysis/area.pdf",
-        "build/results/analysis/income.pdf",
-        "build/results/analysis/education.pdf",
-        "build/results/analysis/likert-items-by-country.pdf",
-        "build/results/analysis/agreement-items-by-country.pdf"
+        "build/results/analysis/likert-items.png",
+        "build/results/analysis/agreement-items.png",
+        "build/results/analysis/gender.png",
+        "build/results/analysis/area.png",
+        "build/results/analysis/income.png",
+        "build/results/analysis/education.png",
+        "build/results/analysis/likert-items-by-country.png",
+        "build/results/analysis/agreement-items-by-country.png"
 
 
 def pandoc_options(wildcards):
