@@ -63,14 +63,14 @@ rule all:
         "build/test-report.html",
         full_hierarchical_model_analysis(model="nocovariates-nocovariances", sample="prior"),
         full_hierarchical_model_analysis(model="nocovariates-nocovariances", sample="posterior"),
-        "build/results/likert-items.pdf",
-        "build/results/agreement-items.pdf",
-        "build/results/gender.pdf",
-        "build/results/area.pdf",
-        "build/results/income.pdf",
-        "build/results/education.pdf",
-        "build/results/likert-items-by-country.pdf",
-        "build/results/agreement-items-by-country.pdf"
+        "build/results/analysis/likert-items.pdf",
+        "build/results/analysis/agreement-items.pdf",
+        "build/results/analysis/gender.pdf",
+        "build/results/analysis/area.pdf",
+        "build/results/analysis/income.pdf",
+        "build/results/analysis/education.pdf",
+        "build/results/analysis/likert-items-by-country.pdf",
+        "build/results/analysis/agreement-items-by-country.pdf"
 
 
 def pandoc_options(wildcards):
@@ -98,7 +98,7 @@ rule report:
         "report/fonts/KlinicSlabBookIt.otf",
         "report/fonts/KlinicSlabMedium.otf",
         "report/fonts/KlinicSlabMediumIt.otf",
-        expand("build/results/respondent-stats-{country_id}.csv", country_id=COUNTRY_IDS),
+        expand("build/results/analysis/respondent-stats-{country_id}.csv", country_id=COUNTRY_IDS),
         expand("build/results/clustering/4-with-country/umap-{feature}.png",
                feature=["RESPONDENT_COUNTRY", "Q3_GENDER", "Q6_AREA"]),
         "build/results/clustering/4-with-country/conditional-mm.png",
