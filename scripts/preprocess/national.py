@@ -29,7 +29,7 @@ COLUMNS_TO_DROP = [
 
 def preprocess_conjoint(path_to_conjointly_data: str, path_to_respondi_data: str, path_to_geonames: str,
                         country_id: str,
-                        population_count: int, pre_test_threshold: date, q12_party_base: int,
+                        pre_test_threshold: date, q12_party_base: int,
                         path_to_output: str):
     respondi = pd.read_excel(path_to_respondi_data, parse_dates=[2])
     (
@@ -204,7 +204,7 @@ def undummify(df, prefix_sep="_O"):
     return undummified_df
 
 
-class CoinjointDataFix:
+class ConjointDataFix:
 
     def __init__(self, col: str, reason: str, mask: Callable[[pd.Series], pd.Series],
                  fix: Callable[[pd.Series], pd.Series]):
@@ -228,25 +228,25 @@ class CoinjointDataFix:
 
 def fix_broken_entries(df):
     fixes = [
-        CoinjointDataFix( # ASSUME negative birth years should be positive.
+        ConjointDataFix( # ASSUME negative birth years should be positive.
             col="Q4_BIRTH_YEAR",
             mask=lambda col: col < 0,
             fix=lambda negative: negative.abs(),
             reason="{} respondents indicated negative birth years. These will be considered positive."
         ),
-        CoinjointDataFix( # ASSUME age entered instead of birth year.
+        ConjointDataFix( # ASSUME age entered instead of birth year.
             col="Q4_BIRTH_YEAR",
             mask=lambda col: (col < MAX_AGE) & (col >= MIN_AGE),
             fix=lambda age: YEAR_OF_STUDY - age,
             reason="{} respondents indicated their age instead of birth year. They will be transformed to birth years."
         ),
-        CoinjointDataFix( # ASSUME negative years in region should be positive.
+        ConjointDataFix( # ASSUME negative years in region should be positive.
             col="Q8_YEARS_REGION",
             mask=lambda col: col < 0,
             fix=lambda negative: negative.abs(),
             reason="{} respondents indicated negative years in region. These will be considered positive."
         ),
-        CoinjointDataFix( # ASSUME calendar years should be number years in region.
+        ConjointDataFix( # ASSUME calendar years should be number years in region.
             col="Q8_YEARS_REGION",
             mask=lambda col: col > UNREASONABLE_HIGH_AGE,
             fix=lambda calendar_years: YEAR_OF_STUDY - calendar_years,
@@ -269,7 +269,6 @@ if __name__ == "__main__":
         path_to_respondi_data=snakemake.input.respondi,
         path_to_geonames=snakemake.input.geonames,
         country_id=snakemake.wildcards.country_id,
-        population_count=int(snakemake.params.population),
         pre_test_threshold=snakemake.params.pre_test_threshold,
         q12_party_base=snakemake.params.q12_party_base[snakemake.wildcards.country_id],
         path_to_output=snakemake.output[0]

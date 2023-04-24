@@ -13,7 +13,6 @@ conditional_mm_plot <- function(path.data, path.plot, estimate, by) {
         formula = f1,
         estimate = estimate,
         id = ~RESPONDENT_ID,
-        weights = ~WEIGHT,
         by = ~.(by.sym)
     )))
     if (estimate == "mm") {

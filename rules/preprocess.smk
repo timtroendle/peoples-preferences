@@ -76,7 +76,6 @@ rule national_conjoint_raw:
         respondi = config["data-sources"]["respondi"],
         geonames = rules.geonames.output[0]
     params:
-        population = lambda wildcards: config["parameters"]["population-count"][wildcards.country_id],
         pre_test_threshold = config["parameters"]["pre-test-threshold"],
         q12_party_base = config["parameters"]["Q12-party-base"]
     output: "build/data/{country_id}.feather"
