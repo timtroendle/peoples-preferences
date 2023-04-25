@@ -132,6 +132,16 @@ rule push:
         """
 
 
+rule dag:
+     message: "Plot dependency graph of the workflow."
+     conda: "envs/dag.yaml"
+     shell:
+         """
+         snakemake --rulegraph > build/dag.dot
+         dot -Tpdf -o build/dag.pdf build/dag.dot
+         """
+
+
 rule clean: # removes all generated results
     shell:
         """
