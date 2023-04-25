@@ -38,6 +38,14 @@ def _create_config_plugin(snakemake):
             return pd.read_feather(snakemake.input.conjoint)
 
         @pytest.fixture
+        def conjoint_imputed(self):
+            return pd.read_feather(snakemake.input.conjoint_imputed)
+
+        @pytest.fixture(params=snakemake.params.config["parameters"]["impute"]["features"])
+        def imputed_feature_name(self, request):
+            return request.param
+
+        @pytest.fixture
         def respondents(self, conjoint):
             return conjoint.groupby("RESPONDENT_ID").first()
 

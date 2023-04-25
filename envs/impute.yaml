@@ -1,0 +1,10 @@
+name: impute
+channels:
+    - conda-forge
+    - r
+dependencies:
+    - r-base=4.2.3
+    - r-dplyr=1.1.2
+    - r-missforest=1.5
+    - r-randomforest=4.7_1.1
+    - r-arrow=11.0.0

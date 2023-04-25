@@ -120,8 +120,8 @@ data-types:
         max: 100
     Q9_EDUCATION:
         type: factor
-        ordered: True
-        missing-values: [7, 8] # ASSUME "other" irrelevant (~2.66% of respondents)
+        ordered: False # ASSUME no order to be able to include "other" (~2.66% of respondents)
+        missing-values: [8]
         rename:
             1: None
             2: None but in eduction
@@ -129,6 +129,7 @@ data-types:
             4: Master craftsman
             5: Bachelor or Master
             6: Doctor
+            7: Other
     Q10_INCOME:
         type: factor
         ordered: True
@@ -400,7 +401,7 @@ census:
             65 bis 74 Jahre: 65-74
             75 Jahre und älter: 75-100
         education:
-            Ohne Abschluss: None # TODO `None, but in education` missing
+            Ohne Abschluss: None # TODO `None, but in education` and `Other` missing
             Lehre, Berufsausbildung im dualen System: Vocational
             Fachschulabschluss: Vocational # TODO check whether correct
             Abschluss einer Fachakademie oder Berufsakademie: Master craftsman # TODO check whether correct
@@ -462,6 +463,12 @@ parameters:
         n-respondents: 80 # TODO allow to predict for more respondents than in the data
         n-choice-sets-per-respondent: 8
         seed: 3987
+    impute:
+        seed: 2324
+        features:
+            - Q4_BIRTH_YEAR_aggregated
+            - Q6_AREA
+            - Q9_EDUCATION
 models:
     multinomial:
         n-tune: 1000

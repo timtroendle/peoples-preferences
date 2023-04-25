@@ -103,3 +103,19 @@ rule global_conjoint:
     output: "build/data/conjoint.feather"
     conda: "../envs/preprocess.yaml"
     script: "../scripts/preprocess/types.py"
+
+
+rule global_conjoint_imputed:
+    message: "Impute missing data."
+    input:
+        data = rules.global_conjoint.output[0]
+    params:
+        seed = config["parameters"]["impute"]["seed"],
+        features = config["parameters"]["impute"]["features"]
+    output:
+        data = "build/data/conjoint-imputed.feather",
+        error = "build/data/imputation-oob-error.feather"
+    conda:
+        "../envs/impute.yaml"
+    script:
+        "../scripts/preprocess/impute.R"
