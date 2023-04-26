@@ -53,23 +53,32 @@ def create_chart_of_varying_effects(varying: pd.DataFrame):
             varying.reset_index(),
             title="A"
         ).encode(
-            x=alt.X("respondent:N", title="Respondent", axis=alt.Axis(labels=False, ticks=False), sort=alt.EncodingSortField(field="mean")),
-            y=alt.Y("mean:Q", title="Individual partworths")
+            x=alt.X(
+                "respondent:N",
+                title="Respondent",
+                axis=alt.Axis(labels=False, ticks=False),
+                sort=alt.EncodingSortField(field="mean")
+            ),
+            y=alt.Y(
+                "mean:Q",
+                title="Individual partworths",
+                scale={"domain": [-4, 4]}
+            )
         ).properties(
             width=TOTAL_WIDTH * WIDTH_RATIO_VARYING,
         )
     )
     interval_narrow = (
         base
-        .mark_area(opacity=0.5)
+        .mark_area(opacity=0.5, clip=True)
         .encode(y="lower", y2="higher")
     )
     interval_wide = (
         base
-        .mark_area(opacity=0.4)
+        .mark_area(opacity=0.4, clip=True)
         .encode(y="lowest", y2="highest")
     )
-    line = base.mark_line(size=1)
+    line = base.mark_line(size=1, clip=True)
     return interval_wide + interval_narrow + line
 
 
@@ -88,7 +97,8 @@ def create_chart_of_pop_means(pop_means: pd.DataFrame, variable_name: str):
         ).properties(
             width=TOTAL_WIDTH * (1 - WIDTH_RATIO_VARYING),
         ).mark_line(
-            orient=alt.Orientation("horizontal")
+            orient=alt.Orientation("horizontal"),
+            clip=True
         )
     )
 
