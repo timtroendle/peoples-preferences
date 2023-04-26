@@ -65,7 +65,7 @@ def sample_posterior(path_to_data: str, limit_respondents: bool, n_respondents_p
 def predict(path_to_in_sample_data: str, path_to_trace_data: str, path_to_out_sample_data: str,
             limit_respondents: bool, n_respondents_per_country: int, model_variety: str,
             covariances: bool, random_seed: int, path_to_output: str):
-    if model_variety == "mrp":
+    if model_variety in ("mrp", "covariates"):
         raise NotImplementedError("Prediction for models with covariates is not implemented.")
     model = HierarchicalModel.for_variety(model_variety)(
         path_to_data=path_to_in_sample_data,
@@ -127,6 +127,7 @@ class HierarchicalModel(pm.Model):
             .set_index(["RESPONDENT_ID", "CHOICE_SET", "LABEL"])
             .pipe(filter_respondents, limit_respondents, n_respondents_per_country)
         )
+        self.respondents = self.conjoint.groupby("RESPONDENT_ID").first()
         self.preprocess_data()
 
         dummies = pd.get_dummies(self.conjoint.loc[:, ATTRIBUTES], drop_first=True, prefix_sep=":")
@@ -160,7 +161,7 @@ class HierarchicalModel(pm.Model):
         )
         pm.MutableData(
             "c",
-            self.conjoint.groupby("RESPONDENT_ID").RESPONDENT_COUNTRY.first().cat.codes,
+            self.respondents.RESPONDENT_COUNTRY.cat.codes,
             dims=["respondent"]
         )
 
@@ -260,6 +261,57 @@ class NocovariatesModel(HierarchicalModel):
         )
 
 
+class CovariatesModel(HierarchicalModel):
+    variety = 'covariates'
+
+    def __init__(self, path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
+                 covariances: bool, name: str = ""):
+        super().__init__(path_to_data, limit_respondents, n_respondents_per_country, covariances)
+
+    def build_partworths(self):
+        covariate_coords = {
+            "gender": self.conjoint.Q3_GENDER.cat.categories,
+            "age": self.conjoint.Q4_BIRTH_YEAR_aggregated_imputed.cat.categories,
+            "area": self.conjoint.Q6_AREA_imputed.cat.categories,
+            "education": self.conjoint.Q9_EDUCATION_imputed.cat.categories
+        }
+        self.add_coords(covariate_coords)
+
+        g = pm.MutableData(
+            "g",
+            self.respondents.Q3_GENDER.cat.codes,
+            dims="respondent"
+        )
+        a = pm.MutableData(
+            "a",
+            self.respondents.Q4_BIRTH_YEAR_aggregated_imputed.cat.codes,
+            dims="respondent"
+        )
+        ar = pm.MutableData(
+            "ar",
+            self.respondents.Q6_AREA_imputed.cat.codes,
+            dims="respondent"
+        )
+        e = pm.MutableData(
+            "e",
+            self.respondents.Q9_EDUCATION_imputed.cat.codes,
+            dims="respondent"
+        )
+
+        alpha = pm.Normal('alpha', 0, sigma=1, dims="level")
+        country = self.add_varying_effect("country", eta=4, sd=2)
+        gender = self.add_varying_effect("gender", eta=4, sd=2)
+        age = self.add_varying_effect("age", eta=4, sd=2)
+        area = self.add_varying_effect("area", eta=4, sd=2)
+        edu = self.add_varying_effect("education", eta=4, sd=2)
+        respondent = self.add_varying_effect("respondent", eta=4, sd=2)
+        return pm.Deterministic(
+            "partworths",
+            alpha + country[:, self.c].T + gender[:, g].T + age[:, a].T + area[:, ar].T + edu[:, e].T + respondent.T,
+            dims=["respondent", "level"]
+        )
+
+
 class MrPModel(HierarchicalModel):
     variety = 'mrp'
 
@@ -295,22 +347,22 @@ class MrPModel(HierarchicalModel):
 
         g = pm.MutableData(
             "g",
-            self.conjoint.groupby("RESPONDENT_ID").Q3_GENDER.first().cat.codes,
+            self.respondents.Q3_GENDER.cat.codes,
             dims="respondent"
         )
         a = pm.MutableData(
             "a",
-            self.conjoint.groupby("RESPONDENT_ID").Q4_BIRTH_YEAR_aggregated.first().cat.codes,
+            self.respondents.Q4_BIRTH_YEAR_aggregated.cat.codes,
             dims="respondent"
         )
         e = pm.MutableData(
             "e",
-            self.conjoint.groupby("RESPONDENT_ID").Q9_EDUCATION.first().cat.codes,
+            self.respondents.Q9_EDUCATION.cat.codes,
             dims="respondent"
         )
         adm1 = pm.MutableData(
             "adm1",
-            self.conjoint.groupby("RESPONDENT_ID").RESPONDENT_ADMIN_NAME1.first().cat.codes,
+            self.respondents.RESPONDENT_ADMIN_NAME1.cat.codes,
             dims="respondent"
         )
 
@@ -360,6 +412,7 @@ class MrPModel(HierarchicalModel):
 
 
 NocovariatesModel.register()
+CovariatesModel.register()
 MrPModel.register()
 
 

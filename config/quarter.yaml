@@ -34,6 +34,20 @@ models:
             prior: 8000
             posterior: 48000
             prediction: 8000
+    hierarchical-covariates-nocovariances:
+        n-tune: 2000
+        n-draws:
+            prior: 1000
+            posterior: 2000
+        limit-respondents: 1000
+        runtime: # (min)
+            prior: 10
+            posterior: 360
+            prediction: 10
+        mem_mb:
+            prior: 8000
+            posterior: 48000
+            prediction: 8000
     hierarchical-mrp:
         n-tune: 2000
         n-draws:

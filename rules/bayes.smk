@@ -61,7 +61,8 @@ def hierarchical_model_config(param_name):
 
 rule hierarchical:
     message: "Sample {wildcards.sample} from hierarchical Bayes model '{wildcards.name}' using PyMC."
-    input: data = rules.global_conjoint.output[0]
+    input:
+        data = rules.global_conjoint_imputed.output[0]
     params:
         n_tune = hierarchical_model_config("n-tune"),
         n_draws = hierarchical_model_config("n-draws"),

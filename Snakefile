@@ -63,6 +63,8 @@ rule all:
         "build/test-report.html",
         full_hierarchical_model_analysis(model="nocovariates-nocovariances", sample="prior"),
         full_hierarchical_model_analysis(model="nocovariates-nocovariances", sample="posterior"),
+        full_hierarchical_model_analysis(model="covariates-nocovariances", sample="prior"),
+        full_hierarchical_model_analysis(model="covariates-nocovariances", sample="posterior"),
         "build/results/analysis/likert-items.png",
         "build/results/analysis/agreement-items.png",
         "build/results/analysis/gender.png",
