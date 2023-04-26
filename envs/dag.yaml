@@ -4,7 +4,7 @@ channels:
     - bioconda
 dependencies:
     - python=3.11
-    - snakemake-minimal=7.22.0
+    - snakemake-minimal=7.25.0
     - graphviz=2.50.0
     - pycountry=22.3.5
 variables:
