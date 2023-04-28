@@ -142,6 +142,23 @@ rule poststratify:
         '../scripts/bayes/hierarchical.py'
 
 
+rule max_subgroup_effects:
+    message:
+        "Calculate the largest expected effects across subgroups."
+    input:
+        inference_data = "build/results/models/hierarchical-{name}/posterior/inference-data.nc"
+    params:
+        exclude = ["country", "respondent"]
+    output:
+        "build/results/models/hierarchical-{name}/{sample}/inference-data.nc"
+    wildcard_constraints:
+        sample = "subgroups"
+    conda:
+        "../envs/pymc.yaml"
+    script:
+        "../scripts/bayes/subgroups.py"
+
+
 rule diagnostics:
     message: "Run diagnostics for hierarchical model {wildcards.name}."
     input:
@@ -253,6 +270,25 @@ rule visualise_population_means:
         mem_mb_per_cpu = 64000
     wildcard_constraints:
         sample = "poststratify"
+    conda: "../envs/analyse.yaml"
+    script: "../scripts/bayes/partworths.py"
+
+
+rule visualise_max_subgroup_effects:
+    message: "Visualise largest expected effect across subgroups of hierarchical model {wildcards.name}."
+    input: data = rules.hierarchical.output[0]
+    params:
+        variable_names = ["max_subgroup_effect"],
+        facet_by_country = False,
+        aggregate_individuals = False,
+        hdi_prob = config["report"]["hdi-prob"]["default"],
+        nice_names = config["report"]["nice-names"],
+    output: "build/results/models/hierarchical-{name}/{sample}/max-subgroup-effect.vega.json"
+    resources:
+        runtime = 60,
+        mem_mb_per_cpu = 64000
+    wildcard_constraints:
+        sample = "subgroups"
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/partworths.py"
 

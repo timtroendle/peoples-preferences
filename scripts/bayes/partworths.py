@@ -24,7 +24,8 @@ ESTIMAND_NAME = {
     "prior": "Partworth utility",
     "posterior": "Partworth utility",
     "amce": "Average marginal component effect",
-    "poststratify": "Partworth utility"
+    "poststratify": "Partworth utility",
+    "subgroups": "Partworth utility"
 }
 WIDTH_SINGLE_PLOT = 400 - 7
 WIDTH_SINGLE_PLOT_IN_FACETS = 96.5
