@@ -127,8 +127,8 @@ class HierarchicalModel(pm.Model):
             .set_index(["RESPONDENT_ID", "CHOICE_SET", "LABEL"])
             .pipe(filter_respondents, limit_respondents, n_respondents_per_country)
         )
-        self.respondents = self.conjoint.groupby("RESPONDENT_ID").first()
         self.preprocess_data()
+        self.respondents = self.conjoint.groupby("RESPONDENT_ID").first()
 
         dummies = pd.get_dummies(self.conjoint.loc[:, ATTRIBUTES], drop_first=True, prefix_sep=":")
 
