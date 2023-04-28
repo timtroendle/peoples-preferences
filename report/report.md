@@ -233,7 +233,7 @@ Additional tables and figures in arbitrary order.
 ---
 caption: 'Statistics of respondents in Germany'
 alignment: LRRRRRR
-include: build/DEU/respondent-stats.csv
+include: build/results/analysis/respondent-stats-DEU.csv
 include-encoding: UTF-8
 markdown: True
 width:
@@ -249,7 +249,7 @@ width:
 ---
 caption: 'Statistics of respondents in Poland'
 alignment: LRRRRRR
-include: build/POL/respondent-stats.csv
+include: build/results/analysis/respondent-stats-POL.csv
 include-encoding: UTF-8
 markdown: True
 width:
@@ -265,7 +265,7 @@ width:
 ---
 caption: 'Statistics of respondents in Portugal'
 alignment: LRRRRRR
-include: build/PRT/respondent-stats.csv
+include: build/results/analysis/respondent-stats-PRT.csv
 include-encoding: UTF-8
 markdown: True
 width:
@@ -281,7 +281,7 @@ width:
 ---
 caption: 'Statistics of respondents in Denmark'
 alignment: LRRRRRR
-include: build/DNK/respondent-stats.csv
+include: build/results/analysis/respondent-stats-DNK.csv
 include-encoding: UTF-8
 markdown: True
 width:
