@@ -80,7 +80,7 @@ rule all:
 def pandoc_options(wildcards):
     suffix = wildcards["suffix"]
     if suffix == "html":
-        return "--number-sections --self-contained --to html5"
+        return "--number-sections --embed-resources --standalone --to html5"
     elif suffix == "pdf":
         return "--number-sections --pdf-engine weasyprint"
     elif suffix == "docx":
