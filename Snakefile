@@ -44,7 +44,7 @@ onerror:
 def full_hierarchical_model_analysis(model: str, sample: str):
     return [
         f"build/results/models/hierarchical-{model}/{sample}/diagnostics/summary.csv",
-        f"build/results/models/hierarchical-{model}/{sample}/pop-means.png",
+        f"build/results/models/hierarchical-{model}/{sample}/intercept.png",
         f"build/results/models/hierarchical-{model}/{sample}/country-differences.png",
         f"build/results/models/hierarchical-{model}/{sample}/country-means.png",
         f"build/results/models/hierarchical-{model}/{sample}/individual-partworths.png",
@@ -65,6 +65,7 @@ rule all:
         full_hierarchical_model_analysis(model="nocovariates-nocovariances", sample="posterior"),
         full_hierarchical_model_analysis(model="covariates-nocovariances", sample="prior"),
         full_hierarchical_model_analysis(model="covariates-nocovariances", sample="posterior"),
+        "build/results/models/hierarchical-nocovariates-nocovariances/poststratify/pop-means.png",
         "build/results/analysis/likert-items.png",
         "build/results/analysis/agreement-items.png",
         "build/results/analysis/gender.png",

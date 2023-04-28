@@ -183,14 +183,14 @@ rule visualise_partworths:
     script: "../scripts/bayes/partworths.py"
 
 
-rule visualise_population_means:
-    message: "Visualise population mean partworths of hierarchical model {wildcards.name}."
+rule visualise_intercept:
+    message: "Visualise intercept of hierarchical model {wildcards.name}."
     input: data = rules.hierarchical.output[0]
     params:
         variable_names = "alpha",
         hdi_prob = config["report"]["hdi-prob"]["default"],
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/hierarchical-{name}/{sample}/pop-means.vega.json"
+    output: "build/results/models/hierarchical-{name}/{sample}/intercept.vega.json"
     resources:
         runtime = 60,
         mem_mb_per_cpu = 64000
@@ -234,6 +234,25 @@ rule visualise_country_means:
         mem_mb_per_cpu = 64000
     wildcard_constraints:
         sample = "prior|posterior"
+    conda: "../envs/analyse.yaml"
+    script: "../scripts/bayes/partworths.py"
+
+
+rule visualise_population_means:
+    message: "Visualise poststratified population means of hierarchical model {wildcards.name}."
+    input: data = rules.hierarchical.output[0]
+    params:
+        variable_names = ["pop_means"],
+        facet_by_country = False,
+        aggregate_individuals = False,
+        hdi_prob = config["report"]["hdi-prob"]["default"],
+        nice_names = config["report"]["nice-names"],
+    output: "build/results/models/hierarchical-{name}/{sample}/pop-means.vega.json"
+    resources:
+        runtime = 60,
+        mem_mb_per_cpu = 64000
+    wildcard_constraints:
+        sample = "poststratify"
     conda: "../envs/analyse.yaml"
     script: "../scripts/bayes/partworths.py"
 

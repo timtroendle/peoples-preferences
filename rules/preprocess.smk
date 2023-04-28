@@ -61,6 +61,8 @@ rule census:
     message: "Merge all census files."
     input:
         features = expand("build/data/census/DEU/{feature}.feather", feature=config["data-sources"]["zensus"]["features"])
+    params:
+        pop_counts = config["parameters"]["population-count"]
     output:
         "build/data/census.nc"
     conda:

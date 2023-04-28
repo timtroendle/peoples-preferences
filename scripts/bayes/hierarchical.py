@@ -232,6 +232,14 @@ class HierarchicalModel(pm.Model):
     def poststratify(self, inference_data: xr.Dataset, census: xr.Dataset) -> az.InferenceData:
         raise NotImplementedError("Poststratification not implemented.")
 
+    def poststratify_effect(self, effect: xr.DataArray, frequencies: xr.DataArray, dimension: str) -> xr.DataArray:
+        """Weigh effect with frequencies of occurency along defined dimension.
+
+        For example, takes an effect of age groups and reweighs them with the number of
+        people in these age groups.
+        """
+        return (effect * frequencies).sum(dimension) / frequencies.sum(dimension)
+
     @classmethod
     def register(cls):
         HierarchicalModel.variety_versions[cls.variety] = cls
@@ -258,6 +266,23 @@ class NocovariatesModel(HierarchicalModel):
             "partworths",
             alpha + country[:, self.c].T + respondent.T,
             dims=["respondent", "level"]
+        )
+
+    def poststratify(self, inference_data: xr.Dataset, census: xr.Dataset) -> az.InferenceData:
+        alpha = inference_data.alpha
+        country_partworth = self.poststratify_effect(
+            inference_data.effect_country,
+            census["frequency_countries"],
+            "country"
+        )
+
+        partworth = (
+            alpha
+            + country_partworth
+        )
+        return az.convert_to_inference_data(
+            partworth.rename("pop_means"),
+            group="poststratify"
         )
 
 
@@ -408,7 +433,7 @@ class MrPModel(HierarchicalModel):
         dimension = set(frequencies.dims) - {"admin1"}
         assert len(dimension) == 1
         dimension = dimension.pop()
-        return (effect * frequencies).sum(dimension) / frequencies.sum(dimension)
+        return self.poststratify_effect(effect, frequencies, dimension)
 
 
 NocovariatesModel.register()
