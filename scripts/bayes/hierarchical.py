@@ -106,7 +106,7 @@ def poststratify(path_to_conjoint: str, limit_respondents: bool, n_respondents_p
     (
         model
         .poststratify(
-            az.from_netcdf(path_to_inference_data).posterior,
+            az.from_netcdf(path_to_inference_data),
             xr.open_dataset(path_to_census))
         .to_netcdf(path_to_output)
     )
@@ -229,7 +229,7 @@ class HierarchicalModel(pm.Model):
             )
         return effect
 
-    def poststratify(self, inference_data: xr.Dataset, census: xr.Dataset) -> az.InferenceData:
+    def poststratify(self, inference_data: az.InferenceData, census: xr.Dataset) -> az.InferenceData:
         raise NotImplementedError("Poststratification not implemented.")
 
     def poststratify_effect(self, effect: xr.DataArray, frequencies: xr.DataArray, dimension: str) -> xr.DataArray:
@@ -239,6 +239,11 @@ class HierarchicalModel(pm.Model):
         people in these age groups.
         """
         return (effect * frequencies).sum(dimension) / frequencies.sum(dimension)
+
+    def poststratify_varying_effect(self, posterior: xr.Dataset, census: xr.Dataset, feature: str) -> xr.DataArray:
+        effect = posterior[f"effect_{feature}"]
+        frequencies_feature = census[f"frequency_{feature}"]
+        return self.poststratify_effect(effect, frequencies_feature, feature)
 
     @classmethod
     def register(cls):
@@ -268,10 +273,11 @@ class NocovariatesModel(HierarchicalModel):
             dims=["respondent", "level"]
         )
 
-    def poststratify(self, inference_data: xr.Dataset, census: xr.Dataset) -> az.InferenceData:
-        alpha = inference_data.alpha
+    def poststratify(self, inference_data: az.InferenceData, census: xr.Dataset) -> az.InferenceData:
+        posterior = inference_data.posterior
+        alpha = posterior.alpha
         country_partworth = self.poststratify_effect(
-            inference_data.effect_country,
+            posterior.effect_country,
             census["frequency_countries"],
             "country"
         )
@@ -408,13 +414,57 @@ class MrPModel(HierarchicalModel):
             dims=["respondent", "level"]
         )
 
-    def poststratify(self, inference_data: xr.Dataset, census: xr.Dataset) -> az.InferenceData:
-        alpha = inference_data.alpha
-        country_partworth = inference_data.effect_country.sel(country=census.country)
-        region_partworth = inference_data["effect_admin1"]
+    def poststratify(self, inference_data: az.InferenceData, census: xr.Dataset) -> az.InferenceData:
+        national = self.poststratify_national(inference_data, census)
+        regional = self.poststratify_regional(inference_data, census)
+        sample = self.sample_partworths(inference_data, census)
+        bias = national - sample
+
+        all = xr.Dataset({
+            "national_partworths": national,
+            "regional_partworths": regional,
+            "sample_partworths": sample,
+            "national_bias": bias
+        })
+        return az.convert_to_inference_data(
+            all,
+            group="poststratify"
+        )
+
+    def poststratify_national(self, inference_data: az.InferenceData, census: xr.Dataset) -> az.InferenceData:
+        posterior = inference_data.posterior
+        national_census = (
+            census
+            .drop("frequency_countries") # TODO this should not be there in the first place
+            .drop_dims("country") # TODO this should not be there in the first place
+            .groupby("country_of_admin1")
+            .sum()
+            .rename(country_of_admin1="country")
+        )
+
+        alpha = posterior.alpha
+        country_partworth = posterior.effect_country.sel(country=census.country)
 
         feature_partworths = [
-            self.poststratify_feature(inference_data, feature, census)
+            self.poststratify_varying_effect(posterior, national_census, feature)
+            for feature in ["age", "gender", "education"]
+        ]
+
+        partworth = (
+            alpha
+            + country_partworth
+            + sum(feature_partworths)
+        )
+        return partworth.sel(country="DEU") # TODO remove DEU focus
+
+    def poststratify_regional(self, inference_data: az.InferenceData, census: xr.Dataset) -> az.InferenceData:
+        posterior = inference_data.posterior
+        alpha = posterior.alpha
+        country_partworth = posterior.effect_country.sel(country=census.country)
+        region_partworth = posterior["effect_admin1"]
+
+        feature_partworths = [
+            self.poststratify_varying_effect(posterior, census, feature)
             for feature in ["age", "gender", "education"]
         ]
 
@@ -424,21 +474,33 @@ class MrPModel(HierarchicalModel):
             + region_partworth
             + sum(feature_partworths)
         )
-        return az.convert_to_inference_data(
-            partworth.rename("partworths"),
-            group="poststratify"
+        return partworth.sel(country="DEU") # TODO remove DEU focus
+
+    def sample_partworths(self, inference_data: az.InferenceData, census: xr.Dataset) -> az.InferenceData:
+        posterior = inference_data.posterior
+        constant_data = inference_data.constant_data
+
+        alpha = posterior.alpha
+        country_partworth = posterior.effect_country.sel(country=census.country)
+
+        age_partworth = self.sample_based_feature(posterior, "age", constant_data.a)
+        gender_partworth = self.sample_based_feature(posterior, "gender", constant_data.g)
+        education_partworth = self.sample_based_feature(posterior, "education", constant_data.e)
+
+        partworth = (
+            alpha
+            + country_partworth
+            + age_partworth
+            + gender_partworth
+            + education_partworth
         )
+        return partworth.sel(country="DEU") # TODO remove DEU focus
 
-    def poststratify_feature(self, inference_data: xr.Dataset, feature: str, census: xr.Dataset) -> xr.DataArray:
-        effect = inference_data[f"effect_{feature}"]
-        frequencies_feature = census[f"frequency_{feature}"]
-        return self.regional_average_partworth(effect, frequencies_feature)
-
-    def regional_average_partworth(self, effect: xr.DataArray, frequencies: xr.DataArray) -> xr.DataArray:
-        dimension = set(frequencies.dims) - {"admin1"}
-        assert len(dimension) == 1
-        dimension = dimension.pop()
-        return self.poststratify_effect(effect, frequencies, dimension)
+    def sample_based_feature(self, posterior: xr.Dataset, feature: str,
+                             respondent_features: xr.DataArray) -> xr.DataArray:
+        """Determine effect size based on sample characteristics rather than poststratification."""
+        effect = posterior[f"effect_{feature}"]
+        return effect.isel({feature: respondent_features}).mean("respondent")
 
 
 NocovariatesModel.register()

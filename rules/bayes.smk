@@ -274,6 +274,44 @@ rule visualise_population_means:
     script: "../scripts/bayes/partworths.py"
 
 
+rule visualise_sample_partworths:
+    message: "Visualise partworths of sample on the national level of hierarchical model {wildcards.name}."
+    input: data = rules.hierarchical.output[0]
+    params:
+        variable_names = ["sample_partworths"],
+        facet_by_country = False,
+        aggregate_individuals = False,
+        hdi_prob = config["report"]["hdi-prob"]["default"],
+        nice_names = config["report"]["nice-names"],
+    output: "build/results/models/hierarchical-{name}/{sample}/sample.vega.json"
+    resources:
+        runtime = 60,
+        mem_mb_per_cpu = 64000
+    wildcard_constraints:
+        sample = "poststratify"
+    conda: "../envs/analyse.yaml"
+    script: "../scripts/bayes/partworths.py"
+
+
+rule visualise_sample_bias:
+    message: "Visualise bias on the national level of hierarchical model {wildcards.name}."
+    input: data = rules.hierarchical.output[0]
+    params:
+        variable_names = ["national_bias"],
+        facet_by_country = False,
+        aggregate_individuals = False,
+        hdi_prob = config["report"]["hdi-prob"]["default"],
+        nice_names = config["report"]["nice-names"],
+    output: "build/results/models/hierarchical-{name}/{sample}/bias.vega.json"
+    resources:
+        runtime = 60,
+        mem_mb_per_cpu = 64000
+    wildcard_constraints:
+        sample = "poststratify"
+    conda: "../envs/analyse.yaml"
+    script: "../scripts/bayes/partworths.py"
+
+
 rule visualise_max_subgroup_effects:
     message: "Visualise largest expected effect across subgroups of hierarchical model {wildcards.name}."
     input: data = rules.hierarchical.output[0]
@@ -315,7 +353,7 @@ rule visualise_regional_heterogeneity:
     message: "Visualise heterogeneity of partworths of hierarchical model {wildcards.name}."
     input: data = rules.hierarchical.output[0]
     params:
-        variable_names = "partworths",
+        variable_names = "regional_partworths",
         aggregate_individuals = True,
         hdi_prob = None, # has no use here
         nice_names = config["report"]["nice-names"],
