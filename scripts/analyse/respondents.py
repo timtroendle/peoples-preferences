@@ -3,7 +3,8 @@ import pandas as pd
 
 def stats(path_to_data: str, country_id: str, path_to_output: str):
     df = pd.read_feather(path_to_data)
-    respondents = df[df.RESPONDENT_COUNTRY == country_id].groupby("RESPONDENT_ID").first()
+    respondents = df.groupby("RESPONDENT_ID").first()
+    respondents = respondents[respondents.RESPONDENT_COUNTRY == country_id]
     gender = respondents["Q3_GENDER"].value_counts(sort=False) / respondents["Q3_GENDER"].size * 100
     area = respondents["Q6_AREA"].value_counts(sort=False) / respondents["Q6_AREA"].size * 100
     income = respondents["Q10_INCOME"].value_counts(sort=False) / respondents["Q10_INCOME"].size * 100
