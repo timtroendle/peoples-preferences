@@ -29,7 +29,7 @@ To generate a PDF of the dependency graph of all steps `build/dag.pdf` run:
 
 ## Run on a cluster
 
-You may want to run the workflow on a cluster. While you can run on [any cluster that is supported by Snakemake](https://snakemake.readthedocs.io/en/stable/executing/cluster.html), the workflow currently supports [LSF](https://en.wikipedia.org/wiki/Platform_LSF) clusters only. To run the workflow on a LSF cluster, use the following command:
+You may want to run the workflow on a cluster. While you can run on [any cluster that is supported by Snakemake](https://snakemake.readthedocs.io/en/stable/executing/cluster.html), the workflow currently supports [Slurm](https://en.wikipedia.org/wiki/Slurm_Workload_Manager) clusters only. To run the workflow on a Slurm cluster, use the following command:
 
     snakemake --profile profiles/euler
 

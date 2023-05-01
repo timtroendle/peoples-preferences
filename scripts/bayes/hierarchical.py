@@ -397,9 +397,14 @@ class MrPModel(HierarchicalModel):
         gender = self.add_varying_effect("gender", eta=4, sd=2)
         age = self.add_varying_effect("age", eta=4, sd=2)
         edu = self.add_varying_effect("education", eta=4, sd=2)
+        respondent = self.add_varying_effect("respondent", eta=4, sd=2)
         return pm.Deterministic(
             "partworths",
-            alpha + country[:, self.c].T + admin1[:, adm1].T + gender[:, g].T + age[:, a].T + edu[:, e].T,
+            (
+                alpha + country[:, self.c].T + admin1[:, adm1].T
+                + gender[:, g].T + age[:, a].T + edu[:, e].T
+                + respondent.T
+            ),
             dims=["respondent", "level"]
         )
 
