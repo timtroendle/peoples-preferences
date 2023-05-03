@@ -1,5 +1,7 @@
 import pycountry
 
+localrules: download_geonames, download_german_census
+
 
 def alpha3to2(alpha3: str) -> str:
     return pycountry.countries.lookup(alpha3).alpha_2
