@@ -115,6 +115,7 @@ def poststratify(path_to_conjoint: str, limit_respondents: bool, n_respondents_p
 class HierarchicalModel(pm.Model):
     variety = None
     variety_versions = {}
+    covariates = []
 
     def __init__(self, path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
                  covariances: bool, name: str = ""):
@@ -128,7 +129,9 @@ class HierarchicalModel(pm.Model):
             .pipe(filter_respondents, limit_respondents, n_respondents_per_country)
         )
         self.preprocess_data()
+        self.use_imputed_covariates()
         self.respondents = self.conjoint.groupby("RESPONDENT_ID").first()
+        assert self.respondents[self.covariates].notna().all(axis=None)
 
         dummies = pd.get_dummies(self.conjoint.loc[:, ATTRIBUTES], drop_first=True, prefix_sep=":")
 
@@ -202,6 +205,15 @@ class HierarchicalModel(pm.Model):
     def preprocess_data(self):
         pass # generally no more preprocessing is necessary
 
+    def use_imputed_covariates(self):
+        existing_imputed_covariates = {
+            covariate: self.conjoint[f"{covariate}_imputed"]
+            for covariate in self.covariates
+            if f"{covariate}_imputed" in self.conjoint.columns
+        }
+        print(f"Using imputed data for the following covariates: {existing_imputed_covariates.keys()}")
+        self.conjoint = self.conjoint.assign(**existing_imputed_covariates)
+
     def build_partworths(self):
         raise NotImplementedError("Partworth is defined for subclasses only.")
 
@@ -258,6 +270,7 @@ class HierarchicalModel(pm.Model):
 
 class NocovariatesModel(HierarchicalModel):
     variety = 'nocovariates'
+    covariates = []
 
     def __init__(self, path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
                  covariances: bool, name: str = ""):
@@ -294,6 +307,12 @@ class NocovariatesModel(HierarchicalModel):
 
 class CovariatesModel(HierarchicalModel):
     variety = 'covariates'
+    covariates = [
+        "Q3_GENDER",
+        "Q4_BIRTH_YEAR_aggregated",
+        "Q6_AREA",
+        "Q9_EDUCATION"
+    ]
 
     def __init__(self, path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
                  covariances: bool, name: str = ""):
@@ -302,9 +321,9 @@ class CovariatesModel(HierarchicalModel):
     def build_partworths(self):
         covariate_coords = {
             "gender": self.conjoint.Q3_GENDER.cat.categories,
-            "age": self.conjoint.Q4_BIRTH_YEAR_aggregated_imputed.cat.categories,
-            "area": self.conjoint.Q6_AREA_imputed.cat.categories,
-            "education": self.conjoint.Q9_EDUCATION_imputed.cat.categories
+            "age": self.conjoint.Q4_BIRTH_YEAR_aggregated.cat.categories,
+            "area": self.conjoint.Q6_AREA.cat.categories,
+            "education": self.conjoint.Q9_EDUCATION.cat.categories
         }
         self.add_coords(covariate_coords)
 
@@ -315,17 +334,17 @@ class CovariatesModel(HierarchicalModel):
         )
         a = pm.MutableData(
             "a",
-            self.respondents.Q4_BIRTH_YEAR_aggregated_imputed.cat.codes,
+            self.respondents.Q4_BIRTH_YEAR_aggregated.cat.codes,
             dims="respondent"
         )
         ar = pm.MutableData(
             "ar",
-            self.respondents.Q6_AREA_imputed.cat.codes,
+            self.respondents.Q6_AREA.cat.codes,
             dims="respondent"
         )
         e = pm.MutableData(
             "e",
-            self.respondents.Q9_EDUCATION_imputed.cat.codes,
+            self.respondents.Q9_EDUCATION.cat.codes,
             dims="respondent"
         )
 
@@ -345,6 +364,12 @@ class CovariatesModel(HierarchicalModel):
 
 class MrPModel(HierarchicalModel):
     variety = 'mrp'
+    covariates = [
+        "Q3_GENDER",
+        "Q4_BIRTH_YEAR_aggregated",
+        "Q9_EDUCATION",
+        "RESPONDENT_ADMIN_NAME1"
+    ]
 
     def __init__(self, path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
                  covariances: bool, name: str = ""):
@@ -355,7 +380,7 @@ class MrPModel(HierarchicalModel):
         self.conjoint = (
             self
             .conjoint
-            .pipe(remove_respondents_with_missing_data) # FIXME don't do this
+            .dropna(axis="index", subset=["RESPONDENT_ADMIN_NAME1"]) # removes 3 (0.3%) Germans
         )
         self.limit_to_germany()
 
@@ -506,13 +531,6 @@ class MrPModel(HierarchicalModel):
 NocovariatesModel.register()
 CovariatesModel.register()
 MrPModel.register()
-
-
-def remove_respondents_with_missing_data(df):
-    return df.dropna(
-        axis="index",
-        subset=["Q3_GENDER", "Q4_BIRTH_YEAR_aggregated", "Q9_EDUCATION", "RESPONDENT_ADMIN_NAME1"],
-    )
 
 
 def filter_respondents(df, limit_respondents, n_respondents_per_country):

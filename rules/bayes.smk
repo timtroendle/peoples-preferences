@@ -85,7 +85,7 @@ rule predict:
     message:
         "Predict from hierarchical Bayes model '{wildcards.name}' using PyMC."
     input:
-        in_sample = rules.global_conjoint.output[0],
+        in_sample = rules.global_conjoint_imputed.output[0],
         out_sample = rules.synthetic_data.output[0],
         trace = "build/results/models/hierarchical-{name}/posterior/inference-data.nc"
     params:
@@ -124,7 +124,7 @@ rule poststratify:
     message:
         "Poststratify results from hierarchical Bayes model '{wildcards.name}'."
     input:
-        conjoint = rules.global_conjoint.output[0],
+        conjoint = rules.global_conjoint_imputed.output[0],
         inference_data = "build/results/models/hierarchical-{name}/posterior/inference-data.nc",
         census = rules.census.output[0]
     params:
