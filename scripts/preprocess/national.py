@@ -1,6 +1,7 @@
 from datetime import date
 from itertools import filterfalse
 from typing import Callable
+import re
 
 import pandas as pd
 
@@ -8,6 +9,7 @@ YEAR_OF_STUDY = 2022
 MIN_AGE = 18
 MAX_AGE = 120
 UNREASONABLE_HIGH_AGE = 1000
+GERMAN_POSTAL_CODE_AND_CITY = "^(\d{5})\s([a-zA-ZäöüÄÖÜß\s]+)$"
 INDEX_COLUMNS = ["RESPONDENT_ID", "CHOICE_SET", "LABEL"]
 COLUMNS_TO_DROP = [
     "SURVEY_ID", # TODO check what this is
@@ -45,11 +47,11 @@ def preprocess_conjoint(path_to_conjointly_data: str, path_to_respondi_data: str
         .drop(columns=COLUMNS_TO_DROP, errors="ignore")
         .fillna({"RESPONDENT_COUNTRY": country_id})
         .pipe(merge_respondi_data, respondi)
-        .pipe(merge_geonames, path_to_geonames)
         .pipe(undummify_dataset)
         .pipe(filter_pre_test, pre_test_threshold)
         .pipe(shift_q12_party, q12_party_base)
         .pipe(fix_broken_entries)
+        .pipe(merge_geonames, path_to_geonames)
         .reset_index()
         .to_feather(path_to_output)
     )
@@ -254,6 +256,12 @@ def fix_broken_entries(df):
                 "{} respondents indicated calendar years in region instead of number years. "
                 + "Will convert to number of years."
             )
+        ),
+        ConjointDataFix(
+            col="Q5_POSTCODE",
+            mask=lambda col: col.str.match(GERMAN_POSTAL_CODE_AND_CITY),
+            fix=lambda col: [re.match(GERMAN_POSTAL_CODE_AND_CITY, postal_code).groups()[0] for postal_code in col],
+            reason=("{} German respondents indicated their postal code and city. Retaining code only.")
         )
     ]
 
