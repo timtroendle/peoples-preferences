@@ -34,11 +34,12 @@ def preprocess_zensus_table(path_to_input: str, feature_name: str, name_mapping:
         pd
         .read_csv(path_to_input, index_col=0)
         .drop(columns="Deutschland", errors="ignore")
+        .drop(index="Insgesamt", errors="ignore")
         .rename(index=name_mapping, columns=lambda name: name[3:])
-        .loc[name_mapping.values(), :]
-        .rename_axis(index=feature_name)
         .groupby(level=0, axis=0)
         .sum() # sum over multiple external categories if they match our internal category
+        .loc[list(set(name_mapping.values())), :]
+        .rename_axis(index=feature_name)
         .reset_index()
         .to_feather(path_to_output)
     )

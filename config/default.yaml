@@ -389,7 +389,7 @@ new-features:
                 - Very strong
 census:
     DEU:
-        gender:
+        gender: # TODO filter <18
             Männlich: Male
             Weiblich: Female
         age:
@@ -400,7 +400,7 @@ census:
             50 bis 64 Jahre: 50-64
             65 bis 74 Jahre: 65-74
             75 Jahre und älter: 75-100
-        education:
+        education: # TODO filter <18
             Ohne Abschluss: None # TODO `None, but in education` and `Other` missing
             Lehre, Berufsausbildung im dualen System: Vocational
             Fachschulabschluss: Vocational # TODO check whether correct
