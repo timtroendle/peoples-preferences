@@ -115,7 +115,7 @@ def poststratify(path_to_conjoint: str, limit_respondents: bool, n_respondents_p
 class HierarchicalModel(pm.Model):
     variety = None
     variety_versions = {}
-    covariates = []
+    covariate_col_names = []
 
     def __init__(self, path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
                  covariances: bool, name: str = ""):
@@ -125,26 +125,27 @@ class HierarchicalModel(pm.Model):
         self.conjoint = (
             pd
             .read_feather(path_to_data)
-            .set_index(["RESPONDENT_ID", "CHOICE_SET", "LABEL"])
             .pipe(filter_respondents, limit_respondents, n_respondents_per_country)
+            .pipe(self.preprocess_data) # hook for subclasses
+            .apply(self.remove_unused_categories, axis="index")
+            .set_index(["RESPONDENT_ID", "CHOICE_SET", "LABEL"])
         )
-        self.preprocess_data()
         self.use_imputed_covariates()
         self.respondents = self.conjoint.groupby("RESPONDENT_ID").first()
-        assert self.respondents[self.covariates].notna().all(axis=None)
+        assert self.respondents[self.covariate_col_names].notna().all(axis=None)
 
         dummies = pd.get_dummies(self.conjoint.loc[:, ATTRIBUTES], drop_first=True, prefix_sep=":")
 
         self.add_coords({
             "level": dummies.columns.values,
             "level_repeat": dummies.columns.values,
-            "respondent": self.conjoint.index.get_level_values("RESPONDENT_ID").remove_unused_categories().categories,
+            "respondent": self.conjoint.index.get_level_values("RESPONDENT_ID").categories,
             "country": self.conjoint.RESPONDENT_COUNTRY.cat.categories,
         })
 
         r = pm.MutableData(
             "r",
-            self.conjoint.xs("Left", level="LABEL").index.get_level_values("RESPONDENT_ID").remove_unused_categories().codes,
+            self.conjoint.xs("Left", level="LABEL").index.get_level_values("RESPONDENT_ID").codes,
             dims="choice_situation"
         )
         dummies_left = pm.MutableData(
@@ -202,13 +203,19 @@ class HierarchicalModel(pm.Model):
             dims="choice_situation"
         )
 
-    def preprocess_data(self):
-        pass # generally no more preprocessing is necessary
+    def preprocess_data(self, df: pd.DataFrame) -> pd.DataFrame:
+        return df # generally no more preprocessing is necessary
+
+    def remove_unused_categories(self, col: pd.Series):
+        if pd.api.types.is_categorical_dtype(col):
+            return col.cat.remove_unused_categories()
+        else:
+            return col
 
     def use_imputed_covariates(self):
         existing_imputed_covariates = {
             covariate: self.conjoint[f"{covariate}_imputed"]
-            for covariate in self.covariates
+            for covariate in self.covariate_col_names
             if f"{covariate}_imputed" in self.conjoint.columns
         }
         print(f"Using imputed data for the following covariates: {list(existing_imputed_covariates.keys())}")
@@ -270,7 +277,7 @@ class HierarchicalModel(pm.Model):
 
 class NocovariatesModel(HierarchicalModel):
     variety = 'nocovariates'
-    covariates = []
+    covariate_col_names = []
 
     def __init__(self, path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
                  covariances: bool, name: str = ""):
@@ -307,7 +314,7 @@ class NocovariatesModel(HierarchicalModel):
 
 class CovariatesModel(HierarchicalModel):
     variety = 'covariates'
-    covariates = [
+    covariate_col_names = [
         "Q3_GENDER",
         "Q4_BIRTH_YEAR_aggregated",
         "Q6_AREA",
@@ -362,92 +369,84 @@ class CovariatesModel(HierarchicalModel):
         )
 
 
-class MrPModel(HierarchicalModel):
-    variety = 'mrp'
-    covariates = [
-        "Q3_GENDER",
-        "Q4_BIRTH_YEAR_aggregated",
-        "Q9_EDUCATION",
-        "RESPONDENT_ADMIN_NAME1"
-    ]
+class MrPModelAdmin0(HierarchicalModel):
+    variety = 'mrp0'
+    column_mapping = {
+        "gender": "Q3_GENDER",
+        "age": "Q4_BIRTH_YEAR_aggregated",
+        "education": "Q9_EDUCATION",
+    }
+    index_mapping = {
+        "gender": "g",
+        "age": "a",
+        "education": "e"
+    }
+    covariate_col_names = column_mapping.values()
+    covariates = column_mapping.keys()
 
     def __init__(self, path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
                  covariances: bool, name: str = ""):
         n_respondents_per_country = n_respondents_per_country * 4 # to compensate limiting to a single country
+        assert set(self.covariate_col_names) == set(self.column_mapping.values())
+        assert set(self.column_mapping.keys()) == set(self.index_mapping.keys())
         super().__init__(path_to_data, limit_respondents, n_respondents_per_country, covariances)
 
-    def preprocess_data(self):
-        self.conjoint = (
-            self
-            .conjoint
-            .dropna(axis="index", subset=["RESPONDENT_ADMIN_NAME1"]) # removes 3 (0.3%) Germans
-        )
-        self.limit_to_germany()
+    def preprocess_data(self, df: pd.DataFrame) -> pd.DataFrame:
+        if "region" in self.covariates:
+            df = (
+                df
+                .dropna(axis="index", subset=[self.column_mapping["region"]]) # removes 3 (0.3%) Germans
+            )
+        return self.limit_to_germany(df)
 
-    def limit_to_germany(self):
-        self.conjoint = (
-            self
-            .conjoint
-            .where(self.conjoint.RESPONDENT_COUNTRY == "DEU")
+    def limit_to_germany(self, df: pd.DataFrame) -> pd.DataFrame:
+        return (
+            df
+            .where(df.RESPONDENT_COUNTRY == "DEU")
             .dropna(subset="RESPONDENT_COUNTRY")
         )
 
     def build_partworths(self):
         covariate_coords = {
-            "gender": self.conjoint.Q3_GENDER.cat.categories,
-            "age": self.conjoint.Q4_BIRTH_YEAR_aggregated.cat.categories,
-            "education": self.conjoint.Q9_EDUCATION.cat.categories,
-            "region": self.conjoint.RESPONDENT_ADMIN_NAME1.cat.remove_unused_categories().cat.categories
+            covariate_name: self.conjoint[column_name].cat.categories
+            for covariate_name, column_name in self.column_mapping.items()
         }
         self.add_coords(covariate_coords)
 
-        g = pm.MutableData(
-            "g",
-            self.respondents.Q3_GENDER.cat.codes,
-            dims="respondent"
-        )
-        a = pm.MutableData(
-            "a",
-            self.respondents.Q4_BIRTH_YEAR_aggregated.cat.codes,
-            dims="respondent"
-        )
-        e = pm.MutableData(
-            "e",
-            self.respondents.Q9_EDUCATION.cat.codes,
-            dims="respondent"
-        )
-        rgn = pm.MutableData(
-            "rgn",
-            self.respondents.RESPONDENT_ADMIN_NAME1.cat.remove_unused_categories().cat.codes,
-            dims="respondent"
-        )
+        indices = [
+            pm.MutableData(
+                index,
+                self.respondents[self.column_mapping[covariate]].cat.codes,
+                dims="respondent"
+            )
+            for covariate, index in self.index_mapping.items()
+        ]
 
         alpha = pm.Normal('alpha', 0, sigma=1, dims="level")
         country = self.add_varying_effect("country", eta=4, sd=2)
-        region = self.add_varying_effect("region", eta=4, sd=2)
-        gender = self.add_varying_effect("gender", eta=4, sd=2)
-        age = self.add_varying_effect("age", eta=4, sd=2)
-        edu = self.add_varying_effect("education", eta=4, sd=2)
         respondent = self.add_varying_effect("respondent", eta=4, sd=2)
+
+        effects = [
+            self.add_varying_effect(covariate, eta=4, sd=2)
+            for covariate in self.index_mapping.keys()
+        ]
+
         return pm.Deterministic(
             "partworths",
             (
-                alpha + country[:, self.c].T + region[:, rgn].T
-                + gender[:, g].T + age[:, a].T + edu[:, e].T
-                + respondent.T
+                alpha + country[:, self.c].T + respondent.T
+                + sum(effect[:, index].T for effect, index in zip(effects, indices))
             ),
             dims=["respondent", "level"]
         )
 
     def poststratify(self, inference_data: az.InferenceData, census: xr.Dataset) -> az.InferenceData:
         national = self.poststratify_national(inference_data, census)
-        regional = self.poststratify_regional(inference_data, census)
         sample = self.sample_partworths(inference_data, census)
         bias = national - sample
 
         all = xr.Dataset({
             "national_partworths": national,
-            "regional_partworths": regional,
             "sample_partworths": sample,
             "national_bias": bias
         })
@@ -468,58 +467,38 @@ class MrPModel(HierarchicalModel):
         )
 
         alpha = posterior.alpha
-        country_partworth = posterior.effect_country.sel(country=census.country)
+        country_partworth = posterior.effect_country
 
-        feature_partworths = [
-            self.poststratify_varying_effect(posterior, national_census, feature)
-            for feature in ["age", "gender", "education"]
+        covariate_partworths = [
+            self.poststratify_varying_effect(posterior, national_census, covariate)
+            for covariate in set(self.covariates) - set(["region"])
         ]
 
         partworth = (
             alpha
             + country_partworth
-            + sum(feature_partworths)
+            + sum(covariate_partworths)
         )
-        return partworth.sel(country="DEU") # TODO remove DEU focus
-
-    def poststratify_regional(self, inference_data: az.InferenceData, census: xr.Dataset) -> az.InferenceData:
-        posterior = inference_data.posterior
-        alpha = posterior.alpha
-        country_partworth = posterior.effect_country.sel(country=census.country)
-        region_partworth = posterior["effect_region"]
-
-        feature_partworths = [
-            self.poststratify_varying_effect(posterior, census, feature)
-            for feature in ["age", "gender", "education"]
-        ]
-
-        partworth = (
-            alpha
-            + country_partworth
-            + region_partworth
-            + sum(feature_partworths)
-        )
-        return partworth.sel(country="DEU") # TODO remove DEU focus
+        return partworth
 
     def sample_partworths(self, inference_data: az.InferenceData, census: xr.Dataset) -> az.InferenceData:
         posterior = inference_data.posterior
         constant_data = inference_data.constant_data
 
         alpha = posterior.alpha
-        country_partworth = posterior.effect_country.sel(country=census.country)
+        country_partworth = self.sample_based_feature(posterior, "country", constant_data.c)
 
-        age_partworth = self.sample_based_feature(posterior, "age", constant_data.a)
-        gender_partworth = self.sample_based_feature(posterior, "gender", constant_data.g)
-        education_partworth = self.sample_based_feature(posterior, "education", constant_data.e)
+        covariate_partworths = [
+            self.sample_based_feature(posterior, covariate, constant_data[index])
+            for covariate, index in self.index_mapping.items()
+        ]
 
         partworth = (
             alpha
             + country_partworth
-            + age_partworth
-            + gender_partworth
-            + education_partworth
+            + sum(covariate_partworths)
         )
-        return partworth.sel(country="DEU") # TODO remove DEU focus
+        return partworth
 
     def sample_based_feature(self, posterior: xr.Dataset, feature: str,
                              respondent_features: xr.DataArray) -> xr.DataArray:
@@ -528,60 +507,34 @@ class MrPModel(HierarchicalModel):
         return effect.isel({feature: respondent_features}).mean("respondent")
 
 
-class MrPModelAdmin3(HierarchicalModel):
-    variety = 'mrp3'
-    covariates = [
-        "RESPONDENT_ADMIN_NAME3"
-    ]
-
-    def __init__(self, path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
-                 covariances: bool, name: str = ""):
-        n_respondents_per_country = n_respondents_per_country * 4 # to compensate limiting to a single country
-        super().__init__(path_to_data, limit_respondents, n_respondents_per_country, covariances)
-
-    def limit_to_germany(self):
-        self.conjoint = (
-            self
-            .conjoint
-            .where(self.conjoint.RESPONDENT_COUNTRY == "DEU")
-            .dropna(subset="RESPONDENT_COUNTRY")
-        )
-
-    def preprocess_data(self):
-        self.conjoint = (
-            self
-            .conjoint
-            .dropna(axis="index", subset=["RESPONDENT_ADMIN_NAME3"]) # removes 3 (0.3%) Germans
-        )
-        self.limit_to_germany()
-
-    def build_partworths(self):
-        covariate_coords = {
-            "region": self.conjoint.RESPONDENT_ADMIN_NAME3.cat.remove_unused_categories().cat.categories
-        }
-        self.add_coords(covariate_coords)
-
-        rgn = pm.MutableData(
-            "rgn",
-            self.respondents.RESPONDENT_ADMIN_NAME3.cat.remove_unused_categories().cat.codes,
-            dims="respondent"
-        )
-
-        alpha = pm.Normal('alpha', 0, sigma=1, dims="level")
-        country = self.add_varying_effect("country", eta=4, sd=2)
-        region = self.add_varying_effect("region", eta=4, sd=2)
-        respondent = self.add_varying_effect("respondent", eta=4, sd=2)
-        return pm.Deterministic(
-            "partworths",
-            alpha + country[:, self.c].T + region[:, rgn].T + respondent.T,
-            dims=["respondent", "level"]
-        )
+class MrPModelAdmin1(MrPModelAdmin0):
+    variety = 'mrp1'
+    column_mapping = {
+        "gender": "Q3_GENDER",
+        "age": "Q4_BIRTH_YEAR_aggregated",
+        "education": "Q9_EDUCATION",
+        "region": "RESPONDENT_ADMIN_NAME1"
+    }
+    index_mapping = {
+        "gender": "g",
+        "age": "a",
+        "education": "e",
+        "region": "rgn"
+    }
+    covariate_col_names = column_mapping.values()
+    covariates = column_mapping.keys()
 
     def poststratify(self, inference_data: az.InferenceData, census: xr.Dataset) -> az.InferenceData:
+        national = self.poststratify_national(inference_data, census)
         regional = self.poststratify_regional(inference_data, census)
+        sample = self.sample_partworths(inference_data, census)
+        bias = national - sample
 
         all = xr.Dataset({
+            "national_partworths": national,
             "regional_partworths": regional,
+            "sample_partworths": sample,
+            "national_bias": bias
         })
         return az.convert_to_inference_data(
             all,
@@ -591,20 +544,39 @@ class MrPModelAdmin3(HierarchicalModel):
     def poststratify_regional(self, inference_data: az.InferenceData, census: xr.Dataset) -> az.InferenceData:
         posterior = inference_data.posterior
         alpha = posterior.alpha
-        country_partworth = posterior.effect_country.sel(country=census.country)
+        country_partworth = posterior.effect_country
         region_partworth = posterior["effect_region"]
+
+        covariate_partworths = [
+            self.poststratify_varying_effect(posterior, census, covariate)
+            for covariate in set(self.covariates) - set(["region"])
+        ]
 
         partworth = (
             alpha
             + country_partworth
             + region_partworth
+            + sum(covariate_partworths)
         )
-        return partworth.sel(country="DEU") # TODO remove DEU focus
+        return partworth
+
+
+class MrPModelAdmin3(MrPModelAdmin1):
+    variety = 'mrp3'
+    column_mapping = {
+        "region": "RESPONDENT_ADMIN_NAME3"
+    }
+    index_mapping = {
+        "region": "rgn"
+    }
+    covariate_col_names = column_mapping.values()
+    covariates = column_mapping.keys()
 
 
 NocovariatesModel.register()
 CovariatesModel.register()
-MrPModel.register()
+MrPModelAdmin0.register()
+MrPModelAdmin1.register()
 MrPModelAdmin3.register()
 
 

@@ -535,14 +535,34 @@ models:
         threads:
             prior: 1
             posterior: 4
-    hierarchical-mrp:
+    hierarchical-mrp0:
         n-tune: 500
         n-draws:
             prior: 500
             posterior: 500
         limit-respondents: 80
         random-seed: 4000
-        model-variety: mrp
+        model-variety: mrp0
+        covariances: False
+        runtime: # (min)
+            prior: 10
+            posterior: 10
+            prediction: 10
+        mem_mb:
+            prior: 16000
+            posterior: 16000
+            prediction: 16000
+        threads:
+            prior: 1
+            posterior: 4
+    hierarchical-mrp1:
+        n-tune: 500
+        n-draws:
+            prior: 500
+            posterior: 500
+        limit-respondents: 80
+        random-seed: 4000
+        model-variety: mrp1
         covariances: False
         runtime: # (min)
             prior: 10
