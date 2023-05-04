@@ -5,24 +5,29 @@ def stats(path_to_data: str, country_id: str, path_to_output: str):
     df = pd.read_feather(path_to_data)
     respondents = df.groupby("RESPONDENT_ID").first()
     respondents = respondents[respondents.RESPONDENT_COUNTRY == country_id]
-    gender = respondents["Q3_GENDER"].value_counts(sort=False) / respondents["Q3_GENDER"].size * 100
-    area = respondents["Q6_AREA"].value_counts(sort=False) / respondents["Q6_AREA"].size * 100
-    income = respondents["Q10_INCOME"].value_counts(sort=False) / respondents["Q10_INCOME"].size * 100
 
     (
         pd
-        .concat([set_stats_index(gender, "Gender"), set_stats_index(area, "Area"), set_stats_index(income, "Income")])
+        .concat([
+            shares(respondents, "Q3_GENDER", "Gender"),
+            shares(respondents, "Q6_AREA", "Area"),
+            shares(respondents, "Q4_BIRTH_YEAR_aggregated", "Age"),
+            shares(respondents, "Q9_EDUCATION", "Education")
+        ])
         .to_csv(path_to_output, header=True, index=True, float_format="%.1f")
     )
 
 
-def set_stats_index(series, attribute_name):
+def shares(respondents: pd.DataFrame, feature_col_name: str, feature_name: str) -> pd.Series:
     return (
-        series
+        respondents[feature_col_name]
+        .value_counts(sort=False)
+        .div(respondents[feature_col_name].size)
+        .mul(100)
         .rename("share (%)")
         .rename_axis(index="level")
         .reset_index()
-        .assign(attribute=attribute_name)
+        .assign(attribute=feature_name)
         .set_index(["attribute", "level"])
     )
 
