@@ -313,6 +313,46 @@ references:
   URL: https://www.nowpublishers.com/article/Details/ECO-036
   volume: '10'
 
+- id: Bergquist:2019
+  abstract: >-
+    Scholars have not determined whether exposure to a changing climate
+    influences public understanding of or concern about climate change. We
+    examine this question using a comprehensive index of public concern about
+    climate change in each state from 1999 to 2017. The index aggregates data
+    from over 400,000 survey respondents in 170 polls. These new estimates of
+    state-level climate concern enable us to exploit geographic variation in
+    locally experienced climate changes over an extended time period. We show
+    that climate concern peaked in 2000 and again in 2017 and that climate
+    concern is modestly responsive to changes in state-level temperatures.
+    Overall, our results suggest that continued increases in temperature are
+    likely to cause public concern about climate change to grow in the future.
+    But a warming climate, on its own, is unlikely to yield a consensus in the
+    mass public about the threat posed by climate change.
+  accessed:
+    - year: 2023
+      month: 4
+      day: 6
+  author:
+    - family: Bergquist
+      given: Parrish
+    - family: Warshaw
+      given: Christopher
+  citation-key: Bergquist:2019
+  container-title: The Journal of Politics
+  DOI: 10.1086/701766
+  ISSN: 0022-3816
+  issue: '2'
+  issued:
+    - year: 2019
+      month: 4
+  page: 686-691
+  publisher: The University of Chicago Press
+  source: journals.uchicago.edu (Atypon)
+  title: Does Global Warming Increase Public Concern about Climate Change?
+  type: article-journal
+  URL: https://www.journals.uchicago.edu/doi/full/10.1086/701766
+  volume: '81'
+
 - id: Bergquist:2022
   abstract: >-
     Public acceptance is a precondition for implementing taxes and laws aimed at
@@ -436,6 +476,50 @@ references:
   type: article-journal
   URL: https://linkinghub.elsevier.com/retrieve/pii/S0301421516302002
   volume: '94'
+
+- id: Broniecki:2022
+  abstract: >-
+    Multilevel regression with poststratification (MrP) has quickly become the
+    gold standard for small area estimation. While the first MrP models did not
+    include context-level information, current applications almost always make
+    use of such data. When using MrP, researchers are faced with three problems:
+    how to select features, how to specify the functional form, and how to
+    regularize the model parameters. These problems are especially important
+    with regard to features included at the context level. We propose a
+    systematic approach to estimating MrP models that addresses these issues by
+    employing a number of machine learning techniques. We illustrate our
+    approach using 89 items from public opinion surveys in the United States and
+    demonstrate that our approach outperforms a standard MrP model in which the
+    choice of context-level variables has been informed by a rich tradition of
+    public opinion research.
+  accessed:
+    - year: 2023
+      month: 4
+      day: 6
+  author:
+    - family: Broniecki
+      given: Philipp
+    - family: Leemann
+      given: Lucas
+    - family: Wüest
+      given: Reto
+  citation-key: Broniecki:2022
+  container-title: The Journal of Politics
+  DOI: 10.1086/714777
+  ISSN: 0022-3816
+  issue: '1'
+  issued:
+    - year: 2022
+      month: 1
+  page: 597-601
+  publisher: The University of Chicago Press
+  source: journals.uchicago.edu (Atypon)
+  title: >-
+    Improved Multilevel Regression with Poststratification through Machine
+    Learning (autoMrP)
+  type: article-journal
+  URL: https://www.journals.uchicago.edu/doi/full/10.1086/714777
+  volume: '84'
 
 - id: Carley:2020
   abstract: >-
@@ -1085,6 +1169,71 @@ references:
   title-short: EU energy, transport and GHG emmissions
   type: book
 
+- id: Gao:2021
+  accessed:
+    - year: 2023
+      month: 4
+      day: 6
+  author:
+    - family: Gao
+      given: Yuxiang
+    - family: Kennedy
+      given: Lauren
+    - family: Simpson
+      given: Daniel
+    - family: Gelman
+      given: Andrew
+  citation-key: Gao:2021
+  container-title: Bayesian Analysis
+  container-title-short: Bayesian Anal.
+  DOI: 10.1214/20-BA1223
+  ISSN: 1936-0975
+  issue: '3'
+  issued:
+    - year: 2021
+      month: 9
+      day: 1
+  source: DOI.org (Crossref)
+  title: >-
+    Improving Multilevel Regression and Poststratification with Structured
+    Priors
+  type: article-journal
+  URL: >-
+    https://projecteuclid.org/journals/bayesian-analysis/volume-16/issue-3/Improving-Multilevel-Regression-and-Poststratification-with-Structured-Priors/10.1214/20-BA1223.full
+  volume: '16'
+
+- id: Gelman:1997
+  abstract: >-
+    A standard method for correcting for unequal sampling probabilities and
+    nonresponse in sample surveys is poststratification: that is, dividing the
+    population into several categories, estimating the distribution of responses
+    in each category, and then counting each category in proportion to its size
+    in the population. We consider poststratification as a general framework
+    that
+  accessed:
+    - year: 2023
+      month: 5
+      day: 5
+  author:
+    - family: Gelman
+      given: Andrew
+    - family: Little
+      given: Thomas C.
+  citation-key: Gelman:1997
+  container-title: Survey Methodology
+  issue: '2'
+  issued:
+    - year: 1997
+      month: 12
+  language: en
+  page: 127-135
+  title: >-
+    Poststratification Into Many Categories Using Hierarchical Logistic
+    Regression
+  type: article-journal
+  URL: https://www150.statcan.gc.ca/n1/en/catalogue/12-001-X19970023616
+  volume: '23'
+
 - id: Gelman:2014
   accessed:
     - year: 2021
@@ -1335,6 +1484,60 @@ references:
   title: Applied Choice Analysis
   type: book
 
+- id: Howe:2015
+  abstract: >-
+    Addressing climate change in the United States requires enactment of
+    national, state and local mitigation and adaptation policies. The success of
+    these initiatives depends on public opinion, policy support and behaviours
+    at appropriate scales. Public opinion, however, is typically measured with
+    national surveys that obscure geographic variability across regions, states
+    and localities. Here we present independently validated high-resolution
+    opinion estimates using a multilevel regression and poststratification
+    model. The model accurately predicts climate change beliefs, risk
+    perceptions and policy preferences at the state, congressional district,
+    metropolitan and county levels, using a concise set of demographic and
+    geographic predictors. The analysis finds substantial variation in public
+    opinion across the nation. Nationally, 63% of Americans believe global
+    warming is happening, but county-level estimates range from 43 to 80%,
+    leading to a diversity of political environments for climate policy. These
+    estimates provide an important new source of information for policymakers,
+    educators and scientists to more effectively address the challenges of
+    climate change.
+  accessed:
+    - year: 2023
+      month: 4
+      day: 6
+  author:
+    - family: Howe
+      given: Peter D.
+    - family: Mildenberger
+      given: Matto
+    - family: Marlon
+      given: Jennifer R.
+    - family: Leiserowitz
+      given: Anthony
+  citation-key: Howe:2015
+  container-title: Nature Climate Change
+  container-title-short: Nature Clim Change
+  DOI: 10.1038/nclimate2583
+  ISSN: 1758-6798
+  issue: '6'
+  issued:
+    - year: 2015
+      month: 6
+  language: en
+  license: 2014 Nature Publishing Group
+  number: '6'
+  page: 596-603
+  publisher: Nature Publishing Group
+  source: www.nature.com
+  title: >-
+    Geographic variation in opinions on climate change at state and local scales
+    in the USA
+  type: article-journal
+  URL: https://www.nature.com/articles/nclimate2583
+  volume: '5'
+
 - id: Hubner:2019
   accessed:
     - year: 2020
@@ -1473,6 +1676,60 @@ references:
   type: article-journal
   URL: http://www.jstor.org/stable/41107468
   volume: '24'
+
+- id: Kalkbrenner:2016
+  abstract: >-
+    Citizen participation can be an important means for energy transitions at
+    the local level. However, little is known about citizens’ willingness to
+    engage in community-based renewable energy projects, and its determinants.
+    This paper analyzes how community identity, social norms, trust and
+    environmental concern foster or constrain citizens’ willingness to take part
+    in community energy schemes. We survey individuals who are in charge of
+    energy-related and financial decisions in their households, and owners of
+    renewable energy systems. We find that the general attitude toward community
+    energy is positive. Willingness to volunteer is higher than willingness to
+    invest money. Regression analyses show that social norms, trust,
+    environmental concern and community identity are important determinants of
+    willingness to participate in community energy. However, using mediation
+    analyses we find that the effect of community identity occurs through
+    changes in social norms and trust. Both ownership of a renewable energy
+    system and living in a rural, rather than urban community, increase the
+    likelihood of participation. This study helps to understand the principles
+    underpinning the willingness to participate in community energy and
+    underlines its potential. Our insights emphasize the importance of social,
+    rather than merely environmentally motivated aspects, and extend literature
+    on pro-environmental behavior.
+  accessed:
+    - year: 2023
+      month: 5
+      day: 4
+  author:
+    - family: Kalkbrenner
+      given: Bernhard J.
+    - family: Roosen
+      given: Jutta
+  citation-key: Kalkbrenner:2016
+  collection-title: >-
+    Energy Transitions in Europe: Emerging Challenges, Innovative Approaches,
+    and Possible Solutions
+  container-title: Energy Research & Social Science
+  container-title-short: Energy Research & Social Science
+  DOI: 10.1016/j.erss.2015.12.006
+  ISSN: 2214-6296
+  issued:
+    - year: 2016
+      month: 3
+      day: 1
+  language: en
+  page: 60-70
+  source: ScienceDirect
+  title: >-
+    Citizens’ willingness to participate in local renewable energy projects: The
+    role of community and trust in Germany
+  title-short: Citizens’ willingness to participate in local renewable energy projects
+  type: article-journal
+  URL: https://www.sciencedirect.com/science/article/pii/S2214629615300864
+  volume: '13'
 
 - id: Knauf:2022
   abstract: >-
@@ -1942,6 +2199,27 @@ references:
   type: report
   URL: https://www.researchsquare.com/article/rs-2088048/v1
 
+- id: Lilliestam:2016
+  author:
+    - family: Lilliestam
+      given: Johan
+    - family: Hanger
+      given: Susanne
+  citation-key: Lilliestam:2016
+  container-title: Energy Research & Social Science
+  DOI: 10.1016/j.erss.2016.03.011
+  issued:
+    - year: 2016
+      month: 7
+  language: English
+  page: 20–29
+  title: >-
+    Shades of green: Centralisation, decentralisation and controversy among
+    European renewable electricity visions
+  type: article-journal
+  URL: http://linkinghub.elsevier.com/retrieve/pii/S2214629616300391
+  volume: '17'
+
 - id: 'Louviere:'
   author:
     - family: Louviere
@@ -1997,6 +2275,71 @@ references:
   type: article-journal
   URL: https://www.sciencedirect.com/science/article/pii/S1755534513700149
   volume: '3'
+
+- id: Ma:2015
+  abstract: >-
+    Using renewable energy for domestic consumption has been identified as a key
+    strategy by the Intergovernmental Panel on Climate Change to reduce
+    greenhouse gas emissions. Critical to the success of this strategy is to
+    know whether consumers are willing to pay to increase the proportion of
+    electricity generated from renewable energy in their electricity portfolio.
+    There are a number of studies in the literature that report a wide range of
+    willingness to pay estimates. In this study, we used a meta-regression
+    analysis to determine how much of the variation in willingness to pay
+    reflects true differences across the population and how much is due to study
+    design, such as survey design and administration, and model specification.
+    The results showed that factors that influence willingness to pay, such as
+    renewable energy type, consumers’ socio-economic profile and consumers’
+    energy consumption patterns, explain less variation in willingness to pay
+    estimates than the characteristics of the study design itself. Because of
+    this effect, we recommend that policy makers exercise caution when
+    interpreting and using willingness to pay results from primary studies. Our
+    meta-regression analysis further shows that consumers have significantly
+    higher willingness to pay for electricity generated from solar, wind or
+    generic renewable energy source (i.e. not a specific source) than hydro
+    power or biomass.
+  accessed:
+    - year: 2023
+      month: 1
+      day: 11
+  author:
+    - family: Ma
+      given: Chunbo
+    - family: Rogers
+      given: Abbie A.
+    - family: Kragt
+      given: Marit E.
+    - family: Zhang
+      given: Fan
+    - family: Polyakov
+      given: Maksym
+    - family: Gibson
+      given: Fiona
+    - family: Chalak
+      given: Morteza
+    - family: Pandit
+      given: Ram
+    - family: Tapsuwan
+      given: Sorada
+  citation-key: Ma:2015
+  container-title: Resource and Energy Economics
+  container-title-short: Resource and Energy Economics
+  DOI: 10.1016/j.reseneeco.2015.07.003
+  ISSN: 0928-7655
+  issued:
+    - year: 2015
+      month: 11
+      day: 1
+  language: en
+  page: 93-109
+  source: ScienceDirect
+  title: >-
+    Consumers’ willingness to pay for renewable energy: A meta-regression
+    analysis
+  title-short: Consumers’ willingness to pay for renewable energy
+  type: article-journal
+  URL: https://www.sciencedirect.com/science/article/pii/S0928765515000536
+  volume: '42'
 
 - id: Matthews:2022
   abstract: >-
@@ -2133,6 +2476,60 @@ references:
   URL: https://www.nature.com/articles/s43247-023-00713-9
   volume: '4'
 
+- id: Mildenberger:2016
+  abstract: >-
+    While climate scientists have developed high resolution data sets on the
+    distribution of climate risks, we still lack comparable data on the local
+    distribution of public climate change opinions. This paper provides the
+    first effort to estimate local climate and energy opinion variability
+    outside the United States. Using a multi-level regression and
+    post-stratification (MRP) approach, we estimate opinion in federal electoral
+    districts and provinces. We demonstrate that a majority of the Canadian
+    public consistently believes that climate change is happening. Belief in
+    climate change’s causes varies geographically, with more people attributing
+    it to human activity in urban as opposed to rural areas. Most prominently,
+    we find majority support for carbon cap and trade policy in every province
+    and district. By contrast, support for carbon taxation is more
+    heterogeneous. Compared to the distribution of US climate opinions,
+    Canadians believe climate change is happening at higher levels. This new
+    opinion data set will support climate policy analysis and climate policy
+    decision making at national, provincial and local levels.
+  accessed:
+    - year: 2023
+      month: 4
+      day: 6
+  author:
+    - family: Mildenberger
+      given: Matto
+    - family: Howe
+      given: Peter
+    - family: Lachapelle
+      given: Erick
+    - family: Stokes
+      given: Leah
+    - family: Marlon
+      given: Jennifer
+    - family: Gravelle
+      given: Timothy
+  citation-key: Mildenberger:2016
+  container-title: PLOS ONE
+  container-title-short: PLOS ONE
+  DOI: 10.1371/journal.pone.0159774
+  ISSN: 1932-6203
+  issue: '8'
+  issued:
+    - year: 2016
+      month: 8
+      day: 3
+  language: en
+  page: e0159774
+  publisher: Public Library of Science
+  source: PLoS Journals
+  title: The Distribution of Climate Change Public Opinion in Canada
+  type: article-journal
+  URL: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0159774
+  volume: '11'
+
 - id: Mize:2022
   abstract: >-
     In the midst of the current causal revolution, experimental methods are
@@ -2221,6 +2618,30 @@ references:
   type: article-journal
   URL: https://onlinelibrary.wiley.com/doi/abs/10.1111/ajps.12357
   volume: '62'
+
+- id: Muller:2011
+  author:
+    - family: Müller
+      given: Matthias Otto
+    - family: Stämpfli
+      given: Adrian
+    - family: Dold
+      given: Ursula
+    - family: Hammer
+      given: Thomas
+  citation-key: Muller:2011
+  container-title: Energy Policy
+  DOI: 10.1016/j.enpol.2011.04.019
+  issue: '10'
+  issued:
+    - year: 2011
+      month: 10
+  language: English
+  page: 5800–5810
+  title: 'Energy autarky: A conceptual framework for sustainable regional development'
+  type: article-journal
+  URL: http://linkinghub.elsevier.com/retrieve/pii/S0301421511003028
+  volume: '39'
 
 - id: Nicholson:2017
   abstract: >-
@@ -2762,6 +3183,24 @@ references:
   type: article-journal
   URL: https://www.sciencedirect.com/science/article/pii/S096014812200622X
 
+- id: Setton:2019
+  author:
+    - family: Setton
+      given: Daniela
+  citation-key: Setton:2019
+  DOI: 10.2312/iass.2019.014
+  event-place: Potsdam
+  issued:
+    - year: 2019
+      month: 7
+  language: en
+  publisher: Institute for Advanced Sustainability Studies
+  publisher-place: Potsdam
+  title: >-
+    Social Sustainability Barometer for the German Energiewende: 2018 Edition.
+    Core statements and summary of the key findings
+  type: report
+
 - id: Shmueli:2010
   abstract: >-
     Statistical modeling is a powerful tool for developing and testing theories
@@ -2799,6 +3238,51 @@ references:
   URL: >-
     https://projecteuclid.org/journals/statistical-science/volume-25/issue-3/To-Explain-or-to-Predict/10.1214/10-STS330.full
   volume: '25'
+
+- id: Shukla:2022
+  citation-key: Shukla:2022
+  collection-editor:
+    - family: Shukla
+      given: P.R.
+    - family: Skea
+      given: J.
+    - family: Slade
+      given: R.
+    - family: Khourdajie
+      given: A. Al
+    - family: Diemen
+      given: R.
+      non-dropping-particle: van
+    - family: McCollum
+      given: D.
+    - family: Pathak
+      given: M.
+    - family: Some
+      given: S.
+    - family: Vyas
+      given: P.
+    - family: Fradera
+      given: R.
+    - family: Belkacemi
+      given: M.
+    - family: Hasija
+      given: A.
+    - family: Lisboa
+      given: G.
+    - family: Luz
+      given: S.
+    - family: Malley
+      given: J.
+  collection-title: >-
+    Climate Change 2022: Mitigation of Climate Change. Contribution of Working
+    Group III to the Sixth Assessment Report of the Intergovernmental Panel on
+    Climate Change
+  DOI: 10.1017/9781009157926.001
+  issued:
+    - year: 2022
+  publisher: IPCC
+  title: 'IPCC, 2022: Summary for Policymakers'
+  type: report
 
 - id: Simmons:2011
   abstract: >-
@@ -2875,6 +3359,62 @@ references:
   URL: https://linkinghub.elsevier.com/retrieve/pii/S2214629620303935
   volume: '71'
 
+- id: Stekhoven:2012
+  abstract: >-
+    Motivation: Modern data acquisition based on high-throughput technology is
+    often facing the problem of missing data. Algorithms commonly used in the
+    analysis of such large-scale data often depend on a complete set. Missing
+    value imputation offers a solution to this problem. However, the majority of
+    available imputation methods are restricted to one type of variable only:
+    continuous or categorical. For mixed-type data, the different types are
+    usually handled separately. Therefore, these methods ignore possible
+    relations between variable types. We propose a non-parametric method which
+    can cope with different types of variables simultaneously.Results: We
+    compare several state of the art methods for the imputation of missing
+    values. We propose and evaluate an iterative imputation method (missForest)
+    based on a random forest. By averaging over many unpruned classification or
+    regression trees, random forest intrinsically constitutes a multiple
+    imputation scheme. Using the built-in out-of-bag error estimates of random
+    forest, we are able to estimate the imputation error without the need of a
+    test set. Evaluation is performed on multiple datasets coming from a diverse
+    selection of biological fields with artificially introduced missing values
+    ranging from 10% to 30%. We show that missForest can successfully handle
+    missing values, particularly in datasets including different types of
+    variables. In our comparative study, missForest outperforms other methods of
+    imputation especially in data settings where complex interactions and
+    non-linear relations are suspected. The out-of-bag imputation error
+    estimates of missForest prove to be adequate in all settings. Additionally,
+    missForest exhibits attractive computational efficiency and can cope with
+    high-dimensional data.Availability: The ℝ package missForest is freely
+    available from
+    http://stat.ethz.ch/CRAN/.Contact:stekhoven@stat.math.ethz.ch;
+    buhlmann@stat.math.ethz.ch
+  accessed:
+    - year: 2023
+      month: 5
+      day: 5
+  author:
+    - family: Stekhoven
+      given: Daniel J.
+    - family: Bühlmann
+      given: Peter
+  citation-key: Stekhoven:2012
+  container-title: Bioinformatics
+  container-title-short: Bioinformatics
+  DOI: 10.1093/bioinformatics/btr597
+  ISSN: 1367-4803
+  issue: '1'
+  issued:
+    - year: 2012
+      month: 1
+      day: 1
+  page: 112-118
+  source: Silverchair
+  title: MissForest—non-parametric missing value imputation for mixed-type data
+  type: article-journal
+  URL: https://doi.org/10.1093/bioinformatics/btr597
+  volume: '28'
+
 - id: TheRoyalSwedishAcademyofSciences:2000
   author:
     - literal: The Royal Swedish Academy of Sciences
@@ -2888,6 +3428,137 @@ references:
     Advanced information on the Bank of Sweden Prize in Economic Sciences in
     Memory of Alfred Nobel, 2000
   type: article-journal
+
+- id: ThomasWiecki:2023
+  abstract: >-
+    What's Changed
+
+    New Features 🎉
+
+    <ul>
+
+    <li>Derive logprob of <code>&lt;</code> and <code>&gt;</code> operations by
+    @shreyas3156 in <a
+    href="https://github.com/pymc-devs/pymc/pull/6662">https://github.com/pymc-devs/pymc/pull/6662</a></li>
+
+    <li>Derive logprob of <code>&gt;=</code> and <code>&lt;=</code> operations
+    by @shreyas3156 in <a
+    href="https://github.com/pymc-devs/pymc/pull/6680">https://github.com/pymc-devs/pymc/pull/6680</a>
+
+    ### Bugfixes 🪲</li>
+
+    <li>Fix <code>WhiteNoise</code> Covariance bug by @dehorsley in <a
+    href="https://github.com/pymc-devs/pymc/pull/6674">https://github.com/pymc-devs/pymc/pull/6674</a>
+
+    ### Documentation 📖</li>
+
+    <li>Link to PyMC v5 port of DBDA book by @cluhmann in <a
+    href="https://github.com/pymc-devs/pymc/pull/6681">https://github.com/pymc-devs/pymc/pull/6681</a>
+
+    ### Maintenance 🔧</li>
+
+    <li><code>CustomDist</code> and <code>Simulator</code> no longer require
+    <code>class_name</code> when creating a <code>dist</code> by @ricardoV94 in
+    <a
+    href="https://github.com/pymc-devs/pymc/pull/6668">https://github.com/pymc-devs/pymc/pull/6668</a></li>
+
+    <li>Make metropolis elemwise updates independent of each other by
+    @ricardoV94 in <a
+    href="https://github.com/pymc-devs/pymc/pull/6678">https://github.com/pymc-devs/pymc/pull/6678</a></li>
+
+    <li>Make logprob inference for binary ops independent of order of inputs by
+    @shreyas3156 in <a
+    href="https://github.com/pymc-devs/pymc/pull/6682">https://github.com/pymc-devs/pymc/pull/6682</a></li>
+
+    <li>Rectify type-hints for <code>set_data</code> by @Dhruvanshu-Joshi in <a
+    href="https://github.com/pymc-devs/pymc/pull/6676">https://github.com/pymc-devs/pymc/pull/6676</a></li>
+
+    </ul>
+
+    New Contributors
+
+    <ul>
+
+    <li>@PlayingData made their first contribution in <a
+    href="https://github.com/pymc-devs/pymc/pull/6683">https://github.com/pymc-devs/pymc/pull/6683</a></li>
+
+    <li>@dehorsley made their first contribution in <a
+    href="https://github.com/pymc-devs/pymc/pull/6674">https://github.com/pymc-devs/pymc/pull/6674</a></li>
+
+    </ul>
+
+    <p><strong>Full Changelog</strong>: <a
+    href="https://github.com/pymc-devs/pymc/compare/v5.3.0...v5.3.1">https://github.com/pymc-devs/pymc/compare/v5.3.0...v5.3.1</a></p>
+  author:
+    - family: Thomas Wiecki
+      given: ''
+    - family: John Salvatier
+      given: ''
+    - family: Ricardo Vieira
+      given: ''
+    - family: Maxim Kochurov
+      given: ''
+    - family: Anand Patil
+      given: ''
+    - family: Michael Osthege
+      given: ''
+    - family: Brandon T. Willard
+      given: ''
+    - family: Bill Engels
+      given: ''
+    - family: Colin Carroll
+      given: ''
+    - family: Osvaldo A Martin
+      given: ''
+    - family: Adrian Seyboldt
+      given: ''
+    - family: Austin Rochford
+      given: ''
+    - family: Luciano Paz
+      given: ''
+    - family: rpgoldman
+      given: ''
+    - family: Kyle Meyer
+      given: ''
+    - family: Peadar Coyle
+      given: ''
+    - family: Marco Edward Gorelli
+      given: ''
+    - family: Oriol Abril-Pla
+      given: ''
+    - family: Ravin Kumar
+      given: ''
+    - family: Junpeng Lao
+      given: ''
+    - family: Virgile Andreani
+      given: ''
+    - family: Taku Yoshioka
+      given: ''
+    - family: George Ho
+      given: ''
+    - family: Thomas Kluyver
+      given: ''
+    - family: Kyle Beauchamp
+      given: ''
+    - family: Alexandre Andorra
+      given: ''
+    - family: Demetri Pananos
+      given: ''
+    - family: Eelke Spaak
+      given: ''
+    - family: Benjamin Edwards
+      given: ''
+    - family: Eric Ma
+      given: ''
+  citation-key: ThomasWiecki:2023
+  DOI: 10.5281/zenodo.7868623
+  issued:
+    - year: 2023
+      month: 4
+      day: 26
+  publisher: Zenodo
+  title: 'pymc-devs/pymc: v5.3.1'
+  type: software
 
 - id: 'Train:'
   author:
@@ -3150,6 +3821,26 @@ references:
   type: article-journal
   URL: https://www.nature.com/articles/s41560-022-01164-w
   volume: '7'
+
+- id: Wolf:2022
+  author:
+    - family: Wolf
+      given: Ingo
+    - family: Huttarsch
+      given: Jean-Henri
+    - family: Fischer
+      given: Anne-Kathrin
+    - family: Ebersbach
+      given: Benita
+  citation-key: Wolf:2022
+  issued:
+    - year: 2022
+      month: 10
+  language: de-DE
+  publisher: IASS Potsdam
+  title: Soziales Nachhaltigkeitsbarometer 2022
+  type: report
+  URL: https://snb.ariadneprojekt.de/start
 
 - id: Xexakis:2022
   abstract: >-
