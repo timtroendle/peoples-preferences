@@ -3,7 +3,7 @@ from pathlib import Path
 
 from snakemake.utils import min_version
 
-PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-secnos --citeproc"
+PANDOC = "pandoc --filter pantable --filter pandoc-crossref --citeproc"
 COUNTRY_IDS = ["DEU", "POL", "PRT", "DNK"]
 NONE_BASELINE_ATTRIBUTE_LEVELS = [
     'TECHNOLOGY:Open-field__PV', 'TECHNOLOGY:Wind',

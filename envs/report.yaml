@@ -8,10 +8,7 @@ dependencies:
     - psutil=5.9.4
     - weasyprint=57.2
     - pandoc=2.19.2
+    - pandoc-crossref=0.3.14.0
     - pip=22.0.4
     - pip:
-        - pandoc-xnos==2.5.0
-        - pandoc-tablenos==2.3.0
-        - pandoc-fignos==2.4.0
-        - pandoc-secnos==2.2.2
-        - pantable==0.13.1
+        - pantable==0.14.2

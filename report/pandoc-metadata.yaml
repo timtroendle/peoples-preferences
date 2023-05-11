@@ -14,9 +14,20 @@ css:
     - https://timtroendle.github.io/signature-layout/layout/reset.css
     - https://timtroendle.github.io/signature-layout/layout/article.css
 lang: en-GB
-xnos-cleveref: True
-fignos-plus-name: Figure
-tablenos-plus-name: Table
-secnos-plus-name: Section
-date: 2022-04-08
+figureTemplate: <span>$$figureTitle$$ $$i$$$$titleDelim$$</span> $$t$$
+tableTemplate: <span>$$tableTitle$$ $$i$$$$titleDelim$$</span> $$t$$
+figPrefix:
+    - "Figure"
+    - "Figures"
+tblPrefix:
+    - "Table"
+    - "Tables"
+eqnPrefix:
+    - "Equation"
+    - "Equations"
+secPrefix:
+    - "Section"
+    - "Sections"
+linkReferences: True
+date: 2023-05-11
 ---
