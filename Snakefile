@@ -66,7 +66,6 @@ rule all:
         full_hierarchical_model_analysis(model="covariates-nocovariances", sample="prior"),
         full_hierarchical_model_analysis(model="covariates-nocovariances", sample="posterior"),
         "build/results/models/hierarchical-nocovariates-nocovariances/poststratify/pop-means.png",
-        "build/results/models/hierarchical-covariates-nocovariances/subgroups/max-subgroup-effect.png",
         "build/results/analysis/likert-items.png",
         "build/results/analysis/agreement-items.png",
         "build/results/analysis/gender.png",
@@ -80,7 +79,7 @@ rule all:
 def pandoc_options(wildcards):
     suffix = wildcards["suffix"]
     if suffix == "html":
-        return "--number-sections --embed-resources --standalone --to html5"
+        return "--number-sections --embed-resources --standalone --mathml --to html5"
     elif suffix == "pdf":
         return "--number-sections --pdf-engine weasyprint"
     elif suffix == "docx":
@@ -98,6 +97,8 @@ rule report:
         "report/apa.csl",
         expand("build/results/analysis/respondent-stats-{country_id}.csv", country_id=COUNTRY_IDS),
         "build/results/models/hierarchical-nocovariates-nocovariances/posterior/varying/left-intercept.png",
+        "build/results/models/hierarchical-nocovariates-nocovariances/posterior/diagnostics/summary-brief.csv",
+        "build/results/models/hierarchical-covariates-nocovariances/subgroups/max-subgroup-effect.png",
     params: options = pandoc_options
     output: "build/report.{suffix}"
     wildcard_constraints:
