@@ -97,13 +97,7 @@ rule report:
         "report/pandoc-metadata.yaml",
         "report/apa.csl",
         expand("build/results/analysis/respondent-stats-{country_id}.csv", country_id=COUNTRY_IDS),
-        expand("build/results/clustering/4-with-country/umap-{feature}.png",
-               feature=["RESPONDENT_COUNTRY", "Q3_GENDER", "Q6_AREA"]),
-        "build/results/clustering/4-with-country/conditional-mm.png",
-        "build/results/clustering/4-with-country/umap.png",
-        "build/results/robustness/conditional-mm-choice-set.png",
-        "build/results/robustness/conditional-mm-label.png",
-        "build/results/robustness/design-validation.png",
+        "build/results/models/hierarchical-nocovariates-nocovariances/posterior/varying/left-intercept.png",
     params: options = pandoc_options
     output: "build/report.{suffix}"
     wildcard_constraints:

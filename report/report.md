@@ -1,231 +1,42 @@
-# Introduction
-
-The following is an in-depth analysis of our choice experiment results with ~1000 respondents from each of the four countries: Germany, Poland, Denmark, Portugal.
-
-# Hypotheses
-
-THIS IS ALL OUTDATED.
-
-The data support some hypotheses (✅) and do not support others (🚫). We cannot (right now) test some hypotheses (❓).
-
-* 🚫 H1: People prefer high levels of local self-sufficiency even if they must pay a premium. @sec:H1
-* 🚫 H2: People value ownership higher than prices. @sec:H2
-* 🚫 H3: People value land requirements higher than prices. @sec:H3
-* ✅/🚫 H4: People prefer low levels of land requirements even if they must pay a premium. @sec:H4
-* ✅ H5: People are willing to pay a premium for shared ownership. @sec:H5
-* 🚫 H6: People in urban areas show a higher preference for land requirements than people from rural areas. @sec:H6
-* ✅/🚫 H7: People prefer high levels of self-sufficiency even if they must pay a land premium. @sec:H7
-* 🚫 H8: People prefer land requirements more if dominant technology is solar. @sec:H8
-* ✅ H9: People prefer imports more if dominant technology is wind. @sec:H9
-* ❓ H10: There are no differences between countries but differences in regards to demographic and regional conditions. @sec:H10
-* ✅ H11: People in wealthy countries show a stronger preference for local generation infrastructure. @sec:H11
-* ✅ H12: People in countries with high deployment levels of renewables show a stronger preference for local generation infrastructure. @sec:H12
-* 🚫 H13: People in countries with low population density show a stronger preference for local generation infrastructure. @sec:H13
-* 🚫 H14: People in resource-rich countries show a stronger preference for local generation infrastructure. @sec:H14
-* ✅/❓H15: Preference for self-sufficiency varies between countries (this effect is not explained by demographics and regional differences). @sec:H15
-* 🚫 H16: Gender interacts with preferences. @sec:H16
-    * 🚫 H16a: Men prefer lower land requirements than women.
-    * 🚫 H16b: Men prefer lower prices than women.
-    * ❓/🚫 H16c: Men have no technology preference, whereas women prefer solar.
-    * 🚫 H16d: Women prefer lower imports than men.
-    * 🚫 H16e: Women prefer, more clearly than men, public over private ownership.
-* ✅ H17: Age interacts with preferences. @sec:H17
-    * 🚫 H17a: People over 55 (old people) prefer lower land requirements than people below 30 (young people).
-    * 🚫 H17b: People over 55 prefer lower transmission infrastructure than people below 30.
-    * ✅ H17c: People below 30 prefer high imports.
-    * ✅ H17d: People over 55 prefer low imports.
-    * ✅ H17e: There is no difference in technology preferences across ages.
-    * 🚫 H17f: People over 55 prefer higher transmission than younger people.
-* 🚫 H18: Place attachment interacts with preferences. @sec:H18
-    * 🚫 H18a: People prefer lower land requirements/ transmission infrastructure the longer they live in the region. = People with strong place attachment (+15 years in the region) prefer lower land requirements and lower transmission infrastructure than people with “weaker” place attachment (1-5 years in the region).
-    * 🚫 H18b: People with strong place attachment prefer higher imports.
-    * 🚫 H18c: People living more than 15 years in the region prefer solar technologies.
-* ✅ H19: Income interacts with preferences. @sec:H19
-    * 🚫 H19a: People with high income prefer community ownership more than people with lower income.
-    * 🚫 H19b: People with low income prefer lower land requirements than people with higher income.
-    * 🚫 H19c: People with low income prefer lower prices than people with higher income.
-* 🚫 H20: Education interacts with preferences. @sec:H20
-    * 🚫 H20a: People with lower education prefer lower imports, than people with higher education.
-    * 🚫 H20b: People with higher education prefer higher land use requirements (understand the necessity to act)
-* ✅ H21: Climate concern interacts with preferences. @sec:H21
-    * 🚫 People with high climate concerns prefer higher land requirements and transmission infrastructure.
-* ✅ H22: Partisanship interacts with preferences. @sec:H22
-    * 🚫 H22a: People supporting right wing parties prefer land requirements less.
-    * 🚫 H22b: People supporting right wing parties prefer imports less.
-    * 🚫 H22c: People supporting green parties prefer land requirements more.
-    * 🚫 H22d: People supporting green parties are indifferent to technology.
-    * 🚫 H22e: People supporting green parties are indifferent to transmission infrastructure.
-* ✅ H23: Current deployment interacts with preferences. @sec:H23
-    * 🚫 H23a: People prefer (higher) land requirements more if they have renewables in their region (wind, solar or both)/ People prefer lower land requirements if they have no renewables in their region.
-    * ✅ H23b: People prefer technology wind, if they have wind in their region.
-    * ✅ H23c: People prefer technology open space solar (Freiflächenanlagen), if they have open space solar in their region.
-    * 🚫 H23d: People prefer (expansion) transmission infrastructure more if they have no renewables in their region.
-* ✅ H24: People prefer higher land requirements more if ownership is public. @sec:H24
-* ✅ H25: People prefer higher imports more if transmission is high. @sec:H25
-* 🚫 H26: People prefer higher land requirements more if transmission infrastructure is low. @sec:26
-* 🚫/✅ H27: People prefer higher transmission infrastructure more when prices are low. @sec:27
-* 🚫/✅ H28: People prefer higher transmission infrastructure more when the dominant technology is wind. @sec:28
-* 🚫 H29: Technology preferences are independent of ownership. @sec:29
+# Method
 
+## Experimental design
 
-## H1: People prefer high levels of local self-sufficiency even if they must pay a premium. {#sec:H1}
+To assess citizen preferences for renewable electricity supply in their region, we conducted a choice experiment. Choice experiments are a widely used method to derive stated preferences in social and political science [@Hainmueller:2014; @Bansak:2021]. In our experiment, respondents are repeatedly confronted with a choice between two hypothetical designs of the electricity supply in their region. Each option is formed out of six attributes describing the electricity supply: dominant technology, land requirements, level of electricity imports into the region, household electricity prices, overhead transmission capacity expansion, and ownership of the assets (see Table XX for all attributes and attribute levels; see Figure YY for an example of the choice display). Each participant was confronted with a total of eight such choices from which we identify the relative importance of the attributes and their 25 levels. To limit biases, we randomised the combinations of attribute levels and the order in which attributes are presented (across respondents, but not within respondent).
 
-..
+The choice experiment was set up through conjointly.com and distributed with support from polling agencies in each country. Each respondent was exposed to eight consecutive pairs of hypothetical regional power system designs (in the following profile(s)) for a future fully renewable electricity supply with the task to select between two choices. The display of attribute levels was enhanced with small pictograms for enhancing the understanding (see Figure XX).
 
-## H2: People value ownership higher than prices. {#sec:H2}
+## Sampling
 
-..
+We conducted our choice experiment as an online survey between 24 January and 8 February 2022 using the platform conjointly.com. The sample was drawn from opt-in panels in the four European countries using the panel service of respondi and partners in Germany, Poland, Denmark and Portugal. We used a hard quota on the gender (50%), and a soft quota on respondents from rural areas (>=30%).
 
-## H3: People value land requirements higher than prices. {#sec:H3}
+## Country selection
 
-..
+We chose the countries to reflect the high diversity of geographical, demographic, and socio-economic as well as historic-cultural differences across Europe55–58. The country selection is not representative for all EU countries but is meant to be illustrative of preferences in different places and contexts of the European Union.
 
-## H4: People prefer low levels of land requirements even if they must pay a premium. {#sec:H4}
+Denmark as a small (40,000 km2) northern country with a small and highly urbanised population (5.8 million, of which 12% rural population), strong economic position (GDP: US398 billion, US68.007 GDP per capita), and high standard of living, with a far progressed energy transition (65% renewable electricity). Germany is a large (349,380 km2), central European country, with a large and urbanised population (83 million, 22% rural) and the largest economy in the EU (GDP: US4.26 trillion, GDP per capita: US51.203) and high living standard. Germany has advanced well in its energy transition (44.49% renewable electricity) and has a well-developed national energy and climate policy debate.
 
-..
+Portugal (GDP: US253 billion, GDP per capita: US24.567) and Poland (GDP: US679 billion, GDP per capita: US17.999) have a lower level of economic development and living standards in very different geographical locations and cultural-historic settings. Portugal is small southern EU country, with a population of 10.3 million and much advanced in the energy transition (58% renewable electricity). Poland, finally, is an eastern European country, large both in size (306,170 km2) and population (37.95 million), but with a high share of rural population (ca. 40%). The country has embarked on the energy transition pathway only recently (16% renewable power).
 
-## H5: People are willing to pay a premium for shared ownership. {#sec:H5}
+## Data analysis
 
-..
+We derive preferences from recorded choices using multinomial logit hierarchical bayes, a method commonly used for choice experiments59. It is based on the random utility theory and assumes that each option has a distinct utility to each respondent and that respondents will choose the option with higher utility to them. Within this framework, the deterministic part of the utility of an option (Vc,r) is the sum of the partworth utilities of its attribute levels (Equation 1). For example, for an option that includes wind turbines as the dominant technology in a region, the utility is the sum of the partworth utility of wind turbines and the partworth utilities of the five other attribute levels. In the analysis of choice experiments, partworth utilities are proxies for preferences: the higher the partworth utility of an attribute level, the more it is preferred.
 
-## H6: People in urban areas show a higher preference for land requirements than people from rural areas. {#sec:H6}
 
-..
+Utility, however, is a latent variable: we did not measure it – we measured choices. To map from choices to utilities, multinomial logit uses a stochastic approach: The probability of choosing the first out of the two options depends on the deterministic part of the utilities (V1, V2 , Equation 2). In our two-option experiment, choice is modelled using a binomial distribution with the given probability.
 
-## H7: People prefer high levels of self-sufficiency even if they must pay a land premium. {#sec:H7}
 
-..
+To model heterogeneity among countries and participants, we use a nested hierarchical approach. The nested hierarchical approach allows partworth utilities to vary across countries and participants. We model heterogeneity by splitting partworth utilities in three parts: a global mean across all countries (α), a country-level deviation from the global mean (γc) using a zero-sum constraint, and a respondent-level deviation from the respective country mean (εr). The sum of these three parts forms the partworth utility for a single respondent (Equation 3). We do not model covariances between attribute levels as the additional computational complexity is restrictive.
 
-## H8: People prefer land requirements more if dominant technology is solar. {#sec:H8}
 
-..
+As a diagnostic check, we capture whether respondents are more likely to choose one of the two options irrespective of the attribute levels. For example, respondents may be more likely to choose the left option in each displayed pair. We do this by adding an intercept term (I) to the first of the two options (Equation 4). As with the partworth utilities, we model this term in a hierarchical way with a population-level global mean and respondent-level deviations. We find that the intercept is very small or zero (@fig:left-intercept) suggesting that there is no impactful bias towards left or right options.
 
-## H9: People prefer imports more if dominant technology is wind. {#sec:H9}
 
-..
+We implement our probabilistic model using PyMC [@ThomasWiecki:2023]. Code and data to reproduce our analysis are publicly available (after publication of the article). We sample the posterior distribution of all model parameters using a NUTS sampler. We run four independent chains of the Markov chain Monte Carlo to check for convergence. Each chain iterates a total of 13,000 times of which 10,000 iterations are tuning steps which we discard. Calculations were carried out on the ETH Euler cluster.
 
-## H10: There are no differences between countries but differences in regards to demographic and regional conditions. {#sec:H10}
 
-..
+# Supplementary Material
 
-## H11: People in wealthy countries show a stronger preference for local generation infrastructure. {#sec:H11}
-
-..
-
-## H12: People in countries with high deployment levels of renewables show a stronger preference for local generation infrastructure. {#sec:H12}
-
-..
-
-## H13: People in countries with low population density show a stronger preference for local generation infrastructure. {#sec:H13}
-
-..
-
-## H14: People in resource-rich countries show a stronger preference for local generation infrastructure. {#sec:H14}
-
-..
-
-## H15: Preference for self-sufficiency varies between countries (this effect is not explained by demographics and regional differences). {#sec:H15}
-
-..
-
-## H16: Gender interacts with preferences. {#sec:H16}
-
-..
-
-## H17: Age interacts with preferences. {#sec:H17}
-
-..
-
-## H18: Place attachment interacts with preferences. {#sec:H18}
-
-..
-
-## H19: Income interacts with preferences. {#sec:H19}
-
-..
-
-## H20: Education interacts with preferences. {#sec:H20}
-
-..
-
-## H21: Climate concern interacts with preferences. {#sec:H21}
-
-..
-
-## H22: Partisanship interacts with preferences. {#sec:H22}
-
-..
-
-## H23: Current deployment interacts with preferences. {#sec:H23}
-
-..
-
-## H24: People prefer higher land requirements more if ownership is public. {#sec:H24}
-
-..
-
-## H25: People prefer higher imports more if transmission is high. {#sec:H25}
-
-..
-
-## H26: People prefer higher land requirements more if transmission infrastructure is low. {#sec:26}
-
-..
-
-## H27: People prefer higher transmission infrastructure more when prices are low. {#sec:27}
-
-..
-
-## H28: People prefer higher transmission infrastructure more when the dominant technology is wind. {#sec:28}
-
-..
-
-## H29: Technology preferences are independent of ownership. {#sec:29}
-
-..
-
-# Cluster analysis of respondents
-
-I performed a cluster analysis in the hope to find groups of respondents that reveal different preferences. The hope was that these groups could be formed based on demographic data. In short: this is not the case.
-
-I found that the most important demographic attributes are country, gender, and area (urban/rural). Apparently, German males living in cities are very similar; as are Polish females living in the countryside, and all other possible combinations of the three attributes (@fig:umap_gender, @fig:umap_area, @fig:umap_country).
-
-I used the following ten attributes:
-
-* gender,
-* birth year,
-* area
-* renewables in region,
-* years living in region,
-* education,
-* income,
-* climate concern,
-* party (aggregated to green/right-wing/others),
-* country.
-
-![**Two-dimensional projection of the ten-dimensional demographic attribute space of all respondents with gender color-coded.**](build/clustering/4-with-country/umap-Q3_GENDER.png){#fig:umap_gender}
-
-![**Two-dimensional projection of the ten-dimensional demographic attribute space of all respondents with area color-coded.**](build/clustering/4-with-country/umap-Q6_AREA.png){#fig:umap_area}
-
-![**Two-dimensional projection of the ten-dimensional demographic attribute space of all respondents with country color-coded.**](build/clustering/4-with-country/umap-RESPONDENT_COUNTRY.png){#fig:umap_country}
-
-When I group the respondents into four cluster, the clusters will be formed along country/gender/area lines (@fig:umap). Cluster one contains the rural population in Germany, Denmark, and Portugal; cluster two contains the urban population in Germany and Portugal; cluster three contains the urban population in Denmark, and cluster four contains the Polish population.
-
-![**Two-dimensional projection of the ten-dimensional demographic attribute space of all respondents with clusters color-coded.**](build/clustering/4-with-country/umap.png){#fig:umap}
-
-We can also form more and smaller clusters. For example, I tried to form 16 clusters (4 countries, 2 gender, 2 areas; not shown here). This will literally allow us to compare German urban males to Polish rural females. The differences in preferences aren't huge though, and the biggest effect stemming again from Poland.
-
-# Robustness checks
-
-![**Marginal means conditional to the order of the eight choice sets that respondents saw.**](build/robustness/conditional-mm-choice-set.png){#fig:mm-choice-set}
-
-![**Marginal means conditional to the order of the profiles that respondents saw.**](build/robustness/conditional-mm-label.png){#fig:mm-label}
-
-![**Conditional probabilites of all levels given the left or right profile.**](build/robustness/design-validation.png){#fig:design-validation}
-
-# Appendix
-
-Additional tables and figures in arbitrary order.
 
 ## Respondents
 
@@ -290,6 +101,12 @@ width:
     - 0.2
 ---
 ```
+
+## Model results
+
+<div class="pagebreak">
+
+![**Posterior distributions of the varying effect of displaying options on the left-hand side compared with displaying them on the right-hand side.** (A) Expected value and uncertainty of the effect for each respondent. The dark line shows the expected value (the mean of the posterior distribution). The two shaded areas show the uncertainty (60% and 94% highest density intervals). Respondents are sorted by their expected value. (B) Posterior distribution of the population-level average.](build/results/models/hierarchical-nocovariates-nocovariances/posterior/varying/left-intercept.png){#fig:left-intercept}
 
 <div class="pagebreak">
 
