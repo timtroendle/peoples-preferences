@@ -312,6 +312,33 @@ class NocovariatesModel(HierarchicalModel):
         )
 
 
+class NoCovariatesVaryingVariationModel(NocovariatesModel):
+    variety = 'nocovariates-varying-variation'
+    covariate_col_names = []
+
+    def __init__(self, path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
+                 covariances: bool, name: str = ""):
+        super().__init__(path_to_data, limit_respondents, n_respondents_per_country, covariances)
+
+    def build_partworths(self):
+        alpha = pm.Normal('alpha', 0, sigma=1, dims="level")
+        country = self.add_varying_effect("country", eta=4, sd=2)
+
+        z_respondent = pm.Normal("z_respondent", mu=0.0, sigma=1.0, dims=["level", "respondent"])
+        sigma_respondent = pm.Exponential("sigma_respondent", 2, dims=["level", "country"])
+        respondent = pm.Deterministic(
+            "effect_respondent",
+            (z_respondent.T * sigma_respondent[:, self.c].T).T,
+            dims=["level", "respondent"]
+        )
+
+        return pm.Deterministic(
+            "partworths",
+            alpha + country[:, self.c].T + respondent.T,
+            dims=["respondent", "level"]
+        )
+
+
 class CovariatesModel(HierarchicalModel):
     variety = 'covariates'
     covariate_col_names = [
@@ -574,6 +601,7 @@ class MrPModelAdmin3(MrPModelAdmin1):
 
 
 NocovariatesModel.register()
+NoCovariatesVaryingVariationModel.register()
 CovariatesModel.register()
 MrPModelAdmin0.register()
 MrPModelAdmin1.register()

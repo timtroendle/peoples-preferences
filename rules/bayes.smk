@@ -251,6 +251,25 @@ rule visualise_country_differences:
     script: "../scripts/bayes/partworths.py"
 
 
+rule visualise_country_differences_sigma_respondent:
+    message: "Visualise country differences of sigma of hierarchical model {wildcards.name}."
+    input: data = rules.hierarchical.output[0]
+    params:
+        variable_names = "sigma_respondent",
+        facet_by_country = True,
+        aggregate_individuals = False,
+        hdi_prob = config["report"]["hdi-prob"]["default"],
+        nice_names = config["report"]["nice-names"],
+    output: "build/results/models/hierarchical-{name}/{sample}/varying-variation.vega.json"
+    resources:
+        runtime = 60,
+        mem_mb_per_cpu = 64000
+    wildcard_constraints:
+        sample = "prior|posterior"
+    conda: "../envs/analyse.yaml"
+    script: "../scripts/bayes/partworths.py"
+
+
 rule visualise_country_means:
     message: "Visualise country means of hierarchical model {wildcards.name}."
     input: data = rules.hierarchical.output[0]
