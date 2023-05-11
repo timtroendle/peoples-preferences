@@ -11,8 +11,8 @@ bibliography: literature.yaml
 csl: apa.csl
 link-citations: True
 css:
-    - reset.css
-    - report.css
+    - https://timtroendle.github.io/signature-layout/layout/reset.css
+    - https://timtroendle.github.io/signature-layout/layout/article.css
 lang: en-GB
 xnos-cleveref: True
 fignos-plus-name: Figure

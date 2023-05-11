@@ -69,4 +69,4 @@ To remove cluster results on your local machine, run `snakemake clean_cluster_re
 
 ## License
 
-The code in this repo is MIT licensed, see `./LICENSE.md`. This excludes the KlinicSlab font family (all files in `./layout/fonts/`) which is copyright Lost Type.
+The code in this repo is MIT licensed, see `./LICENSE.md`.
