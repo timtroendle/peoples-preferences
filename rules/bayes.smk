@@ -185,6 +185,21 @@ rule diagnostics:
     script: "../scripts/bayes/diagnostics.py"
 
 
+rule brief_summary:
+    message: "Create a brief sample summary for publication."
+    input:
+        feather = "build/results/models/hierarchical-{name}/{sample}/diagnostics/summary.feather"
+    params:
+        columns = config["report"]["brief-sample-summary"]["columns"],
+        float_format_per_column = config["report"]["brief-sample-summary"]["float-format"]
+    output:
+        csv = "build/results/models/hierarchical-{name}/{sample}/diagnostics/summary-brief.csv",
+    conda:
+        "../envs/default.yaml"
+    script:
+        "../scripts/utils/feather_to_csv.py"
+
+
 rule visualise_partworths:
     message: "Visualise population mean partworths of multinomial logit model."
     input: data = rules.multinomial_logit.output[0]

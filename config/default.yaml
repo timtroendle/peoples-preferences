@@ -610,6 +610,20 @@ report:
             - "#679436"
             - "#4F6DB8"
             - "#424242"
+    brief-sample-summary:
+        columns:
+            - index
+            - mean
+            - sd
+            - ess_bulk
+            - ess_tail
+            - r_hat
+        float-format:
+            mean: ".2f"
+            sd: ".2f"
+            ess_bulk: ".0f"
+            ess_tail: ".0f"
+            r_hat: ".2f"
     nice-names:
         levels:
             Rooftop PV: Rooftop PV
