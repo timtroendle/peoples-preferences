@@ -612,7 +612,7 @@ report:
             - "#424242"
     brief-sample-summary:
         columns:
-            - index
+            - parameter
             - mean
             - sd
             - ess_bulk

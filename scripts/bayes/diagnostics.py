@@ -174,6 +174,7 @@ def summary(inference_data: xr.Dataset, hdi_prob: float, path_to_summary: str):
             filter_vars="like",
             hdi_prob=hdi_prob,
         )
+        .rename_axis(index="parameter")
         .reset_index()
         .to_feather(path_to_summary)
     )
