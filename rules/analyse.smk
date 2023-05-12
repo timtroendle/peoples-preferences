@@ -79,6 +79,34 @@ rule design_validation_plot:
     script: "../scripts/analyse/design_validation.py"
 
 
+rule analyse_experimental_design:
+    message: "Analyse experimental design."
+    input:
+        data = rules.global_conjoint.output[0]
+    params:
+        attributes = list(config["report"]["nice-names"]["attributes"].keys())
+    output:
+        freqs = "build/results/analysis/experimental-design.feather"
+    conda:
+        "../envs/default.yaml"
+    script:
+        "../scripts/analyse/freqs.py"
+
+
+rule visualise_experimental_design:
+    message: "Visual experimental design."
+    input:
+        data = rules.analyse_experimental_design.output[0]
+    params:
+        level_nice_names = config["report"]["nice-names"]["levels"]
+    output:
+        plot = "build/results/analysis/experimental-design.vega.json"
+    conda:
+        "../envs/analyse.yaml"
+    script:
+        "../scripts/analyse/design_plot.py"
+
+
 rule likert_plot:
     message: "Plot likert items."
     input:

@@ -634,7 +634,7 @@ report:
             2%: Medium (2%)
             4%: High (4%)
             8%: Very high (8%)
-            -25% .: Slight decrease (-25%)
+            -25.0% .: Slight decrease (-25%)
             +0% .: Today's level (0%)
             +25% .: Slight increase (+25%)
             +50% .: Moderate increase (+50%)
