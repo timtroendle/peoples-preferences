@@ -60,6 +60,7 @@ rule all:
     message: "Run entire analysis and compile report."
     input:
         "build/report.html",
+        "build/report.docx",
         "build/test-report.html",
         full_hierarchical_model_analysis(model="nocovariates-nocovariances", sample="prior"),
         full_hierarchical_model_analysis(model="nocovariates-nocovariances", sample="posterior"),
