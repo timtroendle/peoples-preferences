@@ -154,7 +154,7 @@ rule test:
         national_conjoints = expand("build/data/{country_id}.feather", country_id=COUNTRY_IDS),
         conjoint = "build/data/conjoint.feather",
         conjoint_imputed = "build/data/conjoint-imputed.feather",
-        covariate_model = "build/results/models/hierarchical-nocovariates-nocovariances/prior/inference-data.nc" # FIXME use covariate model
+        covariate_model = "build/results/models/hierarchical-covariates-nocovariances/prior/inference-data.nc"
     params:
         config = config
     output: "build/test-report.html"
