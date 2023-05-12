@@ -6,12 +6,12 @@ from snakemake.utils import min_version
 PANDOC = "pandoc --filter pantable --filter pandoc-crossref --citeproc"
 COUNTRY_IDS = ["DEU", "POL", "PRT", "DNK"]
 NONE_BASELINE_ATTRIBUTE_LEVELS = [
-    'TECHNOLOGY:Open-field__PV', 'TECHNOLOGY:Wind',
-    'LAND:1%', 'LAND:2%', 'LAND:4%', 'LAND:8%',
-    'TRANSMISSION:+0%__.', 'TRANSMISSION:+25%__.', 'TRANSMISSION:+50%__.', 'TRANSMISSION:+75%__.',
-    'SHARE_IMPORTS:10%', 'SHARE_IMPORTS:50%', 'SHARE_IMPORTS:90%',
-    'PRICES:+15%', 'PRICES:+30%', 'PRICES:+45%', 'PRICES:+60%',
-    'OWNERSHIP:Community', 'OWNERSHIP:Private'
+    'TECHNOLOGY___Open-field__PV', 'TECHNOLOGY___Wind',
+    'LAND___1%', 'LAND___2%', 'LAND___4%', 'LAND___8%',
+    'TRANSMISSION___+0%__.', 'TRANSMISSION___+25%__.', 'TRANSMISSION___+50%__.', 'TRANSMISSION___+75%__.',
+    'SHARE_IMPORTS___10%', 'SHARE_IMPORTS___50%', 'SHARE_IMPORTS___90%',
+    'PRICES___+15%', 'PRICES___+30%', 'PRICES___+45%', 'PRICES___+60%',
+    'OWNERSHIP___Community', 'OWNERSHIP___Private'
 ]
 
 configfile: "config/default.yaml"
@@ -52,7 +52,7 @@ def full_hierarchical_model_analysis(model: str, sample: str):
         f"build/results/models/hierarchical-{model}/{sample}/left-option.png",
         f"build/results/models/hierarchical-{model}/{sample}/varying/left-intercept.png"
     ] + [
-        f"build/results/models/hierarchical-{model}/{sample}/varying/{level}.png"
+        f"build/results/models/hierarchical-{model}/{sample}/varying/{level.replace(':', '_')}.png"
         for level in NONE_BASELINE_ATTRIBUTE_LEVELS
     ]
 
@@ -97,7 +97,9 @@ rule report:
         "report/pandoc-metadata.yaml",
         "report/apa.csl",
         expand("build/results/analysis/respondent-stats-{country_id}.csv", country_id=COUNTRY_IDS),
+        "build/results/analysis/experimental-design.png",
         "build/results/models/hierarchical-nocovariates-nocovariances/posterior/varying/left-intercept.png",
+        "build/results/models/hierarchical-nocovariates-nocovariances/posterior/varying/TECHNOLOGY___Wind.png",
         "build/results/models/hierarchical-nocovariates-nocovariances/posterior/diagnostics/summary-brief.csv",
         "build/results/models/hierarchical-covariates-nocovariances/subgroups/max-subgroup-effect.png",
     params: options = pandoc_options

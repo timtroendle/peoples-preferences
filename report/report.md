@@ -2,7 +2,7 @@
 
 ## Experimental design
 
-To assess citizen preferences for renewable electricity supply in their region, we conducted a choice experiment. Choice experiments are a widely used method to assess stated preferences in social and political science [@Hainmueller:2014; @Bansak:2021]. In our experiment, respondents are repeatedly presented with a choice between two hypothetical designs of the electricity supply in their region. Each option is formed out of six attributes describing the electricity supply: dominant technology, land requirements, level of electricity imports into the region, household electricity prices, overhead transmission capacity expansion, and ownership of the assets (see Table XX for all attributes and attribute levels; see Figure YY for an example of the choice display). Each participant was presented with a total of eight such choices from which we identify the relative importance of the attributes and their 25 levels. We randomised the combinations of attribute levels (fully randomised design) and the order in which attributes are presented (across respondents, but not within respondent).
+To assess citizen preferences for renewable electricity supply in their region, we conducted a choice experiment. Choice experiments are a widely used method to assess stated preferences in social and political science [@Hainmueller:2014; @Bansak:2021]. In our experiment, respondents are repeatedly presented with a choice between two hypothetical designs of the electricity supply in their region. Each option is formed out of six attributes describing the electricity supply: dominant technology, land requirements, level of electricity imports into the region, household electricity prices, overhead transmission capacity expansion, and ownership of the assets (see Table XX for all attributes and attribute levels; see Figure YY for an example of the choice display). Each participant was presented with a total of eight such choices from which we identify the relative importance of the attributes and their 25 levels. We randomised the combinations of attribute levels (fully randomised design, @fig:experimental-design) and the order in which attributes are presented (across respondents, but not within respondent).
 
 The choice experiment was set up through conjointly.com and distributed with support from polling agencies in each country. Each respondent was presented with eight consecutive pairs of hypothetical regional system designs (in the following profile(s)) for a future fully renewable electricity supply with the task to select between two options. The display of attribute levels was enhanced with small pictograms for enhancing the understanding (see Figure XX).
 
@@ -125,7 +125,15 @@ width:
 
 <div class="pagebreak">
 
+![**Experimental design.** Probability of each pair of attribute levels to appear within the same profile. Probability is larger within attributes with fewer levels.](build/results/analysis/experimental-design.png){#fig:experimental-design}
+
+<div class="pagebreak">
+
 ![**Posterior distributions of the varying effect of displaying options on the left-hand side compared with displaying them on the right-hand side.** (A) Expected value and uncertainty of the effect for each respondent. The dark line shows the expected value (the mean of the posterior distribution). The two shaded areas show the uncertainty (60% and 94% highest density intervals). Respondents are sorted by their expected value. (B) Posterior distribution of the population-level average.](build/results/models/hierarchical-nocovariates-nocovariances/posterior/varying/left-intercept.png){#fig:left-intercept}
+
+<div class="pagebreak">
+
+![**Posterior distributions of the varying effect of wind turbines.** (A) Expected value and uncertainty of the effect for each respondent. The dark line shows the expected value (the mean of the posterior distribution). The two shaded areas show the uncertainty (60% and 94% highest density intervals). Respondents are sorted by their expected value. (B) Posterior distribution of the population-level average.](build/results/models/hierarchical-nocovariates-nocovariances/posterior/varying/TECHNOLOGY___Wind.png){#fig:varying-effect-wind}
 
 <div class="pagebreak">
 

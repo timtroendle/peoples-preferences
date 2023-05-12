@@ -471,7 +471,7 @@ rule visualise_varying_attribute_levels:
     params:
         varying_variable_name = "partworths",
         pop_means_variable_name = "alpha",
-        level_choice = lambda wildcards, output: {"level": wildcards["level"].replace("__", " ")},
+        level_choice = lambda wildcards, output: {"level": wildcards["level"].replace("___", ":").replace("__", " ")},
         narrow_hdi = config["report"]["hdi-prob"]["narrow"],
         wide_hdi = config["report"]["hdi-prob"]["default"]
     output: "build/results/models/hierarchical-{name}/{sample}/varying/{level}.vega.json"
