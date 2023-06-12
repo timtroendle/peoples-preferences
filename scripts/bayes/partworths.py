@@ -14,7 +14,7 @@ BASELINE_LEVELS = [ # TODO ADD FROM CONFIG
     "TECHNOLOGY:Rooftop PV",
     "LAND:0.5%",
     "PRICES:+0%",
-    "TRANSMISSION:-25% .",
+    "TRANSMISSION:-25.0% .",
     "OWNERSHIP:Public",
     "SHARE_IMPORTS:0%"
 ]
