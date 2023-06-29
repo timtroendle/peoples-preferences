@@ -185,6 +185,22 @@ rule diagnostics:
     script: "../scripts/bayes/diagnostics.py"
 
 
+rule poststratification_summary:
+    message: "Create a summary of poststratification."
+    input:
+        inference_data = rules.hierarchical.output[0]
+    params:
+        hdi_prob = 0.94,
+    output:
+        feather = "build/results/models/hierarchical-{name}/{sample}/diagnostics/summary.feather",
+    wildcard_constraints:
+        sample = "poststratify"
+    conda:
+        "../envs/analyse.yaml"
+    script:
+        "../scripts/bayes/summary.py"
+
+
 rule brief_summary:
     message: "Create a brief sample summary for publication."
     input:
