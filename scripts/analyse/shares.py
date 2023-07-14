@@ -1,11 +1,12 @@
 import altair as alt
 import pandas as pd
+import pycountry
 
 
 DARK_GREY = "#424242"
 
-WIDTH_SINGLE_COLUMN = 220 - 1
-WIDTH_TWO_COLUMNS = 236
+WIDTH_SINGLE_COLUMN = 233
+WIDTH_TWO_COLUMNS = 227
 
 
 def plot_likert_items(path_to_data: str, items: dict[str, str], by_country: bool,
@@ -33,7 +34,13 @@ def plot_likert_items(path_to_data: str, items: dict[str, str], by_country: bool
         x2=alt.X2("nx2"),
         color=alt.Color("type", type="nominal", title="Response", scale=alt.Scale(domain=dtype.categories.values, range=colors)),
     )
-    finalise_and_write_plot(base, by_country, facet_by="Question", path_to_plot=path_to_plot)
+    finalise_and_write_plot(
+        chart=base,
+        by_country=by_country,
+        facet_by="Question",
+        single_column=len(data.item.unique()) == 1,
+        path_to_plot=path_to_plot
+    )
 
 
 def plot_agreement_items(path_to_data: str, items: dict[str, str], by_country: bool, path_to_plot: str):
@@ -49,7 +56,13 @@ def plot_agreement_items(path_to_data: str, items: dict[str, str], by_country: b
         color=alt.Color("type", type="ordinal", title="Response", sort=dtype.categories.values),
         order=alt.Order('type_order', sort="ascending")
     )
-    finalise_and_write_plot(base, by_country, facet_by="Question", path_to_plot=path_to_plot)
+    finalise_and_write_plot(
+        chart=base,
+        by_country=by_country,
+        facet_by="Question",
+        single_column=len(data.item.unique()) == 1,
+        path_to_plot=path_to_plot
+    )
 
 
 def plot_demographics_item(path_to_data: str, items: dict[str, str], category_colors: list[str],
@@ -69,10 +82,16 @@ def plot_demographics_item(path_to_data: str, items: dict[str, str], category_co
         color=chart_colors,
         order=alt.Order('type_order', sort="ascending")
     )
-    finalise_and_write_plot(base, by_country, facet_by=None, path_to_plot=path_to_plot)
+    finalise_and_write_plot(
+        chart=base,
+        by_country=by_country,
+        facet_by=None,
+        single_column=True,
+        path_to_plot=path_to_plot
+    )
 
 
-def finalise_and_write_plot(chart: alt.Chart, by_country: bool, facet_by: str, path_to_plot: str):
+def finalise_and_write_plot(chart: alt.Chart, by_country: bool, facet_by: str, single_column: bool, path_to_plot: str):
     if by_country:
         chart = chart.encode(y=alt.Y("country", type="nominal", title="Country"))
     chart = chart.mark_bar()
@@ -83,8 +102,12 @@ def finalise_and_write_plot(chart: alt.Chart, by_country: bool, facet_by: str, p
         .configure(font="Lato")
         .configure_axis(titleColor=DARK_GREY, labelColor=DARK_GREY)
         .configure_header(titleColor=DARK_GREY, labelColor=DARK_GREY)
-        .configure_legend(titleColor=DARK_GREY, labelColor=DARK_GREY, orient="bottom", columns=3)
-        .configure_view(continuousWidth=WIDTH_SINGLE_COLUMN if not facet_by else WIDTH_TWO_COLUMNS)
+        .configure_legend(
+            titleColor=DARK_GREY,
+            labelColor=DARK_GREY,
+            orient="right" if single_column else "bottom",
+            columns=2 if single_column else 3)
+        .configure_view(continuousWidth=WIDTH_SINGLE_COLUMN if single_column else WIDTH_TWO_COLUMNS)
         .save(path_to_plot)
     )
 
@@ -93,8 +116,16 @@ def infer_dtype(path_to_data, items):
     return pd.read_feather(path_to_data).loc[:, items.keys()].dtypes[0]
 
 
+def country_id_to_name(id: str) -> str:
+    return pycountry.countries.lookup(id).name
+
+
 def read_data(path_to_data: str, items: dict[str, str], dtype: pd.CategoricalDtype, by_country: bool) -> pd.DataFrame:
-    data = pd.read_feather(path_to_data)
+    data = (
+        pd
+        .read_feather(path_to_data)
+        .assign(RESPONDENT_COUNTRY=lambda df: df.RESPONDENT_COUNTRY.map(country_id_to_name))
+    )
     counts = [
         data.loc[:, [q, "RESPONDENT_COUNTRY"]].groupby("RESPONDENT_COUNTRY").value_counts(normalize=False)
         for q in items.keys()
@@ -109,6 +140,9 @@ def read_data(path_to_data: str, items: dict[str, str], dtype: pd.CategoricalDty
     )
     if len(items) == 1:
         df_counts = df_counts.rename(columns={list(items.keys())[0]: "type"})
+    if by_country:
+        all_countries = df_counts.groupby(["type", "item"]).percentage.sum().reset_index().assign(country="All")
+        df_counts = pd.concat([df_counts, all_countries])
     df_counts = (
         df_counts
         .assign(
