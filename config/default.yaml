@@ -469,6 +469,7 @@ parameters:
             - Q4_BIRTH_YEAR_aggregated
             - Q6_AREA
             - Q9_EDUCATION
+            - Q11_CLIMATE_CONCERN
 models:
     multinomial:
         n-tune: 1000

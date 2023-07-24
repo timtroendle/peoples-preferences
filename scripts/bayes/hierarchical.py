@@ -402,11 +402,17 @@ class MrPModelAdmin0(HierarchicalModel):
         "gender": "Q3_GENDER",
         "age": "Q4_BIRTH_YEAR_aggregated",
         "education": "Q9_EDUCATION",
+        "concern": "Q11_CLIMATE_CONCERN",
+        "justice": "Q15_ATTRIBUTE_IMPORTANCE_O1",
+        "effectiveness": "Q22_CLIMATE_PROTECTION"
     }
     index_mapping = {
         "gender": "g",
         "age": "a",
-        "education": "e"
+        "education": "e",
+        "concern": "cc",
+        "justice": "j",
+        "effectiveness": "eff"
     }
     covariate_col_names = column_mapping.values()
     covariates = column_mapping.keys()
