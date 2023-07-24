@@ -1,6 +1,6 @@
 from datetime import date
 from itertools import filterfalse
-from typing import Callable
+from collections.abc import Callable
 import re
 
 import pandas as pd
@@ -9,7 +9,13 @@ YEAR_OF_STUDY = 2022
 MIN_AGE = 18
 MAX_AGE = 120
 UNREASONABLE_HIGH_AGE = 1000
-GERMAN_POSTAL_CODE_AND_CITY = "^(\d{5})\s([a-zA-ZäöüÄÖÜß\s]+)$"
+GERMAN_POSTAL_CODE_AND_CITY = r"^(\d{5})\s([a-zA-ZäöüÄÖÜß\s]+)$"
+DANISH_POSTAL_CODE_AND_CITY = r"^(\d{4})\s*([a-zA-ZäöüÄÖÜß\s]+)$"
+POLISH_POSTAL_CODE_WITHOUT_DASH = r"^\d\d\d\d\d$"
+PORTUGUESE_POSTAL_CODE_WITHOUT_DASH = r"^\d\d\d\d\d\d\d$"
+PORTUGUESE_POSTAL_CODE_AND_CITY = r"^(\d{4}-\d{3})\s([a-zA-Záàâãéèêíïóôõöúçñ\s]+)$"
+PORTUGUESE_OUTDATED_POSTAL_CODE = r"^\d\d\d\d$"
+PORTUGUESE_POSTAL_CODE_NON_DEFAULT_FORMAT = r"^(\d{4})([^-].*|.*[^-])(\d{3})$"
 INDEX_COLUMNS = ["RESPONDENT_ID", "CHOICE_SET", "LABEL"]
 COLUMNS_TO_DROP = [
     "SURVEY_ID", # TODO check what this is
@@ -41,7 +47,7 @@ def preprocess_conjoint(path_to_conjointly_data: str, path_to_respondi_data: str
             index_col=INDEX_COLUMNS,
             na_values="NULL",
             low_memory=False,
-            dtype={"Q5_POSTCODE": str} # FIXME does not work properly for DNK
+            dtype={"Q5_POSTCODE": str}
         )
         .sort_index()
         .drop(columns=COLUMNS_TO_DROP, errors="ignore")
@@ -51,7 +57,7 @@ def preprocess_conjoint(path_to_conjointly_data: str, path_to_respondi_data: str
         .pipe(filter_pre_test, pre_test_threshold)
         .pipe(shift_q12_party, q12_party_base)
         .pipe(fix_broken_entries)
-        .pipe(merge_geonames, path_to_geonames)
+        .pipe(merge_geonames, path_to_geonames, country_id)
         .reset_index()
         .to_feather(path_to_output)
     )
@@ -74,7 +80,7 @@ def merge_respondi_data(df, respondi: pd.DataFrame):
     return df.reindex(columns=columns[:index_for_duration + 1] + columns[-2:] + columns[index_for_duration + 1:-2])
 
 
-def merge_geonames(df: pd.DataFrame, path_to_geonames: str) -> pd.DataFrame:
+def merge_geonames(df: pd.DataFrame, path_to_geonames: str, country_id: str) -> pd.DataFrame:
     geonames = (
         pd
         .read_table(
@@ -105,10 +111,27 @@ def merge_geonames(df: pd.DataFrame, path_to_geonames: str) -> pd.DataFrame:
         .groupby("RESPONDENT_POSTAL_CODE")
         .first() # remove duplicte postal codes (for different place names)
     )
+    if country_id == "PRT":
+        # ASSUME location precision below 4 digits not necessary in Portugal
+        # https://en.wikipedia.org/wiki/Postal_codes_in_Portugal
+        geonames_short = geonames.copy()
+        geonames_short.index = geonames_short.index.str[:4]
+        geonames_short = geonames_short.groupby("RESPONDENT_POSTAL_CODE").first() # use first matching postal code
+        geonames = pd.concat([geonames, geonames_short])
+
+        respondents = df.groupby("RESPONDENT_ID").first()
+        n_broken = sum(respondents.Q5_POSTCODE.str.match(PORTUGUESE_OUTDATED_POSTAL_CODE))
+        print(
+            f"Q5_POSTCODE: {n_broken} Portuguese respondentsindicated their outdated, imprecise postal code "
+            + "from before 1994. Trying to match with the first matching current postal code (using the first "
+            + "four digits of the current postal code only). "
+            + "Because current postal codes are much more precise, this will pretend higher precision than "
+            + "actually available."
+        )
     return (
         df
         .reset_index()
-        .merge(geonames, left_on="Q5_POSTCODE", right_on="RESPONDENT_POSTAL_CODE", how="left")
+        .merge(geonames, left_on="Q5_POSTCODE", right_on="RESPONDENT_POSTAL_CODE", how="left", validate="many_to_one")
         .set_index(INDEX_COLUMNS)
     )
 
@@ -116,7 +139,10 @@ def merge_geonames(df: pd.DataFrame, path_to_geonames: str) -> pd.DataFrame:
 def undummify_dataset(df):
     df = df.rename(columns=language_agnostic_column_name)
     df = remove_free_text(df)
-    df = pd.concat([df[filterfalse(column_is_dummy, df.columns)], undummify(df[filter(column_is_dummy, df.columns)])], axis=1)
+    df = pd.concat(
+        [df[filterfalse(column_is_dummy, df.columns)], undummify(df[filter(column_is_dummy, df.columns)])],
+        axis=1
+    )
     question_columns = filter(column_is_question, df.columns)
     sorted_question_columns = sorted(question_columns, key=lambda col: int(col.split("_")[0][1:]))
     all_columns_sorted = list(df.columns.drop(sorted_question_columns)) + sorted_question_columns
@@ -209,23 +235,33 @@ def undummify(df, prefix_sep="_O"):
 class ConjointDataFix:
 
     def __init__(self, col: str, reason: str, mask: Callable[[pd.Series], pd.Series],
-                 fix: Callable[[pd.Series], pd.Series]):
+                 fix: Callable[[pd.Series], pd.Series], condition: Callable[[pd.DataFrame], pd.Series] = None):
         self.__col = col
         self.__mask = mask
         self.__fix = fix
         self.__reason = reason
+        self.__condition = condition if condition else self.__identity_condition()
+
+    def __identity_condition(self):
+        def identity_condition(df: pd.DataFrame):
+            return pd.Series(True, index=df.index)
+        return identity_condition
 
     def __call__(self, df):
         if self.sum_broken(df) > 0:
             print(f"{self.__col}: " + self.__reason.format(self.sum_broken(df)))
-            data_mask = self.__mask(df[self.__col])
+            data_mask = self.masked(df)
             df.loc[data_mask, self.__col] = self.__fix(df.loc[data_mask, self.__col])
             assert self.sum_broken(df) == 0
         return df
 
+    def masked(self, df):
+        condition_mask = self.__condition(df)
+        return self.__mask(df.loc[condition_mask, self.__col])
+
     def sum_broken(self, df):
         respondents = df.groupby("RESPONDENT_ID").first()
-        return sum(self.__mask(respondents[self.__col]))
+        return sum(self.masked(respondents))
 
 
 def fix_broken_entries(df):
@@ -260,15 +296,57 @@ def fix_broken_entries(df):
         ConjointDataFix(
             col="Q5_POSTCODE",
             mask=lambda col: col.str.match(GERMAN_POSTAL_CODE_AND_CITY),
+            condition=lambda df: df.RESPONDENT_COUNTRY == "DEU",
             fix=lambda col: [re.match(GERMAN_POSTAL_CODE_AND_CITY, postal_code).groups()[0] for postal_code in col],
             reason=("{} German respondents indicated their postal code and city. Retaining code only.")
-        )
+        ),
+        ConjointDataFix(
+            col="Q5_POSTCODE",
+            mask=lambda col: col.str.match(POLISH_POSTAL_CODE_WITHOUT_DASH),
+            condition=lambda df: df.RESPONDENT_COUNTRY == "POL",
+            fix=lambda col: [str(postal_code)[:2] + "-" + str(postal_code)[2:] for postal_code in col],
+            reason=("{} Polish respondents indicated their postal code without dash. Adding dash.")
+        ),
+        ConjointDataFix(
+            col="Q5_POSTCODE",
+            mask=lambda col: col.str.match(PORTUGUESE_POSTAL_CODE_WITHOUT_DASH),
+            condition=lambda df: df.RESPONDENT_COUNTRY == "PRT",
+            fix=lambda col: [str(postal_code)[:4] + "-" + str(postal_code)[4:] for postal_code in col],
+            reason=("{} Portuguese respondents indicated their postal code without dash. Adding dash.")
+        ),
+        ConjointDataFix(
+            col="Q5_POSTCODE",
+            mask=lambda col: col.str.match(PORTUGUESE_POSTAL_CODE_AND_CITY),
+            condition=lambda df: df.RESPONDENT_COUNTRY == "PRT",
+            fix=lambda col: [re.match(PORTUGUESE_POSTAL_CODE_AND_CITY, postal_code).groups()[0]
+                             for postal_code in col],
+            reason=("{} Portuguese respondents indicated their postal code and city. Retaining code only.")
+        ),
+        ConjointDataFix(
+            col="Q5_POSTCODE",
+            mask=lambda col: col.str.match(PORTUGUESE_POSTAL_CODE_NON_DEFAULT_FORMAT),
+            condition=lambda df: df.RESPONDENT_COUNTRY == "PRT",
+            fix=lambda col: [streamline_non_default_portuguese_postal_code_format(postal_code) for postal_code in col],
+            reason=("{} Portuguese respondents indicated their postal code in a non-default format. Streamlining.")
+        ),
+        ConjointDataFix(
+            col="Q5_POSTCODE",
+            mask=lambda col: col.str.match(DANISH_POSTAL_CODE_AND_CITY),
+            condition=lambda df: df.RESPONDENT_COUNTRY == "DNK",
+            fix=lambda col: [re.match(DANISH_POSTAL_CODE_AND_CITY, postal_code).groups()[0] for postal_code in col],
+            reason=("{} Danish respondents indicated their postal code and city. Retaining code only.")
+        ),
     ]
 
     for fix in fixes:
         df = fix(df)
 
     return df
+
+
+def streamline_non_default_portuguese_postal_code_format(postal_code_non_default_format: str) -> str:
+    re_groups = re.match(PORTUGUESE_POSTAL_CODE_NON_DEFAULT_FORMAT, postal_code_non_default_format).groups()
+    return re_groups[0] + "-" + re_groups[2]
 
 
 if __name__ == "__main__":
