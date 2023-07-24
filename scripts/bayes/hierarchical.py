@@ -413,25 +413,23 @@ class MrPModelAdmin0(HierarchicalModel):
 
     def __init__(self, path_to_data: str, limit_respondents: bool, n_respondents_per_country: int,
                  covariances: bool, name: str = ""):
-        n_respondents_per_country = n_respondents_per_country * 4 # to compensate limiting to a single country
         assert set(self.covariate_col_names) == set(self.column_mapping.values())
         assert set(self.column_mapping.keys()) == set(self.index_mapping.keys())
         super().__init__(path_to_data, limit_respondents, n_respondents_per_country, covariances)
 
     def preprocess_data(self, df: pd.DataFrame) -> pd.DataFrame:
+        # Remove respondents without location information if region is a covariate.
+        # Removes 48 (1.2%) people in total.
+        # Removes 3 (0.3%) Germans.
+        # Removes 4 (0.4%) Danes.
+        # Removes 29 (2.8%) Poles.
+        # Removes 12 (1.2%) Portuguese.
         if "region" in self.covariates:
             df = (
                 df
-                .dropna(axis="index", subset=[self.column_mapping["region"]]) # removes 3 (0.3%) Germans
+                .dropna(axis="index", subset=[self.column_mapping["region"]])
             )
-        return self.limit_to_germany(df)
-
-    def limit_to_germany(self, df: pd.DataFrame) -> pd.DataFrame:
-        return (
-            df
-            .where(df.RESPONDENT_COUNTRY == "DEU")
-            .dropna(subset="RESPONDENT_COUNTRY")
-        )
+        return df
 
     def build_partworths(self):
         covariate_coords = {
@@ -537,15 +535,9 @@ class MrPModelAdmin0(HierarchicalModel):
 class MrPModelAdmin1(MrPModelAdmin0):
     variety = 'mrp1'
     column_mapping = {
-        "gender": "Q3_GENDER",
-        "age": "Q4_BIRTH_YEAR_aggregated",
-        "education": "Q9_EDUCATION",
         "region": "RESPONDENT_ADMIN_NAME1"
     }
     index_mapping = {
-        "gender": "g",
-        "age": "a",
-        "education": "e",
         "region": "rgn"
     }
     covariate_col_names = column_mapping.values()
