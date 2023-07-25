@@ -76,7 +76,7 @@ models:
             prior: 16000
             posterior: 24000
             prediction: 16000
-    hierarchical-mrp3:
+    hierarchical-mrp2:
         n-tune: 2000
         n-draws:
             prior: 1000

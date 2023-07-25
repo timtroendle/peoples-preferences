@@ -2,6 +2,11 @@ data-sources:
     conjointly: data/raw-data-{country_id}.csv
     respondi: data/respondi/Masterdata_14979_{country_id}.xlsx
     geonames: http://download.geonames.org/export/zip/{country_id}.zip
+    geoboundaries:
+        DEU: https://github.com/wmgeolab/geoBoundaries/raw/41af8f1/releaseData/gbOpen/DEU/{layer}/geoBoundaries-DEU-{layer}.geojson
+        DNK: https://github.com/wmgeolab/geoBoundaries/raw/905b0ba/releaseData/gbOpen/DNK/{layer}/geoBoundaries-DNK-{layer}.geojson
+        POL: https://github.com/wmgeolab/geoBoundaries/raw/905b0ba/releaseData/gbOpen/POL/{layer}/geoBoundaries-POL-{layer}.geojson
+        PRT: https://github.com/wmgeolab/geoBoundaries/raw/905b0ba/releaseData/gbOpen/PRT/{layer}/geoBoundaries-PRT-{layer}.geojson
     zensus:
         url: https://ergebnisse2011.zensus2022.de/api/rest/2020/data/table?username={user}&password={password}&name={table}&area=all&regionalvariable=GEOBL3&job=false"
         features:
@@ -69,13 +74,10 @@ data-types:
     RESPONDENT_COUNTRY:
         type: factor
         ordered: False
-    RESPONDENT_ADMIN_NAME1:
+    RESPONDENT_ADM1:
         type: factor
         ordered: False
-    RESPONDENT_ADMIN_NAME2:
-        type: factor
-        ordered: False
-    RESPONDENT_ADMIN_NAME3:
+    RESPONDENT_ADM2:
         type: factor
         ordered: False
     RESPONDENT_DEVICE_USED_IN_SURVEY:
@@ -576,14 +578,14 @@ models:
         threads:
             prior: 1
             posterior: 4
-    hierarchical-mrp3:
+    hierarchical-mrp2:
         n-tune: 500
         n-draws:
             prior: 500
             posterior: 500
         limit-respondents: 80
         random-seed: 4000
-        model-variety: mrp3
+        model-variety: mrp2
         covariances: False
         runtime: # (min)
             prior: 10

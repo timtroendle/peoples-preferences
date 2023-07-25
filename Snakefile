@@ -26,6 +26,7 @@ wildcard_constraints:
     figure_format = "png|pdf",
     level = "|".join([a.replace("+", "\+") for a in NONE_BASELINE_ATTRIBUTE_LEVELS]),
     sample = "prior|posterior|prediction",
+    layer= "ADM1|ADM2",
 min_version("7.8")
 envvars:
     "ZENSUS_USER",

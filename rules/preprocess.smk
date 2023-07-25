@@ -17,6 +17,28 @@ rule download_geonames:
         "curl -sLo {output.zip} '{params.url}'"
 
 
+rule download_geoboundaries:
+    message: "Download GeoBoundaries data for country {wildcards.country_id} and administrative layer {wildcards.layer}."
+    params:
+        url = lambda wildcards: config["data-sources"]["geoboundaries"][wildcards.country_id].format(layer=wildcards.layer)
+    output:
+        "data/automatic/geoboundaries/{country_id}/{layer}/shapes.geojson"
+    shell:
+        "curl -sLo {output} '{params.url}'"
+
+
+rule geoboundaries:
+    message: "Merge GeoBoundaries data on administrative layer {wildcards.layer}."
+    input:
+        [
+            "data/automatic/geoboundaries/{country_id}/{{layer}}/shapes.geojson".format(country_id=country_id)
+            for country_id in COUNTRY_IDS
+        ]
+    output: "build/data/geoboundaries/{layer}.feather"
+    conda: "../envs/preprocess.yaml"
+    script: "../scripts/preprocess/geoboundaries.py"
+
+
 rule geonames:
     message: "Unzip geonames file for country {wildcards.country_id}."
     input:
@@ -78,7 +100,9 @@ rule national_conjoint_raw:
     input:
         conjointly = config["data-sources"]["conjointly"],
         respondi = config["data-sources"]["respondi"],
-        geonames = rules.geonames.output[0]
+        geonames = rules.geonames.output[0],
+        adm1 = "build/data/geoboundaries/ADM1.feather",
+        adm2 = "build/data/geoboundaries/ADM2.feather"
     params:
         pre_test_threshold = config["parameters"]["pre-test-threshold"],
         q12_party_base = config["parameters"]["Q12-party-base"]

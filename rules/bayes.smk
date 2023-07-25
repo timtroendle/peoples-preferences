@@ -417,6 +417,21 @@ rule visualise_regional_heterogeneity:
     script: "../scripts/bayes/partworths.py"
 
 
+rule map_regional_heterogeneity:
+    message: "Map heterogeneity of partworths of {wildcards.name} on {wildcards.layer} for {wildcards.level}."
+    input:
+        data = rules.hierarchical.output[0],
+        regions = "build/data/geoboundaries/{layer}.feather"
+    output: "build/results/models/hierarchical-{name}/{sample}/maps/{layer}-{level}.vega.json"
+    resources:
+        runtime = 10,
+        mem_mb_per_cpu = 16000
+    wildcard_constraints:
+        sample = "poststratify"
+    conda: "../envs/geo.yaml"
+    script: "../scripts/bayes/map-regions.py"
+
+
 rule visualise_unexplained_heterogeneity:
     message: "Visualise unexplained heterogeneity of partworths of hierarchical model {wildcards.name}."
     input: data = rules.hierarchical.output[0]

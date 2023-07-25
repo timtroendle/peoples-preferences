@@ -541,7 +541,7 @@ class MrPModelAdmin0(HierarchicalModel):
 class MrPModelAdmin1(MrPModelAdmin0):
     variety = 'mrp1'
     column_mapping = {
-        "region": "RESPONDENT_ADMIN_NAME1"
+        "region": "RESPONDENT_ADM1"
     }
     index_mapping = {
         "region": "rgn"
@@ -586,10 +586,10 @@ class MrPModelAdmin1(MrPModelAdmin0):
         return partworth
 
 
-class MrPModelAdmin3(MrPModelAdmin1):
-    variety = 'mrp3'
+class MrPModelAdmin2(MrPModelAdmin1):
+    variety = 'mrp2'
     column_mapping = {
-        "region": "RESPONDENT_ADMIN_NAME3"
+        "region": "RESPONDENT_ADM2"
     }
     index_mapping = {
         "region": "rgn"
@@ -603,7 +603,7 @@ NoCovariatesVaryingVariationModel.register()
 CovariatesModel.register()
 MrPModelAdmin0.register()
 MrPModelAdmin1.register()
-MrPModelAdmin3.register()
+MrPModelAdmin2.register()
 
 
 def filter_respondents(df, limit_respondents, n_respondents_per_country):

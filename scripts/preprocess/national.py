@@ -4,6 +4,7 @@ from collections.abc import Callable
 import re
 
 import pandas as pd
+import geopandas as gpd
 
 YEAR_OF_STUDY = 2022
 MIN_AGE = 18
@@ -36,7 +37,7 @@ COLUMNS_TO_DROP = [
 
 
 def preprocess_conjoint(path_to_conjointly_data: str, path_to_respondi_data: str, path_to_geonames: str,
-                        country_id: str,
+                        path_to_adm1: str, path_to_adm2: str, country_id: str,
                         pre_test_threshold: date, q12_party_base: int,
                         path_to_output: str):
     respondi = pd.read_excel(path_to_respondi_data, parse_dates=[2])
@@ -58,6 +59,8 @@ def preprocess_conjoint(path_to_conjointly_data: str, path_to_respondi_data: str
         .pipe(shift_q12_party, q12_party_base)
         .pipe(fix_broken_entries)
         .pipe(merge_geonames, path_to_geonames, country_id)
+        .pipe(merge_geoboundaries, path_to_adm1, "RESPONDENT_ADM1")
+        .pipe(merge_geoboundaries, path_to_adm2, "RESPONDENT_ADM2")
         .reset_index()
         .to_feather(path_to_output)
     )
@@ -101,15 +104,15 @@ def merge_geonames(df: pd.DataFrame, path_to_geonames: str, country_id: str) -> 
         )
         .rename(columns={
             "postal code": "RESPONDENT_POSTAL_CODE",
-            "admin name1": "RESPONDENT_ADMIN_NAME1",
-            "admin name2": "RESPONDENT_ADMIN_NAME2",
-            "admin name3": "RESPONDENT_ADMIN_NAME3",
             "latitude": "LATITUDE",
             "longitude": "LONGITUDE"
         })
-        .drop(columns={"country code", "admin code1", "admin code2", "admin code3", "place code", "accuracy"})
+        .drop(columns=[
+            "country code", "admin code1", "admin code2", "admin code3", "place code", "accuracy",
+            "admin name1", "admin name2", "admin name3"
+        ])
         .groupby("RESPONDENT_POSTAL_CODE")
-        .first() # remove duplicte postal codes (for different place names)
+        .first() # remove duplicate postal codes (for different place names)
     )
     if country_id == "PRT":
         # ASSUME location precision below 4 digits not necessary in Portugal
@@ -134,6 +137,16 @@ def merge_geonames(df: pd.DataFrame, path_to_geonames: str, country_id: str) -> 
         .merge(geonames, left_on="Q5_POSTCODE", right_on="RESPONDENT_POSTAL_CODE", how="left", validate="many_to_one")
         .set_index(INDEX_COLUMNS)
     )
+
+
+def merge_geoboundaries(df: pd.DataFrame, path_to_adm: str, col_name: str) -> pd.DataFrame:
+    adm = gpd.read_feather(path_to_adm)
+    spatial_df = gpd.GeoDataFrame(
+        geometry=gpd.GeoSeries.from_xy(df.LONGITUDE, df.LATITUDE),
+        crs="4326"
+    )
+    df[col_name] = spatial_df.sjoin(adm.loc[:, ["shapeID", "geometry"]], predicate="within", how="left")["shapeID"]
+    return df
 
 
 def undummify_dataset(df):
@@ -354,6 +367,8 @@ if __name__ == "__main__":
         path_to_conjointly_data=snakemake.input.conjointly,
         path_to_respondi_data=snakemake.input.respondi,
         path_to_geonames=snakemake.input.geonames,
+        path_to_adm1=snakemake.input.adm1,
+        path_to_adm2=snakemake.input.adm2,
         country_id=snakemake.wildcards.country_id,
         pre_test_threshold=snakemake.params.pre_test_threshold,
         q12_party_base=snakemake.params.q12_party_base[snakemake.wildcards.country_id],

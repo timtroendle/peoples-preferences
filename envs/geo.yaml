@@ -1,4 +1,4 @@
-name: analyse
+name: geo
 channels:
     - conda-forge
 dependencies:
@@ -10,5 +10,6 @@ dependencies:
     - pycountry=22.3.5
     - arviz=0.16.1
     - altair=5.0.1
-    - matplotlib=3.6.2
-    - seaborn=0.11.2
+    - geopandas=0.13.2
+    - gdal=3.7.0
+    - shapely=2.0.1
