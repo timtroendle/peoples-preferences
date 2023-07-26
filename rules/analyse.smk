@@ -100,7 +100,7 @@ rule visualise_experimental_design:
     params:
         level_nice_names = config["report"]["nice-names"]["levels"]
     output:
-        plot = "build/results/analysis/experimental-design.vega.json"
+        plot = temp("build/results/analysis/experimental-design.vega.json")
     conda:
         "../envs/analyse.yaml"
     script:
@@ -116,7 +116,7 @@ rule likert_plot:
         colors = config["report"]["colors"]["likert"],
         by_country = False,
         type = "likert"
-    output: "build/results/analysis/likert-items.vega.json"
+    output: temp("build/results/analysis/likert-items.vega.json")
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/shares.py"
 
@@ -127,7 +127,7 @@ use rule likert_plot as likert_plot_by_country with:
         colors = config["report"]["colors"]["likert"],
         by_country = True,
         type = "likert"
-    output: "build/results/analysis/likert-items-by-country.vega.json"
+    output: temp("build/results/analysis/likert-items-by-country.vega.json")
 
 
 rule agreement_plot:
@@ -138,7 +138,7 @@ rule agreement_plot:
         plot_items = config["report"]["nice-names"]["agreement-items"],
         by_country = False,
         type = "agreement"
-    output: "build/results/analysis/agreement-items.vega.json"
+    output: temp("build/results/analysis/agreement-items.vega.json")
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/shares.py"
 
@@ -148,7 +148,7 @@ use rule agreement_plot as agreement_plot_by_country with:
         plot_items = config["report"]["nice-names"]["agreement-items"],
         by_country = True,
         type = "agreement"
-    output: "build/results/analysis/agreement-items-by-country.vega.json"
+    output: temp("build/results/analysis/agreement-items-by-country.vega.json")
 
 
 rule gender_plot:
@@ -160,7 +160,7 @@ rule gender_plot:
         by_country = True,
         category_colors = config["report"]["colors"]["categories"],
         type = "demographics"
-    output: "build/results/analysis/gender.vega.json"
+    output: temp("build/results/analysis/gender.vega.json")
     conda: "../envs/analyse.yaml"
     script: "../scripts/analyse/shares.py"
 
@@ -171,7 +171,7 @@ use rule gender_plot as area_plot with:
         by_country = True,
         category_colors = config["report"]["colors"]["categories"],
         type = "demographics"
-    output: "build/results/analysis/area.vega.json"
+    output: temp("build/results/analysis/area.vega.json")
 
 
 use rule gender_plot as education_plot with:
@@ -180,7 +180,7 @@ use rule gender_plot as education_plot with:
         by_country = True,
         category_colors = config["report"]["colors"]["categories"],
         type = "demographics"
-    output: "build/results/analysis/education.vega.json"
+    output: temp("build/results/analysis/education.vega.json")
 
 
 use rule gender_plot as income_plot with:
@@ -189,4 +189,4 @@ use rule gender_plot as income_plot with:
         by_country = True,
         category_colors = config["report"]["colors"]["categories"],
         type = "demographics"
-    output: "build/results/analysis/income.vega.json"
+    output: temp("build/results/analysis/income.vega.json")

@@ -224,7 +224,7 @@ rule visualise_partworths:
         variable_names = "partworths",
         hdi_prob = config["report"]["hdi-prob"]["default"],
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/multinomial-logit/{sample}/pop-means.vega.json"
+    output: temp("build/results/models/multinomial-logit/{sample}/pop-means.vega.json")
     wildcard_constraints:
         sample = "prior|posterior"
     conda: "../envs/analyse.yaml"
@@ -238,7 +238,7 @@ rule visualise_intercept:
         variable_names = "alpha",
         hdi_prob = config["report"]["hdi-prob"]["default"],
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/hierarchical-{name}/{sample}/intercept.vega.json"
+    output: temp("build/results/models/hierarchical-{name}/{sample}/intercept.vega.json")
     resources:
         runtime = 60,
         mem_mb_per_cpu = 64000
@@ -257,7 +257,7 @@ rule visualise_country_differences:
         aggregate_individuals = False,
         hdi_prob = config["report"]["hdi-prob"]["default"],
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/hierarchical-{name}/{sample}/country-differences.vega.json"
+    output: temp("build/results/models/hierarchical-{name}/{sample}/country-differences.vega.json")
     resources:
         runtime = 60,
         mem_mb_per_cpu = 64000
@@ -276,7 +276,7 @@ rule visualise_country_differences_sigma_respondent:
         aggregate_individuals = False,
         hdi_prob = config["report"]["hdi-prob"]["default"],
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/hierarchical-{name}/{sample}/varying-variation.vega.json"
+    output: temp("build/results/models/hierarchical-{name}/{sample}/varying-variation.vega.json")
     resources:
         runtime = 60,
         mem_mb_per_cpu = 64000
@@ -295,7 +295,7 @@ rule visualise_country_means:
         aggregate_individuals = False,
         hdi_prob = config["report"]["hdi-prob"]["default"],
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/hierarchical-{name}/{sample}/country-means.vega.json"
+    output: temp("build/results/models/hierarchical-{name}/{sample}/country-means.vega.json")
     resources:
         runtime = 60,
         mem_mb_per_cpu = 64000
@@ -314,7 +314,7 @@ rule visualise_population_means:
         aggregate_individuals = False,
         hdi_prob = config["report"]["hdi-prob"]["default"],
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/hierarchical-{name}/{sample}/pop-means.vega.json"
+    output: temp("build/results/models/hierarchical-{name}/{sample}/pop-means.vega.json")
     resources:
         runtime = 60,
         mem_mb_per_cpu = 64000
@@ -333,7 +333,7 @@ rule visualise_sample_partworths:
         aggregate_individuals = False,
         hdi_prob = config["report"]["hdi-prob"]["default"],
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/hierarchical-{name}/{sample}/sample.vega.json"
+    output: temp("build/results/models/hierarchical-{name}/{sample}/sample.vega.json")
     resources:
         runtime = 60,
         mem_mb_per_cpu = 64000
@@ -352,7 +352,7 @@ rule visualise_sample_bias:
         aggregate_individuals = False,
         hdi_prob = config["report"]["hdi-prob"]["default"],
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/hierarchical-{name}/{sample}/bias.vega.json"
+    output: temp("build/results/models/hierarchical-{name}/{sample}/bias.vega.json")
     resources:
         runtime = 60,
         mem_mb_per_cpu = 64000
@@ -371,7 +371,7 @@ rule visualise_max_subgroup_effects:
         aggregate_individuals = False,
         hdi_prob = config["report"]["hdi-prob"]["default"],
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/hierarchical-{name}/{sample}/max-subgroup-effect.vega.json"
+    output: temp("build/results/models/hierarchical-{name}/{sample}/max-subgroup-effect.vega.json")
     resources:
         runtime = 60,
         mem_mb_per_cpu = 64000
@@ -389,7 +389,7 @@ rule visualise_respondent_heterogeneity:
         aggregate_individuals = True,
         hdi_prob = None, # has no use here
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/hierarchical-{name}/{sample}/individual-partworths.vega.json"
+    output: temp("build/results/models/hierarchical-{name}/{sample}/individual-partworths.vega.json")
     resources:
         runtime = 60,
         mem_mb_per_cpu = 64000
@@ -407,7 +407,7 @@ rule visualise_regional_heterogeneity:
         aggregate_individuals = True,
         hdi_prob = None, # has no use here
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/hierarchical-{name}/{sample}/regional-partworths.vega.json"
+    output: temp("build/results/models/hierarchical-{name}/{sample}/regional-partworths.vega.json")
     resources:
         runtime = 60,
         mem_mb_per_cpu = 64000
@@ -422,7 +422,7 @@ rule map_regional_heterogeneity:
     input:
         data = rules.hierarchical.output[0],
         regions = "build/data/geoboundaries/{layer}.feather"
-    output: "build/results/models/hierarchical-{name}/{sample}/maps/{layer}-{level}.vega.json"
+    output: temp("build/results/models/hierarchical-{name}/{sample}/maps/{layer}-{level}.vega.json")
     resources:
         runtime = 10,
         mem_mb_per_cpu = 16000
@@ -440,7 +440,7 @@ rule visualise_unexplained_heterogeneity:
         aggregate_individuals = True,
         hdi_prob = None, # has no use here
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/hierarchical-{name}/{sample}/unexplained-heterogeneity.vega.json"
+    output: temp("build/results/models/hierarchical-{name}/{sample}/unexplained-heterogeneity.vega.json")
     resources:
         runtime = 60,
         mem_mb_per_cpu = 64000
@@ -456,7 +456,7 @@ rule visualise_covariates:
     params:
         interval = 0.9, # show only this share of the total interval
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/hierarchical-covariates/{sample}/covariates.vega.json"
+    output: temp("build/results/models/hierarchical-covariates/{sample}/covariates.vega.json")
     resources:
         runtime = 60,
         mem_mb_per_cpu = 64000
@@ -473,7 +473,7 @@ rule visualise_mu_left_intercept:
     params:
         variable_name = "mu_left_intercept",
         nice_variable_name = "Mean additional partworth utility of left option"
-    output: "build/results/models/hierarchical-{name}/{sample}/left-option.vega.json"
+    output: temp("build/results/models/hierarchical-{name}/{sample}/left-option.vega.json")
     wildcard_constraints:
         sample = "prior|posterior"
     conda: "../envs/analyse.yaml"
@@ -489,7 +489,7 @@ rule visualise_varying_left_option_effect:
         level_choice = {},
         narrow_hdi = config["report"]["hdi-prob"]["narrow"],
         wide_hdi = config["report"]["hdi-prob"]["default"]
-    output: "build/results/models/hierarchical-{name}/{sample}/varying/left-intercept.vega.json"
+    output: temp("build/results/models/hierarchical-{name}/{sample}/varying/left-intercept.vega.json")
     wildcard_constraints:
         sample = "prior|posterior"
     conda: "../envs/analyse.yaml"
@@ -505,7 +505,7 @@ rule visualise_varying_attribute_levels:
         level_choice = lambda wildcards, output: {"level": wildcards["level"].replace("___", ":").replace("__", " ")},
         narrow_hdi = config["report"]["hdi-prob"]["narrow"],
         wide_hdi = config["report"]["hdi-prob"]["default"]
-    output: "build/results/models/hierarchical-{name}/{sample}/varying/{level}.vega.json"
+    output: temp("build/results/models/hierarchical-{name}/{sample}/varying/{level}.vega.json")
     wildcard_constraints:
         sample = "prior|posterior"
     conda: "../envs/analyse.yaml"
@@ -519,7 +519,7 @@ rule visualise_amces:
         variable_names = "p",
         hdi_prob = config["report"]["hdi-prob"]["default"],
         nice_names = config["report"]["nice-names"],
-    output: "build/results/models/hierarchical-{name}/{sample}/pop-means.vega.json"
+    output: temp("build/results/models/hierarchical-{name}/{sample}/pop-means.vega.json")
     wildcard_constraints:
         sample = "amce"
     resources:
