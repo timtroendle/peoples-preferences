@@ -3,6 +3,7 @@ data-sources:
     respondi: data/respondi/Masterdata_14979_{country_id}.xlsx
     geonames: http://download.geonames.org/export/zip/{country_id}.zip
     geoboundaries:
+        WLD: https://github.com/wmgeolab/geoBoundaries/raw/b0fb2ae/releaseData/CGAZ/geoBoundariesCGAZ_{layer}.geojson
         DEU: https://github.com/wmgeolab/geoBoundaries/raw/41af8f1/releaseData/gbOpen/DEU/{layer}/geoBoundaries-DEU-{layer}.geojson
         DNK: https://github.com/wmgeolab/geoBoundaries/raw/905b0ba/releaseData/gbOpen/DNK/{layer}/geoBoundaries-DNK-{layer}.geojson
         POL: https://github.com/wmgeolab/geoBoundaries/raw/905b0ba/releaseData/gbOpen/POL/{layer}/geoBoundaries-POL-{layer}.geojson

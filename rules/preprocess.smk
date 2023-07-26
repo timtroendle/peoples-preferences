@@ -21,8 +21,10 @@ rule download_geoboundaries:
     message: "Download GeoBoundaries data for country {wildcards.country_id} and administrative layer {wildcards.layer}."
     params:
         url = lambda wildcards: config["data-sources"]["geoboundaries"][wildcards.country_id].format(layer=wildcards.layer)
+    wildcard_constraints:
+        country_id = "|".join(COUNTRY_IDS + ["WLD"])
     output:
-        "data/automatic/geoboundaries/{country_id}/{layer}/shapes.geojson"
+        "data/automatic/geoboundaries/{country_id}/{layer}.geojson"
     shell:
         "curl -sLo {output} '{params.url}'"
 
@@ -31,7 +33,7 @@ rule geoboundaries:
     message: "Merge GeoBoundaries data on administrative layer {wildcards.layer}."
     input:
         [
-            "data/automatic/geoboundaries/{country_id}/{{layer}}/shapes.geojson".format(country_id=country_id)
+            "data/automatic/geoboundaries/{country_id}/{{layer}}.geojson".format(country_id=country_id)
             for country_id in COUNTRY_IDS
         ]
     output: "build/data/geoboundaries/{layer}.feather"

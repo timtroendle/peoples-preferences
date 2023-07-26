@@ -421,7 +421,8 @@ rule map_regional_heterogeneity:
     message: "Map heterogeneity of partworths of {wildcards.name} on {wildcards.layer} for {wildcards.level}."
     input:
         data = rules.hierarchical.output[0],
-        regions = "build/data/geoboundaries/{layer}.feather"
+        regions = "build/data/geoboundaries/{layer}.feather",
+        world = "data/automatic/geoboundaries/WLD/ADM0.geojson"
     output: temp("build/results/models/hierarchical-{name}/{sample}/maps/{layer}-{level}.vega.json")
     resources:
         runtime = 10,
