@@ -159,6 +159,24 @@ rule max_subgroup_effects:
         "../scripts/bayes/subgroups.py"
 
 
+rule contrasts:
+    message:
+        "Calculate contrasts between all elements of all clusters."
+    input:
+        inference_data = "build/results/models/hierarchical-{name}/posterior/inference-data.nc"
+    params:
+        exclude = ["respondent"],
+        hdi_prob = config["report"]["hdi-prob"]["default"]
+    output:
+        "build/results/models/hierarchical-{name}/{sample}/contrasts.feather"
+    wildcard_constraints:
+        sample = "prior|posterior"
+    conda:
+        "../envs/pymc.yaml"
+    script:
+        "../scripts/bayes/contrasts.py"
+
+
 rule diagnostics:
     message: "Run diagnostics for hierarchical model {wildcards.name}."
     input:

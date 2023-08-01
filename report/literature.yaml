@@ -2476,6 +2476,24 @@ references:
   URL: https://www.nature.com/articles/s43247-023-00713-9
   volume: '4'
 
+- id: Mey:unpublished
+  author:
+    - family: Mey
+      given: Franziska
+    - family: Lilliestam
+      given: Johan
+    - family: Wolf
+      given: Ingo
+    - family: Tröndle
+      given: Tim
+  citation-key: Mey:unpublished
+  issued:
+    - literal: unpublished
+  title: >-
+    Visions for our future regional electricity system – citizen preferences in
+    four EU countries
+  type: manuscript
+
 - id: Mildenberger:2016
   abstract: >-
     While climate scientists have developed high resolution data sets on the
