@@ -117,6 +117,43 @@ references:
   type: report
   URL: https://papers.ssrn.com/abstract=655541
 
+- id: Alriksson:2008
+  abstract: >-
+    Conjoint analysis and the related choice-modelling methods have been used
+    for many years in marketing research to evaluate consumer behaviour and
+    preferences for different kinds of product attributes. Recently, the number
+    of applications in environmental science and management has started to grow.
+    Conjoint analysis is found in many different forms, and the environmental
+    studies evaluated in this review display the same range of methods as in
+    other fields. The key characteristic of all these methods is that trade-offs
+    are evaluated by jointly considering a number of important attributes.
+  accessed:
+    - year: 2023
+      month: 10
+      day: 31
+  author:
+    - family: Alriksson
+      given: Stina
+    - family: Öberg
+      given: Tomas
+  citation-key: Alriksson:2008
+  container-title: Environmental Science and Pollution Research
+  container-title-short: Environ Sci Pollut Res
+  DOI: 10.1065/espr2008.02.479
+  ISSN: 1614-7499
+  issue: '3'
+  issued:
+    - year: 2008
+      month: 5
+      day: 1
+  language: en
+  page: 244-257
+  source: Springer Link
+  title: Conjoint analysis for environmental evaluation
+  type: article-journal
+  URL: https://doi.org/10.1065/espr2008.02.479
+  volume: '15'
+
 - id: Amrhein:2019
   accessed:
     - year: 2019
@@ -239,6 +276,7 @@ references:
       given: Teppei
   citation-key: Bansak:2021
   container-title: Advances in Experimental Political Science
+  DOI: 10.1017/9781108777919.004
   event-place: Cambridge
   issued:
     - year: 2021
@@ -3787,6 +3825,52 @@ references:
   type: article-journal
   volume: '40'
 
+- id: Wikle:2017
+  abstract: >-
+    Analyses of complex processes should account for the uncertainty in the
+    data, the processes that generated the data, and the models that are used to
+    represent the processes and data. Accounting for these uncertainties can be
+    daunting in traditional statistical analyses. In recent years, hierarchical
+    statistical models have provided a coherent probabilistic framework that can
+    accommodate these multiple sources of quantifiable uncertainty. This
+    overview describes a science-based hierarchical statistical modeling
+    approach and the associated Bayesian inference. In addition, given that many
+    complex processes involve the dynamical evolution of spatial processes, an
+    overview of hierarchical dynamical spatio-temporal models is also presented.
+    The hierarchical and spatio-temporal modeling frameworks are illustrated
+    with a problem concerned with assimilating ocean vector wind observations
+    from satellite and weather center analyses.
+  accessed:
+    - year: 2023
+      month: 11
+      day: 9
+  author:
+    - family: Wikle
+      given: Christopher K.
+  citation-key: Wikle:2017
+  container-title: Handbook of Uncertainty Quantification
+  DOI: 10.1007/978-3-319-12385-1_4
+  editor:
+    - family: Ghanem
+      given: Roger
+    - family: Higdon
+      given: David
+    - family: Owhadi
+      given: Houman
+  event-place: Cham
+  ISBN: 978-3-319-12385-1
+  issued:
+    - year: 2017
+  language: en
+  page: 193-218
+  publisher: Springer International Publishing
+  publisher-place: Cham
+  source: Springer Link
+  title: 'Hierarchical Models for Uncertainty Quantification: An Overview'
+  title-short: Hierarchical Models for Uncertainty Quantification
+  type: chapter
+  URL: https://doi.org/10.1007/978-3-319-12385-1_4
+
 - id: Winter:2022
   abstract: >-
     Reaching net-zero targets requires massive increases in wind energy
@@ -3859,6 +3943,55 @@ references:
   title: Soziales Nachhaltigkeitsbarometer 2022
   type: report
   URL: https://snb.ariadneprojekt.de/start
+
+- id: Wustenhagen:2007
+  abstract: >-
+    This paper introduces the special issue on Social Acceptance of Renewable
+    Energy Innovation. It is a collection of best papers presented at an
+    international research conference held in Tramelan (Switzerland) in February
+    2006. While there are ambitious government targets to increase the share of
+    renewable energy in many countries, it is increasingly recognized that
+    social acceptance may be a constraining factor in achieving this target.
+    This is particularly apparent in the case of wind energy, which has become a
+    subject of contested debates in several countries largely due to its visual
+    impact on landscapes. This paper introduces three dimensions of social
+    acceptance, namely socio-political, community and market acceptance. Factors
+    influencing socio-political and community acceptance are increasingly
+    recognized as being important for understanding the apparent contradictions
+    between general public support for renewable energy innovation and the
+    difficult realization of specific projects. The third dimension, market
+    acceptance, has received less attention so far and provides opportunities
+    for further research, particularly from management scholars.
+  accessed:
+    - year: 2023
+      month: 11
+      day: 23
+  author:
+    - family: Wüstenhagen
+      given: Rolf
+    - family: Wolsink
+      given: Maarten
+    - family: Bürer
+      given: Mary Jean
+  citation-key: Wustenhagen:2007
+  container-title: Energy Policy
+  container-title-short: Energy Policy
+  DOI: 10.1016/j.enpol.2006.12.001
+  ISSN: 0301-4215
+  issue: '5'
+  issued:
+    - year: 2007
+      month: 5
+      day: 1
+  page: 2683-2691
+  source: ScienceDirect
+  title: >-
+    Social acceptance of renewable energy innovation: An introduction to the
+    concept
+  title-short: Social acceptance of renewable energy innovation
+  type: article-journal
+  URL: https://www.sciencedirect.com/science/article/pii/S0301421506004824
+  volume: '35'
 
 - id: Xexakis:2022
   abstract: >-
