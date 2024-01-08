@@ -1,10 +1,34 @@
 import pycountry
 
-localrules: download_geonames, download_german_census
+localrules: download_raw_conjointly, download_raw_respondi, download_geonames, download_german_census
 
 
 def alpha3to2(alpha3: str) -> str:
     return pycountry.countries.lookup(alpha3).alpha_2
+
+
+rule download_raw_conjointly:
+    message: "Download raw survey data."
+    params:
+        url = config["data-sources"]["conjointly"]
+    output:
+        protected("data/automatic/conjointly/raw-data-{country_id}.csv")
+    conda:
+        "../envs/shell.yaml"
+    shell:
+        "curl -sLo {output} '{params.url}'"
+
+
+rule download_raw_respondi:
+    message: "Download raw survey data."
+    params:
+        url = config["data-sources"]["respondi"]
+    output:
+        protected("data/automatic/respondi/Masterdata_14979_{country_id}.xlsx")
+    conda:
+        "../envs/shell.yaml"
+    shell:
+        "curl -sLo {output} '{params.url}'"
 
 
 rule download_geonames:
@@ -100,8 +124,8 @@ rule census:
 rule national_conjoint_raw:
     message: "Preprocess conjoint data for country {wildcards.country_id}."
     input:
-        conjointly = config["data-sources"]["conjointly"],
-        respondi = config["data-sources"]["respondi"],
+        conjointly = rules.download_raw_conjointly.output[0],
+        respondi = rules.download_raw_respondi.output[0],
         geonames = rules.geonames.output[0],
         adm1 = "build/data/geoboundaries/ADM1.feather",
         adm2 = "build/data/geoboundaries/ADM2.feather"
