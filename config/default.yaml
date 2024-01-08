@@ -1,6 +1,6 @@
 data-sources:
-    conjointly: data/raw-data-{country_id}.csv
-    respondi: data/respondi/Masterdata_14979_{country_id}.xlsx
+    conjointly: https://zenodo.org/records/10463074/files/raw-data-{country_id}.csv?download=1
+    respondi: https://zenodo.org/records/10463074/files/Masterdata_14979_{country_id}.xlsx?download=1
     geonames: http://download.geonames.org/export/zip/{country_id}.zip
     zensus:
         url: https://ergebnisse2011.zensus2022.de/api/rest/2020/data/table?username={user}&password={password}&name={table}&area=all&regionalvariable=GEOBL3&job=false"
